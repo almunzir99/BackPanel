@@ -1,5 +1,6 @@
-namespace BackPanel.Domain.Entities;
-public abstract class EntityBase
+namespace BackPanel.Application.DTOs;
+
+public abstract class DtoBase
 {
     public int Id { get; set; }
     public DateTime CreatedAt { get; set; }

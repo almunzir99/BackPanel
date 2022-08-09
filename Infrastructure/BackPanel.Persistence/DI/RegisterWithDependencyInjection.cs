@@ -1,4 +1,5 @@
 using BackPanel.Persistence.Database;
+using BackPanel.Shared.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,5 +14,6 @@ public static class RegisterWithDependencyInjection
         services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(
             configuration.GetConnectionString("default")
         ));
+        services.AddTransient<MapperHelper>();
     }
 }

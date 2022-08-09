@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Core\BackPanel.Application\BackPanel.Application.csproj" />
       <ProjectReference Include="..\..\Core\BackPanel.Domain\BackPanel.Domain.csproj" />
       <ProjectReference Include="..\..\Core\BackPanel.Shared\BackPanel.Shared.csproj" />
     </ItemGroup>
