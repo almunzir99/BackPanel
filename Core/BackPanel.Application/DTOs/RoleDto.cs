@@ -1,6 +1,6 @@
 namespace BackPanel.Application.DTOs;
 
-public class RoleDto
+public class RoleDto : DtoBase
 {
     public string? Title { get; set; }
     public PermissionDto? MessagesPermissions { get; set; }

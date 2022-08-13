@@ -1,6 +1,6 @@
-namespace BackPanel.Shared.Helpers;
+namespace BackPanel.Application.Helpers;
 
-public class HashingHelper
+public static class HashingHelper
 {
     public static void CreateHashPassword(string password, out byte[] passowordHash, out byte[] passwordSalt)
     {

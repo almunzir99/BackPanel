@@ -11,6 +11,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="11.0.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.7" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.7">
           <PrivateAssets>all</PrivateAssets>
@@ -27,10 +30,40 @@
         <Content Remove="$(SpaRoot)**" />
         <None Remove="$(SpaRoot)**" />
         <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+        <None Remove="wwwroot\BackPanel\Files-Manager\**" />
+        <Content Remove="wwwroot\BackPanel\Files-Manager\**" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\Infrastructure\BackPanel.Persistence\BackPanel.Persistence.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services" />
+      <Folder Include="wwwroot\BackPanel" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\BackPanel\Files-Manager\03a12752-b08d-4f3d-951f-0c658e04ac48.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\BackPanel\Files-Manager\12c5704f-c0ad-496d-b5de-1494e025bd54.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\BackPanel\Files-Manager\317d6c86-b3e0-4cd2-9dd4-8691fb9eb835.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\BackPanel\Files-Manager\33a91f06-a8ef-4028-8b9d-6a98c64b103e.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\BackPanel\Files-Manager\367806c3-b2f3-4131-97ff-57a211c865d2.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\BackPanel\Files-Manager\5879f97a-7407-4df2-82dd-29cbb7de662e.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\BackPanel\Files-Manager\6e65421e-4f49-4cb4-928b-b3bcf506bdb3.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\BackPanel\Files-Manager\74f2b6cc-e823-4eab-9156-f5c46da0d864.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\BackPanel\Files-Manager\818896aa-79ad-4dbc-9520-e44772dc63ea.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\BackPanel\Files-Manager\a20ecac6-4890-46ce-839f-3eefa46b39a8.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\BackPanel\Files-Manager\c749043b-58d5-475b-a47f-8c7caa0ce151.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\BackPanel\Files-Manager\e88d60a4-c2dc-4885-9706-73b8a61c2c38.jpg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="wwwroot\BackPanel\Files-Manager\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="wwwroot\BackPanel\Files-Manager\**" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

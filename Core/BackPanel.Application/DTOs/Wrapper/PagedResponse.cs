@@ -7,8 +7,8 @@ public class PagedResponse<T> : Response<T>{
     public int TotalRecords { get; set; }
     public Uri FirstPage { get; set; }
     public Uri LastPage { get; set; }
-    public Uri NextPage { get; set; }
-    public Uri PreviousPage { get; set; }
+    public Uri? NextPage { get; set; }
+    public Uri? PreviousPage { get; set; }
     public PagedResponse(T data,
         int pageSize,
         int pageIndex,
@@ -16,8 +16,8 @@ public class PagedResponse<T> : Response<T>{
         int totalRecords,
         Uri firstPage,
         Uri lastPage,
-        Uri nextPage,
-        Uri previousPage) : base(data)
+        Uri? nextPage,
+        Uri? previousPage) : base(data)
     {
         PageSize = pageSize;
         PageIndex = pageIndex;

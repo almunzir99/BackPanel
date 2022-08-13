@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace BackPanel.Shared.Helpers;
+namespace BackPanel.Application.Helpers;
 
 public class MapperHelper
 {

@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using BackPanel.Application.Helpers;
 using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
 using BackPanel.Persistence.Database;

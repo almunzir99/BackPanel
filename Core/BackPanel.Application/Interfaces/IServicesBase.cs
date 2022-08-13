@@ -1,0 +1,21 @@
+using BackPanel.Application.DTOs;
+using BackPanel.Application.DTOs.Filters;
+using BackPanel.Domain.Entities;
+using Microsoft.AspNetCore.JsonPatch;
+
+namespace BackPanel.Application.Interfaces;
+
+public interface IServicesBase<TEntity, TDto, in TDtoRequest> where TEntity : EntityBase where TDto : DtoBase
+{
+    Task<IList<TDto>> ListAsync(PaginationFilter? filter, IList<Func<TEntity, bool>>? conditions, string? title = "",
+        string orderBy = "LastUpdate", Boolean ascending = true);
+
+    Task<TDto> SingleAsync(int id);
+    Task<TDto> CreateAsync(TDtoRequest newItem, int userId);
+    Task<TDto> UpdateAsync(int id, TDtoRequest newItem);
+    Task<TDto> UpdateAsync(int id, JsonPatchDocument<TEntity> newItem);
+    Task DeleteAsync(int id);
+    Task<string> ExportToCsv();
+    Task<int> GetTotalRecords();
+    Task CreateActivity(int userId, int rowId, string action);
+}

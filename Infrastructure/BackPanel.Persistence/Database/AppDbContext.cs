@@ -1,3 +1,4 @@
+using BackPanel.Application.Helpers;
 using BackPanel.Domain.Entities;
 using BackPanel.Shared.Helpers;
 using Microsoft.EntityFrameworkCore;
