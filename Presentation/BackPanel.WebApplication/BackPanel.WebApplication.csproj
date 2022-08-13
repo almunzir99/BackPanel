@@ -40,7 +40,6 @@
 
     <ItemGroup>
       <Folder Include="Services" />
-      <Folder Include="wwwroot\BackPanel" />
     </ItemGroup>
 
     <ItemGroup>

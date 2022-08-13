@@ -26,7 +26,7 @@ public class FilesManagerController : ControllerBase
         {
             List<IWebFormFile> webFiles =
                 new List<IWebFormFile>(files.Select(file => new WebFormFile(file, file.FileName)).ToList());
-            var result = await _fileService.UploadMultiFiles(path, webFiles);
+            var result = await _fileService.UploadMultiFiles(path ?? "", webFiles);
             return Ok(new Response<IList<FileModel>>(data: result));
         }
         catch (Exception e)
@@ -42,7 +42,7 @@ public class FilesManagerController : ControllerBase
     {
         try
         {
-            _fileService.CreateDirectory(path: path, directoryName: directoryName);
+            _fileService.CreateDirectory(path: path ?? "", directoryName: directoryName);
             return Ok(new Response<string>(message: "Directory created Successfully"));
         }
         catch (Exception e)
@@ -57,7 +57,7 @@ public class FilesManagerController : ControllerBase
     {
         try
         {
-            var result = _fileService.GetAllDirectories(path);
+            var result = _fileService.GetAllDirectories(path ?? "");
             return Ok(new Response<IList<DirectoryModel>>(data: result));
         }
         catch (Exception e)
@@ -72,7 +72,7 @@ public class FilesManagerController : ControllerBase
     {
         try
         {
-            var result = _fileService.GetDirectory(path);
+            var result = _fileService.GetDirectory(path ?? "");
             return Ok(new Response<DirectoryModel>(data: result));
         }
         catch (Exception e)
@@ -87,7 +87,7 @@ public class FilesManagerController : ControllerBase
     {
         try
         {
-            var result = _fileService.GetAllFiles(path);
+            var result = _fileService.GetAllFiles(path ??  "");
             return Ok(new Response<IList<FileModel>>(data: result));
         }
         catch (Exception e)
@@ -103,7 +103,7 @@ public class FilesManagerController : ControllerBase
     {
         try
         {
-            _fileService.DeleteFile(path, fileName);
+            _fileService.DeleteFile(path ?? "", fileName);
             return Ok(new Response<string>(message: "File Deleted Successfully"));
         }
         catch (Exception e)
@@ -119,7 +119,7 @@ public class FilesManagerController : ControllerBase
     {
         try
         {
-            _fileService.DeleteDirectory(path, directoryName);
+            _fileService.DeleteDirectory(path ?? "", directoryName);
             return Ok(new Response<string>(message: "Directory Deleted Successfully"));
         }
         catch (Exception e)

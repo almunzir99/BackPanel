@@ -17,7 +17,7 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
 
     [HttpGet]
     public override async Task<IActionResult> GetAsync([FromQuery] PaginationFilter? filter = null,
-        [FromQuery] string title = "", [FromQuery] string orderBy = "LastUpdate", Boolean ascending = true)
+        [FromQuery] string? title = "", [FromQuery] string? orderBy = "LastUpdate", Boolean ascending = true)
     {
         var actionResult = await base.GetAsync(filter, title, orderBy, ascending);
         if (actionResult is OkObjectResult okActionResult)
