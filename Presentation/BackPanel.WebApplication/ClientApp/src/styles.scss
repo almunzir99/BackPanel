@@ -7,4 +7,22 @@
 .default-theme{
   @include angular-material-theme($default-theme); 
 } 
- 
+
+
+/**********************************  override material default styles ********************************************/
+mat-form-field {
+  width: 100%;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: map-get($map: $primary-color, $key: 300)!important;
+}
+
+.mat-form-field-outline-start {
+  border-radius: 10px 0 0 10px !important;
+  min-width: 10px !important;
+}
+
+.mat-form-field-outline-end {
+  border-radius: 0 10px 10px 0 !important;
+}
