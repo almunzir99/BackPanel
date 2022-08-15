@@ -8,6 +8,55 @@
   @include angular-material-theme($default-theme); 
 } 
 
+@font-face {
+  font-family: "Poppin";
+  src: url("assets/fonts/Poppins-Regular.ttf");
+  unicode-range:  U+0000-007F;
+
+}
+@font-face {
+  font-family: "Poppin";
+  src: url("assets/fonts/Poppins-Bold.ttf");
+  font-weight: 700;
+  unicode-range:  U+0000-007F;
+
+}
+@font-face {
+  font-family: "Poppin";
+  src: url("assets/fonts/Poppins-ExtraBold.ttf");
+  font-weight: 800;
+  unicode-range:  U+0000-007F;
+
+}
+@font-face {
+  font-family: "Poppin";
+  src: url("assets/fonts/Poppins-Medium.ttf");
+  font-weight: 500;
+  unicode-range:  U+0000-007F;
+
+}
+@font-face {
+  font-family: "Poppin";
+  src: url("assets/fonts/Poppins-SemiBold.ttf");
+  font-weight: 600;
+  unicode-range:  U+0000-007F;
+
+}
+@font-face {
+  font-family: "Poppin";
+  src: url("assets/fonts/Poppins-Light.ttf");
+  font-weight: 100;
+  unicode-range:  U+0000-007F;
+}
+body{
+  background-color: $background-color;
+  padding: 0;
+  margin: 0;
+}
+*{
+  font-family: 'Poppin';
+  outline: none;
+}
 
 /**********************************  override material default styles ********************************************/
 mat-form-field {
@@ -25,4 +74,19 @@ mat-form-field {
 
 .mat-form-field-outline-end {
   border-radius: 0 10px 10px 0 !important;
+}
+/***************************  custom scroll bar  **************************************************/
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #c5c3c385;
+  border-radius: 10px;
 }

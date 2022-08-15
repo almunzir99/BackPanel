@@ -1,7 +1,7 @@
 @import '~@angular/material/theming';
 @import 'variables';
 @include mat-core();
-$main-typography:mat-typography-config( $font-family: 'poppin');
+$main-typography:mat-typography-config( $font-family: 'Poppin');
 $primary-color-platte:mat-palette($primary-color);
 $accent-color-platte:mat-palette($accent-color);
 $default-theme:mat-light-theme($primary-color-platte, $accent-color-platte);

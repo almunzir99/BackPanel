@@ -33,16 +33,16 @@ const routes: Routes = [
       loadChildren: () => import('./pages/cms/cms.module').then(c => c.CmsModule)
     },
     {
-      path: 'admins',
-      loadChildren: () => import('./pages/admins/admins.module').then(c => c.AdminsModule)
-    },
-    {
       path: 'profile',
       loadChildren: () => import('./pages/profile/profile.module').then(c => c.ProfileModule)
     },
     {
       path: 'settings',
       loadChildren: () => import('./pages/settings/settings.module').then(c => c.SettingsModule)
+    },
+    {
+      path: 'files-manager',
+      loadChildren: () => import('./pages/files-manager/files-manager.module').then(c => c.FilesManagerModule)
     },
   ]
  }

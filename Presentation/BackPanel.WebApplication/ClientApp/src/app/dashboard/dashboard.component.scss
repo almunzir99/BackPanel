@@ -1,0 +1,37 @@
+.layout-container {
+	display: flex;
+	flex-wrap: nowrap;
+	width: 100%;
+	height: 100vh;
+	.ui.dimmer {
+		visibility: visible !important;
+	}
+}
+.main-section {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	right: 0;
+	transition: 0.5s width ease;
+	height: 100%;
+	.header {
+		width: 100%;
+	}
+}
+.page {
+	height: 85%;
+	overflow: auto;
+}
+.shrink-page {
+	width: calc(100% - 300px);
+}
+.float-menu {
+	position: absolute;
+	z-index: 1002;
+	height: 100%;
+}
+.layout-container.rtl {
+	.main-section {
+		left: 0;
+	}
+}

@@ -1,1 +1,56 @@
-<p>menu works!</p>
+<div class="menu-container">
+    <div class="menu">
+        <div class="info-section">
+            <div class="header">
+                <div class="logo"></div>
+                <div matRipple class="menu-bars">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="status_toggle middle"
+                        id="sidebar-toggle">
+                        <line x1="18" y1="10" x2="6" y2="10"></line>
+                        <line x1="21" y1="6" x2="3" y2="6"></line>
+                        <line x1="21" y1="14" x2="3" y2="14"></line>
+                        <line x1="18" y1="18" x2="6" y2="18"></line>
+                    </svg>
+                </div>
+            </div>
+            <div class="user-info">
+                <div matRipple class="float-cog">
+                    <i class="las la-cog"></i>
+                </div>
+                <div class="user-image-container">
+                    <div class="user-image">
+                        <img src="assets/images/avatar.png" alt="">
+                    </div>
+                    <div class="user-type">Admin</div>
+                </div>
+                <h6 class="username">Almunzir Alhassan</h6>
+                <div class="role">Super Admin</div>
+
+            </div>
+
+        </div>
+        <div class="menu-items-container">
+            <div *ngFor="let group of menuList" class="menu-group">
+                <div class="menu-group-title">{{group.title}}</div>
+                <div  class="menu-group-items">
+                    <div  *ngFor="let menuItem of group.children" [routerLink]="menuItem.route" [routerLinkActive]="!menuItem.children ? 'active' : ''" class="menu-item">
+                        <div (click)="menuItem.open = !menuItem.open" matRipple class="menu-item-content parent">
+                            <i [attr.class]="menuItem.icon"></i>
+                            <div class="item-title">{{menuItem.title}}</div>
+                            <i [class.rotated]="menuItem.open" *ngIf="menuItem.children" class="las la-angle-right dropdown"></i>
+                        </div>
+                        <div [class.opened]="menuItem.open" *ngIf="menuItem.children" class="menu-item-children">
+                            <div *ngFor="let childItem of menuItem.children" [routerLink]="childItem.route" routerLinkActive="active" class="menu-item">
+                                <div matRipple class="menu-item-content child">
+                                    <i [attr.class]="childItem.icon"></i>
+                                    <div class="item-title">{{childItem.title}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
