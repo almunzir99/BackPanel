@@ -16,8 +16,8 @@ import { MAT_RIPPLE_GLOBAL_OPTIONS, RippleGlobalOptions } from '@angular/materia
 const globalRippleConfig: RippleGlobalOptions = {
   disabled: false,
   animation: {
-    enterDuration: 650,
-    exitDuration: 0
+    enterDuration: 700,
+    exitDuration: 500
   }
 };
 @NgModule({

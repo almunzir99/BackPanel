@@ -6,6 +6,7 @@ import { MenuComponent } from './components/menu/menu.component';
 import { HeaderComponent } from './components/header/header.component';
 import { DashboardComponent } from './dashboard.component';
 import { MatRippleModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { MatRippleModule } from '@angular/material/core';
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    MatRippleModule
+    MatRippleModule,
+    MatButtonModule
   ]
 })
 export class DashboardModule { }
