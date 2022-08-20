@@ -11,12 +11,22 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { QuillModule } from 'ngx-quill';
+import { DatatableComponent } from './components/datatable/datatable.component';
+import {MatPaginatorModule} from '@angular/material/paginator'; 
+import {MatMenuModule} from '@angular/material/menu';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { OfflineComponent } from './components/placeholders/offline/offline.component';
+import { EmptyComponent } from './components/placeholders/empty/empty.component';
+import { SpinnerComponent } from './components/placeholders/spinner/spinner.component';
+ 
 
-
-
-@NgModule({
+@NgModule({ 
   declarations: [
-    FormBuilderComponent
+    FormBuilderComponent,
+    DatatableComponent,
+    OfflineComponent,
+    EmptyComponent,
+    SpinnerComponent
   ],
   imports: [
     CommonModule,
@@ -29,12 +39,15 @@ import { QuillModule } from 'ngx-quill';
     MatCheckboxModule,
     MatSelectModule,
     MatDatepickerModule,
-    QuillModule.forRoot()
-  
+    MatPaginatorModule,
+    MatMenuModule,
+    QuillModule.forRoot(),
+    AngularSvgIconModule.forRoot()
 
   ],
   exports:[
     FormBuilderComponent,
+    DatatableComponent,
   ]
 })
 export class SharedModule { }

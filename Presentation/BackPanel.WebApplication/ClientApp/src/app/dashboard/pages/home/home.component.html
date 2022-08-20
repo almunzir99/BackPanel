@@ -1,1 +1,12 @@
-<form-builder [control-groups]="form"></form-builder>
+<data-table  [columns]="columns" [rows]="data" [cell-template]="cellTemplate" title="Testing Table">
+            <ng-template #cellTemplate let-rowData="rowData" let-data="cellData" let-col="colIndex" let-row="rowIndex">
+                <ng-container [ngSwitch]="col">
+                    <ng-container *ngSwitchCase="4">
+                        {{data.title}}
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                        {{data}}
+                    </ng-container>
+                </ng-container>
+            </ng-template>
+</data-table>

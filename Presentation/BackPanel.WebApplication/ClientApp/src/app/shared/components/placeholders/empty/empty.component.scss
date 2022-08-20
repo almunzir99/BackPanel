@@ -1,0 +1,13 @@
+.placeholder{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    .placeholder-icon{
+        height: 150px;
+        width: 150px;
+    }
+    .placeholder-text{
+        margin: 10px 0px;
+    }
+}

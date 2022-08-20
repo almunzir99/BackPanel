@@ -1,0 +1,101 @@
+<div class="datatable-container">
+    <div *ngIf="showHeader" class="datatable-header">
+        <div *ngIf="showHeaderTitle" class="info">
+            <h1 class="title">{{title}}</h1>
+        </div>
+        <div *ngIf="showControls" class="controls-bar">
+            <div class="filters">
+                <mat-form-field *ngIf="showSearch" (input)="onSearchChange($event)" [floatLabel]="'auto'">
+                    <input type="text" matInput placeholder="search...">
+                    <mat-icon matPrefix>search</mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="controls">
+                <!-- Menu Button -->
+                <button *ngIf="showExport" [matMenuTriggerFor]="menu" mat-stroked-button color="primary">
+                    <mat-icon>ios_share</mat-icon>
+                    <span>
+                        Export as
+                    </span>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button (click)="onExportClick('csv')" mat-menu-item>
+                        <mat-icon>grid_on</mat-icon>
+                        <span>CSV</span>
+                    </button>
+                    <button (click)="onExportClick('pdf')" mat-menu-item>
+                        <mat-icon>picture_as_pdf</mat-icon>
+                        <span>Pdf</span>
+                    </button>
+                    <button (click)="onExportClick('print')" mat-menu-item>
+                        <mat-icon>print</mat-icon>
+                        <span>Print</span>
+                    </button>
+                </mat-menu>
+                <button *ngIf="showCreate" (click)="onCreateClick()" mat-raised-button color="primary">
+                    <mat-icon>add</mat-icon>
+                    <span>
+                        Create Item
+                    </span>
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <ng-container *ngFor="let column of columns">
+                    <th (click)="onSortChange(column.prop)" matRipple *ngIf="column.show">
+                        <div class="th-content">
+                            <p>{{column.title}}</p>
+                            <div [style.visibility]="column.sortable && sortProp == column.prop ? 'visible' : 'hidden'">
+                                <mat-icon *ngIf="ascending">arrow_downward</mat-icon>
+                                <mat-icon *ngIf="!ascending">arrow_upward</mat-icon>
+                            </div>
+                        </div>
+                        <span class="resizer"></span>
+                    </th>
+                </ng-container>
+            </tr>
+        </thead>
+        <tbody *ngIf="loading">
+            <tr>
+                <td  [attr.colspan]="columns.length">
+                    <spinner-placeholder></spinner-placeholder>
+                </td>
+            </tr>
+        </tbody>
+        <tbody *ngIf="!loading && rows.length == 0">
+            <tr>
+                <td  [attr.colspan]="columns.length">
+                    <empty-placeholder [showButton]="showCreate" (buttonClick)="onCreateClick()"></empty-placeholder>
+                </td>
+            </tr>
+        </tbody>
+      
+        <tbody *ngIf="rows.length > 0 && !loading">
+            <tr *ngFor="let row of rows; let rowIndex= index">
+                <ng-container *ngFor="let col of columns; let colIndex = index">
+                    <td *ngIf="col.show">
+                        <ng-container *ngIf="cellTemplate" [ngTemplateOutlet]="cellTemplate"
+                            [ngTemplateOutletContext]="{colIndex:colIndex,rowIndex:rowIndex,cellData:row[col.prop],rowData:row}">
+
+                        </ng-container>
+                        <ng-container *ngIf="!cellTemplate">
+                            {{row[col.prop]}}
+                        </ng-container>
+                    </td>
+                </ng-container>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="showFooter" class="datatable-footer">
+        <div></div>
+        <mat-paginator (page)="onPageChange($event)" [length]="total" [pageSize]="PageSize"
+            [pageSizeOptions]="[5, 10, 25, 50 ,100]" aria-label="Select page">
+        </mat-paginator>
+
+    </div>
+</div>

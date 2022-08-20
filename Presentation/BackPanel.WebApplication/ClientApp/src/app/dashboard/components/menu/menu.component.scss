@@ -130,6 +130,7 @@
             height: calc(100% - 250px);
             overflow: auto;
             cursor: pointer;
+            scrollbar-color: transparent transparent;
 
             .menu-group {
                 margin: 20px 15px;
@@ -206,7 +207,9 @@
 
 
         }
-
+        .menu-items-container:hover{
+            scrollbar-color: initial;
+        }
         .menu-items-container::-webkit-scrollbar-thumb {
             background-color: transparent;
             border-radius: 10px;

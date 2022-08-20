@@ -1,0 +1,119 @@
+@import 'variables';
+
+.datatable-container {
+    background-color: white;
+    margin: 20px;
+    border-radius: 10px;
+
+    .datatable-header {
+        padding: 20px;
+
+        .title {
+            color: #333;
+        }
+
+        .controls-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            mat-form-field {
+                width: 30%;
+                min-width: 280px;
+            }
+
+            .controls {
+                display: flex;
+                align-items: center;
+
+                button {
+                    padding: 3px 10px;
+                    border-radius: 10px;
+                    margin:0px 10px;
+                }
+
+                
+
+            }
+        }
+    }
+
+    .data-table {
+        padding-bottom: 20px;
+        width: 100%;
+        border-spacing: 0px;
+
+        thead {
+            tr {
+                background-color: #F5F5F7;
+                color: #444;
+                font-weight: normal;
+
+                th {
+                    background-color: $background-color;
+                    font-weight: normal;
+                    padding: 15px 10px;
+                    position: relative;
+                    cursor: pointer;
+                    text-transform: uppercase;
+                    font-size: 13px;
+                    .th-content {
+                        display: flex;
+                        align-items: center;
+
+                        p {
+                            margin-bottom: 0px;
+                        }
+
+                        mat-icon {
+                            font-size: 18px;
+                            color: map-get($map: $primary-color, $key: 500);
+                            margin: 0px 10px;
+                        }
+                    }
+
+                    .resizer {
+                        position: absolute;
+                        right: 0;
+                        height: 20px;
+                        width: 1.5px;
+                        background-color: #E0E0E5;
+                        top: 50%;
+                        transform: translateY(-50%);
+
+                    }
+
+                    .resizer:hover {
+                        cursor: col-resize;
+                        background-color: map-get($map: $primary-color, $key: 400);
+                    }
+
+
+                }
+
+                th:last-child .resizer {
+                    display: none;
+
+                }
+            }
+        }
+
+        tbody {
+            td {
+                padding: 15px 10px;
+                color: #444;
+                border-bottom: 1px solid #eee;
+                font-size: 13px;
+
+            }
+
+        }
+    }
+
+    .datatable-footer {
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}

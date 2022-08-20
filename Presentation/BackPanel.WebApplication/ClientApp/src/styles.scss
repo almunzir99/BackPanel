@@ -56,6 +56,7 @@ body{
 *{
   font-family: 'Poppin';
   outline: none;
+  scrollbar-width: thin;
 }
 
 /**********************************  override material default styles ********************************************/
@@ -74,6 +75,20 @@ mat-form-field {
 
 .mat-form-field-outline-end {
   border-radius: 0 10px 10px 0 !important;
+}
+
+/***************************** datatable overrides  *********************************************/
+.datatable-container{
+  .datatable-header{
+    .controls-bar{
+        .mat-form-field-appearance-outline .mat-form-field-infix{
+          padding: 0.65em 0em;
+        }
+        .mat-form-field-wrapper{
+          padding-bottom: 0px;
+        }
+    }
+  }
 }
 /***************************  custom scroll bar  **************************************************/
 
