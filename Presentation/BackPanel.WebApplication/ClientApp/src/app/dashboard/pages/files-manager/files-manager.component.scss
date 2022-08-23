@@ -1,0 +1,141 @@
+@import 'variables';
+
+.fm-layout {
+    margin: 20px;
+    height: 88%;
+    overflow: hidden;
+    .placeholder{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .fm-navbar {
+        padding:  5px 15px;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 10px;
+
+        .navs {
+            color: #444;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+
+            .nav {
+                display: flex;
+                align-items: center;
+
+                i {
+                    font-size: 22px;
+                    margin: 0px 5px;
+                }
+
+                cursor: pointer;
+
+            }
+
+            .nav:hover {
+                color: map-get($map: $primary-color, $key: 500);
+            }
+
+            .sep {
+                height: 4px;
+                width: 4px;
+                border-radius: 50%;
+                background-color: rgb(168, 167, 167);
+                margin: 0px 10px;
+                border: none;
+            }
+
+            .sep:last-child {
+                display: none;
+            }
+        }
+
+        .act-buttons {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+
+            button {
+                margin: 10px;
+                border-radius: 10px;
+
+                label {
+                    display: flex;
+                    align-items: center;
+
+                    mat-icon {
+                        margin: 0px 5px;
+                    }
+                }
+            }
+
+        }
+    }
+
+    .fm-content-layout {
+        margin: 20px 0px;
+        height: calc(100% - 100px);
+        overflow-y: auto;
+
+        .node-containers {
+            display: flex;
+            flex-wrap: wrap;
+
+            .node-container {
+                height: 180px;
+                width: 180px;
+                background-color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                border-radius: 7px;
+                margin-right: 20px;
+                margin-bottom: 20px;
+
+                position: relative;
+                cursor: pointer;
+
+                .node-icon {
+                    height: 80px;
+                    width: 80px;
+                }
+
+                .title {
+                    color: #333;
+                    margin: 10px 0px;
+                    text-align: center;
+                }
+
+                .info {
+                    display: flex;
+                    align-items: center;
+                    font-size: 12px;
+                    color: map-get($map: $primary-color, $key: 200);
+
+                    .sep {
+                        height: 3px;
+                        width: 3px;
+                        border-radius: 50%;
+                        background-color: map-get($map: $primary-color, $key: 200);
+                        margin: 0px 5px;
+                    }
+                }
+
+                .menu-button {
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                }
+
+            }
+        }
+    }
+
+}

@@ -1,12 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { StopPropagationDirective } from './directives/stop-propagation.directive';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    StopPropagationDirective
+  ],
   imports: [
-    CommonModule
+    CommonModule 
+  ],
+  exports : [
+    StopPropagationDirective
+     
   ]
 })
 export class CoreModule { }

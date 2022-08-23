@@ -1,5 +1,6 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ControlTypes } from './control-type.enum';
 import { FormBuilderGroup } from './form-builder-group.model';
 
@@ -16,14 +17,25 @@ export class FormBuilderComponent implements OnInit {
   @Output("tableDelete") tableDeleteEvent = new EventEmitter<any>();
   formGroup: FormGroup = new FormGroup({});
   controlTypes = ControlTypes;
-  constructor() {
-
+  constructor(@Inject(MAT_DIALOG_DATA) private data:FormBuilderPropsSpec) {
+      if(data)
+      {
+        if(data.controlsGroups) this.controlsGroups = data.controlsGroups;
+      }
   }
   onSubmit() {
     this.submitEventEmitter.emit(this.formGroup.value);
+    if(this.data)
+    {
+      this.data.onSubmit(this.formGroup.value);
+    }
   }
   onCancel() {
     this.cancelEventEmitter.emit();
+    if(this.data)
+    {
+      this.data.onSubmit(this.formGroup.value);
+    }
   }
   ngAfterContentInit() {
     this.controlsGroups.forEach(group => {
@@ -37,4 +49,8 @@ export class FormBuilderComponent implements OnInit {
   }
   
 }
-
+export interface FormBuilderPropsSpec {
+  controlsGroups:FormBuilderGroup[],
+  onSubmit: (result:any) => void,
+  onCancel:() => void
+}

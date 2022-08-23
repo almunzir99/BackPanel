@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AppRoutingModule } from './app-routing.module';
 import { MatNativeDateModule, MAT_RIPPLE_GLOBAL_OPTIONS, RippleGlobalOptions } from '@angular/material/core';
 import { QuillModule } from 'ngx-quill';
+import { environment } from 'src/environments/environment';
 
 
 const globalRippleConfig: RippleGlobalOptions = {
@@ -42,6 +43,7 @@ const globalRippleConfig: RippleGlobalOptions = {
   providers: [
     { provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: globalRippleConfig },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
+    {provide:"BASE_API_URL", useValue:environment.baseUrl}
 
   ],
   bootstrap: [AppComponent]

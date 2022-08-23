@@ -18,6 +18,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { OfflineComponent } from './components/placeholders/offline/offline.component';
 import { EmptyComponent } from './components/placeholders/empty/empty.component';
 import { SpinnerComponent } from './components/placeholders/spinner/spinner.component';
+import { DimmerLoadingComponent } from './components/dimmer-loading/dimmer-loading.component';
+import { AlertMessageComponent } from './components/alert-message/alert-message.component';
  
 
 @NgModule({ 
@@ -26,7 +28,9 @@ import { SpinnerComponent } from './components/placeholders/spinner/spinner.comp
     DatatableComponent,
     OfflineComponent,
     EmptyComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    DimmerLoadingComponent,
+    AlertMessageComponent
   ],
   imports: [
     CommonModule,
@@ -48,6 +52,10 @@ import { SpinnerComponent } from './components/placeholders/spinner/spinner.comp
   exports:[
     FormBuilderComponent,
     DatatableComponent,
+    DimmerLoadingComponent,
+    EmptyComponent,
+    OfflineComponent,
+    SpinnerComponent,
   ]
 })
 export class SharedModule { }

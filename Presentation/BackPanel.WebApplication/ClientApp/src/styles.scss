@@ -105,3 +105,7 @@ mat-form-field {
   background-color: #c5c3c385;
   border-radius: 10px;
 }
+.snackbar{
+  background-color: white;
+  color: map-get($map: $primary-color, $key: 500);
+}

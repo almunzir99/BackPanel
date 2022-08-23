@@ -1,1 +1,121 @@
-<p>files-manager works!</p>
+<div class="fm-layout">
+    <div class="fm-navbar">
+        <div class="navs">
+            <span (click)="navigateByLink(-1)" class="home-nav nav"> <i class="las la-home"></i> Home </span>
+            <span class="sep"></span>
+            <ng-container *ngFor="let segment of pathSegmentsStack; let i = index">
+                <span (click)="navigateByLink(i)" class="nav">{{segment}}</span>
+                <hr class="sep">
+            </ng-container>
+
+        </div>
+        <div class="act-buttons">
+            <button *ngIf="currentMoveContentItem" (click)="contentPaste()" mat-stroked-button color="primary">
+                <mat-icon>content_paste</mat-icon>
+                Paste Here
+            </button>
+            <button (click)="openCreateDirectoryDialog()" mat-raised-button color="accent">
+                <mat-icon>create_new_folder</mat-icon>
+                Create Folder
+            </button>
+            <button mat-raised-button color="primary" type="button">
+                <label for="uploadFilesInput">
+                    <mat-icon>cloud_upload</mat-icon>
+                    Upload Files
+                </label> 
+            </button>
+            <input name="uploadFilesInput" id="uploadFilesInput" style="display: none;" type="file" multiple
+                (change)="onFilesLoaded($event)">
+
+
+        </div>
+    </div>
+    <div class="fm-content-layout">
+        <spinner-placeholder class="placeholder" *ngIf="getStatus == 1"></spinner-placeholder>
+        <offline-placeholder class="placeholder" *ngIf="getStatus == 3"></offline-placeholder>
+        <empty-placeholder class="placeholder" [showButton]="false"
+            *ngIf="getStatus == 2 && files.length == 0 && directories.length == 0"></empty-placeholder>
+        <div *ngIf="getStatus == 2 && (files.length > 0 || directories.length > 0)" class="node-containers">
+            <div [style.opacity]="currentMoveContentItem && currentMoveContentItem.action == 'cut' && currentMoveContentItem.name == directory.title ? '0.6' : '1' "
+                stopPropagation matRipple (click)="navigate(directory.title)" *ngFor="let directory of directories"
+                class="node-container">
+                <svg-icon src="assets/vectors/folder.svg" [applyClass]="true" class="node-icon"></svg-icon>
+                <div class="title">{{directory.title}}</div>
+                <div class="info">
+                    <div class="size">{{20.3}} MB</div>
+                    <div class="sep"></div>
+                    <div class="date">{{formatDate(directory.createdAt)}}</div>
+                </div>
+                <div class="menu-button">
+                    <button stopPropagation [mat-menu-trigger-for]="contextMenu" mat-icon-button>
+                        <mat-icon>more_horiz</mat-icon>
+                    </button>
+                    <mat-menu #contextMenu="matMenu">
+                        <button (click)="openRenameDirectoryDialog(directory.title)" mat-menu-item>
+                            <mat-icon>edit</mat-icon>
+                            <span>Rename</span>
+                        </button>
+                        <button (click)="contentMove(directory.title,'directory','cut')" mat-menu-item>
+                            <mat-icon>content_cut</mat-icon>
+                            <span>Cut</span>
+                        </button>
+                        <button mat-menu-item>
+                            <mat-icon>content_copy</mat-icon>
+                            <span>Copy</span>
+                        </button>
+                        <button (click)="onDirectoryDelete(directory.title)" mat-menu-item>
+                            <mat-icon color="warn">delete</mat-icon>
+                            <span>Delete</span>
+                        </button>
+                    </mat-menu>
+                </div>
+            </div>
+            <div [style.opacity]="currentMoveContentItem && currentMoveContentItem.action == 'cut' && currentMoveContentItem.name == file.title ? '0.6' : '1' "
+                *ngFor="let file of files" class="node-container">
+                <svg-icon src="assets/vectors/file.svg" [applyClass]="true" class="node-icon"></svg-icon>
+                <div class="title">{{file.title}}</div>
+                <div class="info">
+                    <div class="size">{{bytesToMB(file.size)}} MB</div>
+                    <div class="sep"></div>
+                    <div class="date">{{formatDate(file.createdAt)}}</div>
+                </div>
+                <div class="menu-button">
+                    <button [mat-menu-trigger-for]="contextMenu" mat-icon-button>
+                        <mat-icon>more_horiz</mat-icon>
+                    </button>
+                    <mat-menu #contextMenu="matMenu">
+                        <button (click)="downloadFile(file)" mat-menu-item>
+                            <mat-icon>cloud_download</mat-icon>
+                            <span>Download</span>
+                        </button>
+                        <button (click)="copyLinkToClipBoard(file.uri)" mat-menu-item>
+                            <mat-icon>link</mat-icon>
+                            <span>Copy Link</span>
+                        </button>
+                        <button (click)="openRenameFileDialog(file.title)" mat-menu-item>
+                            <mat-icon>edit</mat-icon>
+                            <span>Rename</span>
+                        </button>
+                        <button (click)="contentMove(file.title,'file','cut')" mat-menu-item>
+                            <mat-icon>content_cut</mat-icon>
+                            <span>Cut</span>
+                        </button>
+                        <button mat-menu-item>
+                            <mat-icon>content_copy</mat-icon>
+                            <span>Copy</span>
+                        </button>
+                        <button (click)="onFileDelete(file.title)" mat-menu-item>
+                            <mat-icon color="warn">delete</mat-icon>
+                            <span>Delete</span>
+                        </button>
+                    </mat-menu>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>{{uploadFilesStatus}}</div>
+<dimmer-loading
+    *ngIf="createDirectoryStatus == 1 || uploadFilesStatus == 1 || deleteStatus == 1 || renameStatus == 1 || moveStatus == 1">
+</dimmer-loading>

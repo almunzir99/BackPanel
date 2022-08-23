@@ -33,7 +33,7 @@ builder.Services.RegisterJwtConfiguration(builder.Configuration.GetValue<string>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
-        o => o.AllowAnyOrigin()
+        o => o.WithOrigins("*")
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
@@ -47,7 +47,6 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseRouting();
 app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -57,4 +56,5 @@ app.MapControllerRoute(
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
+app.UseRouting();
 app.Run();

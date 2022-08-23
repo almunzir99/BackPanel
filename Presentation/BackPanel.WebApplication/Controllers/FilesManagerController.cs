@@ -130,16 +130,13 @@ public class FilesManagerController : ControllerBase
     }
 
     [HttpGet("directories/move")]
-    public IActionResult MoveDirectory([Required] [FromQuery] string oldPath, [Required] [FromQuery] string newPath,
+    public IActionResult MoveDirectory([FromQuery] string? oldPath, [FromQuery] string? newPath,
         [Required] [FromQuery] string directoryName)
     {
-        if (oldPath == "/" || oldPath == @"\")
-            oldPath = "";
-        if (newPath == "/" || newPath == @"\")
-            newPath = "";
+        
         try
         {
-            _fileService.MoveDirectory(oldPath, newPath, directoryName);
+            _fileService.MoveDirectory(oldPath ?? "", newPath ?? "", directoryName);
             return Ok(new Response<string>(message: "Directory Deleted Successfully"));
         }
         catch (Exception e)
@@ -150,15 +147,14 @@ public class FilesManagerController : ControllerBase
     }
 
     [HttpGet("directories/rename")]
-    public IActionResult RenameDirectory([Required] [FromQuery] string path, [Required] [FromQuery] string oldName,
+    public IActionResult RenameDirectory([FromQuery] string? path, [Required] [FromQuery] string oldName,
         [Required] [FromQuery] string newName)
     {
-        if (path == "/" || path == @"\")
-            path = "";
+        
 
         try
         {
-            _fileService.RenameDirectory(path, oldName, newDirName: newName);
+            _fileService.RenameDirectory(path ??  "", oldName, newDirName: newName);
             return Ok(new Response<string>(message: "Directory Deleted Successfully"));
         }
         catch (Exception e)
@@ -169,16 +165,13 @@ public class FilesManagerController : ControllerBase
     }
 
     [HttpGet("files/move")]
-    public IActionResult MoveFile([Required] [FromQuery] string oldPath, [Required] [FromQuery] string newPath,
+    public IActionResult MoveFile([FromQuery] string? oldPath,[FromQuery] string? newPath,
         [Required] [FromQuery] string fileName)
     {
-        if (oldPath == "/" || oldPath == @"\")
-            oldPath = "";
-        if (newPath == "/" || newPath == @"\")
-            newPath = "";
+        
         try
         {
-            _fileService.MoveFile(oldPath, newPath, fileName);
+            _fileService.MoveFile(oldPath ?? "", newPath ?? "", fileName);
             return Ok(new Response<string>(message: "file moved Successfully"));
         }
         catch (Exception e)
@@ -189,14 +182,13 @@ public class FilesManagerController : ControllerBase
     }
 
     [HttpGet("files/rename")]
-    public IActionResult RenameFile([Required] [FromQuery] string path, [Required] [FromQuery] string oldName,
+    public IActionResult RenameFile( [FromQuery] string? path, [Required] [FromQuery] string oldName,
         [Required] [FromQuery] string newName)
     {
-        if (path == "/" || path == @"\")
-            path = "";
+        
         try
         {
-            _fileService.RenameFile(path, oldName, newName);
+            _fileService.RenameFile(path ??  "", oldName, newName);
             return Ok(new Response<string>(message: "file renamed Successfully"));
         }
         catch (Exception e)
