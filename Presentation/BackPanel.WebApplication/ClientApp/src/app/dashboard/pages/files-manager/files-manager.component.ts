@@ -92,12 +92,15 @@ export class FilesManagerComponent implements OnInit {
   onSubmitClick() {
       if(this.data)
       this.data.onFilesSubmitted(this.selectedFiles)
-      this.matDialog.closeAll();
+      var dialog = this.matDialog.getDialogById("form-builder-dialog");
+      if(dialog)
+      dialog.close();
       
   }
   onCloseClick() {
-    this.matDialog.closeAll();
-
+    var dialog = this.matDialog.getDialogById("form-builder-dialog");
+    if(dialog)
+    dialog.close();
   }
   navigate(title: string) {
     this.pathSegmentsStack.push(title);

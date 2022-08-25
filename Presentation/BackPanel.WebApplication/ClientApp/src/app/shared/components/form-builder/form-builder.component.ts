@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FileModel } from 'src/app/core/models/file.models';
 import { ControlTypes } from './control-type.enum';
 import { FormBuilderGroup } from './form-builder-group.model';
 
@@ -17,7 +18,7 @@ export class FormBuilderComponent implements OnInit {
   @Output("tableDelete") tableDeleteEvent = new EventEmitter<any>();
   formGroup: FormGroup = new FormGroup({});
   controlTypes = ControlTypes;
-  constructor(@Inject(MAT_DIALOG_DATA) private data:FormBuilderPropsSpec) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data:FormBuilderPropsSpec) {
       if(data)
       {
         if(data.controlsGroups) this.controlsGroups = data.controlsGroups;
@@ -36,6 +37,12 @@ export class FormBuilderComponent implements OnInit {
     {
       this.data.onSubmit(this.formGroup.value);
     }
+  }
+  // local files Picker Event
+  onFilesPicked(name:string,files:FileModel[]){
+    var target = this.formGroup.controls[name];
+    target.setValue(files);
+
   }
   ngAfterContentInit() {
     this.controlsGroups.forEach(group => {

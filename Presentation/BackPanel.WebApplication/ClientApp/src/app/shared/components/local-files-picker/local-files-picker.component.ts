@@ -19,6 +19,7 @@ export class LocalFilesPickerComponent implements OnInit {
         onFilesSubmitted: this.onFilesSubmitted
 
       },
+      id:"form-builder-dialog",
       panelClass: 'dialog-container-bg'
     })
   }

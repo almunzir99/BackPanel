@@ -1,4 +1,4 @@
-<data-table  [columns]="columns" [rows]="data" [cell-template]="cellTemplate" title="Testing Table">
+<data-table (createClick)="create()"  [columns]="columns" [rows]="data" [cell-template]="cellTemplate" title="Testing Table">
             <ng-template #cellTemplate let-rowData="rowData" let-data="cellData" let-col="colIndex" let-row="rowIndex">
                 <ng-container [ngSwitch]="col">
                     <ng-container *ngSwitchCase="4">
@@ -10,4 +10,3 @@
                 </ng-container>
             </ng-template>
 </data-table>
-<local-files-picker></local-files-picker>
