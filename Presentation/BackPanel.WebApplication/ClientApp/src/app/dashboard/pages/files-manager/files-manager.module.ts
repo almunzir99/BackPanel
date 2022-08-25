@@ -14,6 +14,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CoreModule } from 'src/app/core/core.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { CoreModule } from 'src/app/core/core.module';
     CommonModule,
     FilesManagerRoutingModule,
     MatFormFieldModule,
+    MatCheckboxModule,
     MatInputModule,
     MatIconModule,
     MatRippleModule,

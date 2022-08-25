@@ -22,7 +22,7 @@
                 <label for="uploadFilesInput">
                     <mat-icon>cloud_upload</mat-icon>
                     Upload Files
-                </label> 
+                </label>
             </button>
             <input name="uploadFilesInput" id="uploadFilesInput" style="display: none;" type="file" multiple
                 (change)="onFilesLoaded($event)">
@@ -30,7 +30,7 @@
 
         </div>
     </div>
-    <div class="fm-content-layout">
+    <div  class="fm-content-layout">
         <spinner-placeholder class="placeholder" *ngIf="getStatus == 1"></spinner-placeholder>
         <offline-placeholder class="placeholder" *ngIf="getStatus == 3"></offline-placeholder>
         <empty-placeholder class="placeholder" [showButton]="false"
@@ -76,10 +76,11 @@
                 <div class="title">{{file.title}}</div>
                 <div class="info">
                     <div class="size">{{bytesToMB(file.size)}} MB</div>
-                    <div class="sep"></div>
+                    <div class="sep"></div> 
                     <div class="date">{{formatDate(file.createdAt)}}</div>
                 </div>
-                <div class="menu-button">
+                <mat-checkbox *ngIf="selectionMode" (change)="onSelectionChange($event.checked,file)"></mat-checkbox>
+                <div class="menu-button"> 
                     <button [mat-menu-trigger-for]="contextMenu" mat-icon-button>
                         <mat-icon>more_horiz</mat-icon>
                     </button>
@@ -110,12 +111,21 @@
                         </button>
                     </mat-menu>
                 </div>
+
             </div>
         </div>
     </div>
+    <div *ngIf="selectionMode" class="selection-act-button">
+        <button (click)="onCloseClick()" mat-stroked-button>
+            close
+        </button>
+        <button (click)="onSubmitClick()" mat-raised-button color="primary">
+            Submit
+        </button>
+       
+    </div>
 </div>
 
-<div>{{uploadFilesStatus}}</div>
 <dimmer-loading
     *ngIf="createDirectoryStatus == 1 || uploadFilesStatus == 1 || deleteStatus == 1 || renameStatus == 1 || moveStatus == 1">
 </dimmer-loading>

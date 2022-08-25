@@ -1,0 +1,23 @@
+@import 'variables';
+.lfp-container {
+    display: flex;
+    align-items: center;
+    margin: 0px 15px;
+    mat-form-field {
+        flex: 1;
+    }
+    button {
+        max-width: 150px;
+        border-radius: 0px 10px 10px 0px;
+        padding: 4.5px 15px;
+    }
+
+}
+.lfp-container.rtl{
+    flex-direction: row-reverse;
+    button{
+        border-radius: 10px 0px 0px 10px;
+
+    }
+}
+ 

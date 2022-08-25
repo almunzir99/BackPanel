@@ -2,14 +2,27 @@
 
 .fm-layout {
     margin: 20px;
-    height: 88%;
+    margin-bottom:0 ;
+    height: 93%;
     overflow: hidden;
+    position: relative;
+     .selection-act-button{
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            button{
+                margin: 0px 10px;
+                border-radius: 10px;
+
+            }
+        }
     .placeholder{
         height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        min-height: 58vh;
     }
     .fm-navbar {
         padding:  5px 15px;
@@ -81,12 +94,12 @@
     .fm-content-layout {
         margin: 20px 0px;
         height: calc(100% - 100px);
+        min-height: calc(80vh - 100px);
         overflow-y: auto;
-
         .node-containers {
             display: flex;
             flex-wrap: wrap;
-
+            height: 100%;
             .node-container {
                 height: 180px;
                 width: 180px;
@@ -133,6 +146,12 @@
                     top: 5px;
                     right: 5px;
                 }
+                mat-checkbox{
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                }
+                
 
             }
         }

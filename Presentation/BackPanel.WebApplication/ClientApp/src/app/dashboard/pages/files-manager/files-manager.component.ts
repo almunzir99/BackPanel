@@ -1,6 +1,6 @@
 import { HttpEventType } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin, map, Subscription } from 'rxjs';
 import { DirectoryModel } from 'src/app/core/models/directory.model';
@@ -30,11 +30,21 @@ export class FilesManagerComponent implements OnInit {
   uploadFilesStatus = RequestStatus.Initial;
   renameStatus = RequestStatus.Initial;
   moveStatus = RequestStatus.Initial;
-
   progress = 0.0;
   currentMoveContentItem?: MoveContentSpec;
-  constructor(private _service: FilesManagerService, private matDialog: MatDialog, private snackbar: MatSnackBar, private clipboard: Clipboard) { }
+  selectionMode = false;
+  selectedFiles: FileModel[] = [];
+  constructor(
+    private _service: FilesManagerService,
+    private matDialog: MatDialog,
+    private snackbar: MatSnackBar,
+    private clipboard: Clipboard,
+    @Inject(MAT_DIALOG_DATA) private data: FilesManagerSpec
+  ) {
+   }
   ngOnInit(): void {
+    if(this.data)
+    this.selectionMode = this.data.selectionMode;
     this.getDirectoriesAndFiles();
   }
   getDirectoriesAndFiles() {
@@ -60,13 +70,33 @@ export class FilesManagerComponent implements OnInit {
     this.subscription.add(sub);
   }
   /************************ Events Bindings ******************************* */
-  formatDate(date:string) : string{
-   return dayjs(date).format('DD MMM')
+  formatDate(date: string): string {
+    return dayjs(date).format('DD MMM')
   }
-  bytesToMB(size:number) : string{
+  bytesToMB(size: number): string {
     var kb = size / 1024;
     var mb = kb / 1024;
     return mb.toFixed(2);
+
+  }
+  onSelectionChange(checked: boolean, file: FileModel) {
+    if (checked) {
+      if (!this.selectedFiles.includes(file))
+        this.selectedFiles.push(file);
+    }
+    else {
+      var index = this.selectedFiles.indexOf(file);
+      this.selectedFiles.splice(index, 1);
+    }
+  }
+  onSubmitClick() {
+      if(this.data)
+      this.data.onFilesSubmitted(this.selectedFiles)
+      this.matDialog.closeAll();
+      
+  }
+  onCloseClick() {
+    this.matDialog.closeAll();
 
   }
   navigate(title: string) {
@@ -222,14 +252,14 @@ export class FilesManagerComponent implements OnInit {
         panelClass: ['snackbar']
       });
   }
-  contentMove(name: string,type: string,action:string) {
+  contentMove(name: string, type: string, action: string) {
     var path = this.pathSegmentsStack.length == 0 ? undefined : this.pathSegmentsStack.join("/");
     this.currentMoveContentItem = {
       type: type,
       name: name,
       oldPath: path,
-      action:action
-      
+      action: action
+
     }
 
   }
@@ -390,9 +420,13 @@ export class FilesManagerComponent implements OnInit {
   }
 
 }
+export interface FilesManagerSpec {
+  selectionMode: boolean;
+  onFilesSubmitted: (files: FileModel[]) => void
+}
 export interface MoveContentSpec {
   oldPath?: string;
   name: string;
   type: string;
-  action:string;
+  action: string;
 }

@@ -20,6 +20,9 @@ import { EmptyComponent } from './components/placeholders/empty/empty.component'
 import { SpinnerComponent } from './components/placeholders/spinner/spinner.component';
 import { DimmerLoadingComponent } from './components/dimmer-loading/dimmer-loading.component';
 import { AlertMessageComponent } from './components/alert-message/alert-message.component';
+import { LocalFilesPickerComponent } from './components/local-files-picker/local-files-picker.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
  
 
 @NgModule({ 
@@ -30,7 +33,8 @@ import { AlertMessageComponent } from './components/alert-message/alert-message.
     EmptyComponent,
     SpinnerComponent,
     DimmerLoadingComponent,
-    AlertMessageComponent
+    AlertMessageComponent,
+    LocalFilesPickerComponent,
   ],
   imports: [
     CommonModule,
@@ -45,6 +49,8 @@ import { AlertMessageComponent } from './components/alert-message/alert-message.
     MatDatepickerModule,
     MatPaginatorModule,
     MatMenuModule,
+    MatDialogModule,
+    MatSnackBarModule,
     QuillModule.forRoot(),
     AngularSvgIconModule.forRoot()
 
@@ -56,6 +62,8 @@ import { AlertMessageComponent } from './components/alert-message/alert-message.
     EmptyComponent,
     OfflineComponent,
     SpinnerComponent,
+    LocalFilesPickerComponent,
+
   ]
 })
 export class SharedModule { }

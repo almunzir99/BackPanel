@@ -13,6 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { MatNativeDateModule, MAT_RIPPLE_GLOBAL_OPTIONS, RippleGlobalOptions } from '@angular/material/core';
 import { QuillModule } from 'ngx-quill';
 import { environment } from 'src/environments/environment';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
 const globalRippleConfig: RippleGlobalOptions = {
@@ -43,7 +44,9 @@ const globalRippleConfig: RippleGlobalOptions = {
   providers: [
     { provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: globalRippleConfig },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
-    {provide:"BASE_API_URL", useValue:environment.baseUrl}
+    {provide:"BASE_API_URL", useValue:environment.baseUrl},
+    {provide:MAT_DIALOG_DATA, useValue:undefined}
+
 
   ],
   bootstrap: [AppComponent]
