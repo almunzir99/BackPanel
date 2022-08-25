@@ -1,7 +1,12 @@
-form.dialog-mode{
-    height: 95%;
-    overflow-y: auto;
+.form-container.dialog-mode {
+    height: 97%;
+
+    form {
+        overflow-y: auto;
+        height: calc(100% - 50px);
+    }
 }
+
 .form-group {
     padding: 20px;
     border: 1px solid #eeeaead6;
@@ -22,22 +27,25 @@ form.dialog-mode{
         .control-container {
             min-width: 280px;
             flex-grow: 1;
-            
+
             mat-form-field {
                 width: calc(100% - 15px);
             }
-            mat-checkbox{
+
+            mat-checkbox {
                 margin: 15px 0px;
             }
         }
     }
 
-    
+
 }
+
 .act-buttons {
     display: flex;
     justify-content: flex-end;
     margin: 25px 10px;
+
     button {
         margin: 0px 5px;
         border-radius: 10px;

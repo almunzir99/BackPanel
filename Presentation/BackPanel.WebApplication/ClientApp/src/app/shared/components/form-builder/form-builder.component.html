@@ -1,75 +1,78 @@
-<form [class.dialog-mode]="data" (ngSubmit)="onSubmit()" [formGroup]="formGroup">
-    <div class="form-group" *ngFor="let group of controlsGroups">
-        <div class="group-title">
-            {{group.title}}
+<div [class.dialog-mode]="data" class="form-container">
+    <h1>{{title}}</h1>
+    <form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
+        <div class="form-group" *ngFor="let group of controlsGroups">
+            <div class="group-title">
+                {{group.title}}
+            </div>
+            <div class="form-controls">
+                <ng-container *ngFor="let control of group.controls">
+                    <!-- 1. Inputs -->
+                    <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.TextInput ||
+                     control.controlType == controlTypes.PasswordInput ||
+                     control.controlType == controlTypes.Url ||
+                     control.controlType == controlTypes.NumberInput" class="control-container">
+                        <mat-form-field>
+                            <mat-label>{{control.title}}</mat-label>
+                            <input [type]="control.controlType.toString()!" [attr.placeholder]="control.title"
+                                [formControlName]="control.name!" matInput type="text">
+                            <mat-icon *ngIf="control.icon" matPrefix>{{control.icon}}</mat-icon>
+                            <mat-hint
+                                *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].invalid">
+                            </mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <!-- 2. Selection (select + multi-select ) -->
+                    <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.Selection
+                         || control.controlType == controlTypes.MultiSelection" class="control-container">
+                        <mat-form-field>
+                            <mat-label>{{control.title}}</mat-label>
+                            <mat-select [formControlName]="control.name!"
+                                [multiple]="control.controlType == controlTypes.MultiSelection">
+                                <mat-option *ngFor="let option of control.data" [value]="option[control.valueProp!]">
+                                    {{option[control.labelProp!]}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-icon *ngIf="control.icon" matPrefix>{{control.icon}}</mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <!-- 3. checkbox -->
+                    <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.CheckBox"
+                        class="control-container">
+                        <mat-checkbox [formControlName]="control.name!">{{control.title}}</mat-checkbox>
+                    </div>
+                    <!-- 4. Date Picker -->
+                    <div   [style.width]="control.width" *ngIf="control.controlType == controlTypes.DatePicker"
+                        class="control-container">
+                        <mat-form-field>
+                            <mat-label>{{control.title}}</mat-label>
+                            <input [formControlName]="control.name!" matInput [matDatepicker]="picker">
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <!-- 5. Rich Editor -->
+                    <div style="padding-right: 15px;" [style.width]="control.width"
+                        *ngIf="control.controlType == controlTypes.RichTextEditor" class="control-container">
+                        <quill-editor [placeholder]="control.title" [styles]="{'height':'300px'}"
+                            [formControlName]="control.name!"></quill-editor>
+                    </div>
+                    <!-- 5. Local Files Picker -->
+                    <div style="padding: 15px;padding-left: 0px;" [style.width]="control.width"
+                        *ngIf="control.controlType == controlTypes.LocalFilePicker" class="control-container">
+                        <local-files-picker (filesPicked)="onFilesPicked(control.name!,$event)"></local-files-picker>
+                    </div>
+                </ng-container>
+            </div>
+    
+    
+    
         </div>
-        <div class="form-controls">
-            <ng-container *ngFor="let control of group.controls">
-                <!-- 1. Inputs -->
-                <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.TextInput ||
-                 control.controlType == controlTypes.PasswordInput ||
-                 control.controlType == controlTypes.Url ||
-                 control.controlType == controlTypes.NumberInput" class="control-container">
-                    <mat-form-field>
-                        <mat-label>{{control.title}}</mat-label>
-                        <input [type]="control.controlType.toString()!" [attr.placeholder]="control.title"
-                            [formControlName]="control.name!" matInput type="text">
-                        <mat-icon *ngIf="control.icon" matPrefix>{{control.icon}}</mat-icon>
-                        <mat-hint
-                            *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].invalid">
-                        </mat-hint>
-                    </mat-form-field>
-                </div>
-                <!-- 2. Selection (select + multi-select ) -->
-                <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.Selection
-                     || control.controlType == controlTypes.MultiSelection" class="control-container">
-                    <mat-form-field>
-                        <mat-label>{{control.title}}</mat-label>
-                        <mat-select [formControlName]="control.name!"
-                            [multiple]="control.controlType == controlTypes.MultiSelection">
-                            <mat-option *ngFor="let option of control.data" [value]="option[control.valueProp!]">
-                                {{option[control.labelProp!]}}
-                            </mat-option>
-                        </mat-select>
-                        <mat-icon *ngIf="control.icon" matPrefix>{{control.icon}}</mat-icon>
-                    </mat-form-field>
-                </div>
-                <!-- 3. checkbox -->
-                <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.CheckBox"
-                    class="control-container">
-                    <mat-checkbox [formControlName]="control.name!">{{control.title}}</mat-checkbox>
-                </div>
-                <!-- 4. Date Picker -->
-                <div   [style.width]="control.width" *ngIf="control.controlType == controlTypes.DatePicker"
-                    class="control-container">
-                    <mat-form-field>
-                        <mat-label>{{control.title}}</mat-label>
-                        <input [formControlName]="control.name!" matInput [matDatepicker]="picker">
-                        <mat-hint>MM/DD/YYYY</mat-hint>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                </div>
-                <!-- 5. Rich Editor -->
-                <div style="padding-right: 15px;" [style.width]="control.width"
-                    *ngIf="control.controlType == controlTypes.RichTextEditor" class="control-container">
-                    <quill-editor [placeholder]="control.title" [styles]="{'height':'300px'}"
-                        [formControlName]="control.name!"></quill-editor>
-                </div>
-                <!-- 5. Local Files Picker -->
-                <div style="padding: 15px;padding-left: 0px;" [style.width]="control.width"
-                    *ngIf="control.controlType == controlTypes.LocalFilePicker" class="control-container">
-                    <local-files-picker (filesPicked)="onFilesPicked(control.name!,$event)"></local-files-picker>
-                </div>
-            </ng-container>
+        <div class="act-buttons">
+            <button type="submit" mat-flat-button color="primary">Submit</button>
+            <button type="reset" mat-flat-button color="accent">Clear</button>
+    
         </div>
-
-
-
-    </div>
-    <div class="act-buttons">
-        <button type="submit" mat-flat-button color="primary">Submit</button>
-        <button type="reset" mat-flat-button color="accent">Clear</button>
-
-    </div>
-</form>
+    </form>
+</div>

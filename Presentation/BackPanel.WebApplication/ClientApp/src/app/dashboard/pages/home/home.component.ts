@@ -297,6 +297,7 @@ export class HomeComponent implements OnInit {
   create(){
     this.dialog.open<FormBuilderComponent,FormBuilderPropsSpec,any>(FormBuilderComponent,{
       data : {
+      title:"Create New User",
         controlsGroups: this.form,
         onSubmit(result) {
           console.log(result);

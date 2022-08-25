@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileModel } from 'src/app/core/models/file.models';
@@ -13,6 +13,7 @@ import { FormBuilderGroup } from './form-builder-group.model';
 export class FormBuilderComponent implements OnInit {
   @Input("control-groups") controlsGroups: FormBuilderGroup[] = [];
   @Input("inner-form") innerForm: boolean = false;
+  @Input("title") title?:string = '';
   @Output("submit") submitEventEmitter = new EventEmitter<any>();
   @Output("cancel") cancelEventEmitter = new EventEmitter<void>();
   @Output("tableDelete") tableDeleteEvent = new EventEmitter<any>();
@@ -22,6 +23,7 @@ export class FormBuilderComponent implements OnInit {
       if(data)
       {
         if(data.controlsGroups) this.controlsGroups = data.controlsGroups;
+        this.title = data.title; 
       }
   }
   onSubmit() {
@@ -57,6 +59,7 @@ export class FormBuilderComponent implements OnInit {
   
 }
 export interface FormBuilderPropsSpec {
+  title?:string;
   controlsGroups:FormBuilderGroup[],
   onSubmit: (result:any) => void,
   onCancel:() => void
