@@ -48,8 +48,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseStaticFiles();
-app.UseAuthentication();
-app.UseAuthorization();
 app.UseCors("CorsPolicy");
 app.MapControllerRoute(
     name: "default",
@@ -57,4 +55,6 @@ app.MapControllerRoute(
 
 app.MapFallbackToFile("index.html");
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 app.Run();

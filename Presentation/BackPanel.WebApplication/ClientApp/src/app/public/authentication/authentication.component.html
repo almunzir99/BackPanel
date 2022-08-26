@@ -1,1 +1,30 @@
-<p>authentication works!</p>
+<div class="auth-layout">
+    <div class="auth-image-container">
+        <svg-icon src="assets/vectors/auth-image.svg" [applyClass]="true" class="auth-image"></svg-icon>
+    </div>
+    <div class="auth-container">
+        <h1>Welcome back To BackPanel 👋🏾</h1>
+        <p>Please sign-in to your account and start the adventure
+        </p>
+        <br>
+        <br>
+        <form #authForm="ngForm" (ngSubmit)="formSubmitted(authForm.value)">
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input #email ngModel  name="email" required type="text" matInput placeholder="example@example.com">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Password</mat-label>
+                    <input #password ngModel name="password" required type="password" matInput placeholder="example@example.com">
+                </mat-form-field>
+                <div class="row">
+                    <mat-checkbox>Stay logged In</mat-checkbox>
+                    <div class="link">
+                        Forgot your password ?
+                    </div>
+                </div>
+                <button type="submit" [disabled]="(authForm.invalid) || requestStatus == 1"  [textContent]="requestStatus == 1 ? 'please wait...' : 'LOGIN'" mat-flat-button color="primary">
+                    </button>
+        </form>
+    </div>
+</div>
