@@ -26,16 +26,13 @@ export class AuthenticationComponent implements OnInit {
       this.requestStatus = RequestStatus.Loading;
       var result = await firstValueFrom(this._authService.autthenticate(model));
       this._authService.setCurrentUser(result.data);
+      this._authService.saveToken(result.data.token);
       this.requestStatus = RequestStatus.Success;
       this.router.navigate(['/','dashboard']);
     } 
     
     catch (error) {
       this.requestStatus = RequestStatus.Failed;
-      console.log(error);
-      console.log(error instanceof HttpErrorResponse && error.status == 400);
-
-
       if(error instanceof HttpErrorResponse && error.status == 400)
       {
         var apiError =  error.error as ApiResponse<any>;

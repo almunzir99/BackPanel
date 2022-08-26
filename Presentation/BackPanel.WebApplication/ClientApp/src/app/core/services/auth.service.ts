@@ -24,6 +24,10 @@ export class AuthService {
   autthenticate(model:AuthenticationModel): Observable<ApiResponse<Admin>> {
     return this.http.post(`${this.moduleBaseUrl}authenticate`,model) as Observable<ApiResponse<Admin>>;
   }
+  getCurrentUser() : Observable<ApiResponse<Admin>> {
+    return this.http.get(`${this.moduleBaseUrl}profile`) as Observable<ApiResponse<Admin>>;
+
+  } 
   saveToken(token: string) {
     localStorage.setItem(this.authTokenKey, token);
   }

@@ -1,10 +1,34 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+import { RequestStatus } from './core/models/request-status.enum';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
 export class AppComponent {
+  requestStatus = RequestStatus.Initial;
+  constructor(private _authService:AuthService,private router:Router) {
+    this.getCurrentUser();
+  }
+  async getCurrentUser() {
+    try {
+      this.requestStatus = RequestStatus.Loading;
+      var result = await firstValueFrom(this._authService.getCurrentUser());
+      this._authService.setCurrentUser(result.data);
+      this.requestStatus = RequestStatus.Success;
+      this.router.navigate(['/','dashboard']);
+    } catch (error) {
+      console.log(error);
+      this.requestStatus = RequestStatus.Failed;
+      this.router.navigate(['/','authentication']);
+    }
+    
+
+
+  }
   title = 'app';
 }
 
