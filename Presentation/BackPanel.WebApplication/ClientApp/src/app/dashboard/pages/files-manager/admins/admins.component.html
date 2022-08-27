@@ -1,1 +1,38 @@
-<p>admins works!</p>
+<data-table 
+(createClick)="onCreate()" 
+(searchChange)="onSearch($event)" 
+(sortChange)="onSortChange($event)" 
+(pageChange)="onPageChange($event)" 
+[total]="totalRecords" 
+[loading]="getRequest == 1" 
+[columns]="columns" 
+[rows]="data" 
+[cell-template]="cellTemplate" 
+title="Admins Table">
+    <ng-template #cellTemplate let-rowData="rowData" let-data="cellData" let-col="colIndex" let-row="rowIndex">
+        <ng-container [ngSwitch]="col">
+            <ng-container *ngSwitchCase="0">
+                <img class="img-avatar" [src]="baseUrl + data" alt="">
+            </ng-container>
+            <ng-container *ngSwitchCase="5">
+                {{data?.title}}
+            </ng-container>
+            <ng-container *ngSwitchCase="8">
+                <button (click)="onUpdate(rowData)" matRipple class="table-act-button accent">
+                    <i class="las la-edit"></i>
+                </button>
+                <button (click)="onDeleteClick(rowData.id)" matRipple class="table-act-button warn">
+                    <i class="las la-trash"></i>
+                </button>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+                {{data}}
+            </ng-container>
+            
+        </ng-container>
+    </ng-template>
+</data-table>
+
+<dimmer-loading
+    *ngIf="dimRequest == 1">
+</dimmer-loading>

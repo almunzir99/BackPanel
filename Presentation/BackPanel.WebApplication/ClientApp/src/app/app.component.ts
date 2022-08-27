@@ -19,7 +19,6 @@ export class AppComponent {
       var result = await firstValueFrom(this._authService.getCurrentUser());
       this._authService.setCurrentUser(result.data);
       this.requestStatus = RequestStatus.Success;
-      this.router.navigate(['/','dashboard']);
     } catch (error) {
       console.log(error);
       this.requestStatus = RequestStatus.Failed;

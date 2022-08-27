@@ -89,8 +89,9 @@
                         justify-content: center;
 
                         img {
-                            height: 45px;
-                            width: 45px;
+                            height: 100%;
+                            width: 100%;
+                            border-radius: 50%
                         }
                     }
 

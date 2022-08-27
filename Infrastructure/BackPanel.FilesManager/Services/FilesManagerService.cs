@@ -128,14 +128,14 @@ public class FilesManagerService : IFilesManagerService
         var compinedPath = Path.Combine(_pathProvider.GetRootPath(), path, fileName);
         var info = new FileInfo(compinedPath);
         var uri = this.GetFileUri(fileName, path);
-
+        var filePath = Path.Combine(path, fileName).Replace("\\","/");
         var fileModel = new FileModel(
             title: fileName,
             uri: uri.ToString(),
             parentDirectory: path,
             contentType: Path.GetExtension(fileName),
             size: info.Length,
-            path: Path.Combine(path, fileName),
+            path: filePath,
             createdAt: info.CreationTime,
             info.LastWriteTime);
         return fileModel;

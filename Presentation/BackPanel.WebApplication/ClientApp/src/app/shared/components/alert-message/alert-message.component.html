@@ -3,10 +3,10 @@
     <svg-icon *ngIf="message.type == types.SUCCESS" src="assets/vectors/success.svg" [applyClass]="true" class="vector"></svg-icon>
     <svg-icon *ngIf="message.type == types.ERROR" src="assets/vectors/error.svg" [applyClass]="true" class="vector"></svg-icon>
     <svg-icon *ngIf="message.type == types.WARNING" src="assets/vectors/warning.svg" [applyClass]="true" class="vector"></svg-icon>
-    <div [class.green]="(message.type == types.SUCCESS || message.type == types.CONFIRM)" [class.red]="message.type == types.ERROR" [class.orange]="message.type == types.WARNING" class="title">{{message.title}}</div>
+    <div [class.green]="(message.type == types.SUCCESS)" [class.red]="message.type == types.ERROR" [class.orange]="message.type == types.WARNING || message.type == types.CONFIRM" class="title">{{message.title}}</div>
     <div class="message">{{message.message}}</div>
     <div class="buttons">
-        <button autofocus="false" (click)="close(true)" [class.bg-green]="(message.type == types.SUCCESS || message.type == types.CONFIRM)" [class.bg-red]="message.type == types.ERROR" [class.bg-orange]="message.type == types.WARNING" mat-button>Confirm</button>
+        <button autofocus="false" (click)="close(true)" [class.bg-green]="(message.type == types.SUCCESS)" [class.bg-red]="message.type == types.ERROR" [class.bg-orange]="message.type == types.WARNING || message.type == types.CONFIRM " mat-button>Confirm</button>
         <button (click)="close(false)" *ngIf="message.type == types.CONFIRM || message.type == types.WARNING " class="close" mat-button>Close</button>
 
     </div>

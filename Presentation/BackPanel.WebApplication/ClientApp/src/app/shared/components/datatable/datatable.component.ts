@@ -96,7 +96,7 @@ export class DatatableComponent implements OnInit {
 }
 
 export interface SortSpec {
-  prop: String;
+  prop: string;
   ascending: boolean;
 }
 export interface PageSpec {

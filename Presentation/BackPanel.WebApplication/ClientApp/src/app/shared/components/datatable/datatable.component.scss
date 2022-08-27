@@ -4,6 +4,7 @@
     background-color: white;
     margin: 20px;
     border-radius: 10px;
+    overflow: hidden;
 
     .datatable-header {
         padding: 20px;
@@ -104,6 +105,8 @@
                 color: #444;
                 border-bottom: 1px solid #eee;
                 font-size: 13px;
+                word-break: break-all 
+
 
             }
 

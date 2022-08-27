@@ -17,6 +17,7 @@ public class MappingProfile : Profile
         CreateMap<MessageDto, Message>().ReverseMap();
         CreateMap<MessageDtoRequest, Message>().ReverseMap();
         CreateMap<AdminDto, Admin>().ReverseMap();
+        CreateMap<ActivityDto, Activity>().ReverseMap();
         CreateMap<NotificationDto, Notification>().ReverseMap();
             
 

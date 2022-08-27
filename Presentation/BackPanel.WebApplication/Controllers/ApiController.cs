@@ -30,7 +30,7 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
     }
 
     [HttpGet]
-    public virtual  async Task<IActionResult> GetAsync(PaginationFilter? filter = null, string? title = "", string? orderBy = "LastUpdate", bool ascending = true)
+    public virtual  async Task<IActionResult> GetAsync([FromQuery]PaginationFilter? filter = null, [FromQuery] string? title = "", [FromQuery] string? orderBy = "LastUpdate", [FromQuery] bool ascending = true)
     {
         var validFilter = (filter == null)
             ? new PaginationFilter()
