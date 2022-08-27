@@ -72,7 +72,10 @@
             </div>
             <div [style.opacity]="currentMoveContentItem && currentMoveContentItem.action == 'cut' && currentMoveContentItem.name == file.title ? '0.6' : '1' "
                 *ngFor="let file of files" class="node-container">
-                <svg-icon src="assets/vectors/file.svg" [applyClass]="true" class="node-icon"></svg-icon>
+                <img class="file-image" [src]="file.uri" *ngIf="(file.contentType == '.png' || file.contentType == '.jpg' || file.contentType == '.jif' || file.contentType == '.svg' || file.contentType == '.tif') else default" alt="">
+                <ng-template #default>
+                <svg-icon  src="assets/vectors/file.svg" [applyClass]="true" class="node-icon"></svg-icon>
+                </ng-template>
                 <div class="title">{{file.title}}</div>
                 <div class="info">
                     <div class="size">{{bytesToMB(file.size)}} MB</div>
