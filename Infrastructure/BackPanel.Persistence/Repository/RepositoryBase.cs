@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using BackPanel.Application.Helpers;
 using BackPanel.Application.Interfaces;
@@ -87,7 +88,7 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         if (result == null)
             throw new Exception("item is not found");
         Context.Attach(result);
-        _mapperHelper.Map<TEntity, TEntity>(newItem, result);
+        _mapperHelper.Map<TEntity, TEntity>(newItem, result,propsToExclude: new []{"Id","CreatedAt"}  );
         result.LastUpdate = DateTime.Now;
         return result;
     }

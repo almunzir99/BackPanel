@@ -311,6 +311,7 @@ export class AdminsComponent implements OnInit {
       }).afterClosed().subscribe(_ => this._dialog.closeAll())
       this.getData();
     } catch (error) {
+      this.dimRequest = RequestStatus.Failed;
       console.log(error);
     }
   }
@@ -328,6 +329,7 @@ export class AdminsComponent implements OnInit {
       }).afterClosed().subscribe(_ => this._dialog.closeAll())
       this.getData();
     } catch (error) {
+      this.dimRequest = RequestStatus.Failed;
       console.log(error);
     }
   }

@@ -182,11 +182,20 @@ mat-form-field {
 
 .table-act-button {
   border: none;
+  background-color: map-get($map: $primary-color , $key: 50);
+  color: map-get($map: $primary-color , $key: 400);
+  cursor: pointer;
+  i{
+  font-size: 23px;
+  }
+
+}
+.table-act-button.text{
+  padding: 5px 10px;
+}
+.table-act-button.accent{
   background-color: map-get($map: $accent-color , $key: 50);
   color: map-get($map: $accent-color , $key: 400);
-  font-size: 23px;
-  cursor: pointer;
-
 }
 .table-act-button.warn{
   background-color: #ffdddd;

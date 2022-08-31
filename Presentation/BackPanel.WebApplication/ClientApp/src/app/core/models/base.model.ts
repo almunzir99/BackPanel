@@ -1,5 +1,5 @@
 export interface BaseModel {
-   id:number;
-   createdAt:number;
-   lastUpdate:number;
+   id?:number;
+   createdAt?:number;
+   lastUpdate?:number;
 }

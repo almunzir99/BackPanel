@@ -81,7 +81,7 @@ public class MapperHelper
                         var mapMethodInfo = this.GetType().GetMethod("Map");
                         if (mapMethodInfo != null)
                             mapMethodInfo.MakeGenericMethod(sourceProp.PropertyType, prop.PropertyType)
-                                .Invoke(this, new[] { sourcePropValue, propValue, null, null });
+                                .Invoke(this, new[] { sourcePropValue, propValue, null, propsToExclude });
                     }
                 }
             }

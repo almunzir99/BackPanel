@@ -1,0 +1,40 @@
+@import 'variables';
+.mat-dialog-content{
+    width: 60vw;
+}
+.mat-dialog-actions{
+    justify-content: flex-end;
+    padding: 10px 0px;
+    button{
+        border-radius: 12px;
+
+    }
+}
+.role-table {
+    table-layout: fixed;
+    border: 1px solid #eee;
+    border-spacing: 0px;
+    width: 100%;
+
+    thead {
+        background-color: whitesmoke;
+    }
+
+    td,
+    th {
+        padding: 15px;
+        text-align: center;
+        border-right: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+
+
+    }
+ 
+    td:first-child {
+        text-align: start;
+    }
+
+
+
+
+}
