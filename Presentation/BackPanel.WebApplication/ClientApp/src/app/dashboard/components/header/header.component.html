@@ -1,4 +1,4 @@
-<div class="header">
+<div [class.opened]="opened" class="header">
    <div class="first-section">
     <div (click)="onToggle()" matRipple class="menu-bars">
         <svg 
@@ -15,6 +15,9 @@
         <i class="las la-search"></i>
         <input type="text" class="search-bar-input" placeholder="search here ...">
     </div>
+    <div matRipple (click)="opened = !opened" class="header-toggle">
+        <i class="las la-angle-down"></i>
+    </div>
    </div>
     <div class="widgets">
         <div matRipple class="widget-button">
@@ -28,10 +31,10 @@
         <div matRipple class="widget-button">
             <i class="las la-moon"></i>
         </div>
-        
         <button mat-flat-button class="logout-button">
             <i class="las la-sign-out-alt"></i>
             Logout
         </button>
+        
     </div>
 </div>
