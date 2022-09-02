@@ -11,7 +11,7 @@
 title="Admins Table">
     <ng-template #cellTemplate let-rowData="rowData" let-data="cellData" let-col="colIndex" let-row="rowIndex">
         <ng-container [ngSwitch]="col">
-            <ng-container *ngSwitchCase="0">
+            <ng-container *ngSwitchCase="1">
                 <img class="img-avatar" [src]="baseUrl + data" alt="">
             </ng-container>
             <ng-container *ngSwitchCase="5">

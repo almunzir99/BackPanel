@@ -39,7 +39,9 @@ export class DatatableComponent implements OnInit {
     this.configureColumnsResizer();
   }
   /******************* Configure Events Binding ****************** */
-  onSortChange(prop: string) {
+  onSortChange(prop: string,sortable:boolean) {
+    if(!sortable)
+    return;
     if (prop == this.sortProp) {
       this.ascending = !this.ascending;
     }

@@ -59,17 +59,18 @@ export class AdminsComponent implements OnInit {
   initColumns() {
     this.columns = [
       {
-        prop: "image",
-        title: "Image",
-        show: true,
-        sortable: false
-      },
-      {
         prop: "id",
         title: "#",
         show: true,
         sortable: true
       },
+      {
+        prop: "image",
+        title: "Image",
+        show: true,
+        sortable: false
+      },
+     
 
       {
         prop: "username",

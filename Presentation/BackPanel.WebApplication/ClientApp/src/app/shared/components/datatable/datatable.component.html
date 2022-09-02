@@ -47,7 +47,7 @@
         <thead>
             <tr>
                 <ng-container *ngFor="let column of columns">
-                    <th (click)="onSortChange(column.prop)" matRipple *ngIf="column.show">
+                    <th (click)="onSortChange(column.prop,column.sortable)" matRipple *ngIf="column.show">
                         <div class="th-content">
                             <p>{{column.title}}</p>
                             <div [style.visibility]="column.sortable && sortProp == column.prop ? 'visible' : 'hidden'">
