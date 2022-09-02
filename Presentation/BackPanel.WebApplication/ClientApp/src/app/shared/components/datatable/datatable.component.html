@@ -62,14 +62,14 @@
         </thead>
         <tbody *ngIf="loading">
             <tr>
-                <td  [attr.colspan]="columns.length">
+                <td   [attr.colspan]="columns.length">
                     <spinner-placeholder></spinner-placeholder>
                 </td>
             </tr>
         </tbody>
         <tbody *ngIf="!loading && rows.length == 0">
             <tr>
-                <td  [attr.colspan]="columns.length">
+                <td   [attr.colspan]="columns.length">
                     <empty-placeholder [showButton]="showCreate" (buttonClick)="onCreateClick()"></empty-placeholder>
                 </td>
             </tr>
@@ -78,7 +78,7 @@
         <tbody *ngIf="rows.length > 0 && !loading">
             <tr *ngFor="let row of rows; let rowIndex= index">
                 <ng-container *ngFor="let col of columns; let colIndex = index">
-                    <td *ngIf="col.show">
+                    <td [attr.data-label]="col.title" *ngIf="col.show">
                         <ng-container *ngIf="cellTemplate" [ngTemplateOutlet]="cellTemplate"
                             [ngTemplateOutletContext]="{colIndex:colIndex,rowIndex:rowIndex,cellData:row[col.prop],rowData:row}">
 

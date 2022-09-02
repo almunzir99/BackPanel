@@ -17,6 +17,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
 
             mat-form-field {
                 width: 30%;
@@ -30,10 +31,10 @@
                 button {
                     padding: 3px 10px;
                     border-radius: 10px;
-                    margin:0px 10px;
+                    margin: 0px 10px;
                 }
 
-                
+
 
             }
         }
@@ -58,6 +59,7 @@
                     cursor: pointer;
                     text-transform: uppercase;
                     font-size: 13px;
+
                     .th-content {
                         display: flex;
                         align-items: center;
@@ -105,9 +107,7 @@
                 color: #444;
                 border-bottom: 1px solid #eee;
                 font-size: 13px;
-                word-break: break-all 
-
-
+                word-break: break-all
             }
 
         }
@@ -118,5 +118,80 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
+}
+
+@media screen and (max-width:660px) {
+    .datatable-container {
+        .datatable-header {
+            .controls-bar {
+                .filters {
+                    width: 100%;
+
+                    mat-form-field {
+                        min-width: 100%;
+                        width: 100%;
+                    }
+                }
+
+                .controls {
+                    margin: 15px 0px;
+                    width: 100%;
+
+                    button {
+                        flex: 1;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .data-table {
+        border: 0;
+    }
+
+    .data-table caption {
+        font-size: 1.3em;
+    }
+
+    .data-table thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+
+    .data-table tr {
+        border-bottom: 3px solid #ddd;
+        display: block;
+        margin-bottom: .625em;
+    }
+
+    .data-table td {
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: .8em;
+        text-align: right;
+    }
+
+    .data-table td::before {
+        /*
+      * aria-label has no advantage, it won't be read inside a .data-table
+      content: attr(aria-label);
+      */
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .data-table td:last-child {
+        border-bottom: 0;
     }
 }
