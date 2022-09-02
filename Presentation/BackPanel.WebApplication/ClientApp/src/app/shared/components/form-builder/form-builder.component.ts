@@ -33,11 +33,12 @@ export class FormBuilderComponent implements OnInit {
       this.data.onSubmit(this.formGroup.value);
     }
   }
-  onCancel() {
+  onCancel(e:any) {
+    e.preventDefault();
     this.cancelEventEmitter.emit();
     if(this.data)
     {
-      this.data.onSubmit(this.formGroup.value);
+      this.data.onCancel( );
     }
   }
   // local files Picker Event

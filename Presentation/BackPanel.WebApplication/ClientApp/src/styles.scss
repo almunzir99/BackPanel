@@ -182,8 +182,8 @@ mat-form-field {
 
 .table-act-button {
   border: none;
-  background-color: map-get($map: $primary-color , $key: 50);
-  color: map-get($map: $primary-color , $key: 400);
+  background-color: map-get($map: $primary-color , $key: 500);
+  color: white;
   cursor: pointer;
   i{
   font-size: 23px;
@@ -194,11 +194,15 @@ mat-form-field {
   padding: 5px 10px;
 }
 .table-act-button.accent{
-  background-color: map-get($map: $accent-color , $key: 50);
-  color: map-get($map: $accent-color , $key: 400);
+  background-color: map-get($map: $accent-color , $key: 500);
 }
 .table-act-button.warn{
-  background-color: #ffdddd;
-  color: #F44236;
+  background-color: #F44236;
+  color: white;
 
+}
+@media screen and (max-width:768px) {
+  .cdk-overlay-pane{
+   max-width: 95vw!important;
+  }
 }

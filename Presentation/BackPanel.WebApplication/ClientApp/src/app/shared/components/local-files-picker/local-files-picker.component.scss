@@ -4,6 +4,7 @@
     align-items: center;
     mat-form-field {
         flex: 1;
+        min-width: 0px;
     }
     button {
         max-width: 150px;
@@ -20,3 +21,12 @@
     }
 }
  
+@media screen and (max-width:450px) {
+    .lfp-container{
+        button{
+            .btn-text{
+                display: none;
+            }
+        }
+    }
+}

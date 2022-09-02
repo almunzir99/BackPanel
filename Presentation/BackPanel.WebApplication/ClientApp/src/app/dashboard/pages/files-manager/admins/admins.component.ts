@@ -274,7 +274,8 @@ export class AdminsComponent implements OnInit {
           else
           this.update(admin);
         },
-        onCancel() {
+        onCancel:() => {
+          this._dialog.closeAll();
 
         }
       },
