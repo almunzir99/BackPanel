@@ -1,15 +1,17 @@
 <div class="layout-container">
     <!-- <fui-dimmer class="dim-overlay" (click)="close()" [(isDimmed)]="toggle" [isClickable]="false"></fui-dimmer> -->
-    <div [class.float-menu]="toggle" class="menu-section">
+    <div [class.closed-menu]="!toggle" class="menu-section">
         <dahboard-menu></dahboard-menu>
     </div>
     <div [class.shrink-page]="toggle" class="main-section">
         <div class="header">
-            <dashboard-header ></dashboard-header>
+            <dashboard-header [toggle]="toggle" (toggleClick)="toggle = $event" ></dashboard-header>
 
         </div>
         <div [class.stretched-page]="!toggle" class="page background-color">
             <router-outlet></router-outlet>
         </div>
     </div>
+<div *ngIf="toggle" (click)="toggle = false" class="dimmer"></div>
+
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'dashboard-header',
@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
+  @Output("toggleClick") toggleClickEventEmitter = new EventEmitter<boolean>();
+  @Input("toggle") toggle = false;
   constructor() { }
 
   ngOnInit(): void {
   }
-
+  onToggle(){
+    this.toggle = !this.toggle;
+    this.toggleClickEventEmitter.emit(this.toggle);
+  }
 }

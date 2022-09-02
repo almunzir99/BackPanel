@@ -24,23 +24,7 @@
                 justify-content: space-between;
                 padding: 0px 25px;
 
-                .menu-bars {
-                    height: 40px;
-                    width: 40px;
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    cursor: pointer;
-
-                    svg {
-                        stroke: map-get($map: $primary-color, $key: 400);
-                    }
-                }
-
-                .menu-bars:hover {
-                    background-color: map-get($map: $primary-color, $key: 50);
-                }
+                
             }
 
             .user-info {
