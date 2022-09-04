@@ -36,10 +36,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Infrastructure\BackPanel.Persistence\BackPanel.Persistence.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\BackPanel.TranslationEditor\BackPanel.TranslationEditor.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Services" />
+      <Folder Include="wwwroot\i18n" />
     </ItemGroup>
 
     <ItemGroup>

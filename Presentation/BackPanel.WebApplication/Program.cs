@@ -4,6 +4,7 @@ using BackPanel.FilesManager.DI;
 using BackPanel.Persistence.Database;
 using BackPanel.Persistence.DI;
 using BackPanel.SMTP.DI;
+using BackPanel.TranslationEditor.DI;
 using BackPanel.WebApplication.implementation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,7 +24,10 @@ builder.Services.RegisterRequiredSmtpServices();
 builder.Services.RegisterRequiredFilesManagerServices();
 builder.Services.ImplementPathProvider<PathProvider>();
 builder.Services.AddScoped<IWebConfiguration, WebConfiguration>();
-builder.Services.RegisterJwtConfiguration(builder.Configuration.GetValue<string>("SecretKey:key")); builder.Services.ImplementUriService(o =>
+builder.Services.RegisterJwtConfiguration(builder.Configuration.GetValue<string>("SecretKey:key"));
+builder.Services.ImplementPathProviderToTranslationService<PathProvider>();
+builder.Services.RegisterRequiredTranslationEditorServices();
+builder.Services.ImplementUriService(o =>
 {
     var accessor = o.GetRequiredService<IHttpContextAccessor>();
     var request = accessor.HttpContext?.Request;
