@@ -10,8 +10,8 @@ public class UserBaseDtoRequest
     [Required]
     [RegularExpression(@"\(?\d{3}\)?-? *\d{3}-? *-?\d{4}")]
     public string? Phone { get; set; }
-
-    [Required] public string Password { get; set; }
+    [Required] 
+    public string? Password { get; set; }
     public string? Image { get; set; }
     public int? RoleId { get; set; }
 }

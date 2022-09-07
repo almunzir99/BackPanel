@@ -48,7 +48,7 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
             throw new Exception("This account isn't available");
         //verify the password
         var verified = user.PasswordSalt != null && user.PasswordHash != null
-                                                 && HashingHelper.VerifyPassword(model.Password, user.PasswordHash,
+                                                 && HashingHelper.VerifyPassword(model.Password!, user.PasswordHash,
                                                      user.PasswordSalt);
         if (verified == false)
             throw new Exception("The password isn't correct");
@@ -67,7 +67,7 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
         var mappedUser = Mapper.Map<TDtoRequest, TEntity>(user);
         mappedUser.CreatedAt = DateTime.Now;
         mappedUser.LastUpdate = DateTime.Now;
-        HashingHelper.CreateHashPassword(user.Password, out var pHash, out var pSalt);
+        HashingHelper.CreateHashPassword(user.Password!, out var pHash, out var pSalt);
         mappedUser.PasswordHash = pHash;
         mappedUser.PasswordSalt = pSalt;
         await Repository.CreateAsync(mappedUser);
@@ -93,7 +93,7 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
             throw new Exception("item is not found");
         Mapper.Map(item, result);
         result.LastUpdate = DateTime.Now;
-        HashingHelper.CreateHashPassword(item.Password, out var pHash, out var pSalt);
+        HashingHelper.CreateHashPassword(item.Password!, out var pHash, out var pSalt);
         result.PasswordHash = pHash;
         result.PasswordSalt = pSalt;
         await Repository.Complete();
