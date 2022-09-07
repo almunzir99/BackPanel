@@ -29,8 +29,8 @@ const routes: Routes = [
       loadChildren: () => import('./pages/messages/messages.module').then(c => c.MessagesModule)
     },
     {
-      path: 'cms',
-      loadChildren: () => import('./pages/cms/cms.module').then(c => c.CmsModule)
+      path: 'translation-editor',
+      loadChildren: () => import('./pages/translation-editor/translation-editor.module').then(c => c.TranslationEditorModule)
     },
     {
       path: 'profile',

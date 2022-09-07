@@ -13,11 +13,11 @@ import { MatButtonModule } from '@angular/material/button';
   declarations: [
     MenuComponent,
     HeaderComponent,
-    DashboardComponent
+    DashboardComponent,
   ],
   imports: [
     CommonModule,
-    DashboardRoutingModule,
+    DashboardRoutingModule, 
     MatRippleModule,
     MatButtonModule
   ]

@@ -46,9 +46,9 @@ export const MenuList: MenuGroup[] = [
 
             },
             {
-                title: "Website Content",
+                title: "Translation Editor",
                 icon: "las la-globe-europe",
-                route: "/dashboard/cms"
+                route: "/dashboard/translation-editor"
 
             },
 
