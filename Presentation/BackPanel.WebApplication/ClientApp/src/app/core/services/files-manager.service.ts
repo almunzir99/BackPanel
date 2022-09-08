@@ -10,8 +10,8 @@ import { ApiResponse } from '../models/wrappers/api-response.model';
 })
 export class FilesManagerService {
   private moduleBaseUrl = ``;
-  constructor(private http: HttpClient, @Inject("BASE_API_URL") private baseUrl: string) {
-    this.moduleBaseUrl = `${this.baseUrl}api/files-manager/`;
+  constructor(private http: HttpClient, @Inject("BASE_API_URL")  baseUrl: string) {
+    this.moduleBaseUrl = `${baseUrl}api/files-manager/`;
   }
   getDirectories(path?: string): Observable<ApiResponse<DirectoryModel[]>> {
     var params: any = {};

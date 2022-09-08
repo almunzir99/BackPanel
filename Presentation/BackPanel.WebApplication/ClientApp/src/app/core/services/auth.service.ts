@@ -18,8 +18,8 @@ export class AuthService {
   setCurrentUser(value:Admin) {
     this._$currentUser.next(value);
   }
-  constructor(private http: HttpClient, @Inject("BASE_API_URL") private baseUrl: string) {
-    this.moduleBaseUrl = `${this.baseUrl}api/admins/`;
+  constructor(private http: HttpClient, @Inject("BASE_API_URL")  baseUrl: string) {
+    this.moduleBaseUrl = `${baseUrl}api/admins/`;
   }
   autthenticate(model:AuthenticationModel): Observable<ApiResponse<Admin>> {
     return this.http.post(`${this.moduleBaseUrl}authenticate`,model) as Observable<ApiResponse<Admin>>;

@@ -1,17 +1,4 @@
 {
-  "nav_bar": {
-    "home": "Home",
-    "about": "Who We Are",
-    "sectors": "What We Do",
-    "regions": "Where We Work",
-    "contact_us": "Contact Us",
-    "donate": "Donate",
-    "get_involved": "Join as Volunteer",
-    "email": "spaces@spaces.com",
-    "phone": " 249-128-6470-18",
-    "location": "<p>khartoum,Arkwit, square 15<br></p>",
-    "careers": "Careers Opportunities"
-  },
   "Footer": {
     "explore_links": "Explore Links",
     "gallery": "Gallery",
@@ -122,5 +109,17 @@
     "comment": "Comment",
     "post": "Post",
     "your_comment": "Your Comment"
+  },
+  "navBar": {
+    "home": "Home",
+    "about": "Who We Are",
+    "sectors": "What We Do",
+    "regions": "Where We Work",
+    "contact_us": "Contact Us",
+    "donate": "Donate",
+    "get_involved": "Join as Volunteer",
+    "email": "spaces@spaces.com",
+    "phone": " 249-128-6470-18",
+    "location": "<p>khartoum,Arkwit, square 15<br></p>"
   }
 }

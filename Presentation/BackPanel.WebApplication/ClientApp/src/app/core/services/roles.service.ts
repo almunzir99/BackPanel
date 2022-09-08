@@ -10,7 +10,7 @@ import { PagedResponse } from '../models/wrappers/paged-response.model';
 export class RolesService {
   private moduleBaseUrl = ``;
 
-  constructor(private http: HttpClient, @Inject("BASE_API_URL") private baseUrl: string) {
+  constructor(private http: HttpClient, @Inject("BASE_API_URL") baseUrl: string) {
     this.moduleBaseUrl = `${baseUrl}api/roles/`
 
    }

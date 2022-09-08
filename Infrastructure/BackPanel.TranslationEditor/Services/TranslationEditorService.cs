@@ -64,7 +64,7 @@ public class TranslationEditorService : ITranslationEditorService
     public IList<string> GetLanguagesList()
     {
         var languagesCodes = Directory.GetFiles(_rootPath)
-            .Select(c => Path.GetFileName(c)!).ToList();
+            .Select(c => Path.GetFileNameWithoutExtension(c)!).ToList();
         return languagesCodes;
     }
 

@@ -17,6 +17,22 @@ public class TranslationsEditorController : ControllerBase
         _service = service;
     }
 
+    [HttpGet("languages")]
+    public  IActionResult GetLanguages()
+    {
+        try
+        {
+            var result = _service.GetLanguagesList();
+            var response = new Response<IList<string>>(data: result, message: "Data Retrieved successfully");
+            return Ok(response);
+        }
+        catch (Exception e)
+        {
+            var response =
+                new Response<String>(success: false, message: "operation failed", errors: new[] { e.Message });
+            return BadRequest(response);
+        }
+    }
     [HttpGet("tree")]
     public async Task<IActionResult> GetTranslationTree()
     {
@@ -135,7 +151,7 @@ public class TranslationsEditorController : ControllerBase
             return BadRequest(response);
         }
     }
-    [HttpDelete("languages/{code}")]
+    [HttpDelete("langauges/delete/{code}")]
     public  IActionResult DeleteLanguage(string code)
     {
         try
