@@ -69,8 +69,8 @@
             </div>
         </div>
         <div class="act-buttons">
-            <button type="submit" mat-flat-button color="primary">Submit</button>
-            <button (click)="onCancel($event)" type="button" mat-flat-button color="accent" >Cancel</button>
+            <button  type="submit" mat-flat-button color="primary">Submit</button>
+            <button *ngIf="showCancelButton" (click)="onCancel($event)" type="button" mat-flat-button color="accent" >Cancel</button>
 
         </div>
     </form>

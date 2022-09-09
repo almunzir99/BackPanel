@@ -14,7 +14,8 @@ export class FormBuilderComponent implements OnInit {
   @Input("control-groups") controlsGroups: FormBuilderGroup[] = [];
   @Input("inner-form") innerForm: boolean = false;
   @Input("title") title?:string = '';
-  @Output("submit") submitEventEmitter = new EventEmitter<any>();
+  @Input('show-cancel-button') showCancelButton = true;
+  @Output("formSubmit") submitEventEmitter = new EventEmitter<any>();
   @Output("cancel") cancelEventEmitter = new EventEmitter<void>();
   @Output("tableDelete") tableDeleteEvent = new EventEmitter<any>();
   formGroup: FormGroup = new FormGroup({});
