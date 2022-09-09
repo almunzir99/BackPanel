@@ -11,7 +11,7 @@
                 <div class="user-image-container">
                     <div class="user-image">
                         <img *ngIf="!currentUser || currentUser.image == null || currentUser.image == 'none'" src="assets/images/avatar.png" alt="">
-                        <img *ngIf="currentUser && currentUser.image" [src]="baseUrl + currentUser.image">
+                        <img *ngIf="currentUser && currentUser.image && currentUser.image != 'none' " [src]="baseUrl + currentUser.image">
 
                     </div>
                     <div [class.manager]="currentUser?.isManager" class="user-type" [textContent]="currentUser?.isManager ? 'Manager' : 'Admin'"></div>

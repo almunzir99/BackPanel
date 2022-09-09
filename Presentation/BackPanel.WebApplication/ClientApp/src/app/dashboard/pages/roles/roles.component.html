@@ -1,6 +1,6 @@
 <data-table (createClick)="onCreate()" (searchChange)="onSearch($event)" (sortChange)="onSortChange($event)"
     (pageChange)="onPageChange($event)" [total]="totalRecords" [loading]="getRequest == 1" [columns]="columns"
-    [rows]="data" [cell-template]="cellTemplate" title="Admins Table">
+    [rows]="data" [cell-template]="cellTemplate" title="Roles Table">
     <ng-template #cellTemplate let-rowData="rowData" let-data="cellData" let-col="colIndex" let-row="rowIndex">
         <ng-container [ngSwitch]="col">
             <ng-container *ngSwitchCase="2">
