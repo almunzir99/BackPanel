@@ -56,6 +56,8 @@ export class AuthenticationComponent implements OnInit {
     }
   }
   ngOnInit(): void {
+    if(this._authService.$currentUser.value)
+    this.router.navigate(['dashboard']); 
   }
 
 }
