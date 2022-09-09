@@ -1,1 +1,36 @@
-<p>profile works!</p>
+<div class="profile-page">
+    <div class="general-profile">
+        <div class="profile-image-container">
+            <div class="profile-image">
+                <div *ngIf="photoLoading" class="image-spinner">
+                    <mat-spinner [diameter]="60" class="white-spinner"></mat-spinner>
+                </div>
+                <div *ngIf="!photoLoading" class="image-container">
+                    <div  class="overlay">
+                        <mat-icon>add_a_photo</mat-icon>
+                        Update Photo
+                    </div>
+                  
+                    <img *ngIf="user?.image && user?.image != 'none'" class="image" [src]="baseUrl + user?.image" alt=""
+                        srcset="">
+                    <div *ngIf="!user?.image || user?.image == 'none'" class="placeholder">
+                        <img *ngIf="!user || user.image == null || user.image == 'none'" src="assets/images/avatar.png" alt="">
+                    </div>
+                </div>
+    
+            </div>
+            <div class="sub-text">
+                Allowed *.jpeg, *.jpg, *.png, *.gif
+                <br> max size of 3.1 MB
+            </div>
+    
+        </div>
+        <div class="basic-info-container">
+            <div class="row">
+                <form-builder title="Edit User Info" [show-cancel-button]="false" (formSubmit)="onFormSubmit($event)" [control-groups]="formGroups"></form-builder>
+            </div>
+        </div>
+</div>
+<dimmer-loading
+    *ngIf="dimRequest == 1">
+</dimmer-loading>
