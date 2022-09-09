@@ -206,3 +206,17 @@ mat-form-field {
    max-width: 95vw!important;
   }
 }
+.mat-tab-nav-bar, .mat-tab-header{
+  border-bottom: none!important;
+
+}
+.mat-tab-label{
+  opacity: 1!important;
+}
+.mat-tab-label-active{
+  color: map-get($map: $primary-color, $key: 500);
+  mat-icon{
+  color: map-get($map: $primary-color, $key: 500);
+
+  }
+}

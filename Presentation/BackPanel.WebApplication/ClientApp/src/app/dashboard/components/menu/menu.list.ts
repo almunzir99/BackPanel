@@ -56,18 +56,8 @@ export const MenuList: MenuGroup[] = [
             {
                 title: "Profile",
                 icon: "las la-user-cog",
-                children:[
-                    {
-                        title:"Basic Information",
-                        route: "/dashboard/profile/edit",
-                        icon:"las la-user-edit"
-                    },
-                    {
-                        title:"change Password",
-                        route: "/dashboard/profile/password",
-                        icon:"las la-user-shield"
-                    },
-                ]
+                route: "/dashboard/profile"
+                 
 
             },
             {

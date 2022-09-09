@@ -7,7 +7,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { MatTabsModule } from "@angular/material/tabs";
 
 @NgModule({
   declarations: [
@@ -18,8 +18,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     ProfileRoutingModule,
     SharedModule,
     MatIconModule,
-    MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTabsModule
   ]
 })
 export class ProfileModule { }

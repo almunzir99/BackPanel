@@ -4,13 +4,10 @@ import { ProfileComponent } from './profile.component';
 
 const routes: Routes = [
   {
-    path:'edit',
+    path:'',
     component:ProfileComponent
   },
-  {
-    path:'password',
-    component:ProfileComponent
-  }
+ 
 ];
 
 @NgModule({

@@ -16,8 +16,9 @@ import { FormBuilderGroup } from 'src/app/shared/components/form-builder/form-bu
 })
 export class ProfileComponent implements OnInit {
   user: Admin | null = null;
-  photoLoading = false;
   formGroups: FormBuilderGroup[] = [];
+  passwordFormGroups: FormBuilderGroup[] = [];
+
   dimRequest = RequestStatus.Initial;
   constructor(private _service: AuthService, @Inject("BASE_API_URL") public baseUrl: string, private _dialog: MatDialog) {
     this.user = _service.$currentUser.value;
@@ -27,11 +28,60 @@ export class ProfileComponent implements OnInit {
     user['image'] = !body['image'] ? 'none' : body['image'][0]['path'];
     this.updateProfile(user);
   }
+  onPasswordSubmit(body: any) {
+    
+    this.passwordChange(body['oldPassword'],body['newPassword']);
+  }
+  initPasswordChangeForm(){
+    this.passwordFormGroups = [
+      {
+
+        title: "Password Change",
+        controls: [
+
+          {
+            title: "Old Password",
+            name: "oldPassword",
+            icon: "key",
+            controlType: ControlTypes.PasswordInput,
+            width: "100%",
+            validators: [
+              Validators.required,
+              Validators.minLength(8),
+            ]
+          },
+          {
+            title: "New Password",
+            name: "newPassword",
+            icon: "key",
+            controlType: ControlTypes.PasswordInput,
+            width: "100%",
+            validators: [
+              Validators.required,
+              Validators.minLength(8),
+            ]
+          },
+          {
+            title: "New Password Confirmation",
+            name: "newPassword",
+            icon: "key",
+            controlType: ControlTypes.PasswordInput,
+            width: "100%",
+            validators: [
+              Validators.required,
+              Validators.minLength(8),
+            ]
+          },
+          
+        ]
+      }
+    ];
+  }
   initFormGroups() {
     this.formGroups = [
       {
 
-        title: undefined,
+        title: "Basic User Information",
         controls: [
           {
             title: "id",
@@ -107,11 +157,6 @@ export class ProfileComponent implements OnInit {
         this._service.$currentUser.value.phone = result.data.phone;
         this._service.$currentUser.value.email = result.data.email;
         this._service.$currentUser.value.image = result.data.image;
-
-
-
-
-
       }
       this._dialog.open<AlertMessageComponent, AlertMessage>(AlertMessageComponent, {
         data: {
@@ -126,8 +171,27 @@ export class ProfileComponent implements OnInit {
       this.dimRequest = RequestStatus.Failed;
     }
   }
+  async passwordChange(oldPassword:string,newPassword:string) {
+    this.dimRequest = RequestStatus.Loading;
+    try {
+      await firstValueFrom(this._service.changePassword(oldPassword,newPassword));
+      this.dimRequest = RequestStatus.Success;
+      this._dialog.open<AlertMessageComponent, AlertMessage>(AlertMessageComponent, {
+        data: {
+          type: MessageTypes.SUCCESS,
+          message: "Password Changed Successfully",
+          title: "Success"
+        }
+      })
+
+    } catch (error) {
+      console.log(error);
+      this.dimRequest = RequestStatus.Failed;
+    }
+  }
   ngOnInit(): void {
     this.initFormGroups();
+    this.initPasswordChangeForm();
   }
 
 }
