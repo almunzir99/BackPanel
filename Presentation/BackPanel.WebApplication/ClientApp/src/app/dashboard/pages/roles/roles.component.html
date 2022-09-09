@@ -47,20 +47,22 @@
             </thead>
             <tbody>
                 <tr *ngFor="let key of getRoleKeys()">
-                    <td>{{key}}</td>
-                    <td>
+                    <td data-label="Title">
+                        <div>{{key}}</div>
+                    </td>
+                    <td data-label="read">
                         <mat-checkbox [disabled]="templateOnlyShow" [(ngModel)]="role[key+'Permissions']['read']">
                         </mat-checkbox>
                     </td>
-                    <td>
+                    <td data-label="create">
                         <mat-checkbox [disabled]="templateOnlyShow" [(ngModel)]="role[key+'Permissions']['create']">
                         </mat-checkbox>
                     </td>
-                    <td>
+                    <td data-label="update">
                         <mat-checkbox [disabled]="templateOnlyShow" [(ngModel)]="role[key+'Permissions']['update']">
                         </mat-checkbox>
                     </td>
-                    <td>
+                    <td data-label="delete">
                         <mat-checkbox [disabled]="templateOnlyShow" [(ngModel)]="role[key+'Permissions']['delete']">
                         </mat-checkbox>
                     </td>

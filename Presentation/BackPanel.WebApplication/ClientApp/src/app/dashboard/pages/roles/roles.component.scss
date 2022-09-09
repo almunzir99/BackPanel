@@ -1,15 +1,19 @@
 @import 'variables';
-.mat-dialog-content{
+
+.mat-dialog-content {
     width: 60vw;
 }
-.mat-dialog-actions{
+
+.mat-dialog-actions {
     justify-content: flex-end;
     padding: 10px 0px;
-    button{
+
+    button {
         border-radius: 12px;
 
     }
 }
+
 .role-table {
     table-layout: fixed;
     border: 1px solid #eee;
@@ -29,7 +33,7 @@
 
 
     }
- 
+
     td:first-child {
         text-align: start;
     }
@@ -37,4 +41,45 @@
 
 
 
+}
+
+@media screen and (max-width:600px) {
+ 
+   
+    .role-table thead {
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+
+    .role-table tr {
+        border-bottom: 3px solid #ddd;
+        display: block;
+        margin-bottom: .625em;
+    }
+
+    .role-table td {
+        display: block;
+        font-size: 1em;
+        text-align: end!important;
+    }
+
+    .role-table td::before {
+        /*
+      * aria-label has no advantage, it won't be read inside a .role-table
+      content: attr(aria-label);
+      */
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .role-table td:last-child {
+        border-bottom: 0;
+    }
 }
