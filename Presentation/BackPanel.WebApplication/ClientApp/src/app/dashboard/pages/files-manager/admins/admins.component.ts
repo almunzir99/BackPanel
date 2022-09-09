@@ -267,19 +267,21 @@ export class AdminsComponent implements OnInit {
         title: "Create New Admin",
         controlsGroups: form,
         onSubmit : (result) => {
+          this._dialog.closeAll();
           var admin = result as Admin;
           admin.image = !result['image'] ? 'none' : result['image'][0]['path'];
           if (item) {
             this.update(admin);
           }
           else
-          this.update(admin);
+          this.create(admin);
         },
         onCancel:() => {
           this._dialog.closeAll();
 
         }
       },
+      hasBackdrop:false,
       panelClass: "form-builder-dialog",
     })
   }
@@ -331,7 +333,7 @@ export class AdminsComponent implements OnInit {
       }).afterClosed().subscribe(_ => this._dialog.closeAll())
       this.getData();
     } catch (error) {
-      this.dimRequest = RequestStatus.Failed;
+      // this.dimRequest = RequestStatus.Failed;
       console.log(error);
     }
   }
