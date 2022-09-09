@@ -1,18 +1,29 @@
+<spinner-placeholder class="placeholder" *ngIf="getRequest == 1"></spinner-placeholder>
+<offline-placeholder class="placeholder" *ngIf="getRequest == 3"></offline-placeholder>
 <div *ngIf="getRequest == 2" class="te-layout">
     <div class="header">
         <h2>Translation Editor</h2>
-        <button (click)="onLangaugeCreate()" mat-flat-button color="primary">
+        <button class="res-button" (click)="onLangaugeCreate()" mat-flat-button color="primary">
             <mat-icon>add</mat-icon>
-            Create Language
+            <span class="button-text">
+                Create Language
+            </span>
         </button>
     </div>
     <div class="te-body">
-        <div class="tree-section">
+        <div [class.closed]="closed" class="tree-section">
             <div class="tree-section-header">
-                <h3>Translation Tree</h3>
-                <button (click)="onParentCreate()" class="small-button" mat-flat-button color="accent">
+                <div>
+                    <button (click)="closed = true" class="menu-button" mat-icon-button color="primary">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    <h3>Translation Tree</h3>
+                </div>
+                <button (click)="onParentCreate()" class="small-button res-button"  mat-flat-button color="accent">
                     <mat-icon>add</mat-icon>
-                    Create parent node
+                    <span class="button-text">
+                        Create parent node
+                    </span>
                 </button>
             </div>
             <div class="tree">
@@ -21,7 +32,7 @@
                         <mat-expansion-panel-header>
                             <mat-icon style="margin-right:10px;" color="accent">folder</mat-icon>
                             {{parent}}
-                             
+
                         </mat-expansion-panel-header>
 
                         <mat-selection-list [multiple]="false">
@@ -41,17 +52,26 @@
                 </mat-accordion>
             </div>
         </div>
-        <div class="values-section">
+        <div [class.show]="closed" class="values-section">
             <div class="value-section-header">
-                <h3 [textContent]="selectedNode['parent'] ?? 'New Node Values'"></h3>
-                <div *ngIf="selectedNode['parent']" class="act-button">
-                    <button (click)="onParentUpdate()" class="small-button" mat-flat-button color="accent">
-                        <mat-icon>edit</mat-icon>
-                        Rename Parent
+                <div>
+                    <button (click)="closed = false" class="menu-button " mat-icon-button color="primary">
+                        <mat-icon>menu</mat-icon>
                     </button>
-                    <button (click)="onParentDelete()" class="small-button" mat-flat-button color="warn">
+                    <h3 [textContent]="selectedNode['parent'] ?? 'New Node Values'"></h3>
+                </div>
+                <div *ngIf="selectedNode['parent']" class="act-button">
+                    <button (click)="onParentUpdate()" class="small-button res-button" mat-flat-button color="accent">
+                        <mat-icon>edit</mat-icon>
+                        <span class="button-text">
+                            Rename Parent
+                        </span>
+                    </button>
+                    <button (click)="onParentDelete()" class="small-button res-button" mat-flat-button color="warn">
                         <mat-icon>delete</mat-icon>
-                        Remove Parent
+                        <span class="button-text">
+                            Remove Parent
+                        </span>
                     </button>
                 </div>
             </div>

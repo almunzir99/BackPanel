@@ -25,11 +25,13 @@
 	top: 0;
 	transition: 0.7s width ease;
 	height: 100%;
+	z-index: 900;
 
 	.header {
 		width: 100%;
 		position: absolute;
 		top: 0;
+		z-index: 899;
 	}
 }
 

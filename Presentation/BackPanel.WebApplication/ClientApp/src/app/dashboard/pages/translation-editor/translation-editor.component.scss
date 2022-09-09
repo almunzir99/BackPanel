@@ -1,7 +1,10 @@
 .te-layout {
-    button{
+    position: relative;
+    height: 100%;
+    button {
         border-radius: 8px;
     }
+
     .header {
         background-color: white;
         display: flex;
@@ -28,25 +31,31 @@
             background-color: white;
             border-radius: 7px;
             height: fit-content;
+
             .tree-section-header {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 margin: 15px 15px;
+                .menu-button{
+                    display: none;
 
+                }
                 h3 {
                     margin: 0px;
                     padding: 0px;
                 }
-                
+
             }
-            .tree{
+
+            .tree {
                 margin-top: 20px;
-                mat-list-option{
+
+                mat-list-option {
                     font-size: 14px;
                 }
-               
-           }
+
+            }
         }
 
         .values-section {
@@ -57,30 +66,41 @@
 
             background-color: white;
             border-radius: 7px;
-            .rich-text{
+
+            .rich-text {
                 margin: 20px 0px;
-                .label{
+
+                .label {
                     margin-bottom: 15px;
                 }
             }
-            .act-buttons{
+
+            .act-buttons {
                 display: flex;
                 justify-content: flex-end;
-                button:first-child{
+
+                button:first-child {
                     margin: 0px 10px;
                 }
-                
+
             }
-            .value-section-header{
+
+            .value-section-header {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 margin-bottom: 20px;
+                .menu-button{
+                    display: none;
+
+                }
                 h3 {
                     margin: 0px;
                     padding: 0px;
+
                 }
-                button{
+
+                button {
                     margin: 0px 5px;
                 }
             }
@@ -94,4 +114,96 @@
     padding: 0px 8px;
     line-height: 33px;
 }
- 
+
+@media screen and (max-width:720px) {
+    .te-layout {
+        .te-body {
+            .tree-section {
+                position: absolute;
+                width: 93%;
+                z-index: 200;
+                visibility: hidden;
+                opacity: 0;
+                transform: translateX(-100px);
+                height: auto;
+                overflow: auto;
+                animation: fade-in 0.3s ease-in-out 0s normal forwards;
+                .tree-section-header{
+                    .menu-button{
+                        display: inline-block;
+                    }
+                    h3{
+                        display: inline;
+                    }
+                }
+
+            }
+            .values-section{
+                display: none;
+                .value-section-header{
+                    .menu-button{
+                        display: inline-block;
+                    }
+                    h3{
+                        display: inline;
+                    }
+                }                
+            }
+            .values-section.show{
+                display: block;
+            }
+            .tree-section.closed {
+                height: 100%;
+                overflow: hidden;
+                animation: fade-away 0.3s ease-in-out 0s normal forwards;
+            }
+        }
+    }
+}
+.placeholder{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 58vh;
+}
+@media screen and (max-width:450px) {
+    .button-text{
+        display: none;
+    }
+    .res-button{
+        min-width: fit-content!important;
+        width: 40px!important;
+        padding: 0!important;
+        border-radius: 6px!important;
+    }
+}
+@keyframes fade-in {
+    from {
+        visibility: hidden;
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        transform: translateX(0px);
+        opacity: 1;
+        visibility: visible;
+        
+    }
+
+   
+}
+@keyframes fade-away {
+    from {
+        transform: translateX(0px);
+        opacity: 1;
+        visibility: visible;
+    }
+
+    to {
+        visibility: hidden;
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+}

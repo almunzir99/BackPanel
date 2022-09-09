@@ -21,6 +21,7 @@ export class TranslationEditorComponent implements OnInit {
   dimRequest = RequestStatus.Initial;
   editMode: 'new' | 'modify' = 'new';
   selectedNode: any = {};
+  closed = false; // toggle tree section on smaller devices
   constructor(private _service: TranslationEditorService, private _dialog: MatDialog) {
   }
   initializeSelectedNode(parent: string | null = null) {
@@ -30,6 +31,7 @@ export class TranslationEditorComponent implements OnInit {
     this.languages.forEach(lang => {
       this.selectedNode[lang] = null;
     });
+    this.closed = true;
 
   }
 
@@ -43,6 +45,7 @@ export class TranslationEditorComponent implements OnInit {
     this.languages.forEach(lang => {
       this.selectedNode[lang] = node[lang];
     });
+    this.closed = true;
   }
   onApply() {
     var values: any = {};
