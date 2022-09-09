@@ -64,6 +64,8 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
 
     public virtual async Task<TDto> Register(TDtoRequest user)
     {
+        if (user.Password == null)
+            throw new Exception("password shouldn't be null");
         var mappedUser = Mapper.Map<TDtoRequest, TEntity>(user);
         mappedUser.CreatedAt = DateTime.Now;
         mappedUser.LastUpdate = DateTime.Now;
@@ -93,9 +95,12 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
             throw new Exception("item is not found");
         Mapper.Map(item, result);
         result.LastUpdate = DateTime.Now;
-        HashingHelper.CreateHashPassword(item.Password!, out var pHash, out var pSalt);
-        result.PasswordHash = pHash;
-        result.PasswordSalt = pSalt;
+        if (item.Password != null)
+        {
+            HashingHelper.CreateHashPassword(item.Password, out var pHash, out var pSalt);
+            result.PasswordHash = pHash;
+            result.PasswordSalt = pSalt;
+        }
         await Repository.Complete();
         var mappedResult = Mapper.Map<TEntity, TDto>(result);
         return mappedResult;
@@ -181,7 +186,7 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
         if (user == null)
             throw new Exception("this user isn't available");
         var result = await _filesManagerService.UploadSingleFile("assets/images/users", file);
-        user.Photo = result.Path.Replace("//",$"/");
+        user.Photo = result.Path.Replace("//", $"/");
         await Repository.Complete();
         if (oldPhoto != null && _filesManagerService.FileExists(oldPhoto))
             _filesManagerService.DeleteFile(oldPhoto, "");
