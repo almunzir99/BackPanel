@@ -16,6 +16,8 @@ public static class RegisterWithDependencyInjection
         services.AddScoped<IRolesService, RolesService>();
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IMessageService, MessagesService>();
+        services.AddScoped<IStatisticsService, StatisticsService>();
+
     }
     public static void ImplementUriService(this IServiceCollection services,
         Func<IServiceProvider, IUriService> implementationFactory)
