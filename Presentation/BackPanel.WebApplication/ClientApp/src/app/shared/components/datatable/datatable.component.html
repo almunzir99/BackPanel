@@ -70,7 +70,7 @@
         <tbody *ngIf="!loading && rows.length == 0">
             <tr>
                 <td   [attr.colspan]="columns.length">
-                    <empty-placeholder [showButton]="showCreate" (buttonClick)="onCreateClick()"></empty-placeholder>
+                    <empty-placeholder [showButton]="showCreate && showHeader && showControls " (buttonClick)="onCreateClick()"></empty-placeholder>
                 </td>
             </tr>
         </tbody>
