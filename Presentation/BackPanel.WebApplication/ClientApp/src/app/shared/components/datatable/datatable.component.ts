@@ -22,7 +22,7 @@ export class DatatableComponent implements OnInit {
   @Input('show-create-button') showCreate = true;
   @Input('show-search') showSearch = true;
   @Input('show-export-button') showExport = true;
-
+  @Input ('break-word') breakWords = true; 
   @Output('pageChange') pageChangeEmitter = new EventEmitter<PageSpec>();
   @Output('sortChange') sortChangeEmitter = new EventEmitter<SortSpec>();
   @Output('searchChange') searchChangeEmitter = new EventEmitter<string>();

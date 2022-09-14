@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <table class="data-table">
+    <table   class="data-table">
         <thead>
             <tr>
                 <ng-container *ngFor="let column of columns">
@@ -67,7 +67,7 @@
                 </td>
             </tr>
         </tbody>
-        <tbody *ngIf="!loading && rows.length == 0">
+        <tbody  *ngIf="!loading && rows.length == 0">
             <tr>
                 <td   [attr.colspan]="columns.length">
                     <empty-placeholder [showButton]="showCreate && showHeader && showControls " (buttonClick)="onCreateClick()"></empty-placeholder>
@@ -78,7 +78,7 @@
         <tbody *ngIf="rows.length > 0 && !loading">
             <tr *ngFor="let row of rows; let rowIndex= index">
                 <ng-container *ngFor="let col of columns; let colIndex = index">
-                    <td [attr.data-label]="col.title" *ngIf="col.show">
+                    <td [class.break-words]="breakWords" [attr.data-label]="col.title" *ngIf="col.show">
                         <ng-container *ngIf="cellTemplate" [ngTemplateOutlet]="cellTemplate"
                             [ngTemplateOutletContext]="{colIndex:colIndex,rowIndex:rowIndex,cellData:row[col.prop],rowData:row}">
 
