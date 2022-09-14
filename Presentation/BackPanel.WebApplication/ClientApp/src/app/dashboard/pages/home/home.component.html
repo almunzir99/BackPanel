@@ -1,0 +1,90 @@
+<spinner-placeholder class="placeholder" *ngIf="getRequest == 1"></spinner-placeholder>
+<offline-placeholder class="placeholder" *ngIf="getRequest == 3"></offline-placeholder>
+<div *ngIf="getRequest == 2 && stats" class="home-layout">
+    <h1>Home</h1>
+    <div class="counter-cards">
+        <div *ngFor="let card of counterCards " class="counter-card">
+            <div [style.background-color]="card.color" class="icon-container">
+                <i [attr.class]="card.icon + ' icon'"></i>
+            </div>
+            <div class="info">
+                <div class="title">{{card.title}}</div>
+                <div [style.color]="card.color" class="count">{{card.count}}</div>
+            </div>
+            <i [style.color]="card.color" [attr.class]="card.icon + ' overlay'"></i>
+        </div>
+    </div>
+    <br>
+    <div class="tables">
+        <div style="flex: 3;" class="table-container">
+            <div class="table-container-header">
+                <h2>Messages Table</h2>
+                <button class="show-all-button" mat-flat-button color="primary">
+                    Show All
+                    <mat-icon>arrow_forward</mat-icon>
+                </button>
+            </div>
+            <div class="content">
+                <spinner-placeholder class="placeholder" *ngIf="messageRequest == 1"></spinner-placeholder>
+                <offline-placeholder class="placeholder" *ngIf="messageRequest == 3"></offline-placeholder>
+                <div  *ngIf="messageRequest == 2" class="message-list">
+                    <div *ngFor="let message of messages" class="message">
+                        <div class="icon-container">
+                            <i class="las la-envelope"></i>
+                        </div>
+                        <div class="info">
+                            <div class="row">
+                                <div class="name">{{message.fullName}}</div>
+                                <div class="date">{{formatDate(message.createdAt!)}}</div>
+                            </div>
+                            <div class="email">{{message.email}}</div>
+                            <div class="content">{{message.content.substr(0,70) + '...'}} <span class="show-more">show
+                                    more</span></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="flex: 4;" class="table-container">
+            <div class="table-container-header">
+                <h2>Users Activities</h2>
+                <button class="show-all-button" mat-flat-button color="primary">
+                    Show All
+                    <mat-icon>arrow_forward</mat-icon>
+                </button>
+            </div>
+            <div class="content">
+                <data-table [loading]="activitiesRequest == 1" [break-word]="false" [rows]="activities" [columns]="activitiesCols" [show-header]="false" [show-footer]="false"
+                    [cell-template]="cellTemplate">
+                    <ng-template #cellTemplate let-rowData="rowData" let-data="cellData" let-col="colIndex"
+                        let-row="rowIndex">
+                        <ng-container [ngSwitch]="col">
+                            <ng-container *ngSwitchCase="0">
+                                {{data?.username}}
+
+                            </ng-container>
+                            <ng-container *ngSwitchCase="3">
+                                <div 
+                                [class.red]="data == 'Delete'"
+                                [class.accent]="data == 'Update'"
+                                [class.primary]="data == 'Create'"
+                                class="action-container">
+                                    {{data}}
+
+                                </div>
+                            </ng-container>
+                            <ng-container  *ngSwitchDefault>
+                                <div style="text-align: center;">
+                                {{data}}
+                                    
+                                </div>
+                            </ng-container>
+
+                        </ng-container>
+                    </ng-template>
+                </data-table>
+            </div>
+        </div>
+    </div>
+</div>

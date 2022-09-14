@@ -27,6 +27,8 @@ export class AuthenticationComponent implements OnInit {
       var result = await firstValueFrom(this._authService.autthenticate(model));
       this._authService.setCurrentUser(result.data);
       this._authService.saveToken(result.data.token);
+      var notifications = await firstValueFrom(this._authService.getNotifications());
+      this._authService.$notifications.next(notifications.data);
       this.requestStatus = RequestStatus.Success;
       this.router.navigate(['/','dashboard']);
     } 

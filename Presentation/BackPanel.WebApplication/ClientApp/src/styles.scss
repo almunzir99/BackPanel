@@ -220,3 +220,8 @@ mat-form-field {
 
   }
 }
+.role-table{
+  .mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background{
+    background-color: map-get($map: $accent-color, $key: 500);
+  }
+}

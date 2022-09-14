@@ -1,0 +1,201 @@
+@import 'variables';
+
+.placeholder {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 58vh;
+}
+
+.home-layout {
+    padding: 20px;
+
+    h1 {
+        margin-left: 15px;
+        margin-bottom: 25px;
+    }
+
+    .counter-cards {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .counter-card {
+            height: 150px;
+            flex: 1;
+            min-width: 250px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            position: relative;
+            justify-content: center;
+            margin: 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.5s all ease;
+
+            .icon-container {
+                height: 60px;
+                width: 60px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0px 25px;
+
+                i.icon {
+                    font-size: 40px;
+                    color: white;
+                }
+            }
+
+            .title,
+            .count {
+                font-size: 24px;
+                font-weight: bold;
+                margin: 15px 0px;
+            }
+
+            .count {
+                font-size: 35px;
+            }
+
+            i.overlay {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                font-size: 120px;
+                opacity: 0.1;
+            }
+        }
+
+        .counter-card:hover {
+            transform: scale(1.05);
+        }
+    }
+
+    .tables {
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        .show-all-button{
+            border-radius: 10px;
+        }
+        .table-container {
+            flex: 1;
+            background-color: white;
+            border-radius: 15px;
+            margin: 15px;
+            min-height: 500px;
+        }
+
+        .table-container-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px;
+            flex: wrap;
+
+            * {
+                margin: 10px 0px;
+            }
+        }
+
+        .message-list {
+            margin-top: 20px;
+            border-top: 1px solid #f0f0f0a6;
+
+            .message {
+                display: flex;
+                align-items: flex-start;
+                padding: 15px;
+                border-bottom: 1px solid #f0f0f0a6;
+                font-size: 14px;
+                cursor: pointer;
+
+                .icon-container {
+                    height: 50px;
+                    width: 50px;
+                    background-color: map-get($map: $accent-color, $key: 100);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 50%;
+                    margin-right: 15px;
+
+                    i {
+                        font-size: 35px;
+                        color: map-get($map: $accent-color, $key: 500);
+
+                    }
+
+                }
+
+                .info {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+
+                    .row {
+                        flex: 1;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                    }
+
+                    .name {
+                        font-weight: 600;
+                    }
+
+                    .date {
+                        color: gray;
+                        font-style: italic;
+                        font-size: 13px;
+
+                    }
+
+                    .email {
+                        margin-bottom: 10px;
+                        color: #333;
+                    }
+                    .content{
+                        font-size: 13px;
+                        .show-more{
+                            color: gray;
+                            cursor: pointer;
+                        }
+                        .show-more:hover{
+                            text-decoration: underline;
+                        }
+                      
+                    }
+                }
+            }
+            .message:nth-child(odd){
+                background-color: $background-color;
+            }
+        }
+    }
+}
+.action-container{
+    height: 30px;
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: map-get($map: $primary-color, $key: 500);
+    background-color: map-get($map: $primary-color, $key: 50);
+    font-weight: 500;
+    border-radius: 7px;
+
+}
+.action-container.red{
+    background-color: #ffd8d5;
+    color: #F44236;
+}
+.action-container.accent{
+    color: map-get($map: $accent-color, $key: 500);
+    background-color: map-get($map: $accent-color, $key: 100);
+}
