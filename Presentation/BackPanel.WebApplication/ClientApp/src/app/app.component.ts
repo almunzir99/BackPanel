@@ -18,6 +18,9 @@ export class AppComponent {
       this.requestStatus = RequestStatus.Loading;
       var result = await firstValueFrom(this._authService.getCurrentUser());
       this._authService.setCurrentUser(result.data);
+      var notifications = await firstValueFrom(this._authService.getNotifications());
+      this._authService.$notifications.next(notifications.data);
+      console.log(notifications);
       this.requestStatus = RequestStatus.Success;
     } catch (error) {
       console.log(error);
