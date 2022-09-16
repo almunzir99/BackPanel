@@ -7,6 +7,10 @@ import { HeaderComponent } from './components/header/header.component';
 import { DashboardComponent } from './dashboard.component';
 import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { CoreModule } from '../core/core.module';
+
 
 
 @NgModule({
@@ -19,7 +23,10 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     DashboardRoutingModule, 
     MatRippleModule,
-    MatButtonModule
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule,
+    CoreModule
   ]
 })
 export class DashboardModule { }

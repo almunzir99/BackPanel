@@ -32,7 +32,9 @@ public class MessagesController : ApiController<Message, MessageDto,MessageDtoRe
             Message ="There is a new Message submitted, please check messages page",
             Module = "MESSAGES",
             Action = "CREATE",
-            Url = "/dashboard/messages"
+            Url = "/dashboard/messages",
+            CreatedAt = DateTime.Now,
+            LastUpdate = DateTime.Now,
         };
         await _notificationService.BroadCastNotification(notification,"admin");
         return await base.PostAsync(body);

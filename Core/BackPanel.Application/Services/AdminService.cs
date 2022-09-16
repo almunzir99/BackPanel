@@ -16,7 +16,7 @@ public class AdminService : UserBaseService<Admin, AdminDto, AdminDtoRequest>, I
     public AdminService(IMapper mapper, ISmtpService smtpService, IFilesManagerService filesManagerService, IRepositoryBase<Admin> repository, IRepositoryBase<Admin> adminsRepository, IWebConfiguration webConfiguration, IRepositoryBase<Activity> activityRepository) : base(mapper, smtpService, filesManagerService, repository, adminsRepository, webConfiguration)
     {
         repository.IncludeableDbSet = repository.IncludeableDbSet
-           .Include(c => c.Role).Include(c => c.Role);
+            .Include(c => c.Role);
         _activityRepository = activityRepository;
         _activityRepository.IncludeableDbSet = _activityRepository.IncludeableDbSet.Include(c => c.Admin); 
     }

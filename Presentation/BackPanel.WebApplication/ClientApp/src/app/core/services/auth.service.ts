@@ -45,6 +45,7 @@ export class AuthService {
     return this.http.get(`${this.moduleBaseUrl}notifications/unread?autoRead=true`) as Observable<ApiResponse<ApiNotification[]>>;
 
   }
+  
   saveToken(token: string) {
     localStorage.setItem(this.authTokenKey, token);
   }

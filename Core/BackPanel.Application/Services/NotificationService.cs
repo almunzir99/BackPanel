@@ -19,7 +19,7 @@ public class NotificationService : INotificationService
         _repositoryBase = repositoryBase;
         _mapper = mapper;
         _adminRepository = adminRepository;
-        _adminRepository.IncludeableDbSet.Include(c => c.Notifications);
+        _adminRepository.IncludeableDbSet = _adminRepository.IncludeableDbSet.Include(c => c.Notifications);
     }
 
     public async Task ClearNotificationAsync(int userId, string userType)
@@ -62,9 +62,9 @@ public class NotificationService : INotificationService
         return mappedNotifications;
     }
 
-    public async Task PushNotification(int userId, string userType, NotificationDto notification)
+    public async Task PushNotification(int userId,string userType, NotificationDto notification,UserEntityBase? target = null)
     {
-        UserEntityBase user = await GetUser(userId, userType);
+        UserEntityBase user = target ?? await GetUser(userId, userType);
         var mappedNotification = _mapper.Map<NotificationDto, Notification>(notification);
         user.Notifications.Add(mappedNotification);
         var result = _mapper.Map<Notification, NotificationDto>(mappedNotification);
@@ -107,21 +107,15 @@ public class NotificationService : INotificationService
         }
         else
             throw new Exception("userType should either customer, delivery or admin");
-
-        var mappedNotification = _mapper.Map<NotificationDto, Notification>(notification);
-
         foreach (var user in users)
         {
-            user.Notifications.Add(mappedNotification);
+            await PushNotification(user.Id,userType,notification,user);
         }
-
-        await _repositoryBase.Complete();
-        foreach (var user in users)
-        {
-            // await PushNotificationWithSignalR(user.Id, userType, notification);
-        }
+        // foreach (var user in users)
+        // {
+        //     await PushNotificationWithSignalR(user.Id, userType, notification);
+        // }
     }
-
     // private async Task PushNotificationWithSignalR(int userId, string userType, NotificationDto notification)
     // {
     //     var target = _connectionManager.GetUserConnections(userId, userType);

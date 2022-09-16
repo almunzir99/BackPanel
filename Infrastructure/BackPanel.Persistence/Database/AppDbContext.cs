@@ -42,7 +42,7 @@ public class AppDbContext : DbContext
         return admin;
 
     }
-    public DbSet<Admin> Users  => Set<Admin>();
+    public DbSet<Admin> Admins  => Set<Admin>();
     public DbSet<Message> Messages => Set<Message>();
     public DbSet<Role> Roles => Set<Role>();
     public DbSet<Permission> Permissions => Set<Permission>();

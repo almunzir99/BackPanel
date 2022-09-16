@@ -6,7 +6,7 @@ namespace BackPanel.Application.Interfaces;
 
 public interface INotificationService
 {
-    Task PushNotification(int userId, string userType, NotificationDto notification);
+    Task PushNotification(int userId, string userType, NotificationDto notification,UserEntityBase? target = null);
     Task<NotificationDto> ReadNotification(int id);
     Task BroadCastNotification(NotificationDto notification, string userType, IList<Func<UserEntityBase>>? conditions = null);
     Task<IList<NotificationDto>> GetUnreadNotification(int userId,string userType,bool autoRead);
