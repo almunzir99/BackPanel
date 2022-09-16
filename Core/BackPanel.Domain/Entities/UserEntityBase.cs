@@ -17,6 +17,6 @@ public class UserEntityBase : EntityBase
     public byte[]? PasswordHash { get; set; }
     [Required]
     public byte[]? PasswordSalt { get; set; }
-    public string? Photo { get; set; }
+    public string? Image { get; set; }
     public IList<Notification> Notifications { get; set; } = new List<Notification>();   
 }

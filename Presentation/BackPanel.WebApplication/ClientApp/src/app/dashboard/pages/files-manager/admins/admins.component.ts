@@ -217,7 +217,7 @@ export class AdminsComponent implements OnInit {
 
             controlType: ControlTypes.PasswordInput,
             width: "50%",
-            validators: [
+            validators: item ? [] : [
               Validators.required
             ]
 
@@ -226,7 +226,7 @@ export class AdminsComponent implements OnInit {
             title: "re-enter the password",
             name: "repassword",
             icon: "key",
-            validators: [
+            validators: item ? [] : [
               Validators.required
             ],
 

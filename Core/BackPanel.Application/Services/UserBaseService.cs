@@ -93,7 +93,10 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
         var result = await Repository.SingleAsync(id);
         if (result == null)
             throw new Exception("item is not found");
+        var oldPImage = result.Image;
         Mapper.Map(item, result);
+        if (item.Image == null || item.Image == "" || item.Image == "none")
+            result.Image = oldPImage;
         result.LastUpdate = DateTime.Now;
         if (item.Password != null)
         {
@@ -182,15 +185,15 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
     public async Task<string> ChangePersonalPhoto(int id, IWebFormFile file)
     {
         var user = await Repository.SingleAsync(c => c.Id == id);
-        var oldPhoto = user.Photo;
+        var oldPhoto = user.Image;
         if (user == null)
             throw new Exception("this user isn't available");
         var result = await _filesManagerService.UploadSingleFile("assets/images/users", file);
-        user.Photo = result.Path.Replace("//", $"/");
+        user.Image = result.Path.Replace("//", $"/");
         await Repository.Complete();
         if (oldPhoto != null && _filesManagerService.FileExists(oldPhoto))
             _filesManagerService.DeleteFile(oldPhoto, "");
-        return user.Photo;
+        return user.Image;
     }
 
     protected override string GetSearchPropValue(TEntity obj)
