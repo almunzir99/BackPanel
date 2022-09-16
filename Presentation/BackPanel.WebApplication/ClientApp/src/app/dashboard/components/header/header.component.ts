@@ -11,16 +11,30 @@ export class HeaderComponent implements OnInit {
   @Output("toggleClick") toggleClickEventEmitter = new EventEmitter<boolean>();
   @Input("toggle") toggle = false;
   opened = false;
-  constructor(private _authService: AuthService,private router:Router) { }
+  isFullScreen = false;
+  constructor(private _authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-  } 
-  onToggle(){
+  }
+  onToggle() {
     this.toggle = !this.toggle;
     this.toggleClickEventEmitter.emit(this.toggle);
   }
-  logout(){
-      this._authService.logout();
-      this.router.navigate(['authentication']);
+  logout() {
+    this._authService.logout();
+    this.router.navigate(['authentication']);
+  }
+  openFullScreen() {
+    var body = document.getElementById("main-body");
+    if (body) {
+      if (!this.isFullScreen) {
+        body.requestFullscreen();
+        this.isFullScreen = true;
+      }
+      else {
+        document.exitFullscreen();
+        this.isFullScreen = false;
+      }
+    }
   }
 }

@@ -1,3 +1,4 @@
+@import 'variables';
 .layout-container {
 	display: flex;
 	flex-wrap: nowrap;
@@ -44,6 +45,7 @@
 	margin-top: 70px;
 	height: calc(100% - 70px);
 	overflow: auto;
+	background-color: $background-color;
 }
 
 .shrink-page {
