@@ -23,7 +23,7 @@ export class AdminsService {
     }
     return this.http.get(`${this.moduleBaseUrl}`,{params:params}) as Observable<PagedResponse<Admin[]>>;
   }
-  getActivities(pageIndex = 1, pageSize = 10) : Observable<PagedResponse<Activity[]>> {
+  getActivities(pageIndex = 1, pageSize = 5) : Observable<PagedResponse<Activity[]>> {
     var params:any = {
       PageIndex:pageIndex,
       PageSize:pageSize,
