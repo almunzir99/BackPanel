@@ -13,8 +13,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { MatNativeDateModule, MAT_RIPPLE_GLOBAL_OPTIONS, RippleGlobalOptions } from '@angular/material/core';
 import { QuillModule } from 'ngx-quill';
 import { environment } from 'src/environments/environment';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 
 const globalRippleConfig: RippleGlobalOptions = {
@@ -39,6 +41,8 @@ const globalRippleConfig: RippleGlobalOptions = {
     MatInputModule,
     MatIconModule,
     MatNativeDateModule,
+    MatDialogModule,
+    AngularSvgIconModule.forRoot(),
     QuillModule.forRoot()
 
   ],
@@ -49,6 +53,9 @@ const globalRippleConfig: RippleGlobalOptions = {
     { provide: MAT_DIALOG_DATA, useValue: undefined },
     {
       provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true
     }
 
 

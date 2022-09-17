@@ -35,26 +35,7 @@ export class AuthenticationComponent implements OnInit {
     
     catch (error) {
       this.requestStatus = RequestStatus.Failed;
-      if(error instanceof HttpErrorResponse && error.status == 400)
-      {
-        var apiError =  error.error as ApiResponse<any>;
-        this._dialog.open<AlertMessageComponent, AlertMessage>(AlertMessageComponent, {
-          data: {
-            type: MessageTypes.ERROR,
-            message: `${apiError.message}`,
-            title: "Failed"
-          }
-        })
-      }
-      else{
-        this._dialog.open<AlertMessageComponent, AlertMessage>(AlertMessageComponent, {
-          data: {
-            type: MessageTypes.ERROR,
-            message: "Sorry, Operation Failed Please try again",
-            title: "Failed"
-          }
-        })
-      }
+       
     }
   }
   ngOnInit(): void {
