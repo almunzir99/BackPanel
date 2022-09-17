@@ -20,12 +20,18 @@ title="Admins Table">
                 {{data?.title}}
             </ng-container>
             <ng-container *ngSwitchCase="8">
+               <div class="table-act-buttons">
+                <button  matRipple class="table-act-button primary">
+                    <i class="las la-clipboard-list"></i>
+                    Activities
+                </button>
                 <button (click)="onUpdate(rowData)" matRipple class="table-act-button accent">
                     <i class="las la-edit"></i>
                 </button>
                 <button (click)="onDeleteClick(rowData.id)" matRipple class="table-act-button warn">
                     <i class="las la-trash"></i>
                 </button>
+               </div>
             </ng-container>
             <ng-container *ngSwitchDefault>
                 {{data}}

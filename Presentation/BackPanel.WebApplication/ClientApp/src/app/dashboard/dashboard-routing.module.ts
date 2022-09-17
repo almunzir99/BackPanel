@@ -18,7 +18,7 @@ const routes: Routes = [
     },
     {
       path: 'admins',
-      loadChildren: () => import('./pages/files-manager/admins/admins.module').then(c => c.AdminsModule)
+      loadChildren: () => import('./pages/admins/admins.module').then(c => c.AdminsModule)
     },
     {
       path: 'roles',
