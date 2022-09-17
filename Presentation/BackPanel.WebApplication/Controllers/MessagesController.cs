@@ -1,3 +1,4 @@
+using BackPanel.Application.Attributes.Permissions;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOsRequests;
 using BackPanel.Application.Interfaces;
@@ -22,7 +23,7 @@ public class MessagesController : ApiController<Message, MessageDto,MessageDtoRe
 
     public override string PermissionTitle => "MessagesPermissions";
 
-    // [Permission(false, PermissionTypes.CREATE)]
+    [Permission(false, PermissionTypes.CREATE)]
     [AllowAnonymous]
     [HttpPost]
     public override async Task<IActionResult> PostAsync([FromBody] MessageDtoRequest body){

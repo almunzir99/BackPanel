@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using BackPanel.Application.Attributes.Permissions;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
 using BackPanel.Application.DTOs.Wrapper;
@@ -47,7 +48,7 @@ public abstract class
             return BadRequest(response);
         }
     }
-
+    [Permission(true, PermissionTypes.CREATE)]
     [HttpPost("Register")]
     public virtual async Task<IActionResult> Register(TDtoRequest body)
     {

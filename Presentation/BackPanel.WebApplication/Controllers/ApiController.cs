@@ -1,4 +1,5 @@
 using System.Text;
+using BackPanel.Application.Attributes.Permissions;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
 using BackPanel.Application.DTOs.Wrapper;
@@ -28,9 +29,9 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
         Service = service;
         UriService = uriService;
     }
-
+    [Permission(true, PermissionTypes.READ)]
     [HttpGet]
-    public virtual  async Task<IActionResult> GetAsync([FromQuery]PaginationFilter? filter = null, [FromQuery] string? title = "", [FromQuery] string? orderBy = "LastUpdate", [FromQuery] bool ascending = true)
+    public virtual async Task<IActionResult> GetAsync([FromQuery] PaginationFilter? filter = null, [FromQuery] string? title = "", [FromQuery] string? orderBy = "LastUpdate", [FromQuery] bool ascending = true)
     {
         var validFilter = (filter == null)
             ? new PaginationFilter()
@@ -43,6 +44,7 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
         var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
         return BadRequest(response);
     }
+    [Permission(true, PermissionTypes.READ)]
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> SingleAsync(int id)
     {
@@ -60,10 +62,12 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
             return BadRequest(response);
         }
     }
+    [Permission(true, PermissionTypes.CREATE)]
+
     [HttpPost]
     public virtual async Task<IActionResult> PostAsync(TDtoRequest body)
     {
-        
+
         try
         {
             int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
@@ -82,6 +86,7 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
             return BadRequest(response);
         }
     }
+    [Permission(true, PermissionTypes.UPDATE)]
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> PutAsync(int id, TDtoRequest body)
     {
@@ -101,8 +106,8 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
             return BadRequest(response);
         }
     }
+    [Permission(true, PermissionTypes.DETELE)]
     [HttpDelete("{id}")]
-
     public virtual async Task<IActionResult> DeleteAsync(int id)
     {
         try
@@ -121,6 +126,7 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
             return BadRequest(response);
         }
     }
+    [Permission(true, PermissionTypes.UPDATE)]
     [HttpPatch("{id}")]
     public virtual async Task<IActionResult> PatchAsync(int id, [FromBody] JsonPatchDocument<TEntity> body)
     {
@@ -138,7 +144,8 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
         }
     }
     [HttpGet("export/csv")]
-    public virtual async Task<IActionResult> ExportToCsv() {
+    public virtual async Task<IActionResult> ExportToCsv()
+    {
         var content = await this.Service.ExportToCsv();
         var result = new FileContentResult(Encoding.UTF8.GetBytes(content),
             "text/csv")

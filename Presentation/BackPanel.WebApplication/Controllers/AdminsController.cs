@@ -1,3 +1,4 @@
+using BackPanel.Application.Attributes.Permissions;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
 using BackPanel.Application.DTOs.Wrapper;
@@ -15,6 +16,7 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
         base(service, uriService, notificationService)
     {
     }
+    [Permission(true, PermissionTypes.READ)]
 
     [HttpGet]
     public override async Task<IActionResult> GetAsync([FromQuery] PaginationFilter? filter = null,
@@ -29,6 +31,7 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
 
         return actionResult;
     }
+    [Permission(true, PermissionTypes.READ)]
     [HttpGet("activities")]
     public async Task<IActionResult> GetActivitiesAsync([FromQuery] PaginationFilter? filter = null)
     {
@@ -53,6 +56,7 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
         }
 
     }
+    [Permission(true, PermissionTypes.READ)]
      [HttpGet("{userId}/activities")]
     public async Task<IActionResult> GetAdminActivitiesAsync(int userId,[FromQuery] PaginationFilter? filter = null)
     {
