@@ -1,1 +1,46 @@
-<p>messages works!</p>
+<data-table 
+(searchChange)="onSearch($event)" 
+(sortChange)="onSortChange($event)" 
+(pageChange)="onPageChange($event)" 
+[total]="totalRecords" 
+[loading]="getRequest == 1" 
+[columns]="columns" 
+[rows]="data" 
+[cell-template]="cellTemplate"
+[show-create-button]="false" 
+title="Messages Table">
+    <ng-template #cellTemplate let-rowData="rowData" let-data="cellData" let-col="colIndex" let-row="rowIndex">
+        <ng-container [ngSwitch]="col">
+            <ng-container *ngSwitchCase="4">
+                <button (click)="onShowMessageClick(rowData)" matRipple class="table-act-button text accent">
+                    <i class="las la-envelope-open"></i>
+                    Show Message
+                </button>
+            </ng-container>
+            <ng-container *ngSwitchCase="6">
+                <button (click)="onPrint(rowData)" matRipple class="table-act-button">
+                    <i class="las la-print"></i>
+                </button>
+                <button (click)="onDeleteClick(rowData.id)" matRipple class="table-act-button warn">
+                    <i class="las la-trash"></i>
+                </button>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+                    {{data}}
+            </ng-container>
+            
+        </ng-container>
+    </ng-template>
+</data-table>
+
+<ng-template #showMessageDialog>
+    <h2 mat-dialog-title>Message from {{selectedShowMessage?.fullName}}</h2>
+    <mat-dialog-content style="max-width: 600px;">
+        {{selectedShowMessage?.content}}
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button (click)="closeDialog()" mat-flat-button>Close</button>
+    </mat-dialog-actions>
+</ng-template>
+<dimmer-loading *ngIf="dimRequest == 1">
+</dimmer-loading>

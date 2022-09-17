@@ -23,4 +23,7 @@ export class MessagesService {
     }
     return this.http.get(`${this.moduleBaseUrl}`,{params:params}) as Observable<PagedResponse<Message[]>>;
   }
+  delete(id: number) {
+    return this.http.delete(`${this.moduleBaseUrl}${id}`);
+  }
 }
