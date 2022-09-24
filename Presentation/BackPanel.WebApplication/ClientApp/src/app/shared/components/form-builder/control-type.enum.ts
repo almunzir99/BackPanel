@@ -13,4 +13,5 @@ export enum ControlTypes {
   RichTextEditor="rich-edit", 
   MapPicker="map-picker", 
   TableBuilder="table-builder",
+  ColorsPicker = "colors-picker"
 }

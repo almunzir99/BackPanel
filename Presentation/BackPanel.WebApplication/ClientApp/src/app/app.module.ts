@@ -17,6 +17,7 @@ import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { MAT_COLOR_FORMATS, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 
 
 const globalRippleConfig: RippleGlobalOptions = {
@@ -56,7 +57,9 @@ const globalRippleConfig: RippleGlobalOptions = {
     },
     {
       provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true
-    }
+    },
+    { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }
+    
 
 
   ],

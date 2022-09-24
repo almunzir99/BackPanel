@@ -121,6 +121,13 @@
     ora "5.4.1"
     rxjs "6.6.7"
 
+"@angular-material-components/color-picker@7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@angular-material-components/color-picker/-/color-picker-7.0.1.tgz#f69d0e3601c975a26ece9781655277c67979bbdc"
+  integrity sha512-BgJmZqdzk+FFcHlpwRnti38reXYF52aq9cFoB3fKqs1nS45N8Hz1zM1ycQy3rBSjObogtdBSC8T7kFF1cqpzRg==
+  dependencies:
+    tslib "^2.3.0"
+
 "@angular/animations@~13.3.5":
   version "13.3.11"
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-13.3.11.tgz#13a7afa3d7d7076874f6ac62da5158ec4ae009f0"

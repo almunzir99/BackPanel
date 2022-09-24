@@ -23,6 +23,7 @@ import { AlertMessageComponent } from './components/alert-message/alert-message.
 import { LocalFilesPickerComponent } from './components/local-files-picker/local-files-picker.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NgxMatColorPickerModule } from '@angular-material-components/color-picker';
  
 
 @NgModule({ 
@@ -52,7 +53,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatDialogModule,
     MatSnackBarModule,
     QuillModule.forRoot(),
-    AngularSvgIconModule.forRoot()
+    AngularSvgIconModule.forRoot(),
+    NgxMatColorPickerModule,
 
   ],
   exports:[
