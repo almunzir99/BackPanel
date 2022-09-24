@@ -51,6 +51,8 @@ const globalRippleConfig: RippleGlobalOptions = {
     { provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: globalRippleConfig },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
     { provide: "BASE_API_URL", useValue: environment.baseUrl },
+    { provide: "DIRECTION", useValue: environment.direction },
+
     { provide: MAT_DIALOG_DATA, useValue: undefined },
     {
       provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true

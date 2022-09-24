@@ -55,7 +55,10 @@
                     }
 
                 }
-
+                .float-cog.rtl{
+                    right: unset;
+                    left: 20px;
+                }
                 .user-image-container {
                     height: 75px;
                     width: 75px;

@@ -12,7 +12,7 @@ export class MenuComponent implements OnInit {
 
   menuList = MenuList;
   currentUser:Admin | null = null;
-  constructor(private _authService:AuthService,@Inject("BASE_API_URL") public baseUrl: string) {
+  constructor(private _authService:AuthService,@Inject("BASE_API_URL") public baseUrl: string,@Inject('DIRECTION') public dir:string) {
     this.currentUser = _authService.$currentUser.value;
    }
 

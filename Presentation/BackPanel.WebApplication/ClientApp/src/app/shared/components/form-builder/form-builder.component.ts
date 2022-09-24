@@ -20,7 +20,7 @@ export class FormBuilderComponent implements OnInit {
   @Output("tableDelete") tableDeleteEvent = new EventEmitter<any>();
   formGroup: FormGroup = new FormGroup({});
   controlTypes = ControlTypes;
-  constructor(@Inject(MAT_DIALOG_DATA) public data:FormBuilderPropsSpec) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data:FormBuilderPropsSpec,@Inject('DIRECTION') public direction:string) {
       if(data)
       {
         if(data.controlsGroups) this.controlsGroups = data.controlsGroups;

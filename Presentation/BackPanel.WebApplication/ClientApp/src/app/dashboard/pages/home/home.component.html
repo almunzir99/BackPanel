@@ -11,7 +11,7 @@
                 <div class="title">{{card.title}}</div>
                 <div [style.color]="card.color" class="count">{{card.count}}</div>
             </div>
-            <i [style.color]="card.color" [attr.class]="card.icon + ' overlay'"></i>
+            <i [dir]="dir == 'rtl' ? 'rtl' : 'ltr'" [style.color]="card.color" [attr.class]="card.icon + ' overlay'"></i>
         </div>
     </div>
     <br>
@@ -21,7 +21,7 @@
                 <h2>Messages Table</h2>
                 <button class="show-all-button" mat-flat-button color="primary">
                     Show All
-                    <mat-icon>arrow_forward</mat-icon>
+                    <mat-icon [textContent]="dir == 'rtl' ? 'arrow_backward' : 'arrow_forward'" ></mat-icon>
                 </button>
             </div>
             <div class="content">
@@ -29,7 +29,7 @@
                 <offline-placeholder class="placeholder" *ngIf="messageRequest == 3"></offline-placeholder>
                 <div  *ngIf="messageRequest == 2" class="message-list">
                     <div *ngFor="let message of messages" class="message">
-                        <div class="icon-container">
+                        <div [dir]="dir == 'rtl' ? 'rtl' : 'ltr'" class="icon-container">
                             <i class="las la-envelope"></i>
                         </div>
                         <div class="info">
@@ -51,7 +51,7 @@
                 <h2>Users Activities</h2>
                 <button class="show-all-button" mat-flat-button color="primary">
                     Show All
-                    <mat-icon>arrow_forward</mat-icon>
+                    <mat-icon [textContent]="dir == 'rtl' ? 'arrow_backward' : 'arrow_forward'" ></mat-icon>
                 </button>
             </div>
             <div class="content">

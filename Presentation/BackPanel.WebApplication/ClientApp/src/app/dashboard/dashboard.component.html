@@ -1,9 +1,8 @@
-<div class="layout-container">
-    <!-- <fui-dimmer class="dim-overlay" (click)="close()" [(isDimmed)]="toggle" [isClickable]="false"></fui-dimmer> -->
+<div [class.rtl]="dir == 'rtl'" class="layout-container">
     <div [class.closed-menu]="!toggle" class="menu-section">
         <dahboard-menu></dahboard-menu>
     </div>
-    <div [class.shrink-page]="toggle" class="main-section">
+    <div  [class.shrink-page]="toggle" class="main-section">
         <div class="header">
             <dashboard-header [toggle]="toggle" (toggleClick)="toggle = $event" ></dashboard-header>
 

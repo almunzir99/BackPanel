@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { RequestStatus } from './core/models/request-status.enum';
@@ -10,7 +10,7 @@ import { AuthService } from './core/services/auth.service';
 })
 export class AppComponent {
   requestStatus = RequestStatus.Initial;
-  constructor(private _authService:AuthService,private router:Router) {
+  constructor(private _authService:AuthService,private router:Router,@Inject('DIRECTION') public dir:string) {
     this.getCurrentUser();
   }
   async getCurrentUser() {

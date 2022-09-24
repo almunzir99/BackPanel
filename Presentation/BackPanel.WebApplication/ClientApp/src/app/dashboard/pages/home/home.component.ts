@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Message } from 'src/app/core/models/message.model';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';
@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   activitiesCols: Column[] = [];
   messages: Message[] = [];
   activities: Activity[] = [];
-  constructor(private _service: StatisticsService, private _adminService:AdminsService, private _messageSerivce: MessagesService) {
+  constructor(private _service: StatisticsService, private _adminService:AdminsService, private _messageSerivce: MessagesService,@Inject('DIRECTION') public dir:string) {
 
   }
   async getData() {

@@ -1,4 +1,4 @@
-<div [class.dialog-mode]="data" class="form-container">
+<div [dir]="direction =='rtl' ? 'rtl' : 'ltr'" [class.dialog-mode]="data" class="form-container">
     <h1>{{title}}</h1>
     <form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
         <div class="form-inputs">
@@ -13,7 +13,7 @@
                          control.controlType == controlTypes.PasswordInput ||
                          control.controlType == controlTypes.Url ||
                          control.controlType == controlTypes.NumberInput" class="control-container">
-                            <mat-form-field>
+                            <mat-form-field >
                                 <mat-label>{{control.title}}</mat-label>
                                 <input [type]="control.controlType.toString()!" [attr.placeholder]="control.title"
                                     [formControlName]="control.name!" matInput type="text">

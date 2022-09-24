@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
-  baseUrl:'https://localhost:7104'
+  baseUrl:'https://localhost:7104',
+  direction:'ltr'
 
 };

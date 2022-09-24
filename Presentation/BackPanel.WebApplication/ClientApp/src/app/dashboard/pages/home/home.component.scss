@@ -69,6 +69,11 @@
                 font-size: 120px;
                 opacity: 0.1;
             }
+            i[dir='rtl'].overlay {
+                right: unset;
+                left: 10px;
+            }
+             
         }
 
         .counter-card:hover {
@@ -132,6 +137,10 @@
 
                     }
 
+                }
+                [dir='rtl'].icon-container{
+                    margin-right: unset;
+                    margin-left: 15px;
                 }
 
                 .info {

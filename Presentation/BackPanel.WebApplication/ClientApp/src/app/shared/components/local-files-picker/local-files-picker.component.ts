@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FileModel } from 'src/app/core/models/file.models';
 import { FilesManagerComponent, FilesManagerSpec } from 'src/app/dashboard/pages/files-manager/files-manager.component';
@@ -11,7 +11,7 @@ import { FilesManagerComponent, FilesManagerSpec } from 'src/app/dashboard/pages
 export class LocalFilesPickerComponent implements OnInit {
   inputTextContent = "Files picked here";
   @Output('filesPicked') filesPickedEventEmitter = new EventEmitter<FileModel[]>();
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog,@Inject('DIRECTION') public dir:string) { }
   onPickFiles() {
     this.dialog.open<FilesManagerComponent, FilesManagerSpec, any>(FilesManagerComponent, {
       data: {
