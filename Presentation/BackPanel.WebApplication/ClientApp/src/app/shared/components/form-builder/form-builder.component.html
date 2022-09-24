@@ -13,13 +13,24 @@
                          control.controlType == controlTypes.PasswordInput ||
                          control.controlType == controlTypes.Url ||
                          control.controlType == controlTypes.NumberInput" class="control-container">
-                            <mat-form-field >
+                            <mat-form-field>
                                 <mat-label>{{control.title}}</mat-label>
                                 <input [type]="control.controlType.toString()!" [attr.placeholder]="control.title"
                                     [formControlName]="control.name!" matInput type="text">
                                 <mat-icon *ngIf="control.icon" matPrefix>{{control.icon}}</mat-icon>
-                                <mat-hint
-                                    *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].invalid">
+                                <mat-hint class="error-hint"
+                                    *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].hasError('required')">
+                                    the field {{control.name}} is Required
+                                </mat-hint>
+                                <mat-hint class="error-hint"
+                                    *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].hasError('minlength')">
+                                    the minimum length field {{control.name}} is
+                                    {{formGroup.controls[control.name!].errors!.minlength.requiredLength}}
+                                </mat-hint>
+                                <mat-hint class="error-hint"
+                                    *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].hasError('maxlength')">
+                                    the maximum length field {{control.name}} is
+                                    {{formGroup.controls[control.name!].errors!.maxlength.requiredLength}}
                                 </mat-hint>
                             </mat-form-field>
                         </div>
@@ -30,11 +41,17 @@
                                 <mat-label>{{control.title}}</mat-label>
                                 <mat-select [formControlName]="control.name!"
                                     [multiple]="control.controlType == controlTypes.MultiSelection">
-                                    <mat-option *ngFor="let option of control.data" [value]="option[control.valueProp!]">
+                                    <mat-option *ngFor="let option of control.data"
+                                        [value]="option[control.valueProp!]">
                                         {{option[control.labelProp!]}}
                                     </mat-option>
                                 </mat-select>
                                 <mat-icon *ngIf="control.icon" matPrefix>{{control.icon}}</mat-icon>
+                                <mat-hint class="error-hint"
+                                *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].hasError('required')">
+                                the field {{control.name}} is Required
+                            </mat-hint>
+                            
                             </mat-form-field>
                         </div>
                         <!-- 3. checkbox -->
@@ -43,7 +60,7 @@
                             <mat-checkbox [formControlName]="control.name!">{{control.title}}</mat-checkbox>
                         </div>
                         <!-- 4. Date Picker -->
-                        <div   [style.width]="control.width" *ngIf="control.controlType == controlTypes.DatePicker"
+                        <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.DatePicker"
                             class="control-container">
                             <mat-form-field>
                                 <mat-label>{{control.title}}</mat-label>
@@ -51,6 +68,11 @@
                                 <mat-hint>MM/DD/YYYY</mat-hint>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
+                                <mat-hint class="error-hint"
+                                *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].hasError('required')">
+                                the field {{control.name}} is Required
+                            </mat-hint>
+ 
                             </mat-form-field>
                         </div>
                         <!-- 5. Rich Editor -->
@@ -62,16 +84,17 @@
                         <!-- 6. Local Files Picker -->
                         <div style="padding: 15px;padding-left: 0px;" [style.width]="control.width"
                             *ngIf="control.controlType == controlTypes.LocalFilePicker" class="control-container">
-                            <local-files-picker (filesPicked)="onFilesPicked(control.name!,$event)"></local-files-picker>
+                            <local-files-picker (filesPicked)="onFilesPicked(control.name!,$event)">
+                            </local-files-picker>
                         </div>
                         <!-- 6. Colors Picker -->
-                        <div   [style.width]="control.width" *ngIf="control.controlType == controlTypes.ColorsPicker"
+                        <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.ColorsPicker"
                             class="control-container">
                             <mat-form-field>
                                 <mat-label>{{control.title}}</mat-label>
                                 <input matInput [ngxMatColorPicker]="picker" [formControlName]="control.name!">
                                 <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
-                                <ngx-mat-color-picker #picker  ></ngx-mat-color-picker>
+                                <ngx-mat-color-picker #picker></ngx-mat-color-picker>
                             </mat-form-field>
                         </div>
                     </ng-container>
@@ -79,8 +102,9 @@
             </div>
         </div>
         <div class="act-buttons">
-            <button  type="submit" mat-flat-button color="primary">Submit</button>
-            <button *ngIf="showCancelButton" (click)="onCancel($event)" type="button" mat-flat-button color="accent" >Cancel</button>
+            <button [disabled]="formGroup.invalid" type="submit" mat-flat-button color="primary">Submit</button>
+            <button *ngIf="showCancelButton" (click)="onCancel($event)" type="button" mat-flat-button
+                color="accent">Cancel</button>
 
         </div>
     </form>

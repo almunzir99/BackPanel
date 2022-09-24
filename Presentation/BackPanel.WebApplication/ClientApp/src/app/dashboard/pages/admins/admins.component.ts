@@ -206,7 +206,6 @@ export class AdminsComponent implements OnInit {
             value: item ? item.email : undefined,
             validators: [
               Validators.required
-
             ]
 
           },
@@ -243,6 +242,10 @@ export class AdminsComponent implements OnInit {
             valueProp: "id",
             width: "100%",
             value: item ? item.roleId : undefined,
+            validators: [
+              Validators.required
+            ]
+
 
           },
           {
