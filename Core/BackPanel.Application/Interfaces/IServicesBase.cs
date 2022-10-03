@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
 using BackPanel.Domain.Entities;
@@ -16,6 +17,6 @@ public interface IServicesBase<TEntity, TDto, in TDtoRequest> where TEntity : En
     Task<TDto> UpdateAsync(int id, JsonPatchDocument<TEntity> newItem);
     Task DeleteAsync(int id);
     Task<string> ExportToCsv();
-    Task<int> GetTotalRecords();
+    Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null);
     Task CreateActivity(int userId, int rowId, string action);
 }

@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using System.Text;
 using AutoMapper;
 using BackPanel.Application.DTOs;
@@ -15,7 +16,7 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
     protected readonly IMapper Mapper;
     private readonly IRepositoryBase<Admin> _adminsRepository;
 
-    protected ServiceBase(IMapper mapper,IRepositoryBase<TEntity> repository,
+    protected ServiceBase(IMapper mapper, IRepositoryBase<TEntity> repository,
         IRepositoryBase<Admin> adminsRepository)
     {
         Repository = repository;
@@ -98,7 +99,7 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
         return data.ToString();
     }
 
-    public virtual async Task<int> GetTotalRecords() => await Repository.GetTotalRecords();
+    public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null) => await Repository.GetTotalRecords(predicate);
 
     public virtual async Task<IList<TDto>> ListAsync(PaginationFilter? filter, IList<Func<TEntity, bool>>? conditions,
         string? search = "", string orderBy = "LastUpdate", bool ascending = true)
@@ -108,6 +109,7 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
             ? new PaginationFilter()
             : new PaginationFilter(filter.PageIndex, filter.PageSize);
         var list = await Repository.ListAsync();
+        list = OrderBy(list, orderBy, ascending);
         if (conditions != default)
         {
             foreach (var condition in conditions)
@@ -123,14 +125,13 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
             .Skip((validFilter.PageIndex - 1) * validFilter.PageSize)
             .Take(validFilter.PageSize).ToList();
         var result = Mapper.Map<IList<TEntity>, IList<TDto>>(list);
-        result = OrderBy(result, orderBy, ascending);
         return result;
     }
 
-    protected List<TDto> OrderBy(IList<TDto> list, string prop, Boolean ascending)
+    protected List<TEntity> OrderBy(IList<TEntity> list, string prop, Boolean ascending)
     {
         //Get ordering Prop
-        var type = typeof(TDto);
+        var type = typeof(TEntity);
         var orderProp = type.GetProperties().SingleOrDefault(c => c.Name.ToLower() == prop.ToLower());
         if (orderProp == null)
             throw new Exception("ordering property isn't available");
@@ -168,7 +169,8 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
     protected virtual string GetSearchPropValue(TEntity obj)
     {
         var type = typeof(TEntity);
-        var searchProp = type.GetProperties().SingleOrDefault(c => c.Name.ToLower() == "title");
+        var searchProp = type.GetProperties().SingleOrDefault(c => c.Name.ToLower() == "name");
         var propValue = searchProp?.GetValue(obj)?.ToString();
         return propValue ?? String.Empty;
-    } }
+    }
+}

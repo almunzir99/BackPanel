@@ -1,11 +1,9 @@
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using BackPanel.Application.Helpers;
 using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
 using BackPanel.Persistence.Database;
 using BackPanel.Persistence.Database.Extensions;
-using BackPanel.Shared.Helpers;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,10 +41,14 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
     {
         var target = await _includeableDbSet.SingleOrDefaultAsync(c => c.Id == id);
         if (target == null)
-            throw new System.Exception("The target Item doesn't Exist");
+            throw new Exception("The target Item doesn't Exist");
         DbSet.Remove(target);
     }
 
+    public virtual void Delete<T>(T target) where  T: EntityBase
+    {
+        Context.Remove(target);
+    }
     public virtual async Task<IList<TEntity>> ListAsync()
     {
         var list = await _includeableDbSet.ToListAsync();
@@ -54,9 +56,9 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
     }
 
 
-    public virtual async Task<int> GetTotalRecords()
+    public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null)
     {
-        return await DbSet.CountAsync();
+        return(predicate != null) ? await DbSet.CountAsync(predicate) : await DbSet.CountAsync();
     }
 
     public async Task<IList<TEntity>> SearchAsync(Func<TEntity, bool> predicate)
@@ -111,7 +113,7 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         }
         catch (DbUpdateException exception)
         {
-            throw new System.Exception(exception.Decode());
+            throw new Exception(exception.Decode());
         }
     }
 }
