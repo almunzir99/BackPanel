@@ -9,5 +9,4 @@ public class UserDtoBase : DtoBase
     public string? Phone { get; set; }
     public string? Image { get; set; }
     public string? Token { get; set; }
-    public IList<NotificationDto> Notifications { get; set; } = new List<NotificationDto>();
 }

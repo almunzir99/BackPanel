@@ -36,7 +36,6 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
     public override async Task<TDto> SingleAsync(int id)
     {
         var result = await base.SingleAsync(id);
-        result.Notifications = result.Notifications.OrderByDescending(c => c).ToList();
         return result;
     }
 
@@ -58,7 +57,6 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
         var secretKey = _webConfiguration.GetSecretKey();
         var token = JwtHelper.GenerateToken(mappedUser, UserType, secretKey, role);
         mappedUser.Token = token;
-        mappedUser.Notifications = mappedUser.Notifications.OrderByDescending(c => c.LastUpdate).ToList();
         return mappedUser;
     }
 
