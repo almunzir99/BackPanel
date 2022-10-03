@@ -41,6 +41,8 @@ public class MapperHelper
                     {
                         if (sourcePropValue == propValue)
                             continue;
+                        if(sourcePropValue is int && (sourcePropValue as int?) == 0)
+                            continue;
                         prop.SetValue(dest, sourcePropValue);
                     }
                     else if (typeof(IEnumerable).IsAssignableFrom(sourceProp.PropertyType))
