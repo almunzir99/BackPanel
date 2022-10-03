@@ -38,7 +38,7 @@ public class AdminService : UserBaseService<Admin, AdminDto, AdminDtoRequest>, I
             ? new PaginationFilter()
             : new PaginationFilter(filter.PageIndex, filter.PageSize);
         var list = await _activityRepository.ListAsync();
-        list = list.Where(c => c.AdminId == c.AdminId).OrderByDescending(c => c.CreatedAt).ToList();
+        list = list.Where(c => c.AdminId == adminId).OrderByDescending(c => c.CreatedAt).ToList();
         list = list.Skip((validFilter.PageIndex - 1) * validFilter.PageSize)
          .Take(validFilter.PageSize).ToList();
         var result = Mapper.Map<IList<Activity>, IList<ActivityDto>>(list);
