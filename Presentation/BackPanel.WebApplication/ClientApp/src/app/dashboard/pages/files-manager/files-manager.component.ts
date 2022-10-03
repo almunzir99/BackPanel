@@ -113,6 +113,10 @@ export class FilesManagerComponent implements OnInit {
       this.pathSegmentsStack = this.pathSegmentsStack.slice(0, index + 1);
     this.getDirectoriesAndFiles();
   }
+  navigateBack(){
+    this.pathSegmentsStack.pop();
+    this.getDirectoriesAndFiles();
+  }
   openCreateDirectoryDialog() {
     var formControlsGroup: FormBuilderGroup[] = [
       {

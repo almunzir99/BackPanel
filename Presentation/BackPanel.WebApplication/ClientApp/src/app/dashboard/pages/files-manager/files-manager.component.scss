@@ -2,21 +2,24 @@
 
 .fm-layout {
     margin: 20px;
-    margin-bottom:0 ;
+    margin-bottom: 0;
     height: 93%;
     overflow: hidden;
     position: relative;
-     .selection-act-button{
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            button{
-                margin: 0px 10px;
-                border-radius: 10px;
 
-            }
+    .selection-act-button {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+        button {
+            margin: 0px 10px;
+            border-radius: 10px;
+
         }
-    .placeholder{
+    }
+
+    .placeholder {
         height: 100%;
         display: flex;
         align-items: center;
@@ -24,13 +27,29 @@
         flex-direction: column;
         min-height: 58vh;
     }
+
     .fm-navbar {
-        padding:  5px 15px;
+        padding: 5px 15px;
         background-color: white;
         display: flex;
         align-items: center;
         justify-content: space-between;
         border-radius: 10px;
+
+        .back-nav-button {
+            height: 45px;
+            width: 45px;
+            border-radius: 10px;
+            background-color: $background-color;
+            align-items: center;
+            justify-content: center;
+            display: none;
+            cursor: pointer;
+
+            i {
+                font-size: 24px;
+            }
+        }
 
         .navs {
             color: #444;
@@ -96,13 +115,15 @@
         height: calc(100% - 100px);
         min-height: calc(80vh - 100px);
         overflow-y: auto;
+
         .node-containers {
             display: flex;
             flex-wrap: wrap;
             height: 100%;
+
             .node-container {
                 height: 180px;
-                width: 180px;
+                min-width: 180px;
                 background-color: white;
                 display: flex;
                 align-items: center;
@@ -111,11 +132,12 @@
                 border-radius: 7px;
                 margin-right: 20px;
                 margin-bottom: 20px;
-
+                flex: 1;
                 position: relative;
                 cursor: pointer;
 
-                .node-icon,.file-image {
+                .node-icon,
+                .file-image {
                     height: 80px;
                     width: 80px;
                 }
@@ -146,15 +168,55 @@
                     top: 5px;
                     right: 5px;
                 }
-                mat-checkbox{
+
+                mat-checkbox {
                     position: absolute;
                     top: 10px;
                     left: 10px;
                 }
-                
+
 
             }
         }
     }
 
+}
+
+@media screen and (max-width:780px) {
+    .fm-layout {
+        .fm-navbar {
+
+            .act-buttons {
+                button {
+                    height: 45px;
+                    width: 45px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    i {
+                        margin: 0px;
+                    }
+
+                    .button-text {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width:580px) {
+    .fm-layout {
+        .fm-navbar {
+            .navs {
+                display: none;
+            }
+
+            .back-nav-button {
+                display: flex;
+            }
+        }
+    }
 }

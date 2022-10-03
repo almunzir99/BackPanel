@@ -1,5 +1,8 @@
 <div class="fm-layout">
     <div class="fm-navbar">
+        <div matRipple (click)="navigateBack()" class="back-nav-button">
+            <i class="las la-angle-left"></i>
+        </div>
         <div class="navs">
             <span (click)="navigateByLink(-1)" class="home-nav nav"> <i class="las la-home"></i> Home </span>
             <span class="sep"></span>
@@ -12,16 +15,22 @@
         <div class="act-buttons">
             <button *ngIf="currentMoveContentItem" (click)="contentPaste()" mat-stroked-button color="primary">
                 <mat-icon>content_paste</mat-icon>
-                Paste Here
+                <span class="button-text">
+                    Paste Here
+                </span>
             </button>
             <button (click)="openCreateDirectoryDialog()" mat-flat-button color="accent">
                 <mat-icon>create_new_folder</mat-icon>
-                Create Folder
+                <span class="button-text">
+                    Create Folder
+                </span>
             </button>
             <button mat-flat-button color="primary" type="button">
                 <label for="uploadFilesInput">
                     <mat-icon>cloud_upload</mat-icon>
-                    Upload Files
+                    <span class="button-text">
+                        Upload Files
+                    </span>
                 </label>
             </button>
             <input name="uploadFilesInput" id="uploadFilesInput" style="display: none;" type="file" multiple
@@ -30,7 +39,7 @@
 
         </div>
     </div>
-    <div  class="fm-content-layout">
+    <div class="fm-content-layout">
         <spinner-placeholder class="placeholder" *ngIf="getStatus == 1"></spinner-placeholder>
         <offline-placeholder class="placeholder" *ngIf="getStatus == 3"></offline-placeholder>
         <empty-placeholder class="placeholder" [showButton]="false"
@@ -72,18 +81,20 @@
             </div>
             <div [style.opacity]="currentMoveContentItem && currentMoveContentItem.action == 'cut' && currentMoveContentItem.name == file.title ? '0.6' : '1' "
                 *ngFor="let file of files" class="node-container">
-                <img class="file-image" [src]="file.uri" *ngIf="(file.contentType == '.png' || file.contentType == '.jpg' || file.contentType == '.jif' || file.contentType == '.svg' || file.contentType == '.tif') else default" alt="">
+                <img class="file-image" [src]="file.uri"
+                    *ngIf="(file.contentType == '.png' || file.contentType == '.jpg' || file.contentType == '.jif' || file.contentType == '.svg' || file.contentType == '.tif') else default"
+                    alt="">
                 <ng-template #default>
-                <svg-icon  src="assets/vectors/file.svg" [applyClass]="true" class="node-icon"></svg-icon>
+                    <svg-icon src="assets/vectors/file.svg" [applyClass]="true" class="node-icon"></svg-icon>
                 </ng-template>
                 <div class="title">{{file.title}}</div>
                 <div class="info">
                     <div class="size">{{bytesToMB(file.size)}} MB</div>
-                    <div class="sep"></div> 
+                    <div class="sep"></div>
                     <div class="date">{{formatDate(file.createdAt)}}</div>
                 </div>
                 <mat-checkbox *ngIf="selectionMode" (change)="onSelectionChange($event.checked,file)"></mat-checkbox>
-                <div class="menu-button"> 
+                <div class="menu-button">
                     <button [mat-menu-trigger-for]="contextMenu" mat-icon-button>
                         <mat-icon>more_horiz</mat-icon>
                     </button>
@@ -125,7 +136,7 @@
         <button (click)="onSubmitClick()" mat-flat-button color="primary">
             Submit
         </button>
-       
+
     </div>
 </div>
 
