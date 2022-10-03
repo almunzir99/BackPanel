@@ -3,10 +3,13 @@
         <div *ngIf="showHeaderTitle" class="info">
             <h1 class="title">{{title}}</h1>
         </div>
-        <div *ngIf="showControls" class="controls-bar">
+        <div  *ngIf="controlTemplate" class="controls-bar">
+            <ng-container [ngTemplateOutlet]="controlTemplate"></ng-container>
+        </div>
+        <div *ngIf="showControls && !controlTemplate" class="controls-bar">
             <div class="filters">
                 <mat-form-field *ngIf="showSearch" (input)="onSearchChange($event)" [floatLabel]="'auto'">
-                    <input type="text" matInput placeholder="search...">
+                    <input type="text" matInput placeholder="Search...">
                     <mat-icon matPrefix>search</mat-icon>
                 </mat-form-field>
             </div>
@@ -43,7 +46,7 @@
         </div>
     </div>
 
-    <table   class="data-table">
+    <table  [style.table-layout]="fixed ? 'fixed' : 'initial'" class="data-table">
         <thead>
             <tr>
                 <ng-container *ngFor="let column of columns">
@@ -93,7 +96,7 @@
     </table>
     <div *ngIf="showFooter" class="datatable-footer">
         <div></div>
-        <mat-paginator (page)="onPageChange($event)" [length]="total" [pageSize]="PageSize"
+        <mat-paginator  (page)="onPageChange($event)" [length]="total" [pageSize]="PageSize"
             [pageSizeOptions]="[5, 10, 25, 50 ,100]" aria-label="Select page">
         </mat-paginator>
 

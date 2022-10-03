@@ -15,14 +15,18 @@ export class DatatableComponent implements OnInit {
   @Input('page-size') PageSize: number = 10;
   @Input('total') total: number = 0;
   @Input('loading') loading = false;
-  @Input('show-header') showHeader = true; 
+  @Input('show-header') showHeader = true;
   @Input('show-footer') showFooter = true;
   @Input('show-header-title') showHeaderTitle = true;
   @Input('show-controls') showControls = true;
   @Input('show-create-button') showCreate = true;
   @Input('show-search') showSearch = true;
   @Input('show-export-button') showExport = true;
-  @Input ('break-word') breakWords = true; 
+  @Input('break-word') breakWords = true;
+  @Input('fixed') fixed = false;
+  @Input("controls-template") controlTemplate?: TemplateRef<any>;
+
+
   @Output('pageChange') pageChangeEmitter = new EventEmitter<PageSpec>();
   @Output('sortChange') sortChangeEmitter = new EventEmitter<SortSpec>();
   @Output('searchChange') searchChangeEmitter = new EventEmitter<string>();
@@ -39,9 +43,9 @@ export class DatatableComponent implements OnInit {
     this.configureColumnsResizer();
   }
   /******************* Configure Events Binding ****************** */
-  onSortChange(prop: string,sortable:boolean) {
-    if(!sortable)
-    return;
+  onSortChange(prop: string, sortable: boolean) {
+    if (!sortable)
+      return;
     if (prop == this.sortProp) {
       this.ascending = !this.ascending;
     }
@@ -55,13 +59,13 @@ export class DatatableComponent implements OnInit {
     this.createClickEmitter.emit();
   }
   onPageChange(event: PageSpec) {
-    console.log(event);
+    if(event.pageIndex)
+    event.pageIndex = event.pageIndex + 1;
     this.pageChangeEmitter.emit(event);
   }
-  onExportClick(type:string)
-  {
+  onExportClick(type: string) {
     this.exportClickEmitter.emit(type);
-    
+
   }
 
   /******************* Configure Table Resizer ****************** */
@@ -102,8 +106,8 @@ export interface SortSpec {
   ascending: boolean;
 }
 export interface PageSpec {
-  previousPageIndex?: number; 
-  pageIndex?: number; 
-  pageSize?: number; 
+  previousPageIndex?: number;
+  pageIndex?: number;
+  pageSize?: number;
   length?: number;
 }
