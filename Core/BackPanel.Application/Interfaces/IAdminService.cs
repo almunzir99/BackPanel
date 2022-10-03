@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
 using BackPanel.Application.DTOsRequests;
@@ -9,7 +10,7 @@ public interface IAdminService : IUserBaseService<Admin, AdminDto, AdminDtoReque
 {
     Task<IList<ActivityDto>> ActivitiesListAsync(PaginationFilter? filter);
      Task<IList<ActivityDto>> AdminActivitiesListAsync(int adminId, PaginationFilter? filter);
-     Task<int> GetActivitiesCountAsync();
+    Task<int> GetActivitiesTotalRecords(Expression<Func<Activity, bool>>? predicate = null);     
 
     
 }

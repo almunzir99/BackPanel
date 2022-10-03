@@ -21,7 +21,7 @@ title="Admins Table">
             </ng-container>
             <ng-container *ngSwitchCase="8">
                <div style="max-width: 120px;" class="table-act-buttons">
-                <button  matRipple class="table-act-button primary">
+                <button [routerLink]="'activities/'+ rowData.id"  matRipple class="table-act-button primary">
                     <i class="las la-clipboard-list"></i>
                     Activities
                 </button>

@@ -41,7 +41,7 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
                       ? new PaginationFilter()
                       : new PaginationFilter(pageIndex: filter.PageIndex, pageSize: filter.PageSize);
             var result = await Service.ActivitiesListAsync(filter);
-            var totalRecords = await Service.GetTotalRecords();
+            var totalRecords = await Service.GetActivitiesTotalRecords();
             if (Request.Path.Value != null)
                 return Ok(PaginationHelper.CreatePagedResponse(result,
                     validFilter, UriService, totalRecords, Request.Path.Value));
@@ -66,7 +66,7 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
                       ? new PaginationFilter()
                       : new PaginationFilter(pageIndex: filter.PageIndex, pageSize: filter.PageSize);
             var result = await Service.AdminActivitiesListAsync(userId,filter);
-            var totalRecords = await Service.GetTotalRecords();
+            var totalRecords = await Service.GetActivitiesTotalRecords(c => c.AdminId == userId);
             if (Request.Path.Value != null)
                 return Ok(PaginationHelper.CreatePagedResponse(result,
                     validFilter, UriService, totalRecords, Request.Path.Value));

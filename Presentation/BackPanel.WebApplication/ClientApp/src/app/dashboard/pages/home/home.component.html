@@ -49,7 +49,7 @@
         <div style="flex: 4;" class="table-container">
             <div class="table-container-header">
                 <h2>Users Activities</h2>
-                <button class="show-all-button" mat-flat-button color="primary">
+                <button [routerLink]="['/','dashboard','admins','activities']" class="show-all-button" mat-flat-button color="primary">
                     Show All
                     <mat-icon [textContent]="dir == 'rtl' ? 'arrow_backward' : 'arrow_forward'" ></mat-icon>
                 </button>

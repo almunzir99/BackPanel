@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using AutoMapper;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
@@ -18,7 +19,7 @@ public class AdminService : UserBaseService<Admin, AdminDto, AdminDtoRequest>, I
         repository.IncludeableDbSet = repository.IncludeableDbSet
             .Include(c => c.Role);
         _activityRepository = activityRepository;
-        _activityRepository.IncludeableDbSet = _activityRepository.IncludeableDbSet.Include(c => c.Admin); 
+        _activityRepository.IncludeableDbSet = _activityRepository.IncludeableDbSet.Include(c => c.Admin);
     }
     public async Task<IList<ActivityDto>> ActivitiesListAsync(PaginationFilter? filter)
     {
@@ -32,7 +33,7 @@ public class AdminService : UserBaseService<Admin, AdminDto, AdminDtoRequest>, I
         var result = Mapper.Map<IList<Activity>, IList<ActivityDto>>(list);
         return result;
     }
-     public async Task<IList<ActivityDto>> AdminActivitiesListAsync(int adminId, PaginationFilter? filter)
+    public async Task<IList<ActivityDto>> AdminActivitiesListAsync(int adminId, PaginationFilter? filter)
     {
         var validFilter = (filter == null)
             ? new PaginationFilter()
@@ -44,7 +45,8 @@ public class AdminService : UserBaseService<Admin, AdminDto, AdminDtoRequest>, I
         var result = Mapper.Map<IList<Activity>, IList<ActivityDto>>(list);
         return result;
     }
-    public async Task<int> GetActivitiesCountAsync() => await _activityRepository.GetTotalRecords();
+    public  async Task<int> GetActivitiesTotalRecords(Expression<Func<Activity, bool>>? predicate = null) => await _activityRepository.GetTotalRecords(predicate);
+
 
 
     protected override string UserType => "ADMIN";
