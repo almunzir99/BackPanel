@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { Admin } from 'src/app/core/models/admin.model';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { GeneralService } from 'src/app/core/services/general.service';
 import { AlertMessage, AlertMessageComponent, MessageTypes } from 'src/app/shared/components/alert-message/alert-message.component';
 import { ControlTypes } from 'src/app/shared/components/form-builder/control-type.enum';
 import { FormBuilderGroup } from 'src/app/shared/components/form-builder/form-builder-group.model';
@@ -18,10 +19,16 @@ export class ProfileComponent implements OnInit {
   user: Admin | null = null;
   formGroups: FormBuilderGroup[] = [];
   passwordFormGroups: FormBuilderGroup[] = [];
-
   dimRequest = RequestStatus.Initial;
-  constructor(private _service: AuthService, @Inject("BASE_API_URL") public baseUrl: string, private _dialog: MatDialog) {
+  theme:'light' | 'dark' = 'light';
+  constructor(
+    private _service: AuthService, 
+    @Inject("BASE_API_URL") public baseUrl: string, 
+    private _dialog: MatDialog,
+    _generalService:GeneralService) {
     this.user = _service.$currentUser.value;
+    _generalService.$theme.subscribe(value => this.theme = value);
+
   }
   onFormSubmit(body: any) {
     var user = body;

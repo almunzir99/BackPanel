@@ -1,6 +1,6 @@
 <spinner-placeholder class="placeholder" *ngIf="getRequest == 1"></spinner-placeholder>
 <offline-placeholder class="placeholder" *ngIf="getRequest == 3"></offline-placeholder>
-<div *ngIf="getRequest == 2" class="te-layout">
+<div [class.dark-mode]="theme == 'dark'" *ngIf="getRequest == 2" class="te-layout">
     <div class="header">
         <h2>Translation Editor</h2>
         <button class="res-button" (click)="onLangaugeCreate()" mat-flat-button color="primary">

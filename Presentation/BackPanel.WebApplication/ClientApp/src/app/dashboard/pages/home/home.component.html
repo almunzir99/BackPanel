@@ -1,6 +1,6 @@
 <spinner-placeholder class="placeholder" *ngIf="getRequest == 1"></spinner-placeholder>
 <offline-placeholder class="placeholder" *ngIf="getRequest == 3"></offline-placeholder>
-<div *ngIf="getRequest == 2 && stats" class="home-layout">
+<div [class.dark-mode]="theme == 'dark'" *ngIf="getRequest == 2 && stats" class="home-layout">
     <h1>Home</h1>
     <div class="counter-cards">
         <div *ngFor="let card of counterCards " class="counter-card">

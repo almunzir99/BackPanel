@@ -37,10 +37,11 @@
     td:first-child {
         text-align: start;
     }
-
-
-
-
+}
+.role-table.dark-mode{
+    td,th{
+        background-color: $secondary-dark-background-color;
+    }
 }
 
 @media screen and (max-width:600px) {

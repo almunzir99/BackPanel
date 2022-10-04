@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiNotification } from 'src/app/core/models/api-notification.model';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -6,6 +6,7 @@ import * as dayjs from 'dayjs';
 import * as relativeTime from 'dayjs/plugin/relativeTime';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';
 import { firstValueFrom } from 'rxjs';
+import { GeneralService } from 'src/app/core/services/general.service';
 dayjs.extend(relativeTime)
 @Component({
   selector: 'dashboard-header',
@@ -20,13 +21,24 @@ export class HeaderComponent implements OnInit {
   unread = 0;
   notifications: ApiNotification[] = [];
   readRequest = RequestStatus.Initial;
-  constructor(private _authService: AuthService, private router: Router) { }
+  theme:'light' | 'dark' = 'light';
+  constructor(private _authService: AuthService, private router: Router,private _generalService:GeneralService) {
+    _generalService.$theme.subscribe(value => this.theme = value);
+
+   }
 
   ngOnInit(): void {
     this._authService.$notifications.subscribe(res => {
       this.notifications = res;
       this.unread = res.filter(c => c.read == false).length;
     })
+  }
+  toggleTheme(){
+    if(this.theme == 'dark')
+    this._generalService.$theme.next('light');
+    else
+    this._generalService.$theme.next('dark')
+
   }
   onToggle() {
     this.toggle = !this.toggle;

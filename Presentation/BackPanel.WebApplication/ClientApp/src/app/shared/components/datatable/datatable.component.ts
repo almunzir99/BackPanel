@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { GeneralService } from 'src/app/core/services/general.service';
 import { Column } from './column.model';
 
 @Component({
@@ -25,17 +26,18 @@ export class DatatableComponent implements OnInit {
   @Input('break-word') breakWords = true;
   @Input('fixed') fixed = false;
   @Input("controls-template") controlTemplate?: TemplateRef<any>;
-
-
   @Output('pageChange') pageChangeEmitter = new EventEmitter<PageSpec>();
   @Output('sortChange') sortChangeEmitter = new EventEmitter<SortSpec>();
   @Output('searchChange') searchChangeEmitter = new EventEmitter<string>();
   @Output('createClick') createClickEmitter = new EventEmitter();
   @Output('exportClick') exportClickEmitter = new EventEmitter<string>();
+  theme:'light' | 'dark' = 'light';
 
   sortProp = "";
   ascending = false;
-  constructor() { }
+  constructor(_generalService:GeneralService) {
+    _generalService.$theme.subscribe(value => this.theme = value);
+   }
   ngOnInit(): void {
     this.sortProp = this.columns[0].prop;
   }

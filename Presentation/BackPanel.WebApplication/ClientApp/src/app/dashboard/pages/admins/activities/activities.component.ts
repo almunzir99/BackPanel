@@ -5,6 +5,7 @@ import { Activity } from 'src/app/core/models/activity.model';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';
 import { PagedResponse } from 'src/app/core/models/wrappers/paged-response.model';
 import { AdminsService } from 'src/app/core/services/admins.service';
+import { GeneralService } from 'src/app/core/services/general.service';
 import { Column } from 'src/app/shared/components/datatable/column.model';
 import { PageSpec } from 'src/app/shared/components/datatable/datatable.component';
 
@@ -22,8 +23,11 @@ export class ActivitiesComponent implements OnInit {
   totalPages = 1;
   getRequest = RequestStatus.Initial;
   id:number | null = null;
-  constructor(private _service:AdminsService,private route:ActivatedRoute) { 
+  theme:'light' | 'dark' = 'light';
+  constructor(private _service:AdminsService,private route:ActivatedRoute,_generalService:GeneralService) { 
     this.id = this.route.snapshot.params['id'];
+    _generalService.$theme.subscribe(value => this.theme = value);
+
   }
   async getData() {
     try {

@@ -4,6 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { Permission } from 'src/app/core/models/permission.model';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';
 import { Role } from 'src/app/core/models/role.model';
+import { GeneralService } from 'src/app/core/services/general.service';
 import { RolesService } from 'src/app/core/services/roles.service';
 import { AlertMessage, AlertMessageComponent, MessageTypes } from 'src/app/shared/components/alert-message/alert-message.component';
 import { Column } from 'src/app/shared/components/datatable/column.model';
@@ -27,10 +28,13 @@ export class RolesComponent implements OnInit {
   getRequest = RequestStatus.Initial;
   dimRequest = RequestStatus.Initial;
   templateOnlyShow:boolean = false; // wether to show only permissions table or  from
-
+  theme:'light' | 'dark' = 'light';
   @ViewChild("roleForm") roleForm?: TemplateRef<any>;
   role: any;
-  constructor(private _service: RolesService, private _dialog: MatDialog,) { }
+  constructor(private _service: RolesService, private _dialog: MatDialog,_generalService:GeneralService) { 
+    _generalService.$theme.subscribe(value => this.theme = value);
+
+  }
   ngOnInit(): void {
     this.initRole();
     this.initColumns();

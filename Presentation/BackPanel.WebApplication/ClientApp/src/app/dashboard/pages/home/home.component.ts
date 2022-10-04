@@ -9,6 +9,7 @@ import { Column } from 'src/app/shared/components/datatable/column.model';
 import * as dayjs from 'dayjs';
 import { Activity } from 'src/app/core/models/activity.model';
 import { AdminsService } from 'src/app/core/services/admins.service';
+import { GeneralService } from 'src/app/core/services/general.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -23,7 +24,14 @@ export class HomeComponent implements OnInit {
   activitiesCols: Column[] = [];
   messages: Message[] = [];
   activities: Activity[] = [];
-  constructor(private _service: StatisticsService, private _adminService:AdminsService, private _messageSerivce: MessagesService,@Inject('DIRECTION') public dir:string) {
+  theme:'light' | 'dark' = 'light';
+  constructor(
+    private _service: StatisticsService, 
+    private _adminService:AdminsService, 
+    private _messageSerivce: MessagesService,
+    @Inject('DIRECTION') public dir:string, 
+  _generalService:GeneralService) {
+    _generalService.$theme.subscribe(value => this.theme = value);
 
   }
   async getData() {

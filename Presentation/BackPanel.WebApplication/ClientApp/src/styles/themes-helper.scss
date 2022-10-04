@@ -1,0 +1,23 @@
+@function modify-background($theme, $background-color) {
+    // Replace the background in the color object's background palette.
+    $theme-color: map-get($theme, color);
+    $color-background-palette: map-get($theme-color, background);
+    $color-background-palette: map-merge($color-background-palette, (background: $background-color));
+    $color-background-palette: map-merge($color-background-palette, (raised-button: $background-color));
+    $color-background-palette: map-merge($color-background-palette, (dialog: $background-color));
+    $color-background-palette: map-merge($color-background-palette, (card: $background-color));
+    // Replace the background in the background palette.
+    $background-palette: map-get($theme, background);
+    $background-palette: map-merge($background-palette, (background: $background-color));
+    $background-palette: map-merge($background-palette, (raised-button: $background-color));
+    $background-palette: map-merge($background-palette, (dialog: $background-color));
+    $background-palette: map-merge($background-palette, (card: $background-color));
+    // Merge the changes into a new theme.
+    $modified-theme-color: map-merge($theme-color, (background: $color-background-palette));
+    $modified-theme: map-merge($theme, (color: $modified-theme-color));
+    $modified-theme: map-merge($modified-theme, (background: $background-palette));
+    // @debug "#{$modified-theme}"; 
+
+  
+    @return $modified-theme;
+  }

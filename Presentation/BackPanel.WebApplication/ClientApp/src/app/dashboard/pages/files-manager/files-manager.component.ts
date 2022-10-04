@@ -13,6 +13,7 @@ import { FormBuilderGroup } from 'src/app/shared/components/form-builder/form-bu
 import { FormBuilderComponent, FormBuilderPropsSpec } from 'src/app/shared/components/form-builder/form-builder.component';
 import { Clipboard } from '@angular/cdk/clipboard';
 import * as dayjs from 'dayjs'
+import { GeneralService } from 'src/app/core/services/general.service';
 
 @Component({
   selector: 'app-files-manager',
@@ -34,13 +35,16 @@ export class FilesManagerComponent implements OnInit {
   currentMoveContentItem?: MoveContentSpec;
   selectionMode = false;
   selectedFiles: FileModel[] = [];
+  theme:'light' | 'dark' = 'light';
   constructor(
     private _service: FilesManagerService,
     private matDialog: MatDialog,
     private snackbar: MatSnackBar,
     private clipboard: Clipboard,
-    @Inject(MAT_DIALOG_DATA) private data: FilesManagerSpec
+    @Inject(MAT_DIALOG_DATA) private data: FilesManagerSpec,
+    _generalService:GeneralService
   ) {
+    _generalService.$theme.subscribe(value => this.theme = value);
    }
   ngOnInit(): void {
     if(this.data)

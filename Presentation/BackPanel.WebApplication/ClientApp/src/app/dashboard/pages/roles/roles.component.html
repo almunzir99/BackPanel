@@ -35,7 +35,7 @@
             <mat-label>Role Title</mat-label>
             <input [(ngModel)]="role.title" type="text" matInput placeholder="Role Title" name="title">
         </mat-form-field>
-        <table class="role-table">
+        <table [class.dark-mode]="theme == 'dark'" class="role-table">
             <thead>
                 <tr>
                     <td>Title</td>

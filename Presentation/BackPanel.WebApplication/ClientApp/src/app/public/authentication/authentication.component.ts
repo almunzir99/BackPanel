@@ -8,6 +8,7 @@ import { RequestStatus } from 'src/app/core/models/request-status.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { AlertMessage, AlertMessageComponent, MessageTypes } from 'src/app/shared/components/alert-message/alert-message.component';
 import { ApiResponse } from 'src/app/core/models/wrappers/api-response.model';
+import { GeneralService } from 'src/app/core/services/general.service';
 
 @Component({
   selector: 'app-authentication',
@@ -16,7 +17,10 @@ import { ApiResponse } from 'src/app/core/models/wrappers/api-response.model';
 })
 export class AuthenticationComponent implements OnInit {
   requestStatus = RequestStatus.Initial;
-  constructor(private _authService: AuthService, private _dialog: MatDialog,private router:Router) { }
+  theme:'light' | 'dark' = 'light';
+  constructor(private _authService: AuthService,private router:Router, _generalService:GeneralService) {
+    _generalService.$theme.subscribe(value => this.theme = value);
+   }
   formSubmitted(body:AuthenticationModel){
     this.authenticate(body);
 

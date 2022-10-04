@@ -1,4 +1,4 @@
-<div [class.opened]="opened" class="header">
+<div [class.opened]="opened" [class.dark-mode]="theme == 'dark'" class="header">
     <div class="first-section">
         <div (click)="onToggle()" matRipple class="menu-bars">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -53,8 +53,10 @@
                 </button>
             </mat-menu>
         </div>
-        <div matRipple class="widget-button">
-            <i class="las la-moon"></i>
+        <div (click)="toggleTheme()" matRipple class="widget-button">
+            <i *ngIf="theme == 'light'" class="las la-moon"></i>
+            <i *ngIf="theme == 'dark'" class="las la-sun"></i>
+
         </div>
         <button (click)="logout()" mat-flat-button class="logout-button">
             <i class="las la-sign-out-alt"></i>

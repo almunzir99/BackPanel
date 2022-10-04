@@ -1,4 +1,4 @@
-<div class="datatable-container">
+<div [class.dark-mode]="theme == 'dark'" class="datatable-container">
     <div *ngIf="showHeader" class="datatable-header">
         <div *ngIf="showHeaderTitle" class="info">
             <h1 class="title">{{title}}</h1>

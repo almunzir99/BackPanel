@@ -6,12 +6,12 @@
 	.st0{fill:none;}
 	.st1{fill:#4A4CFB;}
 	.st2{fill:#E1E4E5;}
-	.st3{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+	.st3{fill-rule:evenodd;clip-rule:evenodd;fill:transparent;}
 	.st4{fill:none;stroke:#E1E4E5;stroke-width:0.5333;stroke-miterlimit:10;}
-	.st5{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;stroke:#E1E4E5;stroke-width:0.5333;stroke-miterlimit:10;}
+	.st5{fill-rule:evenodd;clip-rule:evenodd;fill:transparent;stroke:#E1E4E5;stroke-width:0.5333;stroke-miterlimit:10;}
 	.st6{fill:none;stroke:#E1E4E5;stroke-width:0.5395;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
 	.st7{fill-rule:evenodd;clip-rule:evenodd;fill:#4A4CFB;}
-	.st8{fill:none;stroke:#FFFFFF;stroke-width:2.0784;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st8{fill:none;stroke:white;stroke-width:2.0784;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
 </style>
 <path class="st0" d="M0,0h120v80H0V0z"/>
 <circle class="st1" cx="89.4" cy="56.1" r="1.8"/>

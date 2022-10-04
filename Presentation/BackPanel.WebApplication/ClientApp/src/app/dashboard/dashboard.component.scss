@@ -47,6 +47,13 @@
 	overflow: auto;
 	background-color: $background-color;
 }
+.dark-mode .page{
+	background-color: $dark-background-color;
+
+}
+.dark-mode .dimmer{
+	background-color: rgba($color: $dark-background-color, $alpha: 0.8);
+}
 
 .shrink-page {
 	width: calc(100% - 300px);

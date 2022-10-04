@@ -1,7 +1,7 @@
 @import 'variables';
 
 .datatable-container {
-    background-color: white;
+    background-color: $secondary-background-color;
     margin: 20px;
     border-radius: 10px;
     overflow: hidden;
@@ -110,7 +110,8 @@
                 border-bottom: 1px solid #eee;
                 font-size: 13px;
             }
-            td.break-words{
+
+            td.break-words {
                 word-break: break-all
             }
         }
@@ -197,4 +198,54 @@
     .data-table td:last-child {
         border-bottom: 0;
     }
+}
+
+.datatable-container.dark-mode {
+    background-color: $secondary-dark-background-color;
+
+    .datatable-header {
+        .title {
+            color: white;
+        }
+
+        .controls-bar {
+            button.mat-stroked-button {
+                background-color: rgba($color: $dark-background-color, $alpha: 0.5);
+            }
+
+            mat-form-field {
+                color: white !important;
+                border: white !important;
+            }
+        }
+
+    }
+
+    .data-table {
+        thead {
+            tr {
+                color: #ffffff;
+
+                th {
+                    background-color: $dark-background-color;
+
+                    .resizer {
+                        background-color: rgba($color: $secondary-dark-background-color, $alpha: 1);
+
+                    }
+                }
+
+               
+            }
+        }
+       tbody{
+        td {
+            color: #ffffff !important;
+            border-bottom-color:$dark-background-color ;
+
+        }
+       }
+       
+    }
+
 }

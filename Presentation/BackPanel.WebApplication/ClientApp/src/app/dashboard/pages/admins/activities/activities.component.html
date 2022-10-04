@@ -2,7 +2,7 @@
 [break-word]="false" [rows]="data"
 [show-controls]="false"
 
-[fixed]="true" [columns]="columns"
+ [columns]="columns"
  title="Activities Table"
 (pageChange)="onPageChange($event)"
 [total]="totalRecords"
@@ -14,7 +14,7 @@
             {{data?.username}}
         </ng-container>
         <ng-container *ngSwitchCase="4">
-            <div 
+            <div [class.dark-mode]="theme == 'dark'"
             [class.red]="data == 'Delete'"
             [class.accent]="data == 'Update'"
             [class.primary]="data == 'Create'"
@@ -24,7 +24,7 @@
             </div>
         </ng-container>
         <ng-container  *ngSwitchDefault>
-            <div style="text-align: center;">
+            <div  >
             {{data}}
             </div>
         </ng-container>

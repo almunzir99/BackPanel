@@ -30,7 +30,7 @@
 
     .fm-navbar {
         padding: 5px 15px;
-        background-color: white;
+        background-color: $secondary-background-color;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -124,7 +124,7 @@
             .node-container {
                 height: 180px;
                 min-width: 180px;
-                background-color: white;
+                background-color: $secondary-background-color;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -180,6 +180,38 @@
         }
     }
 
+}
+
+.fm-layout.dark-mode {
+    .fm-navbar {
+        background-color: $secondary-dark-background-color;
+
+        .navs {
+            color: white;
+
+        }
+
+        .back-nav-button {
+            background-color: $dark-background-color;
+            color: white;
+        }
+
+    }
+
+    .fm-content-layout {
+        .node-containers {
+            .node-container {
+                background-color: $secondary-dark-background-color;
+                .title {
+                    color: white;
+
+                }
+                .menu-button{
+                    color: white;
+                }
+            }
+        }
+    }
 }
 
 @media screen and (max-width:780px) {

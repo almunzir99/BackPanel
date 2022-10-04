@@ -3,10 +3,18 @@
 /* Provide sufficient contrast against white background */
 @import 'themes';
 @import 'variables';
+@import 'themes-helper';
+
 @include mat-core();
 
-.default-theme {
+.light-mode-theme {
   @include angular-material-theme($default-theme);
+}
+
+.dark-mode-theme {
+  $custom-dark-theme: modify-background($dark-theme, $dark-background-color);
+  @include angular-material-theme($custom-dark-theme);
+
 }
 
 @font-face {
@@ -85,11 +93,14 @@ mat-form-field {
   border-radius: 0 10px 10px 0px !important;
 }
 
-.rtl .mat-form-field-outline-start, [dir='rtl'] .mat-form-field-outline-start{
+.rtl .mat-form-field-outline-start,
+[dir='rtl'] .mat-form-field-outline-start {
   border-radius: 0px 10px 10px 0px !important;
 
 }
-.rtl .mat-form-field-outline-end, [dir='rtl'] .mat-form-field-outline-end{
+
+.rtl .mat-form-field-outline-end,
+[dir='rtl'] .mat-form-field-outline-end {
   border-radius: 10px 0px 0px 10px !important;
 
 }
@@ -111,7 +122,14 @@ mat-form-field {
   }
 }
 
-/***************************** local files picker overrides overrides  *********************************************/
+.dark-mode {
+  .mat-paginator {
+    background-color: transparent;
+    color: white;
+  }
+}
+
+/***************************** local files picker overrides   *********************************************/
 
 
 .lfp-container {
@@ -180,16 +198,18 @@ mat-form-field {
 }
 
 .snackbar {
-  background-color: white;
+  background-color: $secondary-background-color;
   color: map-get($map: $primary-color, $key: 500);
 }
-.table-act-buttons{
+
+.table-act-buttons {
   display: flex;
   justify-content: flex-end;
   flex-wrap: wrap;
   margin-left: auto;
 
 }
+
 .table-act-button {
   border: none;
   background-color: map-get($map: $primary-color , $key: 500);
@@ -258,9 +278,11 @@ mat-form-field {
   width: 300px;
   border: 1px solid #f7f6f696;
   overflow: hidden;
-  .mat-menu-content{
+
+  .mat-menu-content {
     height: 100%;
   }
+
   .menu-header {
     padding: 10px 10px;
     display: flex;
@@ -291,9 +313,10 @@ mat-form-field {
     .notification {
       display: flex;
       align-items: flex-start;
-      padding:  10px;
+      padding: 10px;
       border-bottom: 1px solid #f7f6f696;
       cursor: pointer;
+
       .icon-container {
         height: 40px;
         width: 40px;
@@ -334,13 +357,109 @@ mat-form-field {
         }
       }
     }
-    .notification.uread{
-        background-color: #f5f5f596;
+
+    .notification.uread {
+      background-color: #f5f5f596;
     }
   }
-  button{
+
+  button {
     margin: 10px;
     width: 93%;
     border-radius: 10px;
+  }
+}
+
+/*********************************************  dark mode overrides ************************************/
+.dark-mode,
+.dark-mode-theme {
+  .dimmer {
+    background-color: rgba($color: $dark-background-color, $alpha: 0.8)!important;
+  }
+
+  .placeholder {
+    .placeholder-text {
+      color: white !important;
+    }
+  }
+
+  .loader-container {
+    color: white;
+  }
+
+  .mat-form-field-outline {
+    color: #ffffff83;
+  }
+
+
+  .mat-tab-label-content {
+    color: white !important;
+  }
+
+  .mat-expansion-panel-header-description,
+  .mat-expansion-indicator::after {
+    color: white;
+  }
+
+  input::placeholder {
+    color: white;
+
+  }
+
+  mat-label {
+    color: white;
+  }
+
+  .mat-select-value {
+    color: white;
+  }
+
+  .mat-select-arrow {
+    color: white;
+  }
+
+  .notification-style+* .mat-menu-panel {
+    border-color: rgba($color: $secondary-dark-background-color, $alpha: .7);
+
+    .menu-header {
+      color: white;
+      border-color: rgba($color: $secondary-dark-background-color, $alpha: .7);
+
+
+    }
+
+    .notifications-list {
+      .notification {
+        color: white;
+        border-color: rgba($color: $secondary-dark-background-color, $alpha: .7);
+
+        .icon-container {
+          background-color: map-get($map: $accent-color, $key: 500);
+
+          i {
+            color: white;
+          }
+        }
+
+        .content {
+          .message {
+            color: #ffffff85;
+          }
+        }
+      }
+
+      .notification.uread {
+        background-color: rgba($color: $secondary-dark-background-color, $alpha: 1);
+      }
+    }
+
+    .new {
+      color: white;
+      background-color: map-get($map: $primary-color, $key: 500);
+    }
+  }
+
+  ::ng-deep .mat-select-panel {
+    background-color: $secondary-dark-background-color;
   }
 }

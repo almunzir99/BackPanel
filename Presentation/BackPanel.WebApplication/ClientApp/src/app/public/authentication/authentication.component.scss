@@ -20,7 +20,7 @@
     justify-content: center;
     align-items: center;
     padding: 0px 20px;
-    background-color: white;
+    background-color: $secondary-background-color;
     h1{
         font-weight: 500;
         color: #333;
@@ -41,4 +41,16 @@
         padding: 4px 0px;
     }
    }
+}
+.auth-layout.dark-mode{
+    .auth-image-container{
+        background-color: $dark-background-color;
+    }
+    .auth-container{
+        background-color: $secondary-dark-background-color;
+        color: white;
+        h1{
+            color: #ffffff9c;
+        }
+    }
 }
