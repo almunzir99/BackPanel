@@ -26,7 +26,8 @@ export class ErrorInterceptor implements HttpInterceptor {
               data: {
                 type: MessageTypes.ERROR,
                 message: `${apiError.message}`,
-                title: "Operation Failed"
+                title: "Operation Failed",
+                errors:apiError.errors
               }
             })
           }

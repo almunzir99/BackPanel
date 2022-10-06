@@ -1,3 +1,5 @@
+@import 'variables';
+
 .message-container {
     text-align: center;
     width: 70vw;
@@ -29,6 +31,56 @@
     color: #555454;
 }
 
+.message-container .errors-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 15px;
+    width: 100%;
+
+    .header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        cursor: pointer;
+
+        i {
+            margin: 0px 10px;
+            transition: 0.3s all ease;
+
+
+        }
+
+        i.rotate {
+            transform: rotate(90deg);
+        }
+    }
+
+    .errors {
+        height: 0px;
+        width: 60%;
+        overflow: auto;
+        background-color: $background-color;
+        color: black;
+        text-align:start;
+        transition: 0.3s all ease;
+        font-size: 12px;
+
+        .content{
+            margin: 10px;
+        }
+    }
+    .errors.dark-mode{
+        background-color: $secondary-dark-background-color;
+        color: white;
+
+    }
+    .errors.opened {
+        height: 70px;
+    }
+}
+
 .green {
     color: #0fa67f;
 }
@@ -52,4 +104,3 @@
 .bg-red {
     background-color: #F44236;
 }
- 
