@@ -71,7 +71,7 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
         try
         {
             int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
-            var result = await Service.CreateAsync(body, currentUserId);
+            var result = await Service.CreateAsync(body);
             var response = new Response<TDto>(data: result);
             //create Activity
             if (!IsAnonymous("PostAsync"))

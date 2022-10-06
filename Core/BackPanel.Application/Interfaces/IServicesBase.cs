@@ -12,7 +12,7 @@ public interface IServicesBase<TEntity, TDto, in TDtoRequest> where TEntity : En
         string orderBy = "LastUpdate", Boolean ascending = true);
 
     Task<TDto> SingleAsync(int id);
-    Task<TDto> CreateAsync(TDtoRequest newItem, int userId);
+    Task<TDto> CreateAsync(TDtoRequest newItem);
     Task<TDto> UpdateAsync(int id, TDtoRequest newItem);
     Task<TDto> UpdateAsync(int id, JsonPatchDocument<TEntity> newItem);
     Task DeleteAsync(int id);

@@ -33,7 +33,7 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
         await _adminsRepository.Complete();
     }
 
-    public virtual async Task<TDto> CreateAsync(TDtoRequest newItem, int userId)
+    public virtual async Task<TDto> CreateAsync(TDtoRequest newItem)
     {
         var mappedItem = Mapper.Map<TDtoRequest, TEntity>(newItem);
         mappedItem.CreatedAt = DateTime.Now;
