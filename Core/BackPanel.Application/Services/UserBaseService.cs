@@ -183,9 +183,9 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
     public async Task<string> ChangePersonalPhoto(int id, IWebFormFile file)
     {
         var user = await Repository.SingleAsync(c => c.Id == id);
-        var oldPhoto = user.Image;
         if (user == null)
             throw new Exception("this user isn't available");
+        var oldPhoto = user.Image;
         var result = await _filesManagerService.UploadSingleFile("assets/images/users", file);
         user.Image = result.Path.Replace("//", $"/");
         await Repository.Complete();

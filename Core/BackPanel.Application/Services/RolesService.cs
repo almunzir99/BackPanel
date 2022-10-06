@@ -18,6 +18,9 @@ public class RolesService : ServiceBase<Role,RoleDto,RoleDtoRequest>, IRolesServ
 
     public async Task<Role> GetRoleByTitle(string title)
     {
-        return await Repository.SingleAsync(c => c.Title != null && c.Title.Equals(title));
+        var result =  await Repository.SingleAsync(c => c.Title != null && c.Title.Equals(title));
+        if(result != null)
+        return result;
+        else throw new Exception("The target role not found");
     }
 }

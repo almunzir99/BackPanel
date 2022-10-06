@@ -76,11 +76,9 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         return result;
     }
 
-    public async Task<TEntity> SingleAsync(Expression<Func<TEntity, bool>> predicate)
+    public async Task<TEntity?> SingleAsync(Expression<Func<TEntity, bool>> predicate)
     {
         var result = await _includeableDbSet.SingleOrDefaultAsync(predicate);
-        if (result == null)
-            throw new Exception("item is not found");
         return result;
     }
 
