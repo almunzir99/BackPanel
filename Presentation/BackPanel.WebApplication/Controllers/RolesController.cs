@@ -1,3 +1,4 @@
+using BackPanel.Application.Attributes.Permissions;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOsRequests;
 using BackPanel.Application.Interfaces;
@@ -16,5 +17,10 @@ public class RolesController : ApiController<Role, RoleDto,RoleDtoRequest, IRole
     public RolesController(IRolesService service, IUriService uriService, IRolesService roleService) : base(service, uriService)
     {
         _roleService = roleService;
+    }
+    [Permission(false, PermissionTypes.READ)]
+    public override async  Task<IActionResult> SingleAsync(int id) {
+        var result = await base.SingleAsync(id);
+        return result;
     }
 }

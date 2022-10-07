@@ -10,6 +10,9 @@ import * as dayjs from 'dayjs';
 import { Activity } from 'src/app/core/models/activity.model';
 import { AdminsService } from 'src/app/core/services/admins.service';
 import { GeneralService } from 'src/app/core/services/general.service';
+import { Role } from 'src/app/core/models/role.model';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { Admin } from 'src/app/core/models/admin.model';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -25,14 +28,18 @@ export class HomeComponent implements OnInit {
   messages: Message[] = [];
   activities: Activity[] = [];
   theme:'light' | 'dark' = 'light';
+  currentRole :Role | null = null;
+  currentUser: Admin | null = null;
   constructor(
     private _service: StatisticsService, 
     private _adminService:AdminsService, 
     private _messageSerivce: MessagesService,
+    _authService:AuthService,
     @Inject('DIRECTION') public dir:string, 
   _generalService:GeneralService) {
     _generalService.$theme.subscribe(value => this.theme = value);
-
+    _authService.$role.subscribe(res => this.currentRole = res);
+    _authService.$currentUser.subscribe(res => this.currentUser = res);
   }
   async getData() {
     try {
@@ -41,8 +48,11 @@ export class HomeComponent implements OnInit {
       this.stats = result.data;
       this.initCards();
       this.getRequest = RequestStatus.Success;
+      if(this.currentRole?.messagesPermissions.read || this.currentUser?.isManager)
       await this.getMessages();
+      if(this.currentRole?.adminsPermissions.read || this.currentUser?.isManager)
       await this.getActivities();
+      
     } catch (error) {
       this.getRequest = RequestStatus.Failed;
     }

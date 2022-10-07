@@ -3,5 +3,6 @@ export class MenuItem{
     icon?:string;
     route?:string;
     open?:boolean = false;
+    permissionName?:string;
     children?:MenuItem[];
 }

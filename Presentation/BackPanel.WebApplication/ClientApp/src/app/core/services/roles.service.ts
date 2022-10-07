@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Role } from '../models/role.model';
+import { ApiResponse } from '../models/wrappers/api-response.model';
 import { PagedResponse } from '../models/wrappers/paged-response.model';
 
 @Injectable({
@@ -29,6 +30,9 @@ export class RolesService {
   }
   put(role: Role) {
     return this.http.put(`${this.moduleBaseUrl}${role.id}`, role);
+  }
+  single(id: number) : Observable<ApiResponse<Role>> {
+    return this.http.get(`${this.moduleBaseUrl}${id}`) as  Observable<ApiResponse<Role>> ;
   }
   delete(id: number) {
     return this.http.delete(`${this.moduleBaseUrl}${id}`);

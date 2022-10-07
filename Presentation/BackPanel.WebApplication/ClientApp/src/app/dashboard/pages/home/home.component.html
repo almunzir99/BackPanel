@@ -16,10 +16,10 @@
     </div>
     <br>
     <div class="tables">
-        <div style="flex: 3;" class="table-container">
+        <div *ngIf="currentUser?.isManager || currentRole?.messagesPermissions?.read" style="flex: 3;" class="table-container">
             <div class="table-container-header">
                 <h2>Messages Table</h2>
-                <button class="show-all-button" mat-flat-button color="primary">
+                <button [routerLink]="['/','dashboard','messages']"  class="show-all-button" mat-flat-button color="primary">
                     Show All
                     <mat-icon [textContent]="dir == 'rtl' ? 'arrow_backward' : 'arrow_forward'" ></mat-icon>
                 </button>
@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <div style="flex: 4;" class="table-container">
+        <div *ngIf="currentUser?.isManager || currentRole?.adminsPermissions?.read" style="flex: 4;" class="table-container">
             <div class="table-container-header">
                 <h2>Users Activities</h2>
                 <button [routerLink]="['/','dashboard','admins','activities']" class="show-all-button" mat-flat-button color="primary">

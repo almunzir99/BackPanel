@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { AlertMessage, AlertMessageComponent, MessageTypes } from 'src/app/shared/components/alert-message/alert-message.component';
 import { ApiResponse } from 'src/app/core/models/wrappers/api-response.model';
 import { GeneralService } from 'src/app/core/services/general.service';
+import { RolesService } from 'src/app/core/services/roles.service';
 
 @Component({
   selector: 'app-authentication',
@@ -18,7 +19,9 @@ import { GeneralService } from 'src/app/core/services/general.service';
 export class AuthenticationComponent implements OnInit {
   requestStatus = RequestStatus.Initial;
   theme:'light' | 'dark' = 'light';
-  constructor(private _authService: AuthService,private router:Router, _generalService:GeneralService) {
+  constructor(private _authService: AuthService,
+    private _roleService:RolesService,
+    private router:Router, _generalService:GeneralService) {
     _generalService.$theme.subscribe(value => this.theme = value);
    }
   formSubmitted(body:AuthenticationModel){
@@ -31,6 +34,12 @@ export class AuthenticationComponent implements OnInit {
       var result = await firstValueFrom(this._authService.autthenticate(model));
       this._authService.setCurrentUser(result.data);
       this._authService.saveToken(result.data.token);
+      if (result.data.isManager == false) {
+        var role = await firstValueFrom(this._roleService.single(result.data.roleId!));
+        this._authService.$role.next(role.data);
+      }
+      else
+      this._authService.$role.next(null);
       var notifications = await firstValueFrom(this._authService.getNotifications());
       this._authService.$notifications.next(notifications.data);
       this.requestStatus = RequestStatus.Success;

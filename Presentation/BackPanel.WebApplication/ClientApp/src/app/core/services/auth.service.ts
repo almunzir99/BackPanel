@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Admin } from '../models/admin.model';
 import { ApiNotification } from '../models/api-notification.model';
 import { AuthenticationModel } from '../models/authentication.model';
+import { Role } from '../models/role.model';
 import { ApiResponse } from '../models/wrappers/api-response.model';
 
 @Injectable({
@@ -14,6 +15,7 @@ export class AuthService {
   private authTokenKey = "auth_token";
   private _$currentUser = new BehaviorSubject<Admin | null>(null);
   public $notifications = new BehaviorSubject<ApiNotification[]>([]);
+  public $role = new BehaviorSubject<Role | null>(null);
   public get $currentUser() {
     return this._$currentUser;
   }

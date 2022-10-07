@@ -61,7 +61,7 @@ const globalRippleConfig: RippleGlobalOptions = {
       provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true
     },
     { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }
-    
+
 
 
   ],

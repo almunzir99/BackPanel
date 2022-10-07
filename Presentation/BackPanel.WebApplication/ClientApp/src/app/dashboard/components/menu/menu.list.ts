@@ -7,18 +7,22 @@ export const MenuList: MenuGroup[] = [
             {
                 title: "Home",
                 icon: "las la-home",
-                route: "/dashboard/home"
+                route: "/dashboard/home",
+                permissionName:"generalPermissions"
 
             },
             {
                 title: "Admins",
                 icon: "las la-user-tie",
-                route: "/dashboard/admins"
+                route: "/dashboard/admins",
+                permissionName:"adminsPermissions"
             },
             {
                 title: "Roles",
                 icon: "las la-users-cog",
-                route: "/dashboard/roles"
+                route: "/dashboard/roles",
+                permissionName:"rolesPermissions"
+
 
             }
         ]
@@ -30,7 +34,9 @@ export const MenuList: MenuGroup[] = [
             {
                 title: "Messages",
                 icon: "las la-envelope",
-                route: "/dashboard/messages"
+                route: "/dashboard/messages",
+                permissionName:"messagesPermissions"
+
 
             },
         ]
@@ -42,13 +48,17 @@ export const MenuList: MenuGroup[] = [
             {
                 title: "Files Manager",
                 icon: "las la-folder-open",
-                route: "/dashboard/files-manager"
+                route: "/dashboard/files-manager",
+                permissionName:"generalPermissions"
+
 
             },
             {
                 title: "Translation Editor",
                 icon: "las la-globe-europe",
-                route: "/dashboard/translation-editor"
+                route: "/dashboard/translation-editor",
+                permissionName:"generalPermissions"
+
 
             },
 
@@ -56,14 +66,18 @@ export const MenuList: MenuGroup[] = [
             {
                 title: "Profile",
                 icon: "las la-user-cog",
-                route: "/dashboard/profile"
+                route: "/dashboard/profile",
+                permissionName:"generalPermissions"
+
                  
 
             },
             {
                 title: "Settings",
                 icon: "las la-cog",
-                route: "/dashboard/settings"
+                route: "/dashboard/settings",
+                permissionName:"generalPermissions"
+
 
             },
         ]

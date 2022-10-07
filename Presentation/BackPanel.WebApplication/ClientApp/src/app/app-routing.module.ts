@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { PermissionGuard } from "./core/guards/permission.guard";
 
 const routes: Routes = [
     {
@@ -10,6 +11,7 @@ const routes: Routes = [
 
     {
         path: 'dashboard',
+        canActivateChild: [PermissionGuard],
         loadChildren: () => import("./dashboard/dashboard.module").then(c => c.DashboardModule)
     },
     {
