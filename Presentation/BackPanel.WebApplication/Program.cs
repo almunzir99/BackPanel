@@ -5,6 +5,7 @@ using BackPanel.Persistence.Database;
 using BackPanel.Persistence.DI;
 using BackPanel.SMTP.DI;
 using BackPanel.TranslationEditor.DI;
+using BackPanel.WebApplication.Extensions;
 using BackPanel.WebApplication.implementation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +15,7 @@ builder.Services.AddControllersWithViews().AddNewtonsoftJson(opts =>
 {
     opts.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
     opts.SerializerSettings.DateFormatString = "yyyy'-'MM'-'dd'  'HH':'mm':'ss";
-});;
+}); ;
 builder.Services.RegisterDbContext<AppDbContext>(builder.Configuration);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddHttpContextAccessor();
@@ -34,6 +35,7 @@ builder.Services.ImplementUriService(o =>
     var uri = string.Concat(request?.Scheme, "://", request?.Host.ToUriComponent());
     return new UriService(uri);
 });
+builder.Services.ConfigureSwagger();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
@@ -44,8 +46,10 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
+    app.UseSwagger();
+    app.UseSwaggerUI();
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts. app.UseHsts();
 }
 
