@@ -124,6 +124,7 @@
             .node-container {
                 height: 180px;
                 min-width: 180px;
+                max-width: 220px;
                 background-color: $secondary-background-color;
                 display: flex;
                 align-items: center;
@@ -202,11 +203,13 @@
         .node-containers {
             .node-container {
                 background-color: $secondary-dark-background-color;
+
                 .title {
                     color: white;
 
                 }
-                .menu-button{
+
+                .menu-button {
                     color: white;
                 }
             }
@@ -248,6 +251,12 @@
 
             .back-nav-button {
                 display: flex;
+            }
+        }
+
+        .node-containers {
+            .node-container {
+                max-width: unset!important;
             }
         }
     }
