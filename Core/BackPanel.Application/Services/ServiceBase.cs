@@ -38,9 +38,9 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
         var mappedItem = Mapper.Map<TDtoRequest, TEntity>(newItem);
         mappedItem.CreatedAt = DateTime.Now;
         mappedItem.LastUpdate = DateTime.Now;
-        await Repository.CreateAsync(mappedItem);
-        var result = Mapper.Map<TEntity, TDto>(mappedItem);
+        var savedItem = await Repository.CreateAsync(mappedItem);
         await Repository.Complete();
+        var result = Mapper.Map<TEntity, TDto>(savedItem);
         return result;
     }
 
