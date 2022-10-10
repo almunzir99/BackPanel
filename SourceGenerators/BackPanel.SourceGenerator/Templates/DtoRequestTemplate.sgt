@@ -1,0 +1,5 @@
+namespace BackPanel.Application.DTOsRequests;
+public class @[Model]DtoRequest
+{
+   @[Props]
+}

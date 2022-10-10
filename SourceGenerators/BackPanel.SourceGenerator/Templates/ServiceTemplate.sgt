@@ -1,0 +1,15 @@
+using AutoMapper;
+using BackPanel.Application.DTOs;
+using BackPanel.Application.DTOsRequests;
+using BackPanel.Application.Interfaces;
+using BackPanel.Domain.Entities;
+
+namespace BackPanel.Application.Services;
+
+public class @[Models]Service : ServiceBase<@[Model],@[Model]Dto,@[Model]DtoRequest>, I@[Models]Service
+{
+    public @[Models]Service(IMapper mapper, IRepositoryBase<@[Model]> repository, IRepositoryBase<Admin> adminsRepository) 
+    : base(mapper, repository, adminsRepository)
+    {
+    }
+}

@@ -1,0 +1,24 @@
+using BackPanel.Application.Attributes.Permissions;
+using BackPanel.Application.DTOs;
+using BackPanel.Application.DTOsRequests;
+using BackPanel.Application.Interfaces;
+using BackPanel.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace BackPanel.WebApplication.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class @[Models]Controller : ApiController<@[Model], @[Model]Dto,@[Model]DtoRequest, I@[Models]Service>
+{
+    private readonly IRolesService _roleService;
+    private readonly INotificationService _notificationService;
+
+    public @[Models]Controller(I@[Models]Service service, IUriService uriSerivce, IRolesService roleService, INotificationService notificationService) : base(service, uriSerivce)
+    {
+        _roleService = roleService;
+        _notificationService = notificationService;
+    }
+    public override string PermissionTitle => "@[Models]Permissions";  
+}
