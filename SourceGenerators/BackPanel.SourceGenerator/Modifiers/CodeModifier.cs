@@ -42,9 +42,10 @@ public class CodeModifier
         root = root.ReplaceNode(methodSyntax, newMethodSyntax).NormalizeWhitespace();
         await File.WriteAllTextAsync(_applicationDIPath, root.GetText().ToString());
     }
-    public async Task AppendToMappingProfile()
+    public async Task AppendToMappingProfile(string suffix)
     {
-    
+        if(suffix != "Dto" && suffix != "DtoRequest")
+        throw new Exception("suffix should be either Dto or DtoRequest");
         if (!File.Exists(_mappingProfilePath))
             throw new Exception("the MappingProfile.cs file not found");
         var fileContent = await File.ReadAllTextAsync(_mappingProfilePath);
@@ -53,9 +54,8 @@ public class CodeModifier
         var namespaceSyntax = root.Members.OfType<FileScopedNamespaceDeclarationSyntax>().First();
         var classSyntax = namespaceSyntax.Members.OfType<ClassDeclarationSyntax>().First();
         var constructorSyntax = classSyntax.Members.OfType<ConstructorDeclarationSyntax>().First();
-        var dtoStatement = SyntaxFactory.ParseStatement($"CreateMap<{_model}Dto, {_model}>().ReverseMap();");
-        var dtoRequestStatement = SyntaxFactory.ParseStatement($"CreateMap<{_model}DtoRequest, {_model}>().ReverseMap();");
-        var newConstructorSyntax = constructorSyntax!.AddBodyStatements(dtoStatement,dtoRequestStatement);
+        var statement = SyntaxFactory.ParseStatement($"CreateMap<{_model}{suffix}, {_model}>().ReverseMap();");
+        var newConstructorSyntax = constructorSyntax!.AddBodyStatements(statement);
         root = root.ReplaceNode(constructorSyntax, newConstructorSyntax).NormalizeWhitespace();
         await File.WriteAllTextAsync(_mappingProfilePath, root.GetText().ToString());
     }
