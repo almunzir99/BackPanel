@@ -4,13 +4,13 @@ namespace BackPanel.SourceGenerator;
 
 public class CommandOptions
 {
-    [Option('m', "model", Required = true)]
-    public string? Model { get; set; }
+    [Option('m', "model", Required = false)]
+    public string? Model { get; set; } = "Test";
 
     [Option('d', "dto", Required = false)]
     public bool? Dto { get; set; } = true;
     [Option('q', "dtoRequest", Required = false)]
-    public bool? DtoRequest { get; set; } = true;
+    public bool? DtoRequest { get; set; } = false;
     [Option('s', "service", Required = false)]
     public bool? Service { get; set; } = true;
     [Option('b', "dbcontext", Required = false)]
