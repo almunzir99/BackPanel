@@ -10,9 +10,9 @@ public class CommandOptions
     [Option('d', "dto", Required = false)]
     public bool? Dto { get; set; } = true;
     [Option('q', "dtoRequest", Required = false)]
-    public bool? DtoRequest { get; set; } = false;
+    public bool? DtoRequest { get; set; } = true;
     [Option('s', "service", Required = false)]
-    public bool? Service { get; set; } = true;
+    public bool? Service { get; set; } = false;
     [Option('b', "dbcontext", Required = false)]
     public bool? DbContext { get; set; } = true;
     [Option('e', "Permission", Required = false)]

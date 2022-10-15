@@ -15,7 +15,7 @@ public class Generator
         if (_options.Model == null)
             throw new NullReferenceException("model parameter shouldn't be null");
         var dtoGen = new DtoGenerator(_options.Model);
-        var dtoRequestGen = new DtoRequestGenerator(_options.Model);
+        var dtoRequestGen = new DtoGenerator(_options.Model,DtoType.DtoRequest);
         var interfaceGen = new InterfaceGenerator(_options.Model);
         var serviceGen = new ServiceGenerator(_options.Model);
         var controllerGen = new ControllerGenerator(_options.Model);
@@ -25,7 +25,6 @@ public class Generator
         if (_options.Dto!.Value)
         {
             await dtoGen.Generate();
-            await codeModifier.AppendToMappingProfile("Dto");
             Console.WriteLine("Dto File Generated Successfully");
 
         }
@@ -33,7 +32,6 @@ public class Generator
         if (_options.DtoRequest!.Value)
         {
             await dtoRequestGen.Generate();
-            await codeModifier.AppendToMappingProfile("DtoRequest");
             Console.WriteLine("Dto Request File Generated Successfully");
         }
         else return;
