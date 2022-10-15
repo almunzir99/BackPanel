@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,8 +12,10 @@ public class CodeModifier
     private readonly string _roleModelPath;
     private readonly string _roleDtoPath;
     private readonly string _roleDtoRequest;
-    private readonly string _applicationDIPath;
+    private readonly string _applicationDiPath;
     private readonly string _model;
+    private string _dbContextModifiedCode = "";
+
     public CodeModifier(string model)
     {
         _model = model;
@@ -22,30 +25,32 @@ public class CodeModifier
         _roleDtoPath = Path.Combine(AppSettings.WorkingDirectory, AppSettings.DtosRelativePath, "RoleDto.cs");
         _roleDtoRequest = Path.Combine(AppSettings.WorkingDirectory, AppSettings.DtosRequestsRelativePath,
             "RoleDtoRequest.cs");
-        _applicationDIPath = Path.Combine(AppSettings.WorkingDirectory,
+        _applicationDiPath = Path.Combine(AppSettings.WorkingDirectory,
             AppSettings.ApplicationProjectRelativePath, "DI", "RegisterWithDependencyInjection.cs");
     }
 
     public async Task AddServiceToDiFile()
     {
         var models = Utils.PluralizeWords(_model);
-        if (!File.Exists(_applicationDIPath))
+        if (!File.Exists(_applicationDiPath))
             throw new Exception("the RegisterWithDependencyInjection.cs file not found");
-        var fileContent = await File.ReadAllTextAsync(_applicationDIPath);
+        var fileContent = await File.ReadAllTextAsync(_applicationDiPath);
         var syntaxTree = CSharpSyntaxTree.ParseText(fileContent);
         var root = syntaxTree.GetCompilationUnitRoot();
         var namespaceSyntax = root.Members.OfType<FileScopedNamespaceDeclarationSyntax>().First();
         var classSyntax = namespaceSyntax.Members.OfType<ClassDeclarationSyntax>().First();
         var methodSyntax = classSyntax.Members.OfType<MethodDeclarationSyntax>().First();
-        var mappingStatement = SyntaxFactory.ParseStatement($"services.AddScoped<I{models}Service, {models}Service>();");
+        var mappingStatement =
+            SyntaxFactory.ParseStatement($"services.AddScoped<I{models}Service, {models}Service>();");
         var newMethodSyntax = methodSyntax!.AddBodyStatements(mappingStatement);
         root = root.ReplaceNode(methodSyntax, newMethodSyntax).NormalizeWhitespace();
-        await File.WriteAllTextAsync(_applicationDIPath, root.GetText().ToString());
+        await File.WriteAllTextAsync(_applicationDiPath, root.GetText().ToString());
     }
+
     public async Task AppendToMappingProfile(string suffix)
     {
-        if(suffix != "Dto" && suffix != "DtoRequest")
-        throw new Exception("suffix should be either Dto or DtoRequest");
+        if (suffix != "Dto" && suffix != "DtoRequest")
+            throw new Exception("suffix should be either Dto or DtoRequest");
         if (!File.Exists(_mappingProfilePath))
             throw new Exception("the MappingProfile.cs file not found");
         var fileContent = await File.ReadAllTextAsync(_mappingProfilePath);
@@ -60,59 +65,103 @@ public class CodeModifier
         await File.WriteAllTextAsync(_mappingProfilePath, root.GetText().ToString());
     }
 
-    public async Task AddDbSetToDbContext()
+    public async Task AddDbSetToDbContext(string? model = null)
     {
-        if(!File.Exists(_dbContextPath))
+        if (model == null)
+            model = _model;
+        
+        // add Main Entity To DbSet
+        await GenerateDbContextModifiedCode(model);
+        // save To File 
+        using (var sw = new StreamWriter(_dbContextPath))
+        {
+            await sw.WriteAsync(_dbContextModifiedCode);
+            sw.Close();
+        }
+    }
+
+    private async Task GenerateDbContextModifiedCode(string model,bool readFromFile = true)
+    {
+        if (!File.Exists(_dbContextPath))
             throw new Exception("the target DbContext file not found");
-        var content = await File.ReadAllTextAsync(_dbContextPath);
+        var content = (readFromFile) ? await File.ReadAllTextAsync(_dbContextPath) : _dbContextModifiedCode;
         var syntaxTree = CSharpSyntaxTree.ParseText(content);
         var root = syntaxTree.GetCompilationUnitRoot();
         var namespaceSyntax = root.Members.OfType<FileScopedNamespaceDeclarationSyntax>().First();
         var classSyntax = namespaceSyntax.Members.OfType<ClassDeclarationSyntax>().First();
-        var newProp = SyntaxFactory.ParseMemberDeclaration($"public DbSet<{_model}> {Utils.PluralizeWords(_model)} => Set<{_model}>();");
+        var newProp =
+            SyntaxFactory.ParseMemberDeclaration(
+                $"public DbSet<{model}> {Utils.PluralizeWords(model)} => Set<{model}>();");
         var updatedClassSyntax = classSyntax.AddMembers(newProp!);
         root = root.ReplaceNode(classSyntax, updatedClassSyntax).NormalizeWhitespace();
-        await File.WriteAllTextAsync(_dbContextPath, root.GetText().ToString());
-
+        _dbContextModifiedCode = root.GetText().ToString();
+        // add DbSets for any inner or related Entities
+        var modelPath = Path.Combine(AppSettings.WorkingDirectory,
+            AppSettings.EntitiesRelativePath, $"{model}.cs");
+        var props = await Utils.ExtractPropsFromModel(modelPath);
+        await AddInnerDbSetsToDbContext(props);
     }
+
+    private async Task AddInnerDbSetsToDbContext(IList<PropertyDeclarationSyntax> properties)
+    {
+        foreach (var prop in properties)
+        {
+            var type = prop.Type.ToString();
+            var pureType = Utils.ExtractType(type);
+            var isEntity = Utils.CheckIfTypeIsEntity(pureType);
+            if (isEntity)
+            {
+                await GenerateDbContextModifiedCode(pureType,false);
+            }
+        }
+    }
+
     public async Task AddPermissionsEntityToRole()
     {
-        if(!File.Exists(_roleModelPath))
+        if (!File.Exists(_roleModelPath))
             throw new Exception("the target Role.cs entity file not found");
         var content = await File.ReadAllTextAsync(_roleModelPath);
         var syntaxTree = CSharpSyntaxTree.ParseText(content);
         var root = syntaxTree.GetCompilationUnitRoot();
         var namespaceSyntax = root.Members.OfType<FileScopedNamespaceDeclarationSyntax>().First();
         var classSyntax = namespaceSyntax.Members.OfType<ClassDeclarationSyntax>().First();
-        var newProp = SyntaxFactory.ParseMemberDeclaration($"public Permission? {Utils.PluralizeWords(_model)}Permissions {{get; set; }} \n");
+        var newProp =
+            SyntaxFactory.ParseMemberDeclaration(
+                $"public Permission? {Utils.PluralizeWords(_model)}Permissions {{get; set; }} \n");
         var updatedClassSyntax = classSyntax.AddMembers(newProp!);
         root = root.ReplaceNode(classSyntax, updatedClassSyntax).NormalizeWhitespace();
         await File.WriteAllTextAsync(_roleModelPath, root.GetText().ToString());
     }
+
     public async Task AddPermissionsDtoToRoleDto()
     {
-        if(!File.Exists(_roleDtoPath))
+        if (!File.Exists(_roleDtoPath))
             throw new Exception("the target RoleDto.cs Dto file not found");
         var content = await File.ReadAllTextAsync(_roleDtoPath);
         var syntaxTree = CSharpSyntaxTree.ParseText(content);
         var root = syntaxTree.GetCompilationUnitRoot();
         var namespaceSyntax = root.Members.OfType<FileScopedNamespaceDeclarationSyntax>().First();
         var classSyntax = namespaceSyntax.Members.OfType<ClassDeclarationSyntax>().First();
-        var newProp = SyntaxFactory.ParseMemberDeclaration($"public PermissionDto? {Utils.PluralizeWords(_model)}Permissions {{get; set; }} \n");
+        var newProp =
+            SyntaxFactory.ParseMemberDeclaration(
+                $"public PermissionDto? {Utils.PluralizeWords(_model)}Permissions {{get; set; }} \n");
         var updatedClassSyntax = classSyntax.AddMembers(newProp!);
         root = root.ReplaceNode(classSyntax, updatedClassSyntax).NormalizeWhitespace();
         await File.WriteAllTextAsync(_roleDtoPath, root.GetText().ToString());
     }
+
     public async Task AddPermissionsDtoToRoleDtoRequest()
     {
-        if(!File.Exists(_roleDtoRequest))
+        if (!File.Exists(_roleDtoRequest))
             throw new Exception("the target RoleDtoRequest.cs DtoRequest file not found");
         var content = await File.ReadAllTextAsync(_roleDtoRequest);
         var syntaxTree = CSharpSyntaxTree.ParseText(content);
         var root = syntaxTree.GetCompilationUnitRoot();
         var namespaceSyntax = root.Members.OfType<FileScopedNamespaceDeclarationSyntax>().First();
         var classSyntax = namespaceSyntax.Members.OfType<ClassDeclarationSyntax>().First();
-        var newProp = SyntaxFactory.ParseMemberDeclaration($"public PermissionDto? {Utils.PluralizeWords(_model)}Permissions {{get; set; }} \n");
+        var newProp =
+            SyntaxFactory.ParseMemberDeclaration(
+                $"public PermissionDto? {Utils.PluralizeWords(_model)}Permissions {{get; set; }} \n");
         var updatedClassSyntax = classSyntax.AddMembers(newProp!);
         root = root.ReplaceNode(classSyntax, updatedClassSyntax).NormalizeWhitespace();
         await File.WriteAllTextAsync(_roleDtoRequest, root.GetText().ToString());

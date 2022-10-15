@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Pluralize.NET.Core;
 
 namespace BackPanel.SourceGenerator;
@@ -53,5 +54,15 @@ public static class Utils
         var root = tree.GetRoot().NormalizeWhitespace();
         var formatted = root.ToFullString();
         return formatted;
+    }
+    public static async Task<IList<PropertyDeclarationSyntax>> ExtractPropsFromModel(string modelPath)
+    {
+        var modelContent = await File.ReadAllTextAsync(modelPath);
+        var modelSyntaxTree = CSharpSyntaxTree.ParseText(modelContent);
+        var modelRoot = modelSyntaxTree.GetCompilationUnitRoot();
+        var namespaceSyntax = modelRoot.Members.OfType<FileScopedNamespaceDeclarationSyntax>().First();
+        var classSyntax = namespaceSyntax.Members.OfType<ClassDeclarationSyntax>().First();
+        var modelPropsList = classSyntax.Members.OfType<PropertyDeclarationSyntax>().ToList();
+        return modelPropsList;
     }
 }

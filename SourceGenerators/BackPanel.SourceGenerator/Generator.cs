@@ -36,25 +36,12 @@ public class Generator
         }
         else return;
         if (!_options.Dto.Value) return;
-        if (_options.Service!.Value)
-        {
-            /* **************** Step 3: Generate Interface File ********************  */
-            await interfaceGen.Generate();
-            Console.WriteLine("Interface File Generated Successfully");
-            /* **************** Step 4: Generate Service File ********************  */
-            await serviceGen.Generate();
-            Console.WriteLine("Service File Generated Successfully");
-            /* **************** Step  5: Update RegisterRequiredApplicationService  File ********************  */
-            await codeModifier.AddServiceToDiFile();
-            Console.WriteLine("RegisterRequiredApplicationService.cs updated Successfully");
-        }
-        else return;
         if (_options.DbContext!.Value)
         {
-            /* **************** Step 6: Update DbContext  File ********************  */
+            /* **************** Step 3: Update DbContext  File ********************  */
             await codeModifier.AddDbSetToDbContext();
             Console.WriteLine("DbContext updated Successfully");
-            /* **************** Step  7: EF Migration ********************  */
+            /* **************** Step  4: EF Migration ********************  */
             Console.WriteLine("Start EF Migrating Process ....");
             await dbCommandRunner.MigrateAsync();
             Console.WriteLine(" EF Migrating Completed Successfully");
@@ -62,19 +49,32 @@ public class Generator
         else return;
         if (_options.Permission!.Value)
         {
-            /* **************** Step 8: Update Role Entity  File ********************  */
+            /* **************** Step 5: Update Role Entity  File ********************  */
             await codeModifier.AddPermissionsEntityToRole();
             Console.WriteLine("Role.cs Entity updated Successfully");
-            /* **************** Step  9: Update Role Dto  File ********************  */
+            /* **************** Step  6: Update Role Dto  File ********************  */
             await codeModifier.AddPermissionsDtoToRoleDto();
             Console.WriteLine("RoleDto.cs updated Successfully");
-            /* **************** Step  10: Update Role Dto Request  File ********************  */
+            /* **************** Step  7: Update Role Dto Request  File ********************  */
             await codeModifier.AddPermissionsDtoToRoleDtoRequest();
             Console.WriteLine("RoleDtoRequest.cs updated Successfully");
-            /* **************** Step  11: EF Migration ********************  */
+            /* **************** Step  8: EF Migration ********************  */
             Console.WriteLine("Start EF Migrating Process ....");
             await dbCommandRunner.MigrateAsync();
             Console.WriteLine(" EF Migrating Completed Successfully");
+        }
+        else return;
+        if (_options.Service!.Value)
+        {
+            /* **************** Step 9: Generate Interface File ********************  */
+            await interfaceGen.Generate();
+            Console.WriteLine("Interface File Generated Successfully");
+            /* **************** Step 10: Generate Service File ********************  */
+            await serviceGen.Generate();
+            Console.WriteLine("Service File Generated Successfully");
+            /* **************** Step  11: Update RegisterRequiredApplicationService  File ********************  */
+            await codeModifier.AddServiceToDiFile();
+            Console.WriteLine("RegisterRequiredApplicationService.cs updated Successfully");
         }
         else return;
         if (_options.DatabaseUpdate!.Value)

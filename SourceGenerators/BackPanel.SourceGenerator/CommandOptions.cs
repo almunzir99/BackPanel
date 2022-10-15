@@ -12,12 +12,12 @@ public class CommandOptions
     [Option('q', "dtoRequest", Required = false)]
     public bool? DtoRequest { get; set; } = true;
     [Option('s', "service", Required = false)]
-    public bool? Service { get; set; } = false;
-    [Option('b', "dbcontext", Required = false)]
     public bool? DbContext { get; set; } = true;
     [Option('e', "Permission", Required = false)]
     public bool? Permission { get; set; } = true;
     [Option('u', "dbUpdate", Required = false)]
+    public bool? Service { get; set; } = false;
+    [Option('b', "dbcontext", Required = false)]
     public bool? DatabaseUpdate { get; set; } = false;
     [Option('c', "controller", Required = false)]
     public bool? Controller { get; set; } = true;
