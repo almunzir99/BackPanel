@@ -92,6 +92,9 @@ public class CodeModifier
         var newProp =
             SyntaxFactory.ParseMemberDeclaration(
                 $"public DbSet<{model}> {Utils.PluralizeWords(model)} => Set<{model}>();");
+        var added = CheckIfModelIsAlreadyAddedToDbContext(classSyntax.Members.OfType<PropertyDeclarationSyntax>().ToList());
+        if(added)
+            return;
         var updatedClassSyntax = classSyntax.AddMembers(newProp!);
         root = root.ReplaceNode(classSyntax, updatedClassSyntax).NormalizeWhitespace();
         _dbContextModifiedCode = root.GetText().ToString();
@@ -102,6 +105,21 @@ public class CodeModifier
         await AddInnerDbSetsToDbContext(props);
     }
 
+    private bool CheckIfModelIsAlreadyAddedToDbContext(IList<PropertyDeclarationSyntax> modelPropsList)
+    {
+        var isAdded = false;
+        foreach (var prop in modelPropsList)
+        {
+            var models = Utils.PluralizeWords(_model);
+            if (models == prop.Identifier.ValueText)
+            {
+                isAdded = true;
+                break;
+            }
+        }
+
+        return isAdded;
+    }
     private async Task AddInnerDbSetsToDbContext(IList<PropertyDeclarationSyntax> properties)
     {
         foreach (var prop in properties)
