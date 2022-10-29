@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using BackPanel.SourceGenerator.Modifiers;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis;
 
 namespace BackPanel.SourceGenerator.Generators;
 
@@ -41,6 +42,8 @@ public class DtoGenerator
             throw new FileNotFoundException("Template File  Not Found");
         if (File.Exists(_outPutPath))
             throw new InvalidOperationException("Dto File Already Exists");
+
+         
     }
 
     public async Task Generate()
@@ -48,9 +51,15 @@ public class DtoGenerator
         var stringBuilder = new StringBuilder();
         var templateContent = await File.ReadAllTextAsync(_templatePath);
         var extractedProps = await ExtractPropsFromModel();
-        var props = await BuildDtoProps(extractedProps);
         var usings = await Utils.ExtractUsingsFromModel(_modelPath);
+          if(_dtoType == DtoType.Dto)
+        {
+            extractedProps = ClearPropsAttribute(extractedProps);
+            usings = usings.Where(c => !c.Contains("using System.ComponentModel.DataAnnotations;") 
+            && !c.Contains("using System.ComponentModel.DataAnnotations.Schema;")).ToList();
+        }
         var usingsStr = stringBuilder.AppendJoin("", usings).ToString();
+        var props = await BuildDtoProps(extractedProps);
         templateContent = templateContent.Replace("@[Model]", _model);
         templateContent = templateContent.Replace("@[Props]", props);
         templateContent = templateContent.Replace("@[Usings]", usingsStr);
@@ -69,7 +78,18 @@ public class DtoGenerator
         var modelPropsList = classSyntax.Members.OfType<PropertyDeclarationSyntax>().ToList();
         return modelPropsList;
     }
-
+    private IList<PropertyDeclarationSyntax> ClearPropsAttribute(IList<PropertyDeclarationSyntax> props)
+     {
+        var newPropList = props.Select(c =>{
+            var newProp = c;
+            foreach (var attributeList in c.AttributeLists)
+            {
+                newProp = c.RemoveNode(attributeList,SyntaxRemoveOptions.KeepNoTrivia);
+            }
+            return newProp ?? c;
+        }).ToList();
+        return newPropList;
+     }
     private async Task<string> BuildDtoProps(IList<PropertyDeclarationSyntax> modelPropsList)
     {
         var stringBuilder = new StringBuilder();
@@ -78,7 +98,8 @@ public class DtoGenerator
             var type = prop.Type.ToString();
             var pureType = Utils.ExtractType(type);
             var isEntity = Utils.CheckIfTypeIsEntity(pureType);
-            if (isEntity)
+            var isSameType = pureType == _model;
+            if (isEntity && !isSameType)
             {
                 await GeneratePropDto(pureType);
             }
@@ -95,17 +116,18 @@ public class DtoGenerator
         {
             var propStr = c.ToFullString();
             var type = c.Type.ToString();
-            var isEntity = Utils.CheckIfTypeIsEntity(type);
+            var pureType = Utils.ExtractType(type);
+            var isEntity = Utils.CheckIfTypeIsEntity(pureType);
             if (isEntity && propStr.Contains($"{type}"))
             {
                 var newPropStr = "";
-                var regex = new Regex(@"(\w+) (\w+\??) (\w+) ({ get; set;? }?)");
+                var regex = new Regex(@"(\w+) (\w+\<)?(\w+)(\>?)\?? (\w+) ({ get; set;? }?) ?(\=)? ?(new)? ?(\w+\<)?(\w+)?(\>?)\??(\(\))?(;)?");
                 if (regex.Match(propStr).Success)
                 {
                     var groups = regex.Match(propStr).Groups;
                     for (int i = 1; i < groups.Count; i++)
                     {
-                        if (i == 2)
+                        if (i == 3|| ( i == 10 && !string.IsNullOrEmpty(groups[10].Value.Trim())))
                         {
                             var typeSuffix = _dtoType == DtoType.DtoRequest ? "DtoRequest" : "Dto";
                             newPropStr +=
@@ -126,9 +148,10 @@ public class DtoGenerator
 
     private async Task GeneratePropDto(string model)
     {
+       
         var dtos = Directory.GetFiles(Path.Combine(
             AppSettings.WorkingDirectory,
-             _dtoType != DtoType.DtoRequest ? AppSettings.DtosRequestsRelativePath : AppSettings.DtosRelativePath
+             _dtoType == DtoType.DtoRequest ? AppSettings.DtosRequestsRelativePath : AppSettings.DtosRelativePath
         ));
         var found = false;
         foreach (var dto in dtos)
