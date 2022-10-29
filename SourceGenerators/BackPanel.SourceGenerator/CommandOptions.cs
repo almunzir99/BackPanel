@@ -4,8 +4,8 @@ namespace BackPanel.SourceGenerator;
 
 public class CommandOptions
 {
-    [Option('m', "model", Required = false)]
-    public string? Model { get; set; } = "Test";
+    [Option('m', "model", Required = true)]
+    public string? Model { get; set; }
 
     [Option('d', "dto", Required = false)]
     public bool? Dto { get; set; } = true;
