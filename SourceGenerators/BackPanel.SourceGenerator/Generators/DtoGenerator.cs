@@ -45,14 +45,18 @@ public class DtoGenerator
 
     public async Task Generate()
     {
+        var stringBuilder = new StringBuilder();
         var templateContent = await File.ReadAllTextAsync(_templatePath);
         var extractedProps = await ExtractPropsFromModel();
         var props = await BuildDtoProps(extractedProps);
+        var usings = await Utils.ExtractUsingsFromModel(_modelPath);
+        var usingsStr = stringBuilder.AppendJoin("", usings).ToString();
         templateContent = templateContent.Replace("@[Model]", _model);
         templateContent = templateContent.Replace("@[Props]", props);
+        templateContent = templateContent.Replace("@[Usings]", usingsStr);
         var formattedCode = Utils.FormatCodeWithRoslyn(templateContent);
         await File.WriteAllTextAsync(_outPutPath, formattedCode);
-        await _codeModifier.AppendToMappingProfile(_dtoType != DtoType.DtoRequest ? "DtoRequest" :"Dto");
+        await _codeModifier.AppendToMappingProfile(_dtoType != DtoType.DtoRequest ? "DtoRequest" : "Dto");
     }
 
     private async Task<IList<PropertyDeclarationSyntax>> ExtractPropsFromModel()
@@ -124,7 +128,7 @@ public class DtoGenerator
     {
         var dtos = Directory.GetFiles(Path.Combine(
             AppSettings.WorkingDirectory,
-             _dtoType != DtoType.DtoRequest ? AppSettings.DtosRequestsRelativePath :AppSettings.DtosRelativePath
+             _dtoType != DtoType.DtoRequest ? AppSettings.DtosRequestsRelativePath : AppSettings.DtosRelativePath
         ));
         var found = false;
         foreach (var dto in dtos)
@@ -139,7 +143,7 @@ public class DtoGenerator
         }
         if (found)
             return;
-        var generator = new DtoGenerator(model,_dtoType);
+        var generator = new DtoGenerator(model, _dtoType);
         await generator.Generate();
     }
 }

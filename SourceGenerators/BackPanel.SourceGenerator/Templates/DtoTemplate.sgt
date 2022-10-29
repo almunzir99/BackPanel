@@ -1,5 +1,6 @@
-namespace BackPanel.Application.DTOs;
+@[Usings]
 
+namespace SalesUp.Application.DTOs;
 public class @[Model]Dto : DtoBase
 {
     @[Props]

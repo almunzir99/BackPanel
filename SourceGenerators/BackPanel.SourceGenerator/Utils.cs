@@ -65,4 +65,12 @@ public static class Utils
         var modelPropsList = classSyntax.Members.OfType<PropertyDeclarationSyntax>().ToList();
         return modelPropsList;
     }
+    public static async Task<IList<String>> ExtractUsingsFromModel(string modelPath)
+    {
+        var modelContent = await File.ReadAllTextAsync(modelPath);
+        var modelSyntaxTree = CSharpSyntaxTree.ParseText(modelContent);
+        var modelRoot = modelSyntaxTree.GetCompilationUnitRoot();
+        var usings = modelRoot.Usings.Select(c => c.ToFullString()).ToList();
+        return usings;
+    }
 }
