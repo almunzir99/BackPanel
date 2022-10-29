@@ -109,7 +109,8 @@ public class CodeModifier
             var type = prop.Type.ToString();
             var pureType = Utils.ExtractType(type);
             var isEntity = Utils.CheckIfTypeIsEntity(pureType);
-            if (isEntity)
+            var isSameType = pureType == _model;
+            if (isEntity && !isSameType)
             {
                 await GenerateDbContextModifiedCode(pureType,false);
             }
