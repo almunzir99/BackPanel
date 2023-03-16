@@ -3,6 +3,7 @@ using System.Text;
 using AutoMapper;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
+using BackPanel.Application.Helpers;
 using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
 using Microsoft.AspNetCore.JsonPatch;
@@ -50,53 +51,10 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
         await Repository.Complete();
     }
 
-    public virtual async Task<String> ExportToCsv()
+    public virtual async Task<Byte[]> ExportToExcel()
     {
-        // list of properties
-        Type type = typeof(TEntity);
-        var title = type.Name;
-        var properties = type.GetProperties().Where(c => c.PropertyType.IsPrimitive ||
-                                                         c.PropertyType == typeof(String)
-                                                         || c.PropertyType == typeof(DateTime)).ToList();
-        var propertiesNames = properties.Select(c => c.Name);
-        var data = new StringBuilder();
-
-        string header = "";
-        //create header 
-        int index = 0;
-        var enumerable = propertiesNames as string[] ?? propertiesNames.ToArray();
-        foreach (var name in enumerable)
-        {
-            header += name;
-            if (index < enumerable.Count() - 1)
-                header += ",";
-            index++;
-        }
-
-        data.AppendLine(header);
-        var list = await Repository.ListAsync();
-        var filteredProps = properties.Where(c => c.PropertyType.IsPrimitive ||
-                                                  c.PropertyType == typeof(String)
-                                                  || c.PropertyType == typeof(DateTime)).ToList();
-        foreach (var item in list)
-        {
-            string value = "";
-            int i = 0;
-            foreach (var prop in filteredProps)
-            {
-                var propValue = prop.GetValue(item)?.ToString();
-                propValue = propValue?.Replace(",", "");
-                value += propValue;
-                if (i < filteredProps.Count() - 1)
-                    value += ",";
-                i++;
-            }
-
-            data.AppendLine(value);
-        }
-
-
-        return data.ToString();
+        var data = await Repository.ListAsync();
+        return DataExportHelper<TEntity>.ExportToExcel(data);
     }
 
     public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null) => await Repository.GetTotalRecords(predicate);

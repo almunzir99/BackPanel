@@ -143,14 +143,14 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
             return BadRequest(response);
         }
     }
-    [HttpGet("export/csv")]
+    [HttpGet("export/excel")]
     public virtual async Task<IActionResult> ExportToCsv()
     {
-        var content = await this.Service.ExportToCsv();
-        var result = new FileContentResult(Encoding.UTF8.GetBytes(content),
-            "text/csv")
+        var content = await this.Service.ExportToExcel();
+        var result = new FileContentResult(content,
+            "application/xls")
         {
-            FileDownloadName = $"data.csv",
+            FileDownloadName = $"data.xls",
         };
         return result;
     }

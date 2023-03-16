@@ -16,7 +16,7 @@ public interface IServicesBase<TEntity, TDto, in TDtoRequest> where TEntity : En
     Task<TDto> UpdateAsync(int id, TDtoRequest newItem);
     Task<TDto> UpdateAsync(int id, JsonPatchDocument<TEntity> newItem);
     Task DeleteAsync(int id);
-    Task<string> ExportToCsv();
+    Task<Byte[]> ExportToExcel();
     Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null);
     Task CreateActivity(int userId, int rowId, string action);
 }

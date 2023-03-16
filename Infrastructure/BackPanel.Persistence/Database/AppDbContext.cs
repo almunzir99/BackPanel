@@ -34,8 +34,8 @@ public class AppDbContext : DbContext
             Phone = "249128647019",
             Email = "almunzir99@gmail.com",
             IsManager = true,
-            CreatedAt = System.DateTime.Now,
-            LastUpdate = System.DateTime.Now
+            CreatedAt = DateTime.Now,
+            LastUpdate = DateTime.Now
 
 
         };
