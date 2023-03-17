@@ -1,11 +1,11 @@
 using System.Linq.Expressions;
-using System.Text;
 using AutoMapper;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
 using BackPanel.Application.Helpers;
 using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
+using BackPanel.FilesManager.Interfaces;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace BackPanel.Application.Services;
@@ -16,13 +16,14 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
     protected readonly IRepositoryBase<TEntity> Repository;
     protected readonly IMapper Mapper;
     private readonly IRepositoryBase<Admin> _adminsRepository;
-
+    protected readonly IPathProvider PathProvider;
     protected ServiceBase(IMapper mapper, IRepositoryBase<TEntity> repository,
-        IRepositoryBase<Admin> adminsRepository)
+        IRepositoryBase<Admin> adminsRepository, IPathProvider pathProvider)
     {
         Repository = repository;
         Mapper = mapper;
         _adminsRepository = adminsRepository;
+        PathProvider = pathProvider;
     }
 
     public virtual async Task CreateActivity(int userId, int rowId, string action)
@@ -55,6 +56,12 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
     {
         var data = await Repository.ListAsync();
         return DataExportHelper<TEntity>.ExportToExcel(data);
+    }
+    public virtual async Task<Byte[]> ExportToPdf()
+    {
+        var stylePath = Path.Combine(PathProvider.GetRootPath(), "Assets", "Styles", "styles.css");
+        var data = await Repository.ListAsync();
+        return DataExportHelper<TEntity>.ExportToPdf(data,stylePath);
     }
 
     public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null) => await Repository.GetTotalRecords(predicate);

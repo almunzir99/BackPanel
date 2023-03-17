@@ -3,13 +3,14 @@ using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOsRequests;
 using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
+using BackPanel.FilesManager.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackPanel.Application.Services;
 
 public class RolesService : ServiceBase<Role,RoleDto,RoleDtoRequest>, IRolesService
 {
-    public RolesService(IMapper mapper, IRepositoryBase<Role> repository, IRepositoryBase<Admin> adminsRepository) : base(mapper, repository, adminsRepository)
+    public RolesService(IMapper mapper, IRepositoryBase<Role> repository, IRepositoryBase<Admin> adminsRepository,IPathProvider provider) : base(mapper, repository, adminsRepository,provider)
     {
         repository.IncludeableDbSet = repository.IncludeableDbSet.Include(c => c.MessagesPermissions)
             .Include(c => c.AdminsPermissions)

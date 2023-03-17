@@ -25,8 +25,8 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
         ISmtpService smtpService,
         IFilesManagerService filesManagerService,
         IRepositoryBase<TEntity> repository,
-        IRepositoryBase<Admin> adminsRepository, IWebConfiguration webConfiguration)
-        : base(mapper, repository, adminsRepository)
+        IRepositoryBase<Admin> adminsRepository, IWebConfiguration webConfiguration,IPathProvider pathProvider)
+        : base(mapper, repository, adminsRepository,pathProvider)
     {
         _smtpService = smtpService;
         _filesManagerService = filesManagerService;

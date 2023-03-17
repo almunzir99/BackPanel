@@ -1,4 +1,6 @@
+using System.Text;
 using ClosedXML.Excel;
+using DinkToPdf;
 using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace BackPanel.Application.Helpers;
@@ -45,6 +47,74 @@ public static class DataExportHelper<T>
         workBook.SaveAs(stream);
         var content = stream.ToArray();
         return content;
+    }
+
+    public static Byte[] ExportToPdf(IList<T> data, string stylePath)
+    {
+        var htmlTable = GenerateHtmlTable(data);
+        var name = GetName();
+        var htmlContent = @$"
+        <html>
+            <head>
+            </head>
+            <body>
+                {htmlTable}
+            </body>
+        </html>
+    ";
+        var converter = new SynchronizedConverter(new PdfTools());
+        var doc = new HtmlToPdfDocument()
+        {
+            GlobalSettings =
+            {
+                ColorMode = ColorMode.Color,
+                Orientation = Orientation.Landscape,
+                PaperSize = PaperKind.A4Plus,
+            },
+            Objects =
+            {
+                new ObjectSettings()
+                {
+                    PagesCount = true,
+                    HtmlContent = htmlContent,
+                    WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = stylePath },
+                    HeaderSettings = { FontSize = 9, Right = "Page [page] of [toPage]", Line = true, Spacing = 2.812 }
+                }
+            }
+        };
+        var content = converter.Convert(doc);
+        return content;
+    }
+
+    private static string GenerateHtmlTable(IList<T> data)
+    {
+        var columns = GetColumns();
+        var name = GetName();
+        var sp = new StringBuilder();
+        sp.Append(@"
+          <table>
+                <tr>
+    ");
+        foreach (var col in columns)
+        {
+            sp.AppendLine($@"<th style= ""padding:10px"">{col}</th>");
+        }
+
+        sp.AppendLine("</tr>");
+        foreach (var row in data)
+        {
+            sp.AppendLine("<tr>");
+            foreach (var col in columns)
+            {
+                var cellData = GetPropValue(row!, col);
+                sp.AppendLine($@"<td style= ""padding:10px""> {cellData} </td>");
+            }
+
+            sp.AppendLine("</tr>");
+        }
+
+        sp.AppendLine("</table>");
+        return sp.ToString();
     }
 
     private static IList<String> GetColumns()

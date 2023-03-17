@@ -14,7 +14,7 @@ namespace BackPanel.Application.Services;
 public class AdminService : UserBaseService<Admin, AdminDto, AdminDtoRequest>, IAdminService
 {
     private readonly IRepositoryBase<Activity> _activityRepository;
-    public AdminService(IMapper mapper, ISmtpService smtpService, IFilesManagerService filesManagerService, IRepositoryBase<Admin> repository, IRepositoryBase<Admin> adminsRepository, IWebConfiguration webConfiguration, IRepositoryBase<Activity> activityRepository) : base(mapper, smtpService, filesManagerService, repository, adminsRepository, webConfiguration)
+    public AdminService(IMapper mapper, ISmtpService smtpService, IFilesManagerService filesManagerService, IRepositoryBase<Admin> repository, IRepositoryBase<Admin> adminsRepository, IWebConfiguration webConfiguration, IRepositoryBase<Activity> activityRepository,IPathProvider pathProvider) : base(mapper, smtpService, filesManagerService, repository, adminsRepository, webConfiguration,pathProvider)
     {
         repository.IncludeableDbSet = repository.IncludeableDbSet
             .Include(c => c.Role);
