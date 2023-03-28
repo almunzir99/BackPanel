@@ -156,6 +156,14 @@ export class RolesComponent implements OnInit {
     this._dialog.open(this.roleForm!);
   }
   closeDialog = () => this._dialog.closeAll();
+  onExportClick(type: string) {
+    this.dimRequest = RequestStatus.Loading;
+    this._service.export(type,() => {
+      this.dimRequest = RequestStatus.Success;
+    },(err) => {
+      this.dimRequest = RequestStatus.Failed;
+    })
+  }
   /********************************* Form Configuration ******************************************** */
 
   openForm(item?: Role) {

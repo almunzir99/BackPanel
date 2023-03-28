@@ -157,6 +157,14 @@ export class MessagesComponent implements OnInit {
       a.print();
     }
   }
+    onExportClick(type: string) {
+    this.dimRequest = RequestStatus.Loading;
+    this._service.export(type,() => {
+      this.dimRequest = RequestStatus.Success;
+    },(err) => {
+      this.dimRequest = RequestStatus.Failed;
+    })
+  }
   /********************************* Api Integration ******************************************** */
   delete = async (id: number) => {
     try {

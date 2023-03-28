@@ -12,31 +12,31 @@ export class AdminsService {
   private moduleBaseUrl = ``;
   constructor(private http: HttpClient, @Inject("BASE_API_URL") baseUrl: string) {
     this.moduleBaseUrl = `${baseUrl}api/admins/`
-   }
-  get(pageIndex = 1, pageSize = 10,searchValue="",orderBy="lastUpdate",ascending = false): Observable<PagedResponse<Admin[]>> {
-    var params:any = {
-      PageIndex:pageIndex,
-      PageSize:pageSize,
-      orderBy:orderBy,
-      ascending:ascending,
-      title:searchValue
-    }
-    return this.http.get(`${this.moduleBaseUrl}`,{params:params}) as Observable<PagedResponse<Admin[]>>;
   }
-  getActivities(pageIndex = 1, pageSize = 5) : Observable<PagedResponse<Activity[]>> {
-    var params:any = {
-      PageIndex:pageIndex,
-      PageSize:pageSize,
+  get(pageIndex = 1, pageSize = 10, searchValue = "", orderBy = "lastUpdate", ascending = false): Observable<PagedResponse<Admin[]>> {
+    var params: any = {
+      PageIndex: pageIndex,
+      PageSize: pageSize,
+      orderBy: orderBy,
+      ascending: ascending,
+      title: searchValue
     }
-    return this.http.get(`${this.moduleBaseUrl}activities`,{params:params}) as Observable<PagedResponse<Activity[]>>;
+    return this.http.get(`${this.moduleBaseUrl}`, { params: params }) as Observable<PagedResponse<Admin[]>>;
+  }
+  getActivities(pageIndex = 1, pageSize = 5): Observable<PagedResponse<Activity[]>> {
+    var params: any = {
+      PageIndex: pageIndex,
+      PageSize: pageSize,
+    }
+    return this.http.get(`${this.moduleBaseUrl}activities`, { params: params }) as Observable<PagedResponse<Activity[]>>;
 
   }
-  getAdminActivities(userId:number,pageIndex = 1, pageSize = 10) : Observable<PagedResponse<Activity[]>> {
-    var params:any = {
-      PageIndex:pageIndex,
-      PageSize:pageSize,
+  getAdminActivities(userId: number, pageIndex = 1, pageSize = 10): Observable<PagedResponse<Activity[]>> {
+    var params: any = {
+      PageIndex: pageIndex,
+      PageSize: pageSize,
     }
-    return this.http.get(`${this.moduleBaseUrl}${userId}/activities`,{params:params}) as Observable<PagedResponse<Activity[]>>;
+    return this.http.get(`${this.moduleBaseUrl}${userId}/activities`, { params: params }) as Observable<PagedResponse<Activity[]>>;
 
   }
   post(admin: Admin) {
@@ -48,5 +48,18 @@ export class AdminsService {
   }
   delete(id: number) {
     return this.http.delete(`${this.moduleBaseUrl}${id}`);
+  }
+  export(type: string, next?: () => void, failed?: (err: any) => void) {
+    this.http.get(`${this.moduleBaseUrl}export/${type}`, { responseType: 'blob' }).subscribe(res => {
+      let blob = new Blob([res], { type: 'text/plain' });
+      var downloadURL = window.URL.createObjectURL(res);
+      var link = document.createElement('a');
+      link.href = downloadURL;
+      var ext = (type == 'excel') ? '.xlsx' : '.pdf';
+      link.download = `data${ext}`;
+      link.click();
+      if (next)
+        next();
+    }, error => { if (failed) failed(error) })
   }
 }

@@ -32,20 +32,20 @@ export class AdminsComponent implements OnInit {
   getRequest = RequestStatus.Initial;
   dimRequest = RequestStatus.Initial;
   constructor(
-    private _service: AdminsService, 
-    private _rolesService: RolesService, 
+    private _service: AdminsService,
+    private _rolesService: RolesService,
     private _dialog: MatDialog,
     @Inject("BASE_API_URL") public baseUrl: string,
-    ) { }
-    ngOnInit(): void {
-      this.initColumns();
-      this.getData();
-    }
+  ) { }
+  ngOnInit(): void {
+    this.initColumns();
+    this.getData();
+  }
   /********************************* Initialize Data and Column ******************************************** */
   async getData() {
     try {
       this.getRequest = RequestStatus.Loading;
-      var result = await firstValueFrom(this._service.get(this.pageIndex, this.pageSize, this.searchValue,this.orderBy,this.ascending));
+      var result = await firstValueFrom(this._service.get(this.pageIndex, this.pageSize, this.searchValue, this.orderBy, this.ascending));
       this.data = result.data;
       this.totalPages = result.totalPages;
       this.totalRecords = result.totalRecords;
@@ -70,7 +70,7 @@ export class AdminsComponent implements OnInit {
         show: true,
         sortable: false
       },
-     
+
 
       {
         prop: "username",
@@ -119,28 +119,27 @@ export class AdminsComponent implements OnInit {
   }
   /********************************* Event Binding ******************************************** */
 
-  onPageChange(event:PageSpec){
+  onPageChange(event: PageSpec) {
     this.pageIndex = event.pageIndex!;
     this.pageSize = event.pageSize!;
     this.getData();
   }
-  onSortChange(event:SortSpec){
+  onSortChange(event: SortSpec) {
     this.orderBy = event.prop!;
     this.ascending = event.ascending;
     this.getData();
   }
-  onSearch(value:string){
+  onSearch(value: string) {
     this.searchValue = value;
     this.getData();
   }
-  onCreate(){
+  onCreate() {
     this.openForm();
   }
-  onUpdate(item:Admin)
-  {
+  onUpdate(item: Admin) {
     this.openForm(item);
   }
-  onDeleteClick(id:number){
+  onDeleteClick(id: number) {
     this._dialog.open<AlertMessageComponent, AlertMessage>(AlertMessageComponent, {
       data: {
         type: MessageTypes.CONFIRM,
@@ -149,9 +148,17 @@ export class AdminsComponent implements OnInit {
       }
     }).afterClosed().subscribe({
       next: (res) => {
-        if(res == true)
-        this.delete(id);
+        if (res == true)
+          this.delete(id);
       }
+    })
+  }
+  onExportClick(type: string) {
+    this.dimRequest = RequestStatus.Loading;
+    this._service.export(type,() => {
+      this.dimRequest = RequestStatus.Success;
+    },(err) => {
+      this.dimRequest = RequestStatus.Failed;
     })
   }
   /********************************* Form Configuration ******************************************** */
@@ -261,7 +268,7 @@ export class AdminsComponent implements OnInit {
     ];
     return controlGroups;
   }
- 
+
   async openForm(item?: Admin) {
     var roles = await this.getRoles();
     var form = this.getForm(item, roles);
@@ -269,7 +276,7 @@ export class AdminsComponent implements OnInit {
       data: {
         title: "Create New Admin",
         controlsGroups: form,
-        onSubmit : (result) => {
+        onSubmit: (result) => {
           this._dialog.closeAll();
           var admin = result as Admin;
           admin.image = !result['image'] ? 'none' : result['image'][0]['path'];
@@ -277,18 +284,18 @@ export class AdminsComponent implements OnInit {
             this.update(admin);
           }
           else
-          this.create(admin);
+            this.create(admin);
         },
-        onCancel:() => {
+        onCancel: () => {
           this._dialog.closeAll();
 
         }
       },
-      hasBackdrop:false,
+      hasBackdrop: false,
       panelClass: "form-builder-dialog",
     })
   }
- 
+
   /********************************* Api Integration ******************************************** */
   async getRoles(): Promise<Role[]> {
     try {
@@ -340,7 +347,7 @@ export class AdminsComponent implements OnInit {
       console.log(error);
     }
   }
-  delete = async (id:number) => {
+  delete = async (id: number) => {
     try {
       this.dimRequest = RequestStatus.Loading;
       await firstValueFrom(this._service.delete(id));
@@ -358,6 +365,6 @@ export class AdminsComponent implements OnInit {
     }
   }
 
- 
+
 
 }
