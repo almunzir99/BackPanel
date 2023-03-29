@@ -24,7 +24,9 @@ import { LocalFilesPickerComponent } from './components/local-files-picker/local
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxMatColorPickerModule } from '@angular-material-components/color-picker';
- 
+import { FieldsMatcherComponent } from './components/fields-matcher/fields-matcher.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+
 
 @NgModule({ 
   declarations: [
@@ -36,6 +38,8 @@ import { NgxMatColorPickerModule } from '@angular-material-components/color-pick
     DimmerLoadingComponent,
     AlertMessageComponent,
     LocalFilesPickerComponent,
+    FieldsMatcherComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -55,6 +59,7 @@ import { NgxMatColorPickerModule } from '@angular-material-components/color-pick
     QuillModule.forRoot(),
     AngularSvgIconModule.forRoot(),
     NgxMatColorPickerModule,
+    DragDropModule
 
   ],
   exports:[

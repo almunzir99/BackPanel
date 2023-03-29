@@ -3,7 +3,7 @@
         <div *ngIf="showHeaderTitle" class="info">
             <h1 class="title">{{title}}</h1>
         </div>
-        <div  *ngIf="controlTemplate" class="controls-bar">
+        <div *ngIf="controlTemplate" class="controls-bar">
             <ng-container [ngTemplateOutlet]="controlTemplate"></ng-container>
         </div>
         <div *ngIf="showControls && !controlTemplate" class="controls-bar">
@@ -14,6 +14,17 @@
                 </mat-form-field>
             </div>
             <div class="controls">
+                <ng-container *ngIf="showImport">
+                    <button mat-flat-button color="accent">
+                        <label for="importFromInput">
+                            <mat-icon>system_update_alt</mat-icon>
+                            <span>
+                                Import from excel
+                            </span>
+                        </label>
+                    </button>
+                   <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" (change)="onImportFileChange($event)" style="display:none" type="file"  id="importFromInput">
+                </ng-container>
                 <!-- Menu Button -->
                 <button *ngIf="showExport" [matMenuTriggerFor]="menu" mat-stroked-button color="primary">
                     <mat-icon>ios_share</mat-icon>
@@ -46,7 +57,7 @@
         </div>
     </div>
 
-    <table  [style.table-layout]="fixed ? 'fixed' : 'initial'" class="data-table">
+    <table [style.table-layout]="fixed ? 'fixed' : 'initial'" class="data-table">
         <thead>
             <tr>
                 <ng-container *ngFor="let column of columns">
@@ -65,19 +76,20 @@
         </thead>
         <tbody *ngIf="loading">
             <tr>
-                <td   [attr.colspan]="columns.length">
+                <td [attr.colspan]="columns.length">
                     <spinner-placeholder></spinner-placeholder>
                 </td>
             </tr>
         </tbody>
-        <tbody  *ngIf="!loading && rows.length == 0">
+        <tbody *ngIf="!loading && rows.length == 0">
             <tr>
-                <td   [attr.colspan]="columns.length">
-                    <empty-placeholder [showButton]="showCreate && showHeader && showControls " (buttonClick)="onCreateClick()"></empty-placeholder>
+                <td [attr.colspan]="columns.length">
+                    <empty-placeholder [showButton]="showCreate && showHeader && showControls "
+                        (buttonClick)="onCreateClick()"></empty-placeholder>
                 </td>
             </tr>
         </tbody>
-      
+
         <tbody *ngIf="rows.length > 0 && !loading">
             <tr *ngFor="let row of rows; let rowIndex= index">
                 <ng-container *ngFor="let col of columns; let colIndex = index">
@@ -96,7 +108,7 @@
     </table>
     <div *ngIf="showFooter" class="datatable-footer">
         <div></div>
-        <mat-paginator  (page)="onPageChange($event)" [length]="total" [pageSize]="PageSize"
+        <mat-paginator (page)="onPageChange($event)" [length]="total" [pageSize]="PageSize"
             [pageSizeOptions]="[5, 10, 25, 50 ,100]" aria-label="Select page">
         </mat-paginator>
 
