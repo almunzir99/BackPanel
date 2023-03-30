@@ -49,7 +49,6 @@ export class RolesComponent implements OnInit {
       this.totalRecords = result.totalRecords;
       this.getRequest = RequestStatus.Success;
     } catch (error) {
-      console.log(error);
       this.getRequest = RequestStatus.Failed;
     }
   }
@@ -191,7 +190,6 @@ export class RolesComponent implements OnInit {
       this.getData();
     } catch (error) {
       this.dimRequest = RequestStatus.Failed;
-      console.log(error);
     }
   }
   update = async (item: Role) => {
@@ -209,7 +207,6 @@ export class RolesComponent implements OnInit {
       this.getData();
     } catch (error) {
       this.dimRequest = RequestStatus.Failed;
-      console.log(error);
     }
   }
   delete = async (id: number) => {
@@ -226,7 +223,7 @@ export class RolesComponent implements OnInit {
       }).afterClosed().subscribe(_ => this._dialog.closeAll())
       this.getData();
     } catch (error) {
-      console.log(error);
+      this.dimRequest = RequestStatus.Failed;
     }
   }
 

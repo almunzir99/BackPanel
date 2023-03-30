@@ -50,7 +50,6 @@ export class AppComponent {
       this._authService.$notifications.next(notifications.data);
       this.requestStatus = RequestStatus.Success;
     } catch (error) {
-      console.log(error);
       this.requestStatus = RequestStatus.Failed;
       this.router.navigate(['/', 'authentication']);
     }

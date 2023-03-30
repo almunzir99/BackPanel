@@ -174,7 +174,6 @@ export class ProfileComponent implements OnInit {
       })
 
     } catch (error) {
-      console.log(error);
       this.dimRequest = RequestStatus.Failed;
     }
   }
@@ -192,7 +191,6 @@ export class ProfileComponent implements OnInit {
       })
 
     } catch (error) {
-      console.log(error);
       this.dimRequest = RequestStatus.Failed;
     }
   }

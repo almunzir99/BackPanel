@@ -177,7 +177,6 @@ export class TranslationEditorComponent implements OnInit {
       this.getRequest = RequestStatus.Success;
 
     } catch (error) {
-      console.log(error);
       this.getRequest = RequestStatus.Failed;
     }
   }

@@ -51,7 +51,6 @@ export class AdminsComponent implements OnInit {
       this.totalRecords = result.totalRecords;
       this.getRequest = RequestStatus.Success;
     } catch (error) {
-      console.log(error);
       this.getRequest = RequestStatus.Failed;
 
     }
@@ -305,8 +304,6 @@ export class AdminsComponent implements OnInit {
       this.dimRequest = RequestStatus.Success;
       return result.data;
     } catch (error) {
-      console.log(error);
-
       this.dimRequest = RequestStatus.Failed;
       return [];
     }
@@ -326,7 +323,6 @@ export class AdminsComponent implements OnInit {
       this.getData();
     } catch (error) {
       this.dimRequest = RequestStatus.Failed;
-      console.log(error);
     }
   }
   update = async (item: Admin) => {
@@ -343,8 +339,7 @@ export class AdminsComponent implements OnInit {
       }).afterClosed().subscribe(_ => this._dialog.closeAll())
       this.getData();
     } catch (error) {
-      // this.dimRequest = RequestStatus.Failed;
-      console.log(error);
+      this.dimRequest = RequestStatus.Failed;
     }
   }
   delete = async (id: number) => {
@@ -361,7 +356,7 @@ export class AdminsComponent implements OnInit {
       }).afterClosed().subscribe(_ => this._dialog.closeAll())
       this.getData();
     } catch (error) {
-      console.log(error);
+      this.dimRequest = RequestStatus.Failed;
     }
   }
 

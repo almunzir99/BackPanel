@@ -47,7 +47,6 @@ export class MessagesComponent implements OnInit {
       this.totalRecords = result.totalRecords;
       this.getRequest = RequestStatus.Success;
     } catch (error) {
-      console.log(error);
       this.getRequest = RequestStatus.Failed;
 
     }
@@ -180,7 +179,7 @@ export class MessagesComponent implements OnInit {
       }).afterClosed().subscribe(_ => this._dialog.closeAll())
       this.getData();
     } catch (error) {
-      console.log(error);
+      this.dimRequest = RequestStatus.Failed;
     }
   }
 
