@@ -83,7 +83,7 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
 
     public async Task<TEntity?> SingleAsync(Expression<Func<TEntity, bool>> predicate)
     {
-        var result = await _includeableDbSet.SingleOrDefaultAsync(predicate);
+        var result = await _includeableDbSet.Where(c => c.Status != Status.Deleted).SingleOrDefaultAsync(predicate);
         return result;
     }
 
