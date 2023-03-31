@@ -18,8 +18,8 @@ public class UriService : IUriService
     }
     public Uri GetPageUri(PaginationFilter filter, string route)
     {
-        var endPoint = new Uri(String.Concat(_baseUri, route));
-        if (endPoint == null) throw new ArgumentNullException(nameof(endPoint));
+        var endPoint = new Uri(string.Concat(_baseUri, route));
+        if (endPoint == null) throw new Exception("enPoint shouldn't be null");
         var endPointWithParams = QueryHelpers.AddQueryString(endPoint.ToString(), "pageIndex", filter.PageIndex.ToString());
         endPointWithParams = QueryHelpers.AddQueryString(endPointWithParams, "pageSize", filter.PageSize.ToString());
         return new Uri(endPointWithParams);

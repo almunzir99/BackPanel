@@ -26,7 +26,7 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
         if (actionResult is OkObjectResult okActionResult)
         {
             if (okActionResult?.Value is PagedResponse<IList<AdminDto>> { Data: { } } response)
-                response.Data = response.Data.Where(c => c.IsManager == false && c.Id != GetCurrentUserId()).ToList();
+                response.Data = response.Data.Where(c => !c.IsManager && c.Id != GetCurrentUserId()).ToList();
         }
 
         return actionResult;
@@ -43,18 +43,19 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
             var result = await Service.ActivitiesListAsync(filter);
             var totalRecords = await Service.GetActivitiesTotalRecords();
             if (Request.Path.Value != null)
+            {
                 return Ok(PaginationHelper.CreatePagedResponse(result,
                     validFilter, UriService, totalRecords, Request.Path.Value));
+            }
+
             var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
             return BadRequest(response);
         }
         catch (Exception e)
         {
-
             var response = new Response<string>(success: false, errors: new List<string>() { e.Message });
             return BadRequest(response);
         }
-
     }
     [Permission(true, PermissionTypes.READ)]
      [HttpGet("{userId}/activities")]
@@ -68,8 +69,11 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
             var result = await Service.AdminActivitiesListAsync(userId,filter);
             var totalRecords = await Service.GetActivitiesTotalRecords(c => c.AdminId == userId);
             if (Request.Path.Value != null)
+            {
                 return Ok(PaginationHelper.CreatePagedResponse(result,
                     validFilter, UriService, totalRecords, Request.Path.Value));
+            }
+
             var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
             return BadRequest(response);
         }
@@ -78,7 +82,6 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
             var response = new Response<string>(success: false, errors: new List<string>() { e.Message });
             return BadRequest(response);
         }
-
     }
 
     public override string PermissionTitle => "AdminsPermissions";

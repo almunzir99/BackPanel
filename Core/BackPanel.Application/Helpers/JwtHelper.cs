@@ -8,7 +8,6 @@ namespace BackPanel.Application.Helpers;
 
 public static class JwtHelper
 {
-     
         public static string GenerateToken(UserDtoBase identity, string identityType, string secretKey, RoleDto? role = default)
         {
             if (identity.Email != null)
@@ -20,11 +19,10 @@ public static class JwtHelper
                 };
                 if(identityType == "ADMIN")
                 {
-                    var admin = identity as AdminDto;
-                    if(role == default)
-                        claims.Add(new Claim("Manager","true"));
-                    else if (role.Title != null) claims.Add(new Claim("admin_role", role.Title));
-                    if (admin != null && admin.IsManager == true)
+                if (role == default)
+                    claims.Add(new Claim("Manager", "true"));
+                else if (role.Title != null) claims.Add(new Claim("admin_role", role.Title));
+                if (identity is AdminDto admin && admin.IsManager)
                         claims.Add(new Claim("type", "manager"));
                     else
                         claims.Add(new Claim("type", "admin"));

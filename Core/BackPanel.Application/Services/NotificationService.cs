@@ -38,8 +38,8 @@ public class NotificationService : INotificationService
     public async Task<IList<NotificationDto>> GetUnreadNotification(int userId, string userType, bool autoRead)
     {
         var user = await GetUser(userId, userType);
-        var notifications = user.Notifications.Where(c => c.Read == false).ToList();
-        if (autoRead == true)
+        var notifications = user.Notifications.Where(c => !c.Read).ToList();
+        if (autoRead)
         {
             foreach (var notification in notifications)
             {
@@ -67,7 +67,7 @@ public class NotificationService : INotificationService
         UserEntityBase user = target ?? await GetUser(userId, userType);
         var mappedNotification = _mapper.Map<NotificationDto, Notification>(notification);
         user.Notifications.Add(mappedNotification);
-        var result = _mapper.Map<Notification, NotificationDto>(mappedNotification);
+        var _ = _mapper.Map<Notification, NotificationDto>(mappedNotification);
         await _repositoryBase.Complete();
         // await PushNotificationWithSignalR(userId, userType, result);
     }
@@ -75,7 +75,7 @@ public class NotificationService : INotificationService
     private async Task<UserEntityBase> GetUser(int userId, string userType)
     {
         UserEntityBase user;
-        if (userType.ToLower() == "admin")
+        if (string.Equals(userType, "admin", StringComparison.OrdinalIgnoreCase))
             user = await _adminRepository.SingleAsync(userId);
         else
             throw new Exception("userType should either student, instructor or admin");
@@ -95,18 +95,20 @@ public class NotificationService : INotificationService
         return mappedNotification;
     }
 
-
     public async Task BroadCastNotification(NotificationDto notification, string userType,
         IList<Func<UserEntityBase>>? conditions = null)
     {
         IList<UserEntityBase> users;
-        if (userType.ToLower() == "admin")
+        if (string.Equals(userType, "admin", StringComparison.OrdinalIgnoreCase))
         {
             var admins = await _adminRepository.ListAsync();
             users = admins.Cast<UserEntityBase>().ToList();
         }
         else
+        {
             throw new Exception("userType should either customer, delivery or admin");
+        }
+
         foreach (var user in users)
         {
             await PushNotification(user.Id,userType,notification,user);

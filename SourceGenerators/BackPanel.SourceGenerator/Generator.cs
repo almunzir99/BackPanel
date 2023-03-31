@@ -26,7 +26,6 @@ public class Generator
         {
             await dtoGen.Generate();
             Console.WriteLine("Dto File Generated Successfully");
-
         }
         /* **************** Step 2: Generate Dto Request File ********************  */
         if (_options.DtoRequest!.Value)
@@ -34,7 +33,11 @@ public class Generator
             await dtoRequestGen.Generate();
             Console.WriteLine("Dto Request File Generated Successfully");
         }
-        else return;
+        else
+        {
+            return;
+        }
+
         if (!_options.Dto.Value) return;
         if (_options.DbContext!.Value)
         {
@@ -46,7 +49,11 @@ public class Generator
             await dbCommandRunner.MigrateAsync();
             Console.WriteLine(" EF Migrating Completed Successfully");
         }
-        else return;
+        else
+        {
+            return;
+        }
+
         if (_options.Permission!.Value)
         {
             /* **************** Step 5: Update Role Entity  File ********************  */
@@ -63,7 +70,11 @@ public class Generator
             await dbCommandRunner.MigrateAsync();
             Console.WriteLine(" EF Migrating Completed Successfully");
         }
-        else return;
+        else
+        {
+            return;
+        }
+
         if (_options.Service!.Value)
         {
             /* **************** Step 9: Generate Interface File ********************  */
@@ -76,12 +87,16 @@ public class Generator
             await codeModifier.AddServiceToDiFile();
             Console.WriteLine("RegisterRequiredApplicationService.cs updated Successfully");
         }
-        else return;
+        else
+        {
+            return;
+        }
+
         if (_options.DatabaseUpdate!.Value)
         {
             /* **************** Step  13: EF Db Update ********************  */
             Console.WriteLine("Start EF DataBase Update ....");
-            await dbCommandRunner.DbUpdateAsync();
+            await DbCommandRunner.DbUpdateAsync();
             Console.WriteLine(" EF Database Update Completed Successfully");
         }
        if(_options.Controller!.Value)

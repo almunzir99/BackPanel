@@ -16,5 +16,4 @@ public interface ITranslationEditorService
     Task UpdateNode(NodeBody body);
     Task DeleteNode(string parent, string title);
     Task<JObject> GetTranslationTree();
-
 }

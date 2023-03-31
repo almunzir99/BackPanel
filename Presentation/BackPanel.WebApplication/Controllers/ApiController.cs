@@ -39,8 +39,11 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
         var result = await Service.ListAsync(filter, new List<Func<TEntity, bool>>(), title, orderBy!, ascending);
         var totalRecords = await Service.GetTotalRecords();
         if (Request.Path.Value != null)
+        {
             return Ok(PaginationHelper.CreatePagedResponse(result,
                 validFilter, UriService, totalRecords, Request.Path.Value));
+        }
+
         var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
         return BadRequest(response);
     }
@@ -53,11 +56,9 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
             var result = await Service.SingleAsync(id);
             var response = new Response<TDto>(data: result);
             return Ok(response);
-
         }
         catch (Exception e)
         {
-
             var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
             return BadRequest(response);
         }
@@ -67,7 +68,6 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
     [HttpPost]
     public virtual async Task<IActionResult> PostAsync(TDtoRequest body)
     {
-
         try
         {
             int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
@@ -77,11 +77,9 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
             if (!IsAnonymous("PostAsync"))
                 await Service.CreateActivity(currentUserId, result.Id, "Create");
             return Ok(response);
-
         }
         catch (Exception e)
         {
-
             var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
             return BadRequest(response);
         }
@@ -98,7 +96,6 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
         }
         catch (System.Exception e)
         {
-
             var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
             return BadRequest(response);
         }
@@ -115,7 +112,6 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
             int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
             await Service.CreateActivity(currentUserId, id, "Update");
             return Ok(response);
-
         }
         catch (Exception e)
         {
@@ -135,7 +131,6 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
             int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
             await Service.CreateActivity(currentUserId, id, "Delete");
             return Ok(response);
-
         }
         catch (Exception e)
         {
@@ -152,7 +147,6 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
             var result = await Service.UpdateAsync(id, body);
             var response = new Response<TDto>(data: result);
             return Ok(response);
-
         }
         catch (Exception e)
         {
@@ -167,7 +161,7 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
         var result = new FileContentResult(content,
             "application/xls")
         {
-            FileDownloadName = $"data.xls",
+            FileDownloadName = "data.xls",
         };
         return result;
     }
@@ -178,7 +172,7 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
         var result = new FileContentResult(content,
             "application/pdf")
         {
-            FileDownloadName = $"data.pdf",
+            FileDownloadName = "data.pdf",
         };
         return result;
     }
@@ -190,7 +184,6 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
             await Service.ActiveToggleAsync(id);
             var response = new Response<TDto>(message: "item activation toggled successfully");
             return Ok(response);
-
         }
         catch (Exception e)
         {
@@ -201,10 +194,9 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
     private bool IsAnonymous(string name)
     {
         var type = this.GetType();
-        var targetMethod = type.GetMethods().FirstOrDefault(c => c.Name == name);
+        var targetMethod = Array.Find(type.GetMethods(), c => c.Name == name);
         var isAnonymous = targetMethod?.GetCustomAttributes(true).SingleOrDefault(c => c.GetType().Name == "AllowAnonymousAttribute");
         return isAnonymous != null;
-
     }
     protected int GetCurrentUserId()
     {
@@ -216,5 +208,4 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
         string type = HttpContext.User.GetClaimValue("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
         return type;
     }
-
 }

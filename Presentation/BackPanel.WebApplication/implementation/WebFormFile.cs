@@ -12,9 +12,7 @@ public class WebFormFile : IWebFormFile
         _file = file;
         FileName = fileName;
     }
-
-
-    public async Task CopyToAsync(Stream stream, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task CopyToAsync(Stream stream, CancellationToken cancellationToken = default)
     {
         await _file.CopyToAsync(stream, cancellationToken);
     }

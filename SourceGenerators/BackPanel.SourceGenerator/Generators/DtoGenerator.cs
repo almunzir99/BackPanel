@@ -33,7 +33,7 @@ public class DtoGenerator
         _templatePath = Path.Combine(
             AppSettings.WorkingDirectory,
             AppSettings.TemplatesRelativePath,
-            _dtoType == DtoType.DtoRequest ? "DtoRequestTemplate.sgt" : $"DtoTemplate.sgt"
+            _dtoType == DtoType.DtoRequest ? "DtoRequestTemplate.sgt" : "DtoTemplate.sgt"
         );
 
         if (!File.Exists(_modelPath))
@@ -42,8 +42,6 @@ public class DtoGenerator
             throw new FileNotFoundException("Template File  Not Found");
         if (File.Exists(_outPutPath))
             throw new InvalidOperationException("Dto File Already Exists");
-
-         
     }
 
     public async Task Generate()
@@ -55,7 +53,7 @@ public class DtoGenerator
           if(_dtoType == DtoType.Dto)
         {
             extractedProps = ClearPropsAttribute(extractedProps);
-            usings = usings.Where(c => !c.Contains("using System.ComponentModel.DataAnnotations;") 
+            usings = usings.Where(c => !c.Contains("using System.ComponentModel.DataAnnotations;")
             && !c.Contains("using System.ComponentModel.DataAnnotations.Schema;")).ToList();
         }
         var usingsStr = stringBuilder.AppendJoin("", usings).ToString();
@@ -78,7 +76,7 @@ public class DtoGenerator
         var modelPropsList = classSyntax.Members.OfType<PropertyDeclarationSyntax>().ToList();
         return modelPropsList;
     }
-    private IList<PropertyDeclarationSyntax> ClearPropsAttribute(IList<PropertyDeclarationSyntax> props)
+    private static IList<PropertyDeclarationSyntax> ClearPropsAttribute(IList<PropertyDeclarationSyntax> props)
      {
         var newPropList = props.Select(c =>{
             var newProp = c;
@@ -127,14 +125,16 @@ public class DtoGenerator
                     var groups = regex.Match(propStr).Groups;
                     for (int i = 1; i < groups.Count; i++)
                     {
-                        if (i == 3|| ( i == 10 && !string.IsNullOrEmpty(groups[10].Value.Trim())))
+                        if (i == 3 || (i == 10 && !string.IsNullOrEmpty(groups[10].Value.Trim())))
                         {
                             var typeSuffix = _dtoType == DtoType.DtoRequest ? "DtoRequest" : "Dto";
                             newPropStr +=
                                 $"{groups[i].Value.Replace("?", "")}{typeSuffix}?" + " ";
                         }
                         else
+                        {
                             newPropStr += groups[i].Value + " ";
+                        }
                     }
                 }
 
@@ -148,7 +148,6 @@ public class DtoGenerator
 
     private async Task GeneratePropDto(string model)
     {
-       
         var dtos = Directory.GetFiles(Path.Combine(
             AppSettings.WorkingDirectory,
              _dtoType == DtoType.DtoRequest ? AppSettings.DtosRequestsRelativePath : AppSettings.DtosRelativePath

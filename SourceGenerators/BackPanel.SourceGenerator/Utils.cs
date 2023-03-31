@@ -44,8 +44,7 @@ public static class Utils
             target = match.Groups[2].Value;
         }
 
-        target = target.Replace("?", "");
-        return target;
+        return target.Replace("?", "");
     }
 
     public static string FormatCodeWithRoslyn(string code)

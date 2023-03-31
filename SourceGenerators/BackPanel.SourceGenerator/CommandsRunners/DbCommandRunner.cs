@@ -13,16 +13,15 @@ public class DbCommandRunner
 
     public async Task MigrateAsync(string? message = null)
     {
-        var migrateMessage = message ?? $"create{Utils.PluralizeWords(_model)}Table"; 
-        var command = $@"dotnet ef migrations add {migrateMessage} "+
+        _ = message ?? $"create{Utils.PluralizeWords(_model)}Table";
+        var command = "dotnet ef migrations add {migrateMessage} "+
                       $" -s {AppSettings.WebAppProjectRelativePath} -p {AppSettings.PersistenceProjectRelativePath}";
        await ProcessAsyncHelper.ExecuteShellCommand(AppSettings.WorkingDirectory, "cmd", $"/k {command}", 20000);
     }
-    public async Task DbUpdateAsync()
+    public static async Task DbUpdateAsync()
     {
-        var command = $@"dotnet ef database update"+
+        var command = "dotnet ef database update"+
                       $" -s {AppSettings.WebAppProjectRelativePath} -p {AppSettings.PersistenceProjectRelativePath}";
         await ProcessAsyncHelper.ExecuteShellCommand(AppSettings.WorkingDirectory, "cmd", $"/k {command}", 20000);
     }
-    
 }

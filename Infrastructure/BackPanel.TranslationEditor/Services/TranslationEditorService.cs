@@ -28,7 +28,9 @@ public class TranslationEditorService : ITranslationEditorService
             await File.WriteAllTextAsync(newFilePath, content);
         }
         else
+        {
             await File.WriteAllTextAsync(newFilePath, "{}");
+        }
     }
 
     public  void DeleteLanguage(string code)
@@ -40,9 +42,7 @@ public class TranslationEditorService : ITranslationEditorService
             {
                  File.Delete(file);
             }
-
         }
-
     }
 
     public async Task<JObject> GetLanguage(string code)
@@ -55,7 +55,6 @@ public class TranslationEditorService : ITranslationEditorService
                 var content = await File.ReadAllTextAsync(file);
                 return JObject.Parse(content);
             }
-
         }
 
         throw new Exception("there's no translation with provided code");
@@ -90,7 +89,6 @@ public class TranslationEditorService : ITranslationEditorService
                 throw new Exception("the target parent node not available");
             jsonObject.Property(title)!.Remove();
             await File.WriteAllTextAsync(file,jsonObject.ToString());
-
         }
     }
 
@@ -106,7 +104,6 @@ public class TranslationEditorService : ITranslationEditorService
             jsonObject[newTitle] = jsonObject.GetValue(oldTitle);
             jsonObject.Property(oldTitle)!.Remove();
             await File.WriteAllTextAsync(file,jsonObject.ToString());
-
         }
     }
 
@@ -114,14 +111,13 @@ public class TranslationEditorService : ITranslationEditorService
     {
         foreach (var file in Directory.GetFiles(_rootPath))
         {
-            
             var code = Path.GetFileNameWithoutExtension(file);
             var json = await File.ReadAllTextAsync(file);
             var jsonObject = JObject.Parse(json);
             var target = jsonObject[body.Parent!];
             if (target == null)
                 throw new Exception("the target parent node not available");
-            if (body.Values.Keys.Contains(code) == false)
+            if (!body.Values.ContainsKey(code))
                 target[body.Title!] = "";
             else
                 target[body.Title!] = body.Values[code];
@@ -140,14 +136,12 @@ public class TranslationEditorService : ITranslationEditorService
         {
             var json = await File.ReadAllTextAsync(file);
             var jsonObject = JObject.Parse(json);
-            var target = jsonObject.GetValue(parent) as JObject;
-            if (target == null)
+            if (jsonObject.GetValue(parent) is not JObject target)
                 throw new Exception("the target parent node not available");
             if (target[title] == null)
                 throw new Exception("the target  node not available");
             target.Property(title)!.Remove();
             await File.WriteAllTextAsync(file,jsonObject.ToString());
-
         }
     }
 
@@ -161,9 +155,10 @@ public class TranslationEditorService : ITranslationEditorService
             var jObject = JObject.Parse(json);
             foreach (var keyValuePair in jObject)
             {
-                if (resultObject.ContainsKey(keyValuePair.Key) == false)
+                if (!resultObject.ContainsKey(keyValuePair.Key))
                     resultObject[keyValuePair.Key] = new JObject();
                 if (keyValuePair.Value is JObject node)
+                {
                     foreach (var childKeyValuePair in node)
                     {
                         if (resultObject[keyValuePair.Key] != null)
@@ -172,6 +167,7 @@ public class TranslationEditorService : ITranslationEditorService
                             resultObject[keyValuePair.Key]![childKeyValuePair.Key]![code] = childKeyValuePair.Value;
                         }
                     }
+                }
             }
         }
 

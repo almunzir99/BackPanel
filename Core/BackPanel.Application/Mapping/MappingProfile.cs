@@ -19,7 +19,5 @@ public class MappingProfile : Profile
         CreateMap<AdminDto, Admin>().ReverseMap();
         CreateMap<ActivityDto, Activity>().ReverseMap();
         CreateMap<NotificationDto, Notification>().ReverseMap();
-            
-
     }
 }

@@ -25,7 +25,7 @@ public class FilesManagerController : ControllerBase
         try
         {
             List<IWebFormFile> webFiles =
-                new List<IWebFormFile>(files.Select(file => new WebFormFile(file, file.FileName)).ToList());
+                new(files.Select(file => new WebFormFile(file, file.FileName)).ToList());
             var result = await _fileService.UploadMultiFiles(path ?? "", webFiles);
             return Ok(new Response<IList<FileModel>>(data: result));
         }
@@ -133,7 +133,6 @@ public class FilesManagerController : ControllerBase
     public IActionResult MoveDirectory([FromQuery] string? oldPath, [FromQuery] string? newPath,
         [Required] [FromQuery] string directoryName)
     {
-        
         try
         {
             _fileService.MoveDirectory(oldPath ?? "", newPath ?? "", directoryName);
@@ -150,8 +149,6 @@ public class FilesManagerController : ControllerBase
     public IActionResult RenameDirectory([FromQuery] string? path, [Required] [FromQuery] string oldName,
         [Required] [FromQuery] string newName)
     {
-        
-
         try
         {
             _fileService.RenameDirectory(path ??  "", oldName, newDirName: newName);
@@ -168,7 +165,6 @@ public class FilesManagerController : ControllerBase
     public IActionResult MoveFile([FromQuery] string? oldPath,[FromQuery] string? newPath,
         [Required] [FromQuery] string fileName)
     {
-        
         try
         {
             _fileService.MoveFile(oldPath ?? "", newPath ?? "", fileName);
@@ -185,7 +181,6 @@ public class FilesManagerController : ControllerBase
     public IActionResult RenameFile( [FromQuery] string? path, [Required] [FromQuery] string oldName,
         [Required] [FromQuery] string newName)
     {
-        
         try
         {
             _fileService.RenameFile(path ??  "", oldName, newName);

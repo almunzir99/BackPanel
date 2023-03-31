@@ -12,12 +12,10 @@ namespace BackPanel.WebApplication.Controllers;
 [Route("api/[controller]")]
 public class MessagesController : ApiController<Message, MessageDto,MessageDtoRequest, IMessageService>
 {
-    private readonly IRolesService _roleService;
     private readonly INotificationService _notificationService;
 
-    public MessagesController(IMessageService service, IUriService uriSerivce, IRolesService roleService, INotificationService notificationService) : base(service, uriSerivce)
+    public MessagesController(IMessageService service, IUriService uriSerivce,INotificationService notificationService) : base(service, uriSerivce)
     {
-        _roleService = roleService;
         _notificationService = notificationService;
     }
 
@@ -40,5 +38,4 @@ public class MessagesController : ApiController<Message, MessageDto,MessageDtoRe
         await _notificationService.BroadCastNotification(notification,"admin");
         return await base.PostAsync(body);
     }
-        
 }

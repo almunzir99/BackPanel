@@ -4,5 +4,4 @@ namespace BackPanel.Application.DTOsRequests;
 
 public class AdminDtoRequest : UserBaseDtoRequest
 {
-    
 }

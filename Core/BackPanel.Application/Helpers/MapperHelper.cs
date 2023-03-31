@@ -11,7 +11,7 @@ public class MapperHelper
             throw new ArgumentNullException(nameof(source));
         if (dest == null)
             throw new ArgumentNullException(nameof(dest));
-        propsToExclude = propsToExclude ?? Array.Empty<string>();
+        propsToExclude ??= Array.Empty<string>();
         var sourceProps = source.GetType().GetProperties();
         var destProps = dest.GetType().GetProperties();
 
@@ -25,15 +25,17 @@ public class MapperHelper
                 var sourcePropValue = sourceProp.GetValue(source);
                 if (propName == sourcePropName
                     && prop.PropertyType == sourceProp.PropertyType
-                    && sourcePropValue != default && propsToExclude.Contains(propName) == false)
+                    && sourcePropValue != default && !propsToExclude.Contains(propName))
                 {
                     if (conditions != null)
+                    {
                         foreach (var condition in conditions)
                         {
                             var result = condition.Invoke(source);
-                            if (result == false)
+                            if (!result)
                                 continue;
                         }
+                    }
 
                     if (prop.PropertyType.IsPrimitive
                         || prop.PropertyType == typeof(Decimal)
@@ -48,6 +50,7 @@ public class MapperHelper
                     else if (typeof(IEnumerable).IsAssignableFrom(sourceProp.PropertyType))
                     {
                         if (propValue is IEnumerable listPropValue)
+                        {
                             foreach (var value in listPropValue)
                             {
                                 var valueIdProp = value.GetType().GetProperties().SingleOrDefault(c => c.Name == "Id");
@@ -57,6 +60,7 @@ public class MapperHelper
                                 if (valueIdPropValue == null)
                                     continue;
                                 if (sourcePropValue is IEnumerable listSourcePropValue)
+                                {
                                     foreach (var sourceValue in listSourcePropValue)
                                     {
                                         var sourceValueIdProp = sourceValue.GetType().GetProperties()
@@ -71,19 +75,25 @@ public class MapperHelper
                                         {
                                             var mapMethodInfo = this.GetType().GetMethod("Map");
                                             if (mapMethodInfo != null)
+                                            {
                                                 mapMethodInfo.MakeGenericMethod(sourceProp.PropertyType,
                                                         prop.PropertyType)
                                                     .Invoke(this, new[] { sourceValue, value, null, null });
+                                            }
                                         }
                                     }
+                                }
                             }
+                        }
                     }
                     else
                     {
                         var mapMethodInfo = this.GetType().GetMethod("Map");
                         if (mapMethodInfo != null)
+                        {
                             mapMethodInfo.MakeGenericMethod(sourceProp.PropertyType, prop.PropertyType)
                                 .Invoke(this, new[] { sourcePropValue, propValue, null, propsToExclude });
+                        }
                     }
                 }
             }

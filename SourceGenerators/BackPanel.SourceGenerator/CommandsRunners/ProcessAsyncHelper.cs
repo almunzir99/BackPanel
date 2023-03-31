@@ -113,13 +113,10 @@ public static class ProcessAsyncHelper
         return result;
     }
 
-
     private static Task<bool> WaitForExitAsync(Process process, int timeout)
     {
         return Task.Run(() => process.WaitForExit(timeout));
     }
-
-
     public struct ProcessResult
     {
         public bool Completed;

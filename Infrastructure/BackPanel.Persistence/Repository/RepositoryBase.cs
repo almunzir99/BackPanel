@@ -60,7 +60,6 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         return list;
     }
 
-
     public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null)
     {
         return (predicate != null) ? await DbSet.CountAsync(predicate) : await DbSet.CountAsync();
@@ -69,8 +68,7 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
     public async Task<IList<TEntity>> SearchAsync(Func<TEntity, bool> predicate)
     {
         var result = await _includeableDbSet.ToListAsync();
-        result = result.Where(predicate).ToList();
-        return result;
+        return result.Where(predicate).ToList();
     }
 
     public virtual async Task<TEntity> SingleAsync(int id)

@@ -30,7 +30,7 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
     public virtual async Task CreateActivity(int userId, int rowId, string action)
     {
         var tableTitle = typeof(TEntity).Name;
-        Activity activity = new Activity(userId, tableTitle, rowId, action, DateTime.Now);
+        Activity activity = new(userId, tableTitle, rowId, action, DateTime.Now);
         var user = await _adminsRepository.SingleAsync(userId);
         user.Activities.Add(activity);
         await _adminsRepository.Complete();
@@ -95,9 +95,8 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
         }
 
         list = list
-            .Where(c => (GetSearchPropValue(c) == string.Empty) || GetSearchPropValue(c).ToLower().Contains(search.ToLower()))
-            .ToList();
-        list = list
+            .Where(c => GetSearchPropValue(c)?.Length == 0 || GetSearchPropValue(c).Contains(search, StringComparison.OrdinalIgnoreCase))
+            .ToList()
             .Skip((validFilter.PageIndex - 1) * validFilter.PageSize)
             .Take(validFilter.PageSize).ToList();
         var result = Mapper.Map<IList<TEntity>, IList<TDto>>(list);
@@ -108,7 +107,7 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
         var target = await Repository.SingleAsync(c => c.Id == id);
         if(target != null)
         {
-             target.Status = target.Status == Status.Active ? Status.Disabled : Status.Active;  
+             target.Status = target.Status == Status.Active ? Status.Disabled : Status.Active;
              await Repository.Complete();
         }
     }
@@ -117,7 +116,7 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
     {
         //Get ordering Prop
         var type = typeof(TEntity);
-        var orderProp = type.GetProperties().SingleOrDefault(c => c.Name.ToLower() == prop.ToLower());
+        var orderProp = type.GetProperties().SingleOrDefault(c => string.Equals(c.Name, prop, StringComparison.OrdinalIgnoreCase));
         if (orderProp == null)
             throw new Exception("ordering property isn't available");
         var orderedList = ascending
@@ -142,7 +141,6 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
         return mappedResult;
     }
 
-
     public virtual async Task<TDto> UpdateAsync(int id, JsonPatchDocument<TEntity> newItem)
     {
         var result = await Repository.UpdateAsync(id, newItem);
@@ -154,7 +152,7 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
     protected virtual string GetSearchPropValue(TEntity obj)
     {
         var type = typeof(TEntity);
-        var searchProp = type.GetProperties().SingleOrDefault(c => c.Name.ToLower() == "name");
+        var searchProp = type.GetProperties().SingleOrDefault(c => string.Equals(c.Name, "name", StringComparison.OrdinalIgnoreCase));
         var propValue = searchProp?.GetValue(obj)?.ToString();
         return propValue ?? String.Empty;
     }

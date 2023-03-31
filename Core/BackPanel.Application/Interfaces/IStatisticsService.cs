@@ -2,5 +2,5 @@ namespace BackPanel.Application.Interfaces;
 
 public interface IStatisticsService
 {
-    Task<StatisticsDto> getCounters();
+    Task<StatisticsDto> GetCounters();
 }

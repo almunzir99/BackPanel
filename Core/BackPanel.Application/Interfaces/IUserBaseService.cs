@@ -14,9 +14,8 @@ where  TDto : UserDtoBase
     Task<TDto> Register(TDtoRequest user);
     Task PasswordRecoveryRequest(string email);
     Task PasswordRecovery(string key,string newPassword);
-        
     Task ResetPassword(int id,string oldPassword,string newPassword);
     Task<string> ChangePersonalPhoto(int id,IWebFormFile file);
     Task<TDto> UpdatePersonalInfo(int userId,JsonPatchDocument<TEntity> patchDoc);
-    Task<TDto> GetProfileAsync(int userId);  
+    Task<TDto> GetProfileAsync(int userId);
 }

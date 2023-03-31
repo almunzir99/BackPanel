@@ -13,7 +13,7 @@ public static class DataExportHelper<T>
         var name = GetName();
         using var workBook = new XLWorkbook();
         var worksheet = workBook.Worksheets.Add(name);
-        var currentRow = 1;
+        const int currentRow = 1;
         foreach (var column in columns)
         {
             var index = columns.IndexOf(column);
@@ -27,7 +27,7 @@ public static class DataExportHelper<T>
             worksheet.Column(index).AdjustToContents();
         }
 
-        for (int i = 0; i < data.Count(); i++)
+        for (int i = 0; i < data.Count; i++)
         {
             var row = data[i];
             for (int j = 0; j < columns.Count; j++)
@@ -36,7 +36,7 @@ public static class DataExportHelper<T>
                 var cellData = GetPropValue(row!, column);
                 var xlCell = worksheet.Cell(i + 2, j + 1);
                 xlCell.Value = cellData == null ? "" : cellData.ToString();
-                if (cellData != null && cellData.ToString()!.Length < 100)
+                if (cellData?.ToString()!.Length < 100)
                 {
                     worksheet.Column(j + 1).AdjustToContents();
                 }
@@ -52,7 +52,7 @@ public static class DataExportHelper<T>
     public static Byte[] ExportToPdf(IList<T> data, string stylePath)
     {
         var htmlTable = GenerateHtmlTable(data);
-        var name = GetName();
+        _ = GetName();
         var htmlContent = @$"
         <html>
             <head>
@@ -89,7 +89,6 @@ public static class DataExportHelper<T>
     private static string GenerateHtmlTable(IList<T> data)
     {
         var columns = GetColumns();
-        var name = GetName();
         var sp = new StringBuilder();
         sp.Append(@"
           <table>
@@ -97,7 +96,7 @@ public static class DataExportHelper<T>
     ");
         foreach (var col in columns)
         {
-            sp.AppendLine($@"<th style= ""padding:10px"">{col}</th>");
+            sp.Append(@"<th style= ""padding:10px"">").Append(col).AppendLine("</th>");
         }
 
         sp.AppendLine("</tr>");
@@ -107,7 +106,7 @@ public static class DataExportHelper<T>
             foreach (var col in columns)
             {
                 var cellData = GetPropValue(row!, col);
-                sp.AppendLine($@"<td style= ""padding:10px""> {cellData} </td>");
+                sp.Append(@"<td style= ""padding:10px""> ").Append(cellData).AppendLine(" </td>");
             }
 
             sp.AppendLine("</tr>");
@@ -123,7 +122,7 @@ public static class DataExportHelper<T>
         var properties = type.GetProperties().Where(c => c.PropertyType.IsPrimitive ||
                                                          c.PropertyType == typeof(String)
                                                          || c.PropertyType == typeof(DateTime)).ToList();
-        var columns = properties.Select(c => c.Name).ToList();
+        var columns = properties.ConvertAll(c => c.Name);
         return columns;
     }
 

@@ -9,18 +9,17 @@ public class ControllerGenerator
     public ControllerGenerator(string model)
     {
         var modelPath = Path.Combine(
-            AppSettings.WorkingDirectory, 
+            AppSettings.WorkingDirectory,
             AppSettings.EntitiesRelativePath, $"{model}.cs"
         );
         _outPutPath = Path.Combine(
-            AppSettings.WorkingDirectory, 
+            AppSettings.WorkingDirectory,
             AppSettings.ControllersRelativePath, $"{Utils.PluralizeWords(model)}Controller.cs"
         );
         _templatePath = Path.Combine(
-            AppSettings.WorkingDirectory, 
-            AppSettings.TemplatesRelativePath, $"ControllerTemplate.sgt"
+            AppSettings.WorkingDirectory,
+            AppSettings.TemplatesRelativePath, "ControllerTemplate.sgt"
         );
-        
         if (!File.Exists(modelPath))
             throw new FileNotFoundException("Model File  Not Found");
         if (!File.Exists(_templatePath))
@@ -28,7 +27,6 @@ public class ControllerGenerator
         if (File.Exists(_outPutPath))
             throw new InvalidOperationException("Controller File Already Exists");
         _model = model;
-        
     }
     public async Task Generate()
     {

@@ -6,5 +6,4 @@ namespace BackPanel.Application.Interfaces;
 
 public interface IMessageService : IServicesBase<Message,MessageDto,MessageDtoRequest>
 {
-    
 }

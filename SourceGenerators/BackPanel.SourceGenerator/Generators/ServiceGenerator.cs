@@ -9,18 +9,17 @@ public class ServiceGenerator
     public ServiceGenerator(string model)
     {
         var modelPath = Path.Combine(
-            AppSettings.WorkingDirectory, 
+            AppSettings.WorkingDirectory,
             AppSettings.EntitiesRelativePath, $"{model}.cs"
         );
         _outPutPath = Path.Combine(
-            AppSettings.WorkingDirectory, 
+            AppSettings.WorkingDirectory,
             AppSettings.ServicesRelativePath, $"{Utils.PluralizeWords(model)}Service.cs"
         );
         _templatePath = Path.Combine(
-            AppSettings.WorkingDirectory, 
-            AppSettings.TemplatesRelativePath, $"ServiceTemplate.sgt"
+            AppSettings.WorkingDirectory,
+            AppSettings.TemplatesRelativePath, "ServiceTemplate.sgt"
         );
-        
         if (!File.Exists(modelPath))
             throw new FileNotFoundException("Model File  Not Found");
         if (!File.Exists(_templatePath))
@@ -28,7 +27,6 @@ public class ServiceGenerator
         if (File.Exists(_outPutPath))
             throw new InvalidOperationException("Service File Already Exists");
         _model = model;
-        
     }
     public async Task Generate()
     {
@@ -37,6 +35,5 @@ public class ServiceGenerator
         templateContent = templateContent.Replace("@[Models]", models);
         templateContent = templateContent.Replace("@[Model]", _model);
         await File.WriteAllTextAsync(_outPutPath,templateContent);
-        
     }
 }

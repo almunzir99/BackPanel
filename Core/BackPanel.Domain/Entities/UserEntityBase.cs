@@ -4,7 +4,6 @@ namespace BackPanel.Domain.Entities;
 
 public class UserEntityBase : EntityBase
 {
-   
     [Required]
     [MaxLength(30)]
     public string? Username { get; set; }
@@ -18,5 +17,5 @@ public class UserEntityBase : EntityBase
     [Required]
     public byte[]? PasswordSalt { get; set; }
     public string? Image { get; set; }
-    public IList<Notification> Notifications { get; set; } = new List<Notification>();   
+    public IList<Notification> Notifications { get; set; } = new List<Notification>();
 }

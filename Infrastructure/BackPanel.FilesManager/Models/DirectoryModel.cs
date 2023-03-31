@@ -25,5 +25,4 @@ public class DirectoryModel
         LastUpdate = lastUpdate;
         Directories = directories;
     }
-
 }

@@ -9,14 +9,11 @@ public static class DbUpdateExceptionDecoder
     {
         if (exception.InnerException is SqlException sqlException)
         {
-            switch (sqlException.Number)
+            return sqlException.Number switch
             {
-                case 2601:
-                    return "This Item is Already exist in database";
-                default:
-                    return "Error Occurred While updating the database !";
-            }
-
+                2601 => "This Item is Already exist in database",
+                _ => "Error Occurred While updating the database !",
+            };
         }
         else
         {

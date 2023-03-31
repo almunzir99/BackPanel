@@ -28,5 +28,4 @@ public class PagedResponse<T> : Response<T>{
         NextPage = nextPage;
         PreviousPage = previousPage;
     }
-
 }

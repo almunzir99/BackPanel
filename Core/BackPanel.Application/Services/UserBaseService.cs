@@ -52,7 +52,7 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
         var verified = user.PasswordSalt != null && user.PasswordHash != null
                                                  && HashingHelper.VerifyPassword(model.Password!, user.PasswordHash,
                                                      user.PasswordSalt);
-        if (verified == false)
+        if (!verified)
             throw new Exception("The password isn't correct");
         var mappedUser = Mapper.Map<TEntity, TDto>(user);
         //Generate Token
@@ -96,7 +96,7 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
             throw new Exception("item is not found");
         var oldPImage = result.Image;
         Mapper.Map(item, result);
-        if (item.Image == null || item.Image == "" || item.Image == "none")
+        if (string.IsNullOrEmpty(item.Image) || item.Image == "none")
             result.Image = oldPImage;
         result.LastUpdate = DateTime.Now;
         if (item.Password != null)
@@ -175,7 +175,7 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
             throw new Exception("this user isn't available");
         var validOldPassword = user.PasswordSalt != null && user.PasswordHash != null &&
                                HashingHelper.VerifyPassword(oldPassword, user.PasswordHash, user.PasswordSalt);
-        if (validOldPassword == false)
+        if (!validOldPassword)
             throw new Exception("invalid old password");
         HashingHelper.CreateHashPassword(newPassword, out var pHash, out var pSalt);
         user.PasswordHash = pHash;
@@ -190,7 +190,7 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
             throw new Exception("this user isn't available");
         var oldPhoto = user.Image;
         var result = await _filesManagerService.UploadSingleFile("assets/images/users", file);
-        user.Image = result.Path.Replace("//", $"/");
+        user.Image = result.Path.Replace("//", "/");
         await Repository.Complete();
         if (oldPhoto != null && _filesManagerService.FileExists(oldPhoto))
             _filesManagerService.DeleteFile(oldPhoto, "");
@@ -200,7 +200,7 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
     protected override string GetSearchPropValue(TEntity obj)
     {
         var targetType = typeof(TEntity);
-        var searchProp = targetType.GetProperties().SingleOrDefault(c => c.Name.ToLower() == "username");
+        var searchProp = targetType.GetProperties().SingleOrDefault(c => string.Equals(c.Name, "username", StringComparison.OrdinalIgnoreCase));
         var propValue = searchProp?.GetValue(obj)?.ToString();
         return propValue ?? "";
     }

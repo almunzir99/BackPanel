@@ -43,28 +43,28 @@ namespace BackPanel.Application.Attributes.Permissions;
                 switch (_type)
                 {
                     case PermissionTypes.CREATE:
-                        if (permission.Create == false)
+                        if (!permission.Create)
                         {
                             context.Result = forbiddenContentResult;
                             return;
                         }
                         break;
                     case PermissionTypes.READ:
-                        if (permission.Read == false)
+                        if (!permission.Read)
                         {
                             context.Result = forbiddenContentResult;
                             return;
                         }
                         break;
                     case PermissionTypes.UPDATE:
-                        if (permission.Update == false)
+                        if (!permission.Update)
                         {
                             context.Result = forbiddenContentResult;
                             return;
                         }
                         break;
                  case PermissionTypes.DETELE:
-                        if (permission.Delete == false)
+                        if (!permission.Delete)
                         {
                             context.Result = forbiddenContentResult;
                             return;
@@ -76,7 +76,7 @@ namespace BackPanel.Application.Attributes.Permissions;
             }
             await next();
         }
-        private async Task<Permission?> GetPermission(ActionExecutingContext context)
+        private static async Task<Permission?> GetPermission(ActionExecutingContext context)
         {
             // Get PermissionTitle Value from controller
             var controllerType = context.Controller.GetType();
@@ -88,17 +88,18 @@ namespace BackPanel.Application.Attributes.Permissions;
             // get role Service
             var roleService = context.HttpContext.RequestServices.GetService<IRolesService>();
             var role = await roleService!.GetRoleByTitle(title);
-            if (role != null)
-            {
-                var roleType = role.GetType();
-                var permission = roleType.GetProperties().Single(c => c.Name ==  PermissionTitle);
-                if(permission == null)
+        if (role != null)
+        {
+            var roleType = role.GetType();
+            var permission = roleType.GetProperties().Single(c => c.Name == PermissionTitle);
+            if (permission == null)
                 return null;
-                var result = permission.GetValue(role) as Permission;
-                return result;
-
-            }
-            else
-                return null;
+            var result = permission.GetValue(role) as Permission;
+            return result;
         }
+        else
+        {
+            return null;
+        }
+    }
     }

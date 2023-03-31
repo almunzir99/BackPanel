@@ -69,15 +69,12 @@ public class CodeModifier
     {
         if (model == null)
             model = _model;
-        
         // add Main Entity To DbSet
         await GenerateDbContextModifiedCode(model);
         // save To File 
-        using (var sw = new StreamWriter(_dbContextPath))
-        {
-            await sw.WriteAsync(_dbContextModifiedCode);
-            sw.Close();
-        }
+        using var sw = new StreamWriter(_dbContextPath);
+        await sw.WriteAsync(_dbContextModifiedCode);
+        sw.Close();
     }
 
     private async Task GenerateDbContextModifiedCode(string model,bool readFromFile = true)

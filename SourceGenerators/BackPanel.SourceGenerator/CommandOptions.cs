@@ -27,6 +27,4 @@ public class CommandOptions
 
     [Option('c', "controller", Required = false)]
     public bool? Controller { get; set; } = true;
-    
-
 }

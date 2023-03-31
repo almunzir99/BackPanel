@@ -10,7 +10,5 @@ public interface IAdminService : IUserBaseService<Admin, AdminDto, AdminDtoReque
 {
     Task<IList<ActivityDto>> ActivitiesListAsync(PaginationFilter? filter);
      Task<IList<ActivityDto>> AdminActivitiesListAsync(int adminId, PaginationFilter? filter);
-    Task<int> GetActivitiesTotalRecords(Expression<Func<Activity, bool>>? predicate = null);     
-
-    
+    Task<int> GetActivitiesTotalRecords(Expression<Func<Activity, bool>>? predicate = null);
 }

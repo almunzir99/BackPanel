@@ -47,7 +47,5 @@ public class AdminService : UserBaseService<Admin, AdminDto, AdminDtoRequest>, I
     }
     public  async Task<int> GetActivitiesTotalRecords(Expression<Func<Activity, bool>>? predicate = null) => await _activityRepository.GetTotalRecords(predicate);
 
-
-
     protected override string UserType => "ADMIN";
 }

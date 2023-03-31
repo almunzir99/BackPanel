@@ -18,8 +18,8 @@ public abstract class
     UserBaseController<TEntity, TDto, TDtoRequest, TService> : ApiController<TEntity, TDto, TDtoRequest, TService>
     where TEntity : UserEntityBase
     where TDto : UserDtoBase
-    where TService : IUserBaseService<TEntity, TDto, TDtoRequest>
     where TDtoRequest : UserBaseDtoRequest
+    where TService : IUserBaseService<TEntity, TDto, TDtoRequest>
 {
     public abstract override string PermissionTitle { get; }
     protected abstract string Type { get; }
@@ -43,7 +43,7 @@ public abstract class
         }
         catch (Exception e)
         {
-            var response = new Response<TDto>(message: "logging in failed, check errors below", success: false,
+            var response = new Response<TDto>(success: false, message: "logging in failed, check errors below",
                 errors: new[] { e.Message });
             return BadRequest(response);
         }
@@ -60,7 +60,7 @@ public abstract class
         }
         catch (Exception e)
         {
-            var response = new Response<TDto>(message: "Registration failed, check errors below", success: false,
+            var response = new Response<TDto>(success: false, message: "Registration failed, check errors below",
                 errors: new[] { e.Message });
             return BadRequest(response);
         }
@@ -73,12 +73,12 @@ public abstract class
         try
         {
             await Service.PasswordRecoveryRequest(email);
-            var response = new Response<TDto>(message: "request send successfully", success: true);
+            var response = new Response<TDto>(success: true, message: "request send successfully");
             return Ok(response);
         }
         catch (Exception e)
         {
-            var response = new Response<TDto>(message: "operation failed, check errors below", success: false,
+            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
                 errors: new[] { e.Message });
             return BadRequest(response);
         }
@@ -91,14 +91,17 @@ public abstract class
         try
         {
             if (recovery.NewPassword != null)
+            {
                 if (recovery.Key != null)
                     await Service.PasswordRecovery(recovery.Key, recovery.NewPassword);
-            var response = new Response<TDto>(message: "password reset successfully", success: true);
+            }
+
+            var response = new Response<TDto>(success: true, message: "password reset successfully");
             return Ok(response);
         }
         catch (Exception e)
         {
-            var response = new Response<TDto>(message: "operation failed, check errors below", success: false,
+            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
                 errors: new[] { e.Message });
             return BadRequest(response);
         }
@@ -115,14 +118,17 @@ public abstract class
         {
             var id = GetCurrentUserId();
             if (recovery.OldPassword != null)
+            {
                 if (recovery.NewPassword != null)
                     await Service.ResetPassword(id, recovery.OldPassword, recovery.NewPassword);
-            var response = new Response<TDto>(message: "password reset successfully", success: true);
+            }
+
+            var response = new Response<TDto>(success: true, message: "password reset successfully");
             return Ok(response);
         }
         catch (Exception e)
         {
-            var response = new Response<TDto>(message: "operation failed, check errors below", success: false,
+            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
                 errors: new[] { e.Message });
             return BadRequest(response);
         }
@@ -140,13 +146,13 @@ public abstract class
             var id = GetCurrentUserId();
             var webFile = new WebFormFile(file, file.FileName);
             var result = await Service.ChangePersonalPhoto(id, webFile);
-            var response = new Response<string>(data: result, message: "personal photo updated successfully",
-                success: true);
+            var response = new Response<string>(data: result, success: true,
+message: "personal photo updated successfully");
             return Ok(response);
         }
         catch (Exception e)
         {
-            var response = new Response<TDto>(message: "operation failed, check errors below", success: false,
+            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
                 errors: new[] { e.Message });
             return BadRequest(response);
         }
@@ -163,13 +169,13 @@ public abstract class
         {
             var id = GetCurrentUserId();
             var result = await Service.UpdatePersonalInfo(id, body);
-            var response = new Response<TDto>(data: result, message: "personal Information updated successfully",
-                success: true);
+            var response = new Response<TDto>(data: result, success: true,
+message: "personal Information updated successfully");
             return Ok(response);
         }
         catch (Exception e)
         {
-            var response = new Response<TDto>(message: "operation failed, check errors below", success: false,
+            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
                 errors: new[] { e.Message });
             return BadRequest(response);
         }
@@ -186,12 +192,12 @@ public abstract class
         {
             var id = GetCurrentUserId();
             var result = await Service.GetProfileAsync(id);
-            var response = new Response<TDto>(data: result, message: "information fetched successfully", success: true);
+            var response = new Response<TDto>(data: result, success: true, message: "information fetched successfully");
             return Ok(response);
         }
         catch (Exception e)
         {
-            var response = new Response<TDto>(message: "operation failed, check errors below", success: false,
+            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
                 errors: new[] { e.Message });
             return BadRequest(response);
         }
@@ -213,13 +219,13 @@ public abstract class
                 return Ok(response);
             }
 
-            var badResponse = new Response<TDto>(message: "Registration failed, check errors below", success: false,
+            var badResponse = new Response<TDto>(success: false, message: "Registration failed, check errors below",
                 errors: new[] { "Request.Path.value  == null" });
             return BadRequest(badResponse);
         }
         catch (Exception e)
         {
-            var response = new Response<TDto>(message: "Registration failed, check errors below", success: false,
+            var response = new Response<TDto>(success: false, message: "Registration failed, check errors below",
                 errors: new[] { e.Message });
             return BadRequest(response);
         }
@@ -237,7 +243,7 @@ public abstract class
         }
         catch (Exception e)
         {
-            var response = new Response<TDto>(message: "operation failed, check errors below", success: false,
+            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
                 errors: new[] { e.Message });
             return BadRequest(response);
         }
@@ -254,7 +260,7 @@ public abstract class
         }
         catch (Exception e)
         {
-            var response = new Response<TDto>(message: "operation failed, check errors below", success: false,
+            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
                 errors: new[] { e.Message });
             return BadRequest(response);
         }
@@ -273,7 +279,7 @@ public abstract class
         }
         catch (Exception e)
         {
-            var response = new Response<TDto>(message: "operation failed, check errors below", success: false,
+            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
                 errors: new[] { e.Message });
             return BadRequest(response);
         }

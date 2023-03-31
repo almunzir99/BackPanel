@@ -30,21 +30,27 @@ public class FilesManagerService : IFilesManagerService
             var directories = Directory.GetDirectories(combinedPath);
 
             if (files.Length != 0)
+            {
                 foreach (var file in files)
                 {
                     this.DeleteFile(combinedPath, Path.GetFileName(file));
                 }
+            }
 
             if (directories.Length != 0)
+            {
                 foreach (var directory in directories)
                 {
                     this.DeleteDirectory(combinedPath, Path.GetFileName(directory));
                 }
+            }
 
             Directory.Delete(combinedPath);
         }
         else
+        {
             throw new DirectoryNotFoundException($"Directory {combinedPath} is Not Found");
+        }
     }
 
     public bool FileExists(string path)
@@ -61,7 +67,9 @@ public class FilesManagerService : IFilesManagerService
             File.Delete(combinedPath);
         }
         else
+        {
             throw new FileNotFoundException($"File {combinedPath} is Not Found");
+        }
     }
 
     public IList<DirectoryModel> GetAllDirectories(string path)
@@ -101,7 +109,7 @@ public class FilesManagerService : IFilesManagerService
     {
         var fileName = System.Guid.NewGuid();
         var fileExtension = Path.GetExtension(file.FileName);
-        var fileDirCombinedPath = Path.Combine(_rootPath,path);
+        var fileDirCombinedPath = Path.Combine(_rootPath, path);
         var combinedPath = Path.Combine(fileDirCombinedPath,
             $"{fileName}{fileExtension}");
         await using (var stream = new FileStream(combinedPath, FileMode.Create))
@@ -110,7 +118,7 @@ public class FilesManagerService : IFilesManagerService
         }
 
         return GetFileModel(
-            Path.GetRelativePath(_pathProvider.GetRootPath(), fileDirCombinedPath),$"{fileName}{fileExtension}");
+            Path.GetRelativePath(_pathProvider.GetRootPath(), fileDirCombinedPath), $"{fileName}{fileExtension}");
     }
 
     private Uri GetFileUri(string fileName, string path = "")
@@ -128,7 +136,7 @@ public class FilesManagerService : IFilesManagerService
         var compinedPath = Path.Combine(_pathProvider.GetRootPath(), path, fileName);
         var info = new FileInfo(compinedPath);
         var uri = this.GetFileUri(fileName, path);
-        var filePath = Path.Combine(path, fileName).Replace("\\","/");
+        var filePath = Path.Combine(path, fileName).Replace("\\", "/");
         var fileModel = new FileModel(
             title: fileName,
             uri: uri.ToString(),
@@ -159,10 +167,10 @@ public class FilesManagerService : IFilesManagerService
             size: 2,
             parentDirectory: Path.GetFileName(path),
             files: files,
-            directories: directories,
             createdAt: directoryInfo.CreationTime,
             lastUpdate: directoryInfo.LastWriteTime
-        );
+,
+            directories: directories);
     }
 
     public DirectoryModel GetDirectory(string path)

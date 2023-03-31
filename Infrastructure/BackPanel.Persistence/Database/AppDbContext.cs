@@ -6,10 +6,9 @@ using Microsoft.EntityFrameworkCore;
 namespace BackPanel.Persistence.Database;
 
 public class AppDbContext : DbContext
-{   
+{
     public AppDbContext(DbContextOptions options) : base(options)
     {
-        
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -20,12 +19,11 @@ public class AppDbContext : DbContext
         builder.Entity<Admin>().HasIndex(c => c.Email).IsUnique();
         builder.Entity<Admin>().HasData(GetManagerUser());
         builder.Entity<Role>().HasIndex(c => c.Title).IsUnique();
-
     }
-    private Admin GetManagerUser()
+    private static Admin GetManagerUser()
     {
         HashingHelper.CreateHashPassword("maze@0099", out var pHash, out var pSalt);
-        Admin admin = new Admin()
+        return new Admin()
         {
             Id = 1,
             Username = "almunzir99",
@@ -36,16 +34,11 @@ public class AppDbContext : DbContext
             IsManager = true,
             CreatedAt = DateTime.Now,
             LastUpdate = DateTime.Now
-
-
         };
-        return admin;
-
     }
-    public DbSet<Admin> Admins  => Set<Admin>();
+    public DbSet<Admin> Admins => Set<Admin>();
     public DbSet<Message> Messages => Set<Message>();
     public DbSet<Role> Roles => Set<Role>();
     public DbSet<Permission> Permissions => Set<Permission>();
     public DbSet<Notification> Notifications => Set<Notification>();
-
 }

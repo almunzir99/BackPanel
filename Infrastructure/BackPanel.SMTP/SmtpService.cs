@@ -4,5 +4,4 @@ namespace BackPanel.SMTP;
 
 public class SmtpService : ISmtpService
 {
-    
 }

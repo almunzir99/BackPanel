@@ -11,12 +11,10 @@ namespace BackPanel.WebApplication.Controllers;
 [Route("api/[controller]")]
 public class RolesController : ApiController<Role, RoleDto,RoleDtoRequest, IRolesService>
 {
-    private IRolesService _roleService;
     public override string PermissionTitle => "RolesPermissions";
 
-    public RolesController(IRolesService service, IUriService uriService, IRolesService roleService) : base(service, uriService)
+    public RolesController(IRolesService service, IUriService uriService) : base(service, uriService)
     {
-        _roleService = roleService;
     }
     [Permission(false, PermissionTypes.READ)]
     public override async  Task<IActionResult> SingleAsync(int id) {
