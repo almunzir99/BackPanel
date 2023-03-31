@@ -63,38 +63,45 @@ export class MessagesComponent implements OnInit {
         title: "full Name",
         prop: "fullName",
         show: true,
-        sortable: true
+        sortable: true,
+        importable:true
       },
       {
         title: "email",
         prop: "email",
         show: true,
-        sortable: true
+        sortable: true,
+        importable:true
+
       },
       {
         title: "phone",
         prop: "phone",
         show: true,
-        sortable: true
+        sortable: true,
+        importable:true
+
       },
       {
         title: "Content",
         prop: "content",
         show: true,
-        sortable: true
+        sortable: true,
+        importable:true
+
       },
       {
         title: "Sent At",
         prop: "createdAt",
         show: true,
-        sortable: true
+        sortable: true,
+
       },
       {
         title: "Actions",
         prop: "actions",
         show: true,
-        sortable: false
-
+        sortable: false,
       }
     ]
   }
@@ -164,6 +171,10 @@ export class MessagesComponent implements OnInit {
       this.dimRequest = RequestStatus.Failed;
     })
   }
+  onImportData(data:any[]) {
+    this.createAll(data);
+  }
+
   /********************************* Api Integration ******************************************** */
   delete = async (id: number) => {
     try {
@@ -174,6 +185,23 @@ export class MessagesComponent implements OnInit {
         data: {
           type: MessageTypes.SUCCESS,
           message: "Item Deleted Successfully",
+          title: "Success"
+        }
+      }).afterClosed().subscribe(_ => this._dialog.closeAll())
+      this.getData();
+    } catch (error) {
+      this.dimRequest = RequestStatus.Failed;
+    }
+  }
+  createAll = async (items: any[]) => {
+    try {
+      this.dimRequest = RequestStatus.Loading;
+      await firstValueFrom(this._service.postAll(items));
+      this.dimRequest = RequestStatus.Success;
+      this._dialog.open<AlertMessageComponent, AlertMessage>(AlertMessageComponent, {
+        data: {
+          type: MessageTypes.SUCCESS,
+          message: "Items Added Successfully",
           title: "Success"
         }
       }).afterClosed().subscribe(_ => this._dialog.closeAll())

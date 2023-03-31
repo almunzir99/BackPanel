@@ -3,6 +3,5 @@ export interface Column {
     prop:string;
     sortable:boolean;
     show:boolean;
-
-
+    importable?:boolean
 }

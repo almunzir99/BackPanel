@@ -34,6 +34,8 @@ export class DatatableComponent implements OnInit {
   @Output('searchChange') searchChangeEmitter = new EventEmitter<string>();
   @Output('createClick') createClickEmitter = new EventEmitter();
   @Output('exportClick') exportClickEmitter = new EventEmitter<string>();
+  @Output('dataImported') DataImportedEventEmitter = new EventEmitter<any[]>();
+
   theme: 'light' | 'dark' = 'light';
   sortProp = "";
   ascending = false;
@@ -79,15 +81,14 @@ export class DatatableComponent implements OnInit {
       this._dialog.open<FieldsMatcherComponent, fieldMatcherSpec, any>(FieldsMatcherComponent,{
         data :{
           fromItems: Object.keys(this.importedData[0]),
-          toItems:this.columns.map(c => c.prop),
+          toItems:this.columns.filter(c => c.importable).map(c => c.prop),
           onCancel:() => {
             this._dialog.closeAll();
           },
           onSubmit:(value) => {
             this._dialog.closeAll();
             var result = this.extractDataUsingMap(value,this.importedData);
-            console.log(this.importedData);
-            console.log(result);
+            this.DataImportedEventEmitter.emit(result);
           }
         }
       });

@@ -34,7 +34,17 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
         user.Activities.Add(activity);
         await _adminsRepository.Complete();
     }
-
+    public virtual async Task CreateAllAsync(IList<TDtoRequest> newItems)
+    {
+        var mappedList = Mapper.Map<IList<TDtoRequest>, IList<TEntity>>(newItems);
+        foreach (var item in mappedList)
+        {
+            item.CreatedAt = DateTime.Now;
+            item.LastUpdate = DateTime.Now;
+            await Repository.CreateAsync(item);
+        }
+        await Repository.Complete();
+    }
     public virtual async Task<TDto> CreateAsync(TDtoRequest newItem)
     {
         var mappedItem = Mapper.Map<TDtoRequest, TEntity>(newItem);
@@ -61,7 +71,7 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
     {
         var stylePath = Path.Combine(PathProvider.GetRootPath(), "Assets", "Styles", "styles.css");
         var data = await Repository.ListAsync();
-        return DataExportHelper<TEntity>.ExportToPdf(data,stylePath);
+        return DataExportHelper<TEntity>.ExportToPdf(data, stylePath);
     }
 
     public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null) => await Repository.GetTotalRecords(predicate);

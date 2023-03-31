@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.JsonPatch;
 
 namespace BackPanel.Application.Interfaces;
 
-public interface IUserBaseService<TEntity,TDto, in TDtoRequest> : IServicesBase<TEntity,TDto,TDtoRequest>
+public interface IUserBaseService<TEntity,TDto,  TDtoRequest> : IServicesBase<TEntity,TDto,TDtoRequest>
 where TEntity: UserEntityBase
 where  TDto : UserDtoBase
 {

@@ -61,13 +61,16 @@ export class AdminsComponent implements OnInit {
         prop: "id",
         title: "#",
         show: true,
-        sortable: true
+        sortable: true,
+        importable: false,
       },
       {
         prop: "image",
         title: "Image",
         show: true,
-        sortable: false
+        sortable: false,
+        importable: true
+
       },
 
 
@@ -75,44 +78,57 @@ export class AdminsComponent implements OnInit {
         prop: "username",
         title: "Username",
         show: true,
-        sortable: true
+        sortable: true,
+        importable: true
+
 
       },
       {
         prop: "phone",
         title: "Phone Number",
         show: true,
-        sortable: true
+        sortable: true,
+        importable: true
+
       },
       {
         prop: "email",
         title: "email",
         show: true,
-        sortable: true
+        sortable: true,
+        importable: true
+
       },
       {
         prop: "role",
         title: "role",
         show: true,
-        sortable: false
+        sortable: false,
+        importable: true
+
       },
       {
         prop: "createdAt",
         title: "Created At",
         show: true,
-        sortable: true
+        sortable: true,
+        importable: false
+
       },
       {
         prop: "lastUpdate",
         title: "Last Update",
         show: true,
-        sortable: true
+        sortable: true,
+        importable: false
+
       },
       {
         prop: "Actions",
         title: "Actions",
         show: true,
-        sortable: false
+        sortable: false,
+        importable: false
       }
     ]
   }
@@ -154,11 +170,14 @@ export class AdminsComponent implements OnInit {
   }
   onExportClick(type: string) {
     this.dimRequest = RequestStatus.Loading;
-    this._service.export(type,() => {
+    this._service.export(type, () => {
       this.dimRequest = RequestStatus.Success;
-    },(err) => {
+    }, (err) => {
       this.dimRequest = RequestStatus.Failed;
     })
+  }
+  onImportData(data:any[]) {
+    this.createAll(data);
   }
   /********************************* Form Configuration ******************************************** */
 
@@ -306,6 +325,23 @@ export class AdminsComponent implements OnInit {
     } catch (error) {
       this.dimRequest = RequestStatus.Failed;
       return [];
+    }
+  }
+  createAll = async (items: any[]) => {
+    try {
+      this.dimRequest = RequestStatus.Loading;
+      await firstValueFrom(this._service.postAll(items));
+      this.dimRequest = RequestStatus.Success;
+      this._dialog.open<AlertMessageComponent, AlertMessage>(AlertMessageComponent, {
+        data: {
+          type: MessageTypes.SUCCESS,
+          message: "Items Added Successfully",
+          title: "Success"
+        }
+      }).afterClosed().subscribe(_ => this._dialog.closeAll())
+      this.getData();
+    } catch (error) {
+      this.dimRequest = RequestStatus.Failed;
     }
   }
   create = async (item: Admin) => {

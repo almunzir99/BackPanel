@@ -50,5 +50,7 @@ export class RolesService {
         next();
     }, error => { if (failed) failed(error) })
   }
-  
+  postAll(items: any[]) {
+    return this.http.post(`${this.moduleBaseUrl}all`, items);
+  }
 }

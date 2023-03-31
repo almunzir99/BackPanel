@@ -43,6 +43,9 @@ export class AdminsService {
     console.log(admin);
     return this.http.post(`${this.moduleBaseUrl}register`, admin);
   }
+  postAll(items: any[]) {
+    return this.http.post(`${this.moduleBaseUrl}all`, items);
+  }
   put(admin: Admin) {
     return this.http.put(`${this.moduleBaseUrl}${admin.id}`, admin);
   }
@@ -62,4 +65,5 @@ export class AdminsService {
         next();
     }, error => { if (failed) failed(error) })
   }
+
 }

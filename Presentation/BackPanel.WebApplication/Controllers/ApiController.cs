@@ -86,6 +86,23 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
             return BadRequest(response);
         }
     }
+    [Permission(true, PermissionTypes.CREATE)]
+    [HttpPost("all")]
+    public async Task<IActionResult> PostAllAsync(IList<TDtoRequest> list)
+    {
+        try
+        {
+            await Service.CreateAllAsync(list);
+            var response = new Response<TDto>(success: true, message: "data created successfully");
+            return Ok(response);
+        }
+        catch (System.Exception e)
+        {
+
+            var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
+            return BadRequest(response);
+        }
+    }
     [Permission(true, PermissionTypes.UPDATE)]
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> PutAsync(int id, TDtoRequest body)
@@ -183,4 +200,5 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
         string type = HttpContext.User.GetClaimValue("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
         return type;
     }
+
 }

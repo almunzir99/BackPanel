@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.JsonPatch;
 
 namespace BackPanel.Application.Interfaces;
 
-public interface IServicesBase<TEntity, TDto, in TDtoRequest> where TEntity : EntityBase where TDto : DtoBase
+public interface IServicesBase<TEntity, TDto, TDtoRequest> where TEntity : EntityBase where TDto : DtoBase
 {
     Task<IList<TDto>> ListAsync(PaginationFilter? filter, IList<Func<TEntity, bool>>? conditions, string? title = "",
         string orderBy = "LastUpdate", Boolean ascending = true);
@@ -18,7 +18,8 @@ public interface IServicesBase<TEntity, TDto, in TDtoRequest> where TEntity : En
     Task DeleteAsync(int id);
     Task<Byte[]> ExportToExcel();
     Task<Byte[]> ExportToPdf();
-
     Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null);
     Task CreateActivity(int userId, int rowId, string action);
+    Task CreateAllAsync(IList<TDtoRequest> newItems);
+
 }
