@@ -4,6 +4,7 @@ using BackPanel.Application.DTOsRequests;
 using BackPanel.Application.Helpers;
 using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
+using BackPanel.Domain.Enums;
 using BackPanel.FilesManager.Interfaces;
 using BackPanel.SMTP.Interfaces;
 using Microsoft.AspNetCore.JsonPatch;
@@ -45,6 +46,8 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
         var user = await Repository.SingleAsync(c => c.Email == model.Email);
         if (user == null)
             throw new Exception("This account isn't available");
+        if(user.Status == Status.Disabled)
+            throw new Exception("this account is locked please contact the administrator");
         //verify the password
         var verified = user.PasswordSalt != null && user.PasswordHash != null
                                                  && HashingHelper.VerifyPassword(model.Password!, user.PasswordHash,
