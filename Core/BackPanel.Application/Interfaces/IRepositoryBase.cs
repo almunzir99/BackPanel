@@ -12,7 +12,7 @@ public interface IRepositoryBase<TEntity> where TEntity : EntityBase
     Task<TEntity> CreateAsync(TEntity newItem);
     Task<TEntity> UpdateAsync(int id, TEntity newItem);
     Task<TEntity> UpdateAsync(int id, JsonPatchDocument<TEntity> newItem);
-    Task DeleteAsync(int id) ;
+    Task DeleteAsync(int id,bool softDelete = true) ;
     void Delete<T>(T target) where  T: EntityBase;
     Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null);
     IQueryable<TEntity> IncludeableDbSet {get; set;}

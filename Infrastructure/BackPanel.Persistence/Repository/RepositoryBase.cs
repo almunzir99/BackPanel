@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using BackPanel.Application.Helpers;
 using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
+using BackPanel.Domain.Enums;
 using BackPanel.Persistence.Database;
 using BackPanel.Persistence.Database.Extensions;
 using Microsoft.AspNetCore.JsonPatch;
@@ -33,32 +34,36 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
 
     public virtual async Task<TEntity> CreateAsync(TEntity item)
     {
+        item.Status = Status.Active;
         await DbSet.AddAsync(item);
         return item;
     }
 
-    public virtual async Task DeleteAsync(int id)
+    public virtual async Task DeleteAsync(int id, bool softDelete = true)
     {
         var target = await _includeableDbSet.SingleOrDefaultAsync(c => c.Id == id);
         if (target == null)
             throw new Exception("The target Item doesn't Exist");
-        DbSet.Remove(target);
+        if (softDelete)
+            target.Status = Status.Deleted;
+        else
+            DbSet.Remove(target);
     }
 
-    public virtual void Delete<T>(T target) where  T: EntityBase
+    public virtual void Delete<T>(T target) where T : EntityBase
     {
         Context.Remove(target);
     }
     public virtual async Task<IList<TEntity>> ListAsync()
     {
-        var list = await _includeableDbSet.ToListAsync();
+        var list = await _includeableDbSet.Where(c => c.Status != Status.Deleted).ToListAsync();
         return list;
     }
 
 
     public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null)
     {
-        return(predicate != null) ? await DbSet.CountAsync(predicate) : await DbSet.CountAsync();
+        return (predicate != null) ? await DbSet.CountAsync(predicate) : await DbSet.CountAsync();
     }
 
     public async Task<IList<TEntity>> SearchAsync(Func<TEntity, bool> predicate)
@@ -88,7 +93,7 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         if (result == null)
             throw new Exception("item is not found");
         Context.Attach(result);
-        _mapperHelper.Map<TEntity, TEntity>(newItem, result,propsToExclude: new []{"Id","CreatedAt"}  );
+        _mapperHelper.Map<TEntity, TEntity>(newItem, result, propsToExclude: new[] { "Id", "CreatedAt" });
         result.LastUpdate = DateTime.Now;
         return result;
     }
