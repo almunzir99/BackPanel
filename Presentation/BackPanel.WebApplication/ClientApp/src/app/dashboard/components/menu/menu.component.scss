@@ -1,14 +1,14 @@
 @import 'variables';
 
 .menu-container {
-    width: 300px;
+    width: 270px;
     height: 100%;
     background-color: $secondary-background-color;
     padding-top: 0px;
     overflow: auto;
 
     .menu {
-        width: 300px;
+        width: 270px;
         height: 100%;
         overflow-y: hidden;
 
@@ -30,7 +30,7 @@
             .user-info {
                 display: flex;
                 align-items: center;
-                height: 120px;
+                height: 100px;
                 background-color: #f5f5f594;
                 position: relative;
 
@@ -60,14 +60,14 @@
                     left: 20px;
                 }
                 .user-image-container {
-                    height: 75px;
-                    width: 75px;
+                    height: 55px;
+                    width: 55px;
                     position: relative;
                     margin: 0px 20px;
 
                     .user-image {
-                        height: 60px;
-                        width: 60px;
+                        height: 45px;
+                        width: 45px;
                         border: 7px solid map-get($map: $primary-color, $key: 100);
                         background-color: map-get($map: $primary-color, $key: 50);
                         border-radius: 50%;
@@ -84,14 +84,14 @@
 
                     .user-type {
                         position: absolute;
-                        padding: 1px 7px;
+                        padding: 0px 7px;
                         background-color: map-get($map: $accent-color, $key: 400);
                         color: white;
                         font-weight: bold;
                         border-radius: 7px;
-                        font-size: 9px;
-                        bottom: 0px;
-                        left: 50%;
+                        font-size: 8px;
+                        bottom: -10px;
+                        left: 45%;
                         transform: translateX(-50%);
                         box-shadow: 0 7px 10px rgb(36 105 92 / 30%);
                     }
@@ -104,14 +104,14 @@
                 .username {
                     color: map-get($map: $primary-color, $key: 400);
                     margin-bottom: 0px;
-                    font-size: 15px;
+                    font-size: 13px;
                     font-weight: 500;
 
                 }
 
                 .role {
                     color: #999;
-                    font-size: 11px;
+                    font-size: 10px;
                     text-transform: uppercase;
 
                 }
