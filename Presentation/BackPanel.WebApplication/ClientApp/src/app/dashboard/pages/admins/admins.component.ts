@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
+import { Status } from 'src/app/core/enums/status.enum';
 import { Admin } from 'src/app/core/models/admin.model';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';
 import { Role } from 'src/app/core/models/role.model';
@@ -124,6 +125,12 @@ export class AdminsComponent implements OnInit {
 
       },
       {
+        prop: "status",
+        title: "Active",
+        show: true,
+        sortable: false
+      },
+      {
         prop: "Actions",
         title: "Actions",
         show: true,
@@ -176,9 +183,12 @@ export class AdminsComponent implements OnInit {
       this.dimRequest = RequestStatus.Failed;
     })
   }
-  onImportData(data:any[]) {
+  onImportData(data: any[]) {
     this.createAll(data);
   }
+  async onActiveToggleClick(item: Admin) {
+    await this.activeToggle(item);
+}
   /********************************* Form Configuration ******************************************** */
 
   getForm(item?: Admin, roles: Role[] = []): FormBuilderGroup[] {
@@ -395,7 +405,18 @@ export class AdminsComponent implements OnInit {
       this.dimRequest = RequestStatus.Failed;
     }
   }
+  activeToggle = async (item: Admin) => {
+    try {
+        this.dimRequest = RequestStatus.Loading;
+        await firstValueFrom(this._service.activeToggle(item.id!));
+        this.dimRequest = RequestStatus.Success;
+        item.status = item.status == Status.Disabled ? Status.Active : Status.Disabled;
+    } catch (error) {
+        console.log(error);
+        this.dimRequest = RequestStatus.Failed;
 
+    }
+}
 
 
 }

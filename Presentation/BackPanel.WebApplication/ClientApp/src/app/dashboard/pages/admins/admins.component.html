@@ -9,6 +9,7 @@
 [loading]="getRequest == 1" 
 [columns]="columns" 
 [rows]="data" 
+[fixed]="true"
 [cell-template]="cellTemplate" 
 title="Admins Table">
     <ng-template #cellTemplate let-rowData="rowData" let-data="cellData" let-col="colIndex" let-row="rowIndex">
@@ -21,10 +22,14 @@ title="Admins Table">
             <ng-container *ngSwitchCase="5">
                 {{data?.title}}
             </ng-container>
-            <ng-container *ngSwitchCase="8">
+            <ng-container *ngSwitchCase="columns.length - 2">
+                <button (click)="onActiveToggleClick(rowData)" [textContent]="data == 1 ? 'active': 'inactive'"
+                    [class.accent]="data != 1" [class.primary]="data == 1" matRipple class="table-act-button active-btn">
+                </button>
+            </ng-container>
+            <ng-container *ngSwitchCase="columns.length - 1">
                <div style="max-width: 120px;" class="table-act-buttons">
-                <button [routerLink]="'activities/'+ rowData.id"  matRipple class="table-act-button primary">
-                    <i class="las la-clipboard-list"></i>
+                <button [routerLink]="'activities/'+ rowData.id" style="padding:6px" matRipple class="table-act-button primary">
                     Activities
                 </button>
                 <button (click)="onUpdate(rowData)" matRipple class="table-act-button accent">

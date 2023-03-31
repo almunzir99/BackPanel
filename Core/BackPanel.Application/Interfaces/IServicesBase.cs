@@ -21,5 +21,7 @@ public interface IServicesBase<TEntity, TDto, TDtoRequest> where TEntity : Entit
     Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null);
     Task CreateActivity(int userId, int rowId, string action);
     Task CreateAllAsync(IList<TDtoRequest> newItems);
+    Task ActiveToggleAsync(int id);
+
 
 }

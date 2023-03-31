@@ -65,5 +65,8 @@ export class AdminsService {
         next();
     }, error => { if (failed) failed(error) })
   }
+  activeToggle(id:number){
+    return this.http.get(`${this.moduleBaseUrl}active?id=${id}`);
+  }
 
 }

@@ -18,4 +18,5 @@ public interface IApiController<TEntity, TDto, TDtoRequest, TService>
     Task<IActionResult> PostAllAsync(IList<TDtoRequest> items);
 
     Task<IActionResult> DeleteAsync(int id);
+    Task<IActionResult> ActiveToggleAsync(int id);
 }

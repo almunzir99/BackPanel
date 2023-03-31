@@ -5,6 +5,7 @@ using BackPanel.Application.DTOs.Filters;
 using BackPanel.Application.Helpers;
 using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
+using BackPanel.Domain.Enums;
 using BackPanel.FilesManager.Interfaces;
 using Microsoft.AspNetCore.JsonPatch;
 
@@ -101,6 +102,15 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
             .Take(validFilter.PageSize).ToList();
         var result = Mapper.Map<IList<TEntity>, IList<TDto>>(list);
         return result;
+    }
+    public async Task ActiveToggleAsync(int id)
+    {
+        var target = await Repository.SingleAsync(c => c.Id == id);
+        if(target != null)
+        {
+             target.Status = target.Status == Status.Active ? Status.Disabled : Status.Active;  
+             await Repository.Complete();
+        }
     }
 
     protected List<TEntity> OrderBy(IList<TEntity> list, string prop, Boolean ascending)

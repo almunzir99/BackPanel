@@ -182,6 +182,22 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
         };
         return result;
     }
+    [HttpGet("active")]
+    public async Task<IActionResult> ActiveToggleAsync(int id)
+    {
+        try
+        {
+            await Service.ActiveToggleAsync(id);
+            var response = new Response<TDto>(message: "item activation toggled successfully");
+            return Ok(response);
+
+        }
+        catch (Exception e)
+        {
+            var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
+            return BadRequest(response);
+        }
+    }
     private bool IsAnonymous(string name)
     {
         var type = this.GetType();
