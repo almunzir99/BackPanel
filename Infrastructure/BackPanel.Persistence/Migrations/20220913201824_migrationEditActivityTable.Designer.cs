@@ -13,7 +13,7 @@ namespace BackPanel.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20220913201824_migrationEditActivityTable")]
-    partial class migrationEditActivityTable
+    partial class MigrationEditActivityTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

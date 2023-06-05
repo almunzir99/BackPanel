@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BackPanel.Persistence.Migrations
 {
-    public partial class migrationEditActivityTable : Migration
+    public partial class MigrationEditActivityTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

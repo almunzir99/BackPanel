@@ -13,7 +13,7 @@ namespace BackPanel.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20220808191720_initializeWithBasicEntities")]
-    partial class initializeWithBasicEntities
+    partial class InitializeWithBasicEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

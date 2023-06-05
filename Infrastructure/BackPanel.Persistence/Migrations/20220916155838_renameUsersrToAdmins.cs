@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BackPanel.Persistence.Migrations
 {
-    public partial class renameUsersrToAdmins : Migration
+    public partial class RenameUsersrToAdmins : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,13 +31,13 @@ namespace BackPanel.Persistence.Migrations
 
             migrationBuilder.RenameIndex(
                 name: "IX_Users_RoleId",
-                table: "Admins",
-                newName: "IX_Admins_RoleId");
+                newName: "IX_Admins_RoleId",
+                table: "Admins");
 
             migrationBuilder.RenameIndex(
                 name: "IX_Users_Email",
-                table: "Admins",
-                newName: "IX_Admins_Email");
+                newName: "IX_Admins_Email",
+                table: "Admins");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Admins",
@@ -100,13 +100,13 @@ namespace BackPanel.Persistence.Migrations
 
             migrationBuilder.RenameIndex(
                 name: "IX_Admins_RoleId",
-                table: "Users",
-                newName: "IX_Users_RoleId");
+                newName: "IX_Users_RoleId",
+                table: "Users");
 
             migrationBuilder.RenameIndex(
                 name: "IX_Admins_Email",
-                table: "Users",
-                newName: "IX_Users_Email");
+                newName: "IX_Users_Email",
+                table: "Users");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Users",

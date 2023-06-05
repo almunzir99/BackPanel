@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BackPanel.Persistence.Migrations
 {
-    public partial class replacePhotoWithImageInUserBase : Migration
+    public partial class ReplacePhotoWithImageInUserBase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

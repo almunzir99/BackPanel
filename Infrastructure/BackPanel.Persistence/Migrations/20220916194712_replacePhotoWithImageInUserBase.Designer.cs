@@ -13,7 +13,7 @@ namespace BackPanel.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20220916194712_replacePhotoWithImageInUserBase")]
-    partial class replacePhotoWithImageInUserBase
+    partial class ReplacePhotoWithImageInUserBase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BackPanel.Persistence.Migrations
 {
-    public partial class addstatustoalltables : Migration
+    public partial class Addstatustoalltables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

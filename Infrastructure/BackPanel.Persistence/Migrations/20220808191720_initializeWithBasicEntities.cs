@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BackPanel.Persistence.Migrations
 {
-    public partial class initializeWithBasicEntities : Migration
+    public partial class InitializeWithBasicEntities : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,10 +23,7 @@ namespace BackPanel.Persistence.Migrations
                     LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Messages", x => x.Id);
-                });
+                constraints: table => table.PrimaryKey("PK_Messages", x => x.Id));
 
             migrationBuilder.CreateTable(
                 name: "Permissions",
@@ -42,10 +39,7 @@ namespace BackPanel.Persistence.Migrations
                     LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Permissions", x => x.Id);
-                });
+                constraints: table => table.PrimaryKey("PK_Permissions", x => x.Id));
 
             migrationBuilder.CreateTable(
                 name: "Roles",

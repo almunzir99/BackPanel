@@ -13,7 +13,7 @@ namespace BackPanel.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20230331112122_add status to all tables")]
-    partial class addstatustoalltables
+    partial class Addstatustoalltables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

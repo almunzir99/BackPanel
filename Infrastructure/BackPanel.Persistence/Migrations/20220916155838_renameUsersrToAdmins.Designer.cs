@@ -13,7 +13,7 @@ namespace BackPanel.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20220916155838_renameUsersrToAdmins")]
-    partial class renameUsersrToAdmins
+    partial class RenameUsersrToAdmins
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

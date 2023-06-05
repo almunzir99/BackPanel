@@ -18,7 +18,7 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
     where TDtoRequest : UserBaseDtoRequest
 {
     protected abstract string UserType { get; }
-    private readonly ISmtpService _smtpService;
+    protected readonly ISmtpService SmtpService;
     private readonly IFilesManagerService _filesManagerService;
     private readonly IWebConfiguration _webConfiguration;
 
@@ -29,7 +29,7 @@ public abstract class UserBaseService<TEntity, TDto, TDtoRequest> : ServiceBase<
         IRepositoryBase<Admin> adminsRepository, IWebConfiguration webConfiguration,IPathProvider pathProvider)
         : base(mapper, repository, adminsRepository,pathProvider)
     {
-        _smtpService = smtpService;
+        SmtpService = smtpService;
         _filesManagerService = filesManagerService;
         _webConfiguration = webConfiguration;
     }
