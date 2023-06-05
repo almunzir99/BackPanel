@@ -1,6 +1,6 @@
 @[Usings]
 
-namespace SalesUp.Application.DTOs;
+namespace @[ProjectName].Application.DTOs;
 public class @[Model]Dto : DtoBase
 {
     @[Props]

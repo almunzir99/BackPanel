@@ -5,20 +5,21 @@ public class ServiceGenerator
     private readonly string _outPutPath;
     private readonly string _templatePath;
     private readonly string _model;
+    private readonly string projectName;
 
-    public ServiceGenerator(string model)
+    public ServiceGenerator(string model, string workingDirectory, string projectName)
     {
         var modelPath = Path.Combine(
-            AppSettings.WorkingDirectory,
-            AppSettings.EntitiesRelativePath, $"{model}.cs"
+            workingDirectory,
+            AppSettings.EntitiesRelativePath.Replace("ProjectName",projectName), $"{model}.cs"
         );
         _outPutPath = Path.Combine(
-            AppSettings.WorkingDirectory,
-            AppSettings.ServicesRelativePath, $"{Utils.PluralizeWords(model)}Service.cs"
+            workingDirectory,
+            AppSettings.ServicesRelativePath.Replace("ProjectName",projectName), $"{Utils.PluralizeWords(model)}Service.cs"
         );
         _templatePath = Path.Combine(
-            AppSettings.WorkingDirectory,
-            AppSettings.TemplatesRelativePath, "ServiceTemplate.sgt"
+            workingDirectory,
+            AppSettings.TemplatesRelativePath.Replace("ProjectName",projectName), "ServiceTemplate.sgt"
         );
         if (!File.Exists(modelPath))
             throw new FileNotFoundException("Model File  Not Found");
@@ -27,6 +28,7 @@ public class ServiceGenerator
         if (File.Exists(_outPutPath))
             throw new InvalidOperationException("Service File Already Exists");
         _model = model;
+        this.projectName = projectName;
     }
     public async Task Generate()
     {
@@ -34,6 +36,7 @@ public class ServiceGenerator
         var templateContent = await File.ReadAllTextAsync(_templatePath);
         templateContent = templateContent.Replace("@[Models]", models);
         templateContent = templateContent.Replace("@[Model]", _model);
-        await File.WriteAllTextAsync(_outPutPath,templateContent);
+        templateContent = templateContent.Replace("@[ProjectName]", projectName);
+        await File.WriteAllTextAsync(_outPutPath, templateContent);
     }
 }

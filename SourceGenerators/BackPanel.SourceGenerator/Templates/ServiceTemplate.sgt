@@ -1,15 +1,16 @@
 using AutoMapper;
-using BackPanel.Application.DTOs;
-using BackPanel.Application.DTOsRequests;
-using BackPanel.Application.Interfaces;
-using BackPanel.Domain.Entities;
+using @[ProjectName].Application.DTOs;
+using @[ProjectName].Application.DTOsRequests;
+using @[ProjectName].Application.Interfaces;
+using @[ProjectName].Domain.Entities;
+using @[ProjectName].FilesManager.Interfaces;
 
-namespace BackPanel.Application.Services;
+namespace @[ProjectName].Application.Services;
 
 public class @[Models]Service : ServiceBase<@[Model],@[Model]Dto,@[Model]DtoRequest>, I@[Models]Service
 {
-    public @[Models]Service(IMapper mapper, IRepositoryBase<@[Model]> repository, IRepositoryBase<Admin> adminsRepository) 
-    : base(mapper, repository, adminsRepository)
+    public @[Models]Service(IMapper mapper, IRepositoryBase<@[Model]> repository, IRepositoryBase<Admin> adminsRepository,IPathProvider pathProvider) 
+    : base(mapper, repository, adminsRepository,pathProvider)
     {
     }
 }

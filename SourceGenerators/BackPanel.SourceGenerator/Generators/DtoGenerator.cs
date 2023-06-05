@@ -15,24 +15,26 @@ public class DtoGenerator
     private readonly string _model;
     private readonly DtoType _dtoType;
     private readonly CodeModifier _codeModifier;
+    private readonly string workingDirectory;
+    private readonly string projectName;
 
-    public DtoGenerator(string model, DtoType dtoType = DtoType.Dto)
+    public DtoGenerator(string model, string workingDirectory ,string projectName,DtoType dtoType = DtoType.Dto)
     {
         _dtoType = dtoType;
-        _codeModifier = new CodeModifier(model);
+        _codeModifier = new CodeModifier(model,workingDirectory,projectName);
         _model = model;
         _modelPath = Path.Combine(
-            AppSettings.WorkingDirectory,
-            AppSettings.EntitiesRelativePath, $"{model}.cs"
+            workingDirectory,
+            AppSettings.EntitiesRelativePath.Replace("ProjectName",projectName), $"{model}.cs"
         );
         _outPutPath = Path.Combine(
-            AppSettings.WorkingDirectory,
-            _dtoType == DtoType.DtoRequest ? AppSettings.DtosRequestsRelativePath : AppSettings.DtosRelativePath,
+            workingDirectory,
+            _dtoType == DtoType.DtoRequest ? AppSettings.DtosRequestsRelativePath.Replace("ProjectName",projectName) : AppSettings.DtosRelativePath.Replace("ProjectName",projectName),
             _dtoType == DtoType.DtoRequest ? $"{model}DtoRequest.cs" : $"{model}Dto.cs"
         );
         _templatePath = Path.Combine(
-            AppSettings.WorkingDirectory,
-            AppSettings.TemplatesRelativePath,
+            workingDirectory,
+            AppSettings.TemplatesRelativePath.Replace("ProjectName",projectName),
             _dtoType == DtoType.DtoRequest ? "DtoRequestTemplate.sgt" : "DtoTemplate.sgt"
         );
 
@@ -42,6 +44,8 @@ public class DtoGenerator
             throw new FileNotFoundException("Template File  Not Found");
         if (File.Exists(_outPutPath))
             throw new InvalidOperationException("Dto File Already Exists");
+        this.workingDirectory = workingDirectory;
+        this.projectName = projectName;
     }
 
     public async Task Generate()
@@ -61,6 +65,8 @@ public class DtoGenerator
         templateContent = templateContent.Replace("@[Model]", _model);
         templateContent = templateContent.Replace("@[Props]", props);
         templateContent = templateContent.Replace("@[Usings]", usingsStr);
+        templateContent = templateContent.Replace("@[ProjectName]", projectName);
+
         var formattedCode = Utils.FormatCodeWithRoslyn(templateContent);
         await File.WriteAllTextAsync(_outPutPath, formattedCode);
         await _codeModifier.AppendToMappingProfile(_dtoType != DtoType.DtoRequest ? "DtoRequest" : "Dto");
@@ -95,7 +101,7 @@ public class DtoGenerator
         {
             var type = prop.Type.ToString();
             var pureType = Utils.ExtractType(type);
-            var isEntity = Utils.CheckIfTypeIsEntity(pureType);
+            var isEntity = Utils.CheckIfTypeIsEntity(pureType,workingDirectory,projectName);
             var isSameType = pureType == _model;
             if (isEntity && !isSameType)
             {
@@ -115,7 +121,7 @@ public class DtoGenerator
             var propStr = c.ToFullString();
             var type = c.Type.ToString();
             var pureType = Utils.ExtractType(type);
-            var isEntity = Utils.CheckIfTypeIsEntity(pureType);
+            var isEntity = Utils.CheckIfTypeIsEntity(pureType,workingDirectory,projectName);
             if (isEntity && propStr.Contains($"{type}"))
             {
                 var newPropStr = "";
@@ -149,8 +155,8 @@ public class DtoGenerator
     private async Task GeneratePropDto(string model)
     {
         var dtos = Directory.GetFiles(Path.Combine(
-            AppSettings.WorkingDirectory,
-             _dtoType == DtoType.DtoRequest ? AppSettings.DtosRequestsRelativePath : AppSettings.DtosRelativePath
+            workingDirectory,
+             _dtoType == DtoType.DtoRequest ? AppSettings.DtosRequestsRelativePath.Replace("ProjectName",projectName) : AppSettings.DtosRelativePath.Replace("ProjectName",projectName)
         ));
         var found = false;
         foreach (var dto in dtos)
@@ -165,7 +171,7 @@ public class DtoGenerator
         }
         if (found)
             return;
-        var generator = new DtoGenerator(model, _dtoType);
+        var generator = new DtoGenerator(model, workingDirectory, projectName,_dtoType);
         await generator.Generate();
     }
 }

@@ -1,12 +1,12 @@
-using BackPanel.Application.Attributes.Permissions;
-using BackPanel.Application.DTOs;
-using BackPanel.Application.DTOsRequests;
-using BackPanel.Application.Interfaces;
-using BackPanel.Domain.Entities;
+using @[ProjectName].Application.Attributes.Permissions;
+using @[ProjectName].Application.DTOs;
+using @[ProjectName].Application.DTOsRequests;
+using @[ProjectName].Application.Interfaces;
+using @[ProjectName].Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BackPanel.WebApplication.Controllers;
+namespace @[ProjectName].WebApplication.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

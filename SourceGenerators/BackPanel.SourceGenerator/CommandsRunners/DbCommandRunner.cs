@@ -5,23 +5,27 @@ namespace BackPanel.SourceGenerator.CommandsRunners;
 public class DbCommandRunner
 {
     private readonly string _model;
+    private readonly string workingDirectory;
+    private readonly string projectName;
 
-    public DbCommandRunner(string model)
+    public DbCommandRunner(string model, string workingDirectory,string projectName)
     {
         _model = model;
+        this.workingDirectory = workingDirectory;
+        this.projectName = projectName;
     }
 
     public async Task MigrateAsync(string? message = null)
     {
-        _ = message ?? $"create{Utils.PluralizeWords(_model)}Table";
-        const string command = "dotnet ef migrations add {migrateMessage} "+
-                      $" -s {AppSettings.WebAppProjectRelativePath} -p {AppSettings.PersistenceProjectRelativePath}";
-       await ProcessAsyncHelper.ExecuteShellCommand(AppSettings.WorkingDirectory, "cmd", $"/k {command}", 20000);
+        _ = message ?? $"Create{Utils.PluralizeWords(_model)}Table";
+         string command = "dotnet ef migrations add {migrateMessage} " +
+                      $" -s {AppSettings.WebAppProjectRelativePath.Replace("ProjectName",projectName)} -p {AppSettings.PersistenceProjectRelativePath.Replace("ProjectName",projectName)}";
+        await ProcessAsyncHelper.ExecuteShellCommand(workingDirectory, OperatingSystem.IsWindows() ? $"/k {command}" : command);
     }
-    public static async Task DbUpdateAsync()
+    public async Task DbUpdateAsync()
     {
-        const string command = "dotnet ef database update"+
-                      $" -s {AppSettings.WebAppProjectRelativePath} -p {AppSettings.PersistenceProjectRelativePath}";
-        await ProcessAsyncHelper.ExecuteShellCommand(AppSettings.WorkingDirectory, "cmd", $"/k {command}", 20000);
+         string command = "dotnet ef database update" +
+                      $" -s {AppSettings.WebAppProjectRelativePath.Replace("ProjectName",projectName)} -p {AppSettings.PersistenceProjectRelativePath.Replace("ProjectName",projectName)}";
+        await ProcessAsyncHelper.ExecuteShellCommand(workingDirectory, OperatingSystem.IsWindows() ? $"/k {command}" : command);
     }
 }

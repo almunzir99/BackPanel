@@ -1,8 +1,8 @@
-using BackPanel.Application.DTOs;
-using BackPanel.Application.DTOsRequests;
-using BackPanel.Domain.Entities;
+using @[ProjectName].Application.DTOs;
+using @[ProjectName].Application.DTOsRequests;
+using @[ProjectName].Domain.Entities;
 
-namespace BackPanel.Application.Interfaces;
+namespace @[ProjectName].Application.Interfaces;
 
 public interface I@[Models]Service : IServicesBase<@[Model],@[Model]Dto,@[Model]DtoRequest>
 {

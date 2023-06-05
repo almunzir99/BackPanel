@@ -1,5 +1,5 @@
 @[Usings]
-namespace SalesUp.Application.DTOsRequests;
+namespace @[ProjectName].Application.DTOsRequests;
 public class @[Model]DtoRequest
 {
    @[Props]

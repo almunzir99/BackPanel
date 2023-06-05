@@ -13,12 +13,12 @@ public static class Utils
         var pluralizer = new Pluralizer();
         return pluralizer.Pluralize(word);
     }
-    public static bool CheckIfTypeIsEntity(string entity)
+    public static bool CheckIfTypeIsEntity(string entity,string workingDirectory,string projectName)
     {
         var isEntity = false;
         var path = Path.Combine(
-            AppSettings.WorkingDirectory,
-            AppSettings.EntitiesRelativePath
+            workingDirectory,
+            AppSettings.EntitiesRelativePath.Replace("ProjectName",projectName)
         );
         var entities = Directory.GetFiles(path);
         foreach (var fEntity in entities)

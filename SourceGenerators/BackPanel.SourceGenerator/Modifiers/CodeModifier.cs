@@ -15,18 +15,22 @@ public class CodeModifier
     private readonly string _applicationDiPath;
     private readonly string _model;
     private string _dbContextModifiedCode = "";
+    private readonly string workingDirectory;
+    private readonly string projectName;
 
-    public CodeModifier(string model)
+    public CodeModifier(string model,string workingDirectory,string projectName)
     {
+        this.workingDirectory = workingDirectory;
         _model = model;
-        _mappingProfilePath = Path.Combine(AppSettings.WorkingDirectory, AppSettings.MappingProfilePath);
-        _dbContextPath = Path.Combine(AppSettings.WorkingDirectory, AppSettings.DbContextPath);
-        _roleModelPath = Path.Combine(AppSettings.WorkingDirectory, AppSettings.EntitiesRelativePath, "Role.cs");
-        _roleDtoPath = Path.Combine(AppSettings.WorkingDirectory, AppSettings.DtosRelativePath, "RoleDto.cs");
-        _roleDtoRequest = Path.Combine(AppSettings.WorkingDirectory, AppSettings.DtosRequestsRelativePath,
+        _mappingProfilePath = Path.Combine(workingDirectory, AppSettings.MappingProfilePath.Replace("ProjectName",projectName));
+        _dbContextPath = Path.Combine(workingDirectory, AppSettings.DbContextPath.Replace("ProjectName",projectName));
+        _roleModelPath = Path.Combine(workingDirectory, AppSettings.EntitiesRelativePath.Replace("ProjectName",projectName), "Role.cs");
+        _roleDtoPath = Path.Combine(workingDirectory, AppSettings.DtosRelativePath.Replace("ProjectName",projectName), "RoleDto.cs");
+        _roleDtoRequest = Path.Combine(workingDirectory, AppSettings.DtosRequestsRelativePath.Replace("ProjectName",projectName),
             "RoleDtoRequest.cs");
-        _applicationDiPath = Path.Combine(AppSettings.WorkingDirectory,
-            AppSettings.ApplicationProjectRelativePath, "DI", "RegisterWithDependencyInjection.cs");
+        _applicationDiPath = Path.Combine(workingDirectory,
+            AppSettings.ApplicationProjectRelativePath.Replace("ProjectName",projectName), "DI", "RegisterWithDependencyInjection.cs");
+        this.projectName = projectName;
     }
 
     public async Task AddServiceToDiFile()
@@ -96,8 +100,8 @@ public class CodeModifier
         root = root.ReplaceNode(classSyntax, updatedClassSyntax).NormalizeWhitespace();
         _dbContextModifiedCode = root.GetText().ToString();
         // add DbSets for any inner or related Entities
-        var modelPath = Path.Combine(AppSettings.WorkingDirectory,
-            AppSettings.EntitiesRelativePath, $"{model}.cs");
+        var modelPath = Path.Combine(workingDirectory,
+            AppSettings.EntitiesRelativePath.Replace("ProjectName",projectName), $"{model}.cs");
         var props = await Utils.ExtractPropsFromModel(modelPath);
         await AddInnerDbSetsToDbContext(props);
     }
@@ -123,7 +127,7 @@ public class CodeModifier
         {
             var type = prop.Type.ToString();
             var pureType = Utils.ExtractType(type);
-            var isEntity = Utils.CheckIfTypeIsEntity(pureType);
+            var isEntity = Utils.CheckIfTypeIsEntity(pureType,workingDirectory,projectName);
             var isSameType = pureType == _model;
             if (isEntity && !isSameType)
             {

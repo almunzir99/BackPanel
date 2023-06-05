@@ -6,21 +6,26 @@ namespace BackPanel.SourceGenerator;
 public class Generator
 {
     private readonly CommandOptions _options;
-    public Generator(CommandOptions options)
+    private readonly string projectName;
+    private readonly string workingDirectory;
+
+    public Generator(CommandOptions options, string workingDirectory, string projectName)
     {
+        this.projectName = projectName;
         _options = options;
+        this.workingDirectory = workingDirectory;
     }
     public async Task GenerateAsync()
     {
         if (_options.Model == null)
             throw new NullReferenceException("model parameter shouldn't be null");
-        var dtoGen = new DtoGenerator(_options.Model);
-        var dtoRequestGen = new DtoGenerator(_options.Model,DtoType.DtoRequest);
-        var interfaceGen = new InterfaceGenerator(_options.Model);
-        var serviceGen = new ServiceGenerator(_options.Model);
-        var controllerGen = new ControllerGenerator(_options.Model);
-        var codeModifier = new CodeModifier(_options.Model);
-        var dbCommandRunner = new DbCommandRunner(_options.Model);
+        var dtoGen = new DtoGenerator(_options.Model,workingDirectory,projectName);
+        var dtoRequestGen = new DtoGenerator(_options.Model,workingDirectory,projectName, DtoType.DtoRequest);
+        var interfaceGen = new InterfaceGenerator(_options.Model,workingDirectory,projectName);
+        var serviceGen = new ServiceGenerator(_options.Model,workingDirectory,projectName);
+        var controllerGen = new ControllerGenerator(_options.Model,workingDirectory,projectName);
+        var codeModifier = new CodeModifier(_options.Model,workingDirectory,projectName); 
+        var dbCommandRunner = new DbCommandRunner(_options.Model,workingDirectory,projectName);
         /* **************** Step 1: Generate Dto File ********************  */
         if (_options.Dto!.Value)
         {
@@ -96,14 +101,14 @@ public class Generator
         {
             /* **************** Step  13: EF Db Update ********************  */
             Console.WriteLine("Start EF DataBase Update ....");
-            await DbCommandRunner.DbUpdateAsync();
+            await dbCommandRunner.DbUpdateAsync();
             Console.WriteLine(" EF Database Update Completed Successfully");
         }
-       if(_options.Controller!.Value)
-       {
-         /* **************** Step 5: Generate Controller File ********************  */
-        await controllerGen.Generate();
-        Console.WriteLine("Controller File Generated Successfully");
-       }
+        if (_options.Controller!.Value)
+        {
+            /* **************** Step 5: Generate Controller File ********************  */
+            await controllerGen.Generate();
+            Console.WriteLine("Controller File Generated Successfully");
+        }
     }
 }
