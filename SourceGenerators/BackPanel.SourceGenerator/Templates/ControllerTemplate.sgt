@@ -20,5 +20,5 @@ public class @[Models]Controller : ApiController<@[Model], @[Model]Dto,@[Model]D
         _roleService = roleService;
         _notificationService = notificationService;
     }
-    public override string PermissionTitle => "@[Models]Permissions";  
+    public override string PermissionTitle => "@[Models]Permissions";
 }
