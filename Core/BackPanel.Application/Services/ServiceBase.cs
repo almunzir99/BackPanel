@@ -70,9 +70,8 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
     }
     public virtual async Task<Byte[]> ExportToPdf()
     {
-        var stylePath = Path.Combine(PathProvider.GetRootPath(), "Assets", "Styles", "styles.css");
         var data = await Repository.ListAsync();
-        return DataExportHelper<TEntity>.ExportToPdf(data, stylePath);
+        return await DataExportHelper<TEntity>.ExportToPdfAsync(data, PathProvider.GetBaseUrl());
     }
 
     public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null) => await Repository.GetTotalRecords(predicate);

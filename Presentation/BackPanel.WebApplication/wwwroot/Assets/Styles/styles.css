@@ -1,23 +1,86 @@
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin:50px auto;
-}
 
-/* Zebra striping */
-tr:nth-of-type(odd) {
-    background: #eee;
-}
-
-th {
-    background: #3498db;
-    color: white;
-    font-weight: bold;
-}
-
-td, th {
-    padding: 10px;
-    border: 1px solid #ccc;
-    text-align: left;
-    font-size: 18px;
-}
+@font-face {
+    font-family: "tajawal";
+    src: url("./../fonts/tajawal.ttf");
+  }
+  
+  html {
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+    * {
+      font-family: 'tajawal';
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 50px auto;
+    }
+    
+    /* Zebra striping */
+    tr:nth-of-type(odd) {
+      background: #eee;
+    }
+    
+    th {
+      background: #4e4d4d;
+      border-left: 1px solid #323131;
+      color: white;
+    }
+    
+    td,
+    th {
+      padding: 10px;
+      text-align: left;
+    }
+     h4{
+      margin-bottom: 0px;
+      padding-bottom: 0px;
+     }
+    .table {
+      display: table;
+      table-layout: fixed;
+    
+    }
+    .table.w100{
+      width: 100%;
+    
+    }
+    .cell {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    .header{
+      border-bottom: 1px solid #e0dfdf;
+      padding-bottom: 30px;
+      margin-bottom: 30px;
+    }
+    .header .info-section {
+      padding: 20px;
+      margin-left: -18px;
+    }
+    .header  img{
+      height: 140px;
+      width: auto;
+    }
+    .header .info-section .divider{
+      height: 80px;
+      width: 1px;
+      background-color: #c0c0c0;
+      margin: 0px 20px;
+    }
+    .header .info-section .info{
+      line-height: 25px;
+    }
+    .header .value{
+      color: #8d8c8c;
+    }
+    td.light{
+      background-color: white;
+    }
+    td.dark{
+      background-color: #eee;
+    }
+    td.p-5{
+      padding: 15px;
+    }

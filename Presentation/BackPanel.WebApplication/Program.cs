@@ -44,7 +44,8 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 });
 var app = builder.Build();
-
+// load company info 
+await app.LoadCompanyInfo();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -54,7 +55,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
 app.UseStaticFiles();
 app.UseCors("CorsPolicy");
 app.MapControllerRoute(
