@@ -24,7 +24,7 @@ public class Generator
         var interfaceGen = new InterfaceGenerator(_options.Model,workingDirectory,projectName);
         var serviceGen = new ServiceGenerator(_options.Model,workingDirectory,projectName);
         var controllerGen = new ControllerGenerator(_options.Model,workingDirectory,projectName);
-        var codeModifier = new CodeModifier(_options.Model,workingDirectory,projectName); 
+        var codeModifier = new CodeModifier(_options.Model,workingDirectory,projectName);
         var dbCommandRunner = new DbCommandRunner(_options.Model,workingDirectory,projectName);
         /* **************** Step 1: Generate Dto File ********************  */
         if (_options.Dto!.Value)
@@ -72,7 +72,7 @@ public class Generator
             Console.WriteLine("RoleDtoRequest.cs updated Successfully");
             /* **************** Step  8: EF Migration ********************  */
             Console.WriteLine("Start EF Migrating Process ....");
-            await dbCommandRunner.MigrateAsync();
+            await dbCommandRunner.MigrateAsync($"Add{_options.Model}Permissions");
             Console.WriteLine(" EF Migrating Completed Successfully");
         }
         else
