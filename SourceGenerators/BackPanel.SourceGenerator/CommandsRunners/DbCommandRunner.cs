@@ -17,8 +17,8 @@ public class DbCommandRunner
 
     public async Task MigrateAsync(string? message = null)
     {
-        _ = message ?? $"Create{Utils.PluralizeWords(_model)}Table";
-         string command = "dotnet ef migrations add {migrateMessage} " +
+        var migrateMessage = message ?? $"Create{Utils.PluralizeWords(_model)}Table";
+         string command = $"dotnet ef migrations add {migrateMessage} " +
                       $" -s {AppSettings.WebAppProjectRelativePath.Replace("ProjectName",projectName)} -p {AppSettings.PersistenceProjectRelativePath.Replace("ProjectName",projectName)}";
         await ProcessAsyncHelper.ExecuteShellCommand(workingDirectory, OperatingSystem.IsWindows() ? $"/k {command}" : command);
     }
