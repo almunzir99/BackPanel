@@ -2,7 +2,9 @@
     <div class="menu">
         <div class="info-section">
             <div class="header">
-                <div class="logo"></div>
+                <div class="logo">
+                    <img [src]="baseUrl+company?.logo?.path">
+                </div>
             </div>
             <div class="user-info">
                 <div [class.rtl]="dir == 'rtl'" matRipple class="float-cog">

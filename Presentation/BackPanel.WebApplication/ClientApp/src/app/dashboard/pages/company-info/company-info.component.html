@@ -1,0 +1,33 @@
+<div *ngIf="dimRequest == 2" class="page-layout">
+    <div class="general-company-info">
+        <div class="company-info-image-container">
+            <div class="company-info-image">
+    
+                <div class="image-container">
+                    <img *ngIf="company?.logo && company?.logo?.path != null else placeholderImage" class="image"
+                        [src]="baseUrl + company?.logo?.path" alt="" srcset="">
+                    <ng-template #placeholderImage>
+                        <div class="placeholder">
+                            <img src="assets/images/avatar.png" alt="">
+                        </div>
+                    </ng-template>
+                </div>
+    
+            </div>
+            <div class="sub-text">
+                only *.jpeg, *.jpg, *.png, *.gif
+                <br> Max size of 3.1 MB
+            </div>
+    
+        </div>
+        <div class="basic-info-container">
+            <div class="row">
+                <form-builder [show-cancel-button]="false" (formSubmit)="onFormSubmit($event)"
+                    [control-groups]="formGroups"></form-builder>
+            </div>
+        </div>
+    </div>
+</div>
+<dimmer-loading
+    *ngIf="dimRequest == 1">
+</dimmer-loading>

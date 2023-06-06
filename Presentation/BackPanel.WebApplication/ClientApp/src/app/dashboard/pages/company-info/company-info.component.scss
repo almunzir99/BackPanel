@@ -1,0 +1,115 @@
+@import 'variables';
+.page-layout{
+    padding: 20px;
+    .general-company-info {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 30px;
+
+        .company-info-image-container {
+            flex: 1;
+            background-color: $secondary-background-color;
+            height: fit-content;
+            padding: 30px 10px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            .sub-text {
+                color: gray;
+                font-size: smaller;
+                text-align: center;
+            }
+
+            .company-info-image {
+                height: 150px;
+                width: 150px;
+                border: 1px dashed map-get($map: $primary-color, $key: 500);
+                border-radius: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 25px 0px;
+
+                .image-spinner {
+                    height: 120px;
+                    width: 120px;
+                    border-radius: 100%;
+                    background-color: map-get($map: $primary-color, $key: 500);
+                    color: white;
+                    font-weight: bold;
+                    font-size: 80px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .image-container {
+                    height: 120px;
+                    width: 120px;
+                    position: relative;
+
+                    .overlay {
+                        background-color: rgba($color: map-get($map: $primary-color, $key: 500), $alpha: 0.3);
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        z-index: 100;
+                        height: 100%;
+                        width: 100%;
+                        border-radius: 100%;
+                        color: white;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-direction: column;
+                        overflow: hidden;
+                        transition: 0.2s all ease;
+                        opacity: 0;
+                        transform: scale(0.4);
+                        cursor: pointer;
+
+                        mat-icon {
+                            margin-bottom: 10px;
+                        }
+                    }
+
+                    img,
+                    .placeholder {
+                        height: 120px;
+                        width: 120px;
+                        border-radius: 100%;
+                    }
+
+                    .placeholder {
+                        background-color: map-get($map: $primary-color, $key: 50);
+                        color: white;
+                        font-weight: bold;
+                        font-size: 80px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                }
+
+                .image-container:hover {
+                    .overlay {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+                }
+            }
+        }
+
+        .basic-info-container {
+            flex: 3;
+            background-color: $secondary-background-color;
+
+            padding: 25px;
+            border-radius: 15px;
+            margin: 0px 20px;
+        }
+    }
+}

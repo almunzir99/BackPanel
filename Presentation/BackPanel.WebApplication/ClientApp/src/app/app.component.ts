@@ -6,6 +6,7 @@ import { RequestStatus } from './core/models/request-status.enum';
 import { AuthService } from './core/services/auth.service';
 import { GeneralService } from './core/services/general.service';
 import { RolesService } from './core/services/roles.service';
+import { CompanyInfoService } from './core/services/company-info.service';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent {
     private _roleService: RolesService,
     private router: Router,
     private _generalService: GeneralService,
+    private _companyInfoService: CompanyInfoService,
     @Inject('DIRECTION') public dir: string,
     private overlay: OverlayContainer) {
     this._generalService.$theme.subscribe(value => {
@@ -41,11 +43,14 @@ export class AppComponent {
     try {
       this.requestStatus = RequestStatus.Loading;
       var result = await firstValueFrom(this._authService.getCurrentUser());
+      var companyInfo = await firstValueFrom(this._companyInfoService.single());
       this._authService.setCurrentUser(result.data);
       if (!result.data.isManager) {
         var role = await firstValueFrom(this._roleService.single(result.data.roleId!));
         this._authService.$role.next(role.data);
       }
+       // set company info
+       this._companyInfoService.setCompanyInfo(companyInfo.data);
       var notifications = await firstValueFrom(this._authService.getNotifications());
       this._authService.$notifications.next(notifications.data);
       this.requestStatus = RequestStatus.Success;

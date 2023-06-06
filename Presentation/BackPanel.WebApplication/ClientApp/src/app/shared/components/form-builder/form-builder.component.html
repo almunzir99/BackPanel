@@ -76,7 +76,7 @@
                             </mat-form-field>
                         </div>
                         <!-- 5. Rich Editor -->
-                        <div style="padding-right: 15px;" [style.width]="control.width"
+                        <div style="padding-right: 15px;margin: 15px 0px;" [style.width]="control.width"
                             *ngIf="control.controlType == controlTypes.RichTextEditor" class="control-container">
                             <quill-editor [placeholder]="control.title" [styles]="{'height':'300px'}"
                                 [formControlName]="control.name!"></quill-editor>
