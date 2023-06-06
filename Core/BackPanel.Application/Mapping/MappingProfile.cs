@@ -4,7 +4,6 @@ using BackPanel.Application.DTOsRequests;
 using BackPanel.Domain.Entities;
 
 namespace BackPanel.Application.Mapping;
-
 public class MappingProfile : Profile
 {
     public MappingProfile()
@@ -19,5 +18,9 @@ public class MappingProfile : Profile
         CreateMap<AdminDto, Admin>().ReverseMap();
         CreateMap<ActivityDto, Activity>().ReverseMap();
         CreateMap<NotificationDto, Notification>().ReverseMap();
+        CreateMap<ImageDtoRequest, Image>().ReverseMap();
+        CreateMap<CompanyInfoDtoRequest, CompanyInfo>().ReverseMap();
+        CreateMap<ImageDto, Image>().ReverseMap();
+        CreateMap<CompanyInfoDto, CompanyInfo>().ReverseMap();
     }
 }
