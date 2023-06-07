@@ -1,23 +1,44 @@
+@import "variables";
 .fields-matcher-page {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
-    height: 67vh;
-    overflow: auto;
     margin: 15px 0px;
 
 }
+.field-matcher{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: white;
+    margin: 20px 0px;
+    border-radius: 5px;
+    overflow: auto;
+    height: 55vh;
+    box-shadow: 0px 0px 15px #eee;
 
+
+}
 .fields-matcher-container {
     min-width: 260px;
-    margin: 0 25px 25px 0;
     display: inline-block;
     vertical-align: top;
-}
 
+}
+.table-header{
+    background-color: map-get($map: $primary-color, $key: 500);
+    color: white;
+    padding: 7px 10px;
+    border-left: solid 1px #eee;
+    h3{
+        padding: 0;
+        margin: 0;
+    }
+}
+.field-match-container:first-child{
+    border-left:none;
+}
 .fields-matcher-list {
-    border: solid 1px #ccc;
     min-height: 40px;
-    background: white;
     border-radius: 4px;
     overflow: hidden;
     display: block;
@@ -25,7 +46,6 @@
 
 .fields-matcher-box {
     padding: 10px;
-    border-bottom: solid 1px #ccc;
     color: rgba(0, 0, 0, 0.87);
     display: flex;
     flex-direction: row;
@@ -33,10 +53,11 @@
     justify-content: space-between;
     box-sizing: border-box;
     cursor: move;
-    background: white;
     font-size: 14px;
 }
-
+.fields-matcher-box:hover{
+    background-color: #eee;
+}
 .cdk-drag-preview {
     box-sizing: border-box;
     border-radius: 4px;

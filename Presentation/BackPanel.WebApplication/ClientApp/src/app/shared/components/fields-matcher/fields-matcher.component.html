@@ -1,15 +1,29 @@
 <h1>Import Field Matcher</h1>
 <div class="fields-matcher-page">
-    <div class="fields-matcher-container">
-        <h2>From List</h2>
-        <div cdkDropList #fromList="cdkDropList" [cdkDropListData]="fromItems" [cdkDropListConnectedTo]="fromList"
-            class="fields-matcher-list" (cdkDropListDropped)="drop($event)">
-            <div class="fields-matcher-box" *ngFor="let item of fromItems" cdkDrag>{{item}}</div>
+    <div class="field-matcher">
+        <div class="fields-matcher-container">
+            <div class="table-header">
+                <h3>From List</h3>
+            </div>
+            <div cdkDropList #fromList="cdkDropList" [cdkDropListData]="fromItems" [cdkDropListConnectedTo]="matchList"
+                class="fields-matcher-list" (cdkDropListDropped)="drop($event)">
+                <div class="fields-matcher-box" *ngFor="let item of fromItems" cdkDrag>{{item}}</div>
+            </div>
         </div>
-    </div>
-    <div class="fields-matcher-container">
-        <h2>To List</h2>
-        <div class="fields-matcher-list" cdkDropList #toList="cdkDropList" [cdkDropListData]="toItems"
+        <div class="fields-matcher-container">
+            <div class="table-header">
+                <h3>Match List</h3>
+            </div>
+            <div cdkDropList #matchList="cdkDropList" [cdkDropListData]="matchItems" [cdkDropListConnectedTo]="fromList" class="fields-matcher-list"
+                (cdkDropListDropped)="drop($event)">
+                <div class="fields-matcher-box" *ngFor="let item of matchItems" cdkDrag>{{item}}</div>
+            </div>
+        </div>
+        <div class="fields-matcher-container">
+            <div class="table-header">
+                <h3>To List</h3>
+            </div>
+            <div class="fields-matcher-list" cdkDropList #toList="cdkDropList" [cdkDropListData]="toItems"
             [cdkDropListConnectedTo]="toList" class="fields-matcher-list" (cdkDropListDropped)="drop($event)">
             <div class="fields-matcher-box" *ngFor="let item of toItems" cdkDrag>{{item}}</div>
         </div>
@@ -17,5 +31,5 @@
 </div>
 <div class="act-buttons">
     <button (click)="onSubmit()" mat-flat-button color="primary">Submit</button>
-    <button  (click)="onCancel()" type="button" mat-flat-button color="accent">Cancel</button>
+    <button (click)="onCancel()" type="button" mat-flat-button color="accent">Cancel</button>
 </div>
