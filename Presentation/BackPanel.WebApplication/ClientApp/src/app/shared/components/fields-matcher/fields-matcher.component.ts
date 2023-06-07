@@ -1,6 +1,7 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { GeneralService } from 'src/app/core/services/general.service';
 
 @Component({
   selector: 'app-fields-matcher',
@@ -10,8 +11,12 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class FieldsMatcherComponent implements OnInit {
   fromItems: any[] = [];
   toItems: any[] = [];
-  matchItems:any[] = [];
-  constructor(@Inject(MAT_DIALOG_DATA) public data: fieldMatcherSpec) {
+  matchItems: any[] = [];
+  theme: 'light' | 'dark' = 'light';
+  constructor(@Inject(MAT_DIALOG_DATA) public data: fieldMatcherSpec,
+    _generalService: GeneralService
+  ) {
+    _generalService.$theme.subscribe(value => this.theme = value);
     this.fromItems = data.fromItems;
     this.toItems = data.toItems;
 
