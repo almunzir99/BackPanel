@@ -8,9 +8,8 @@ namespace BackPanel.Application.Interfaces;
 
 public interface IServicesBase<TEntity, TDto, TDtoRequest> where TEntity : EntityBase where TDto : DtoBase
 {
-    Task<IList<TDto>> ListAsync(PaginationFilter? filter, IList<Func<TEntity, bool>>? conditions, string? title = "",
-        string orderBy = "LastUpdate", Boolean ascending = true);
-
+    IQueryable<TDto> List(PaginationFilter? filter,
+        string? search = "", string orderBy = "LastUpdate", bool ascending = true);
     Task<TDto> SingleAsync(int id);
     Task<TDto> CreateAsync(TDtoRequest newItem);
     Task<TDto> UpdateAsync(int id, TDtoRequest newItem);

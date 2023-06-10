@@ -11,6 +11,7 @@ using BackPanel.WebApplication.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackPanel.WebApplication.Controllers;
 
@@ -36,8 +37,8 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
         var validFilter = (filter == null)
             ? new PaginationFilter()
             : new PaginationFilter(pageIndex: filter.PageIndex, pageSize: filter.PageSize);
-        var result = await Service.ListAsync(filter, new List<Func<TEntity, bool>>(), title, orderBy!, ascending);
-        var totalRecords = await Service.GetTotalRecords();
+        var result = await Service.List(filter, title, orderBy!, ascending).ToListAsync();
+        var totalRecords = result.Count;
         if (Request.Path.Value != null)
         {
             return Ok(PaginationHelper.CreatePagedResponse(result,

@@ -6,7 +6,8 @@ namespace BackPanel.Application.Interfaces;
 
 public interface IRepositoryBase<TEntity> where TEntity : EntityBase
 {
-    Task<IList<TEntity>> ListAsync();
+    Task<IList<TEntity>> ListAsync(IList<Expression<Func<TEntity, bool>>>? predicates = null);
+    IQueryable<TEntity> List();
     Task<TEntity> SingleAsync(int id);
     Task<TEntity?> SingleAsync(Expression<Func<TEntity, bool>> predicate);
     Task<TEntity> CreateAsync(TEntity newItem);

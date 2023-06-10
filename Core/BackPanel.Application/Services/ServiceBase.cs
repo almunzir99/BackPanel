@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using AutoMapper;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
+using BackPanel.Application.Extensions;
 using BackPanel.Application.Helpers;
 using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
@@ -76,30 +77,19 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
 
     public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null) => await Repository.GetTotalRecords(predicate);
 
-    public virtual async Task<IList<TDto>> ListAsync(PaginationFilter? filter, IList<Func<TEntity, bool>>? conditions,
+    public virtual IQueryable<TDto> List(PaginationFilter? filter,
         string? search = "", string orderBy = "LastUpdate", bool ascending = true)
     {
         if (search == null) search = "";
         var validFilter = (filter == null)
             ? new PaginationFilter()
             : new PaginationFilter(filter.PageIndex, filter.PageSize);
-        var list = await Repository.ListAsync();
-        list = OrderBy(list, orderBy, ascending);
-        if (conditions != default)
-        {
-            foreach (var condition in conditions)
-            {
-                list = list.Where(condition).ToList();
-            }
-        }
-
+        var list = Repository.List();
+        list = list.OrderByProperty(orderBy,!ascending);
         list = list
-            .Where(c => GetSearchPropValue(c)?.Length == 0 || GetSearchPropValue(c).Contains(search, StringComparison.OrdinalIgnoreCase))
-            .ToList()
             .Skip((validFilter.PageIndex - 1) * validFilter.PageSize)
-            .Take(validFilter.PageSize).ToList();
-        var result = Mapper.Map<IList<TEntity>, IList<TDto>>(list);
-        return result;
+            .Take(validFilter.PageSize).AsQueryable();
+        return list.Select(c => Mapper.Map<TDto>(c));
     }
     public async Task ActiveToggleAsync(int id)
     {
@@ -111,24 +101,22 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
         }
     }
 
-    protected List<TEntity> OrderBy(IList<TEntity> list, string prop, Boolean ascending)
+    protected IQueryable<TEntity> OrderBy(IQueryable<TEntity> list, string prop, Boolean ascending)
     {
         //Get ordering Prop
         var type = typeof(TEntity);
         var orderProp = type.GetProperties().SingleOrDefault(c => string.Equals(c.Name, prop, StringComparison.OrdinalIgnoreCase));
         if (orderProp == null)
             throw new Exception("ordering property isn't available");
-        var orderedList = ascending
-            ? list.OrderBy(c => orderProp.GetValue(c, null)).ToList()
-            : list.OrderByDescending(c => orderProp.GetValue(c, null)).ToList();
-        return orderedList;
+        return ascending
+            ? list.OrderBy(c => orderProp.GetValue(c, null))
+            : list.OrderByDescending(c => orderProp.GetValue(c, null));
     }
 
     public virtual async Task<TDto> SingleAsync(int id)
     {
         var result = await Repository.SingleAsync(id);
-        var mappedResult = Mapper.Map<TEntity, TDto>(result);
-        return mappedResult;
+        return Mapper.Map<TEntity, TDto>(result);
     }
 
     public virtual async Task<TDto> UpdateAsync(int id, TDtoRequest newItem)
@@ -136,16 +124,14 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
         var mappedItem = Mapper.Map<TDtoRequest, TEntity>(newItem);
         var result = await Repository.UpdateAsync(id, mappedItem);
         await Repository.Complete();
-        var mappedResult = Mapper.Map<TEntity, TDto>(result);
-        return mappedResult;
+        return Mapper.Map<TEntity, TDto>(result);
     }
 
     public virtual async Task<TDto> UpdateAsync(int id, JsonPatchDocument<TEntity> newItem)
     {
         var result = await Repository.UpdateAsync(id, newItem);
         await Repository.Complete();
-        var mappedResult = Mapper.Map<TEntity, TDto>(result);
-        return mappedResult;
+        return Mapper.Map<TEntity, TDto>(result);
     }
 
     protected virtual string GetSearchPropValue(TEntity obj)

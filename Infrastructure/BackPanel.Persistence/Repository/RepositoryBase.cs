@@ -54,12 +54,22 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
     {
         Context.Remove(target);
     }
-    public virtual async Task<IList<TEntity>> ListAsync()
+    public virtual async Task<IList<TEntity>> ListAsync(IList<Expression<Func<TEntity, bool>>>? predicates = null)
     {
-        var list = await _includeableDbSet.Where(c => c.Status != Status.Deleted).ToListAsync();
-        return list;
+        var query =  _includeableDbSet.Where(c => c.Status != Status.Deleted).AsQueryable();
+        if(predicates != null)
+         {
+            foreach (var predicate in predicates)
+            {
+                query = query.Where(predicate);
+            }
+         }
+        return await query.ToListAsync();
     }
-
+    public virtual  IQueryable<TEntity> List()
+    {
+        return _includeableDbSet.Where(c => c.Status != Status.Deleted).AsQueryable();
+    }
     public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null)
     {
         return (predicate != null) ? await DbSet.CountAsync(predicate) : await DbSet.CountAsync();
