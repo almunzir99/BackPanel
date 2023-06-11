@@ -1,5 +1,6 @@
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
+using BackPanel.Application.DTOsRequests;
 using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ public interface IApiController<TEntity, TDto, TDtoRequest, TService>
     where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<TEntity, TDto, TDtoRequest>
 {
     Task<IActionResult> GetAsync(PaginationFilter? filter = null, string title = "",
-        [FromQuery] string orderBy = "LastUpdate", Boolean ascending = true);
+        [FromQuery] string orderBy = "LastUpdate", bool ascending = true,[FromQuery] IList<SearchExpressionDtoRequest>? expressions = null);
 
     Task<IActionResult> SingleAsync(int id);
     Task<IActionResult> PostAsync(TDtoRequest body);

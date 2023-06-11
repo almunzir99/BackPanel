@@ -3,6 +3,7 @@ using BackPanel.Application.Attributes.Permissions;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
 using BackPanel.Application.DTOs.Wrapper;
+using BackPanel.Application.DTOsRequests;
 using BackPanel.Application.Extensions;
 using BackPanel.Application.Helpers;
 using BackPanel.Application.Interfaces;
@@ -32,12 +33,18 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
     }
     [Permission(true, PermissionTypes.READ)]
     [HttpGet]
-    public virtual async Task<IActionResult> GetAsync([FromQuery] PaginationFilter? filter = null, [FromQuery] string? title = "", [FromQuery] string? orderBy = "LastUpdate", [FromQuery] bool ascending = true)
+    public virtual async Task<IActionResult> GetAsync(
+        [FromQuery] PaginationFilter? filter = null,
+        [FromQuery] string? title = "",
+        [FromQuery] string? orderBy = "LastUpdate",
+        [FromQuery] bool ascending = true,
+        [FromQuery] IList<SearchExpressionDtoRequest>? expressions = null
+        )
     {
         var validFilter = (filter == null)
             ? new PaginationFilter()
             : new PaginationFilter(pageIndex: filter.PageIndex, pageSize: filter.PageSize);
-        var result = await Service.List(filter, title, orderBy!, ascending).ToListAsync();
+        var result = await Service.List(filter, title, orderBy!, ascending,expressions).ToListAsync();
         var totalRecords = result.Count;
         if (Request.Path.Value != null)
         {

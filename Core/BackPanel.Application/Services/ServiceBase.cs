@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using AutoMapper;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
+using BackPanel.Application.DTOsRequests;
 using BackPanel.Application.Extensions;
 using BackPanel.Application.Helpers;
 using BackPanel.Application.Interfaces;
@@ -78,14 +79,25 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
     public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null) => await Repository.GetTotalRecords(predicate);
 
     public virtual IQueryable<TDto> List(PaginationFilter? filter,
-        string? search = "", string orderBy = "LastUpdate", bool ascending = true)
+        string? search = "", string orderBy = "LastUpdate", bool ascending = true,IList<SearchExpressionDtoRequest>? expressions = null)
     {
         if (search == null) search = "";
         var validFilter = (filter == null)
             ? new PaginationFilter()
             : new PaginationFilter(filter.PageIndex, filter.PageSize);
         var list = Repository.List();
+        // Apply Order
         list = list.OrderByProperty(orderBy,!ascending);
+        // Apply search Expressions
+        if(expressions != null)
+        {
+            foreach (var expression in expressions)
+            {
+                var lambda = ExpressionBuilder.BuildComparisonExpression<TEntity>(expression.PropName!,expression.Operator,expression.PropValue!);
+                list = list.Where(lambda);
+            }
+        }
+        // Apply Pagination
         list = list
             .Skip((validFilter.PageIndex - 1) * validFilter.PageSize)
             .Take(validFilter.PageSize).AsQueryable();

@@ -19,10 +19,14 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
     [Permission(true, PermissionTypes.READ)]
 
     [HttpGet]
-    public override async Task<IActionResult> GetAsync([FromQuery] PaginationFilter? filter = null,
-        [FromQuery] string? title = "", [FromQuery] string? orderBy = "LastUpdate", Boolean ascending = true)
+    public override async Task<IActionResult> GetAsync(
+        [FromQuery] PaginationFilter? filter = null,
+        [FromQuery] string? title = "",
+        [FromQuery] string? orderBy = "LastUpdate",
+        [FromQuery] bool ascending = true,
+        [FromQuery] IList<SearchExpressionDtoRequest>? expressions = null)
     {
-        var actionResult = await base.GetAsync(filter, title, orderBy, ascending);
+        var actionResult = await base.GetAsync(filter, title, orderBy, ascending, expressions);
         if (actionResult is OkObjectResult okActionResult)
         {
             if (okActionResult?.Value is PagedResponse<IList<AdminDto>> { Data: { } } response)
@@ -58,15 +62,15 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
         }
     }
     [Permission(true, PermissionTypes.READ)]
-     [HttpGet("{userId}/activities")]
-    public async Task<IActionResult> GetAdminActivitiesAsync(int userId,[FromQuery] PaginationFilter? filter = null)
+    [HttpGet("{userId}/activities")]
+    public async Task<IActionResult> GetAdminActivitiesAsync(int userId, [FromQuery] PaginationFilter? filter = null)
     {
         try
         {
             var validFilter = (filter == null)
                       ? new PaginationFilter()
                       : new PaginationFilter(pageIndex: filter.PageIndex, pageSize: filter.PageSize);
-            var result = await Service.AdminActivitiesListAsync(userId,filter);
+            var result = await Service.AdminActivitiesListAsync(userId, filter);
             var totalRecords = await Service.GetActivitiesTotalRecords(c => c.AdminId == userId);
             if (Request.Path.Value != null)
             {
