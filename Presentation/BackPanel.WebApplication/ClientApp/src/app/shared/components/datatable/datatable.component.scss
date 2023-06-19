@@ -5,7 +5,7 @@
     margin: 20px;
     border-radius: 10px;
     overflow: hidden;
-    
+
     .datatable-header {
         padding: 20px;
 
@@ -34,10 +34,12 @@
                     border-radius: 10px;
                     margin: 10px 5px;
                     min-width: 150px;
+
                     label {
                         display: flex;
                         align-items: center;
                         cursor: pointer;
+
                         mat-icon {
                             margin: 0px 5px;
                         }
@@ -117,6 +119,38 @@
                 color: #444;
                 border-bottom: 1px solid #eee;
                 font-size: 13px;
+
+                .search-row {
+                    display: flex;
+                    align-self: center;
+                    input {
+                        border: none;
+                        outline: none;
+                        flex: 1;
+                        width: 100%;
+                        font-size: 12px;
+                        background-color: transparent;
+                    }
+                    .search-button{
+                        height: 28px;
+                        width: 28px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        margin: 0px 10px;
+                        border-radius: 8px;
+            
+                        i {
+                            font-size: 20px;
+                            color: map-get($map: $primary-color, $key: 500);
+                        }
+                    }
+                }
+
+            }
+            td.search-td{
+                padding: 15px 0px;
             }
 
             td.break-words {
@@ -243,17 +277,18 @@
                     }
                 }
 
-               
+
             }
         }
-       tbody{
-        td {
-            color: #ffffff !important;
-            border-bottom-color:$dark-background-color ;
 
+        tbody {
+            td {
+                color: #ffffff !important;
+                border-bottom-color: $dark-background-color ;
+
+            }
         }
-       }
-       
+
     }
 
 }

@@ -463,3 +463,17 @@ mat-form-field {
     background-color: $secondary-dark-background-color;
   }
 }
+.operators-menu{
+  .mat-menu-item{
+      span{
+          font-size: 13px;
+      }
+      i{
+          font-size: 20px;
+          margin: 0px 10px;
+      }
+  }
+  .mat-menu-item:hover{
+    color: map-get($map: $primary-color, $key: 500);
+  }
+}

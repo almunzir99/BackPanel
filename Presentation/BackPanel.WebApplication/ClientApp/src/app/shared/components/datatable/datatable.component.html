@@ -91,6 +91,25 @@
         </tbody>
 
         <tbody *ngIf="rows.length > 0 && !loading">
+            <tr *ngIf="hasSearchProp">
+                <ng-container *ngFor="let col of columns">
+                    <td class="search-td">
+                        <div *ngIf="col.searchable" class="search-row">
+                            <input type="text" placeholder="search">
+                            <div mat-icon-button [matMenuTriggerFor]="operatorsMenu" class="search-button" matRipple>
+                                <i class="las la-search"></i>
+                            </div>
+                        </div>
+                        <mat-menu class="operators-menu" #operatorsMenu="matMenu">
+                            <button  *ngFor="let op of comparisonOperators" mat-menu-item>
+                                <i [classList]="op.icon"></i>
+                                <span>{{op.name}}</span>
+                              </button>
+                        </mat-menu>
+                    </td>
+                </ng-container>
+
+            </tr>
             <tr *ngFor="let row of rows; let rowIndex= index">
                 <ng-container *ngFor="let col of columns; let colIndex = index">
                     <td [class.break-words]="breakWords" [attr.data-label]="col.title" *ngIf="col.show">
@@ -113,4 +132,4 @@
         </mat-paginator>
 
     </div>
-</div>
+</div> 

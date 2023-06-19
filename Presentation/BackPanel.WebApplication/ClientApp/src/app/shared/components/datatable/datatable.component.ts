@@ -4,6 +4,7 @@ import { Column } from './column.model';
 import *  as XLSX from 'xlsx';
 import { MatDialog } from '@angular/material/dialog';
 import { fieldMatcherSpec, FieldsMatcherComponent } from '../fields-matcher/fields-matcher.component';
+import { comparisonOperators } from '../../constants/comparison-operator.list';
 @Component({
   selector: 'data-table',
   templateUrl: './datatable.component.html',
@@ -41,11 +42,14 @@ export class DatatableComponent implements OnInit {
   ascending = false;
   importFile: File | null = null;
   importedData = [];
+  hasSearchProp = false;
+  comparisonOperators = comparisonOperators;
   constructor(_generalService: GeneralService,private _dialog:MatDialog) {
     _generalService.$theme.subscribe(value => this.theme = value);
   }
   ngOnInit(): void {
     this.sortProp = this.columns[0].prop;
+    this.hasSearchProp = this.columns.some(c => c.searchable);
   }
   ngAfterViewInit() {
     this.configureColumnsResizer();

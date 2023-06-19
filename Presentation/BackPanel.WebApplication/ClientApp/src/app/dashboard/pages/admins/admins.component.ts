@@ -80,7 +80,8 @@ export class AdminsComponent implements OnInit {
         title: "Username",
         show: true,
         sortable: true,
-        importable: true
+        importable: true,
+        searchable:true
 
 
       },
