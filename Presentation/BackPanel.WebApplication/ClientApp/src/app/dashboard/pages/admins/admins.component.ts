@@ -10,7 +10,7 @@ import { AdminsService } from 'src/app/core/services/admins.service';
 import { RolesService } from 'src/app/core/services/roles.service';
 import { AlertMessage, AlertMessageComponent, MessageTypes } from 'src/app/shared/components/alert-message/alert-message.component';
 import { Column } from 'src/app/shared/components/datatable/column.model';
-import { PageSpec, SortSpec } from 'src/app/shared/components/datatable/datatable.component';
+import { FieldSearchResult, FieldsSearchListResult, PageSpec, SortSpec } from 'src/app/shared/components/datatable/datatable.component';
 import { ControlTypes } from 'src/app/shared/components/form-builder/control-type.enum';
 import { FormBuilderGroup } from 'src/app/shared/components/form-builder/form-builder-group.model';
 import { FormBuilderComponent, FormBuilderPropsSpec } from 'src/app/shared/components/form-builder/form-builder.component';
@@ -32,6 +32,7 @@ export class AdminsComponent implements OnInit {
   searchValue = "";
   getRequest = RequestStatus.Initial;
   dimRequest = RequestStatus.Initial;
+  fieldsSearchList: FieldSearchResult[] = [];
   constructor(
     private _service: AdminsService,
     private _rolesService: RolesService,
@@ -46,7 +47,7 @@ export class AdminsComponent implements OnInit {
   async getData() {
     try {
       this.getRequest = RequestStatus.Loading;
-      var result = await firstValueFrom(this._service.get(this.pageIndex, this.pageSize, this.searchValue, this.orderBy, this.ascending));
+      var result = await firstValueFrom(this._service.get(this.pageIndex, this.pageSize, this.searchValue, this.orderBy, this.ascending,this.fieldsSearchList));
       this.data = result.data;
       this.totalPages = result.totalPages;
       this.totalRecords = result.totalRecords;
@@ -81,7 +82,7 @@ export class AdminsComponent implements OnInit {
         show: true,
         sortable: true,
         importable: true,
-        searchable:true
+        searchable: true
 
 
       },
@@ -90,7 +91,9 @@ export class AdminsComponent implements OnInit {
         title: "Phone Number",
         show: true,
         sortable: true,
-        importable: true
+        importable: true,
+        searchable: true
+
 
       },
       {
@@ -98,8 +101,8 @@ export class AdminsComponent implements OnInit {
         title: "email",
         show: true,
         sortable: true,
-        importable: true
-
+        importable: true,
+        searchable: true
       },
       {
         prop: "role",
@@ -107,23 +110,22 @@ export class AdminsComponent implements OnInit {
         show: true,
         sortable: false,
         importable: true
-
       },
       {
         prop: "createdAt",
         title: "Created At",
         show: true,
         sortable: true,
-        importable: false
-
+        importable: false,
+        searchable: true
       },
       {
         prop: "lastUpdate",
         title: "Last Update",
         show: true,
         sortable: true,
-        importable: false
-
+        importable: false,
+        searchable: true
       },
       {
         prop: "status",
@@ -191,7 +193,7 @@ export class AdminsComponent implements OnInit {
   }
   async onActiveToggleClick(item: Admin) {
     await this.activeToggle(item);
-}
+  }
   /********************************* Form Configuration ******************************************** */
 
   getForm(item?: Admin, roles: Role[] = []): FormBuilderGroup[] {
@@ -326,6 +328,10 @@ export class AdminsComponent implements OnInit {
       panelClass: "form-builder-dialog",
     })
   }
+  onFieldSearchListChange(ev: FieldsSearchListResult) {
+      this.fieldsSearchList = ev.list;
+      this.getData();
+  }
 
   /********************************* Api Integration ******************************************** */
   async getRoles(): Promise<Role[]> {
@@ -410,16 +416,16 @@ export class AdminsComponent implements OnInit {
   }
   activeToggle = async (item: Admin) => {
     try {
-        this.dimRequest = RequestStatus.Loading;
-        await firstValueFrom(this._service.activeToggle(item.id!));
-        this.dimRequest = RequestStatus.Success;
-        item.status = item.status == Status.Disabled ? Status.Active : Status.Disabled;
+      this.dimRequest = RequestStatus.Loading;
+      await firstValueFrom(this._service.activeToggle(item.id!));
+      this.dimRequest = RequestStatus.Success;
+      item.status = item.status == Status.Disabled ? Status.Active : Status.Disabled;
     } catch (error) {
-        console.log(error);
-        this.dimRequest = RequestStatus.Failed;
+      console.log(error);
+      this.dimRequest = RequestStatus.Failed;
 
     }
-}
+  }
 
 
 }

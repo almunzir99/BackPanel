@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Activity } from '../models/activity.model';
 import { Admin } from '../models/admin.model';
 import { PagedResponse } from '../models/wrappers/paged-response.model';
+import { FieldSearchResult } from 'src/app/shared/components/datatable/datatable.component';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AdminsService {
   constructor(private http: HttpClient, @Inject("BASE_API_URL") baseUrl: string) {
     this.moduleBaseUrl = `${baseUrl}api/admins/`
   }
-  get(pageIndex = 1, pageSize = 10, searchValue = "", orderBy = "lastUpdate", ascending = false): Observable<PagedResponse<Admin[]>> {
+  get(pageIndex = 1, pageSize = 10, searchValue = "", orderBy = "lastUpdate", ascending = false, list: FieldSearchResult[] = []): Observable<PagedResponse<Admin[]>> {
     var params: any = {
       PageIndex: pageIndex,
       PageSize: pageSize,
@@ -21,6 +22,12 @@ export class AdminsService {
       ascending: ascending,
       title: searchValue
     }
+    list.forEach((element,index) => {
+      params[`expressions[${index}].propName`] = element.propName;
+      params[`expressions[${index}].propValue`] = element.propValue;
+      params[`expressions[${index}].operator`] = element.operator;
+
+    });
     return this.http.get(`${this.moduleBaseUrl}`, { params: params }) as Observable<PagedResponse<Admin[]>>;
   }
   getActivities(pageIndex = 1, pageSize = 5): Observable<PagedResponse<Activity[]>> {
@@ -65,7 +72,7 @@ export class AdminsService {
         next();
     }, error => { if (failed) failed(error) })
   }
-  activeToggle(id:number){
+  activeToggle(id: number) {
     return this.http.get(`${this.moduleBaseUrl}active?id=${id}`);
   }
 

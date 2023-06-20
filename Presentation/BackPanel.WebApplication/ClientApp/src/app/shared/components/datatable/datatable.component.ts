@@ -5,12 +5,14 @@ import *  as XLSX from 'xlsx';
 import { MatDialog } from '@angular/material/dialog';
 import { fieldMatcherSpec, FieldsMatcherComponent } from '../fields-matcher/fields-matcher.component';
 import { comparisonOperators } from '../../constants/comparison-operator.list';
+import { ComparisonOperator } from 'src/app/core/enums/comparison-operator.enum';
 @Component({
   selector: 'data-table',
   templateUrl: './datatable.component.html',
   styleUrls: ['./datatable.component.scss']
 })
 export class DatatableComponent implements OnInit {
+
   @Input('title') title: string = 'Data Table';
   @Input("columns") columns: Column[] = [];
   @Input("rows") rows: any[] = [];
@@ -36,20 +38,32 @@ export class DatatableComponent implements OnInit {
   @Output('createClick') createClickEmitter = new EventEmitter();
   @Output('exportClick') exportClickEmitter = new EventEmitter<string>();
   @Output('dataImported') DataImportedEventEmitter = new EventEmitter<any[]>();
+  @Output('fieldSearchChanged') FieldSearchResultEventEmitter = new EventEmitter<FieldsSearchListResult>();
+
 
   theme: 'light' | 'dark' = 'light';
   sortProp = "";
   ascending = false;
   importFile: File | null = null;
   importedData = [];
-  hasSearchProp = false;
   comparisonOperators = comparisonOperators;
-  constructor(_generalService: GeneralService,private _dialog:MatDialog) {
+  _searchableColumns: Column[] = [];
+  _fieldSearchResult: FieldSearchResult[] = [];
+  constructor(_generalService: GeneralService, private _dialog: MatDialog) {
     _generalService.$theme.subscribe(value => this.theme = value);
   }
   ngOnInit(): void {
     this.sortProp = this.columns[0].prop;
-    this.hasSearchProp = this.columns.some(c => c.searchable);
+    this._searchableColumns = this.columns.filter(c => c.searchable);
+    this._fieldSearchResult = this.columns.map((c) => {
+      var item: FieldSearchResult = {
+        propName: c.prop,
+        propValue: null,
+        operatorIcon: "las la-search",
+        operator: ComparisonOperator.Equal
+      };
+      return item;
+    })
   }
   ngAfterViewInit() {
     this.configureColumnsResizer();
@@ -82,25 +96,38 @@ export class DatatableComponent implements OnInit {
   onImportFileChange(event: any) {
     this.importFile = event.target.files[0];
     this.readDataFromImportedFile(() => {
-      this._dialog.open<FieldsMatcherComponent, fieldMatcherSpec, any>(FieldsMatcherComponent,{
-        data :{
+      this._dialog.open<FieldsMatcherComponent, fieldMatcherSpec, any>(FieldsMatcherComponent, {
+        data: {
           fromItems: Object.keys(this.importedData[0]),
-          toItems:this.columns.filter(c => c.importable).map(c => c.prop),
-          onCancel:() => {
+          toItems: this.columns.filter(c => c.importable).map(c => c.prop),
+          onCancel: () => {
             this._dialog.closeAll();
           },
-          onSubmit:(value) => {
+          onSubmit: (value) => {
             this._dialog.closeAll();
-            var result = this.extractDataUsingMap(value,this.importedData);
+            var result = this.extractDataUsingMap(value, this.importedData);
             this.DataImportedEventEmitter.emit(result);
           }
         }
       });
     });
-   
+
   }
 
+  onOperatorSelected(colIndex: number, operatorObject: any) {
+    this._fieldSearchResult[colIndex].operator = operatorObject.value;
+    this._fieldSearchResult[colIndex].operatorIcon = operatorObject.icon;
+    var result: FieldsSearchListResult = { list: this._fieldSearchResult, colIndex: colIndex };
+    this.FieldSearchResultEventEmitter.emit(result);
 
+  }
+  searchFieldChange(colIndex: number, target: any) {
+    this._fieldSearchResult[colIndex].propValue = target.value;
+    var list = this._fieldSearchResult.filter(c => c.propValue != null);
+    var index = list.indexOf(this._fieldSearchResult[colIndex]);
+    var result: FieldsSearchListResult = { list: list, colIndex: index };
+    this.FieldSearchResultEventEmitter.emit(result);
+  }
   /******************* Configure Table Resizer ****************** */
   configureColumnsResizer() {
     var resizers = document.querySelectorAll(".resizer") as NodeListOf<HTMLElement>;
@@ -149,20 +176,20 @@ export class DatatableComponent implements OnInit {
           var first_sheet_name = workbook.SheetNames[0];
           var worksheet = workbook.Sheets[first_sheet_name];
           this.importedData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-          if(onLoaded)
-          onLoaded();
+          if (onLoaded)
+            onLoaded();
         }
       }
     }
   }
-  extractDataUsingMap(map:Map<string,string>,arr:any[]) : any[] {
-    var newArray:any[] = [];
+  extractDataUsingMap(map: Map<string, string>, arr: any[]): any[] {
+    var newArray: any[] = [];
     arr.forEach(element => {
-        var newElement:any = {};
-        map.forEach((value,key,index) => {
-            newElement[value] = element[key];
-        });
-        newArray.push(newElement);
+      var newElement: any = {};
+      map.forEach((value, key, index) => {
+        newElement[value] = element[key];
+      });
+      newArray.push(newElement);
     });
     return newArray;
   }
@@ -177,4 +204,14 @@ export interface PageSpec {
   pageIndex?: number;
   pageSize?: number;
   length?: number;
+}
+export interface FieldsSearchListResult {
+  list: FieldSearchResult[];
+  colIndex: number;
+}
+export interface FieldSearchResult {
+  propName: string;
+  propValue: string | null;
+  operator: ComparisonOperator;
+  operatorIcon?: string;
 }

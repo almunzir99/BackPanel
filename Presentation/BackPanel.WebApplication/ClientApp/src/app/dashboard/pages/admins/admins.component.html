@@ -5,6 +5,7 @@
 (pageChange)="onPageChange($event)" 
 (exportClick)="onExportClick($event)"
 (dataImported)="onImportData($event)"
+(fieldSearchChanged) = "onFieldSearchListChange($event)"
 [total]="totalRecords" 
 [loading]="getRequest == 1" 
 [columns]="columns" 
