@@ -26,7 +26,9 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
         [FromQuery] bool ascending = true,
         [FromQuery] IList<SearchExpressionDtoRequest>? expressions = null)
     {
-        var actionResult = await base.GetAsync(filter, title, orderBy, ascending, expressions);
+       try
+       {
+         var actionResult = await base.GetAsync(filter, title, orderBy, ascending, expressions);
         if (actionResult is OkObjectResult okActionResult)
         {
             if (okActionResult?.Value is PagedResponse<IList<AdminDto>> { Data: { } } response)
@@ -34,6 +36,12 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
         }
 
         return actionResult;
+       }
+       catch (System.Exception e)
+       {
+        
+        throw e;
+       }
     }
     [Permission(true, PermissionTypes.READ)]
     [HttpGet("activities")]

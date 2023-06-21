@@ -23,7 +23,8 @@
                             </span>
                         </label>
                     </button>
-                   <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" (change)="onImportFileChange($event)" style="display:none" type="file"  id="importFromInput">
+                    <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        (change)="onImportFileChange($event)" style="display:none" type="file" id="importFromInput">
                 </ng-container>
                 <!-- Menu Button -->
                 <button *ngIf="showExport" [matMenuTriggerFor]="menu" mat-stroked-button color="primary">
@@ -75,22 +76,23 @@
             </tr>
             <tr *ngIf="_searchableColumns.length > 0">
                 <ng-container *ngFor="let col of columns; let i = index">
-                    <th class="search-td">
+                    <th class="search-cell">
                         <div *ngIf="col.searchable" class="search-row">
-                            <input (input)="searchFieldChange(i,$event.target)" type="text" placeholder="search">
+                            <input placeholder="search..." (input)="searchFieldChange(i,$event.target)" type="text"  >
                             <div mat-icon-button [matMenuTriggerFor]="operatorsMenu" class="search-button" matRipple>
                                 <i [classList]="_fieldSearchResult[i].operatorIcon"></i>
                             </div>
                         </div>
                         <mat-menu class="operators-menu" #operatorsMenu="matMenu">
-                            <button (click)="onOperatorSelected(i,op)"  *ngFor="let op of comparisonOperators" mat-menu-item>
+                            <button (click)="onOperatorSelected(i,op)" *ngFor="let op of comparisonOperators"
+                                mat-menu-item>
                                 <i [classList]="op.icon"></i>
                                 <span>{{op.name}}</span>
-                              </button>
+                            </button>
                         </mat-menu>
+
                     </th>
                 </ng-container>
-
             </tr>
         </thead>
         <tbody *ngIf="loading">
@@ -110,7 +112,7 @@
         </tbody>
 
         <tbody *ngIf="rows.length > 0 && !loading">
-           
+
             <tr *ngFor="let row of rows; let rowIndex= index">
                 <ng-container *ngFor="let col of columns; let colIndex = index">
                     <td [class.break-words]="breakWords" [attr.data-label]="col.title" *ngIf="col.show">
@@ -133,4 +135,4 @@
         </mat-paginator>
 
     </div>
-</div> 
+</div>

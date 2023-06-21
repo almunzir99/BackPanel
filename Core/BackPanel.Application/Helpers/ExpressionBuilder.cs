@@ -25,6 +25,10 @@ public static class ExpressionBuilder
 
     private static Expression BuildComparison(Expression left, Expression right, ComparisonOperator op)
     {
+        if(!IsSupportedComparison(left.Type,op) || !IsSupportedComparison(right.Type, op))
+        {
+            return Expression.Equal(left, right);    
+        }
         MethodInfo containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) })!;
         return op switch
         {
@@ -37,5 +41,20 @@ public static class ExpressionBuilder
             ComparisonOperator.Contains => Expression.Call(left, containsMethod, right),
             _ => throw new ArgumentException("Invalid comparison operator."),
         };
+    }
+    private static bool IsSupportedComparison(Type type, ComparisonOperator op)
+    {
+        if (type == typeof(string))
+        {
+            return op == ComparisonOperator.Equal || op == ComparisonOperator.NotEqual || op == ComparisonOperator.Contains || op == ComparisonOperator.StartsWith || op == ComparisonOperator.EndsWith;
+        }
+        else if (type == typeof(int) || type == typeof(double))
+        {
+            return op == ComparisonOperator.Equal || op == ComparisonOperator.NotEqual ||
+                   op == ComparisonOperator.LessThan || op == ComparisonOperator.LessThanOrEqual ||
+                   op == ComparisonOperator.GreaterThan || op == ComparisonOperator.GreaterThanOrEqual;
+        }
+
+        return false;
     }
 }
