@@ -26,9 +26,7 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
         [FromQuery] bool ascending = true,
         [FromQuery] IList<SearchExpressionDtoRequest>? expressions = null)
     {
-       try
-       {
-         var actionResult = await base.GetAsync(filter, title, orderBy, ascending, expressions);
+        var actionResult = await base.GetAsync(filter, title, orderBy, ascending, expressions);
         if (actionResult is OkObjectResult okActionResult)
         {
             if (okActionResult?.Value is PagedResponse<IList<AdminDto>> { Data: { } } response)
@@ -36,38 +34,24 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
         }
 
         return actionResult;
-       }
-       catch (System.Exception e)
-       {
-        
-        throw e;
-       }
     }
     [Permission(true, PermissionTypes.READ)]
     [HttpGet("activities")]
     public async Task<IActionResult> GetActivitiesAsync([FromQuery] PaginationFilter? filter = null)
     {
-        try
+        var validFilter = (filter == null)
+                  ? new PaginationFilter()
+                  : new PaginationFilter(pageIndex: filter.PageIndex, pageSize: filter.PageSize);
+        var result = await Service.ActivitiesListAsync(filter);
+        var totalRecords = await Service.GetActivitiesTotalRecords();
+        if (Request.Path.Value != null)
         {
-            var validFilter = (filter == null)
-                      ? new PaginationFilter()
-                      : new PaginationFilter(pageIndex: filter.PageIndex, pageSize: filter.PageSize);
-            var result = await Service.ActivitiesListAsync(filter);
-            var totalRecords = await Service.GetActivitiesTotalRecords();
-            if (Request.Path.Value != null)
-            {
-                return Ok(PaginationHelper.CreatePagedResponse(result,
-                    validFilter, UriService, totalRecords, Request.Path.Value));
-            }
+            return Ok(PaginationHelper.CreatePagedResponse(result,
+                validFilter, UriService, totalRecords, Request.Path.Value));
+        }
 
-            var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
-            return BadRequest(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<string>(success: false, errors: new List<string>() { e.Message });
-            return BadRequest(response);
-        }
+        var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
+        return BadRequest(response);
     }
     [Permission(true, PermissionTypes.READ)]
     [HttpGet("{userId}/activities")]

@@ -27,7 +27,7 @@ public static class ExpressionBuilder
     {
         if(!IsSupportedComparison(left.Type,op) || !IsSupportedComparison(right.Type, op))
         {
-            return Expression.Equal(left, right);    
+            return Expression.Equal(left, right);
         }
         MethodInfo containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) })!;
         return op switch

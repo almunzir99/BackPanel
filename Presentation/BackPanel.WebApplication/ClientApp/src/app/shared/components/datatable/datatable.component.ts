@@ -117,7 +117,7 @@ export class DatatableComponent implements OnInit {
   onOperatorSelected(colIndex: number, operatorObject: any) {
     this._fieldSearchResult[colIndex].operator = operatorObject.value;
     this._fieldSearchResult[colIndex].operatorIcon = operatorObject.icon;
-    var list = this._fieldSearchResult.filter(c => c.propValue != null);
+    var list = this._fieldSearchResult.filter(c => c.propValue != null && c.propValue.trim().length > 0);
     var index = list.indexOf(this._fieldSearchResult[colIndex]);
     var result: FieldsSearchListResult = { list: list, colIndex: index };
     this.FieldSearchResultEventEmitter.emit(result);

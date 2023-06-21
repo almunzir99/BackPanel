@@ -179,14 +179,7 @@
     }
 }
 
-.datatable-container.dark-mode {
-    .data-table {
-        .search-cell {
-            background-color: $secondary-dark-background-color !important;
-
-        }
-    }
-}
+ 
 
 @media screen and (max-width:660px) {
     .datatable-container {
@@ -291,7 +284,7 @@
 
                 th {
                     background-color: $dark-background-color;
-
+                    border-color: rgba($color: $dark-background-color, $alpha: 0.5) ;
                     .resizer {
                         background-color: rgba($color: $secondary-dark-background-color, $alpha: 1);
 
@@ -299,6 +292,10 @@
                 }
 
 
+            }
+            .search-cell {
+                background-color: $secondary-dark-background-color !important;
+    
             }
         }
 
