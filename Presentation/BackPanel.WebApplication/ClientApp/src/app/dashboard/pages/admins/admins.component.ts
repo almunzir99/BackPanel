@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
+import { SearchControlType } from 'src/app/core/enums/search-control-type.enum';
 import { Status } from 'src/app/core/enums/status.enum';
 import { Admin } from 'src/app/core/models/admin.model';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';
@@ -74,17 +75,14 @@ export class AdminsComponent implements OnInit {
         importable: true
 
       },
-
-
       {
         prop: "username",
         title: "Username",
         show: true,
         sortable: true,
         importable: true,
-        searchable: true
-
-
+        searchable: true,
+        searchControlType:SearchControlType.Text
       },
       {
         prop: "phone",
@@ -92,9 +90,8 @@ export class AdminsComponent implements OnInit {
         show: true,
         sortable: true,
         importable: true,
-        searchable: true
-
-
+        searchable: true,
+        searchControlType:SearchControlType.Number
       },
       {
         prop: "email",
@@ -102,7 +99,8 @@ export class AdminsComponent implements OnInit {
         show: true,
         sortable: true,
         importable: true,
-        searchable: true
+        searchable: true,
+        searchControlType:SearchControlType.Email
       },
       {
         prop: "role",
@@ -117,7 +115,9 @@ export class AdminsComponent implements OnInit {
         show: true,
         sortable: true,
         importable: false,
-        searchable: true
+        searchable: true,
+        searchControlType:SearchControlType.DateTime
+
       },
       {
         prop: "lastUpdate",
@@ -125,7 +125,8 @@ export class AdminsComponent implements OnInit {
         show: true,
         sortable: true,
         importable: false,
-        searchable: true
+        searchable: true,
+        searchControlType:SearchControlType.DateTime
       },
       {
         prop: "status",

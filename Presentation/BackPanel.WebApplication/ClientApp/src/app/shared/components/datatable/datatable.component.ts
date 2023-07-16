@@ -6,6 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { fieldMatcherSpec, FieldsMatcherComponent } from '../fields-matcher/fields-matcher.component';
 import { comparisonOperators } from '../../constants/comparison-operator.list';
 import { ComparisonOperator } from 'src/app/core/enums/comparison-operator.enum';
+import { SearchControlType } from 'src/app/core/enums/search-control-type.enum';
+import { MatDatepickerInput } from '@angular/material/datepicker';
 @Component({
   selector: 'data-table',
   templateUrl: './datatable.component.html',
@@ -39,7 +41,7 @@ export class DatatableComponent implements OnInit {
   @Output('exportClick') exportClickEmitter = new EventEmitter<string>();
   @Output('dataImported') DataImportedEventEmitter = new EventEmitter<any[]>();
   @Output('fieldSearchChanged') FieldSearchResultEventEmitter = new EventEmitter<FieldsSearchListResult>();
-
+  
 
   theme: 'light' | 'dark' = 'light';
   sortProp = "";
@@ -49,6 +51,7 @@ export class DatatableComponent implements OnInit {
   comparisonOperators = comparisonOperators;
   _searchableColumns: Column[] = [];
   _fieldSearchResult: FieldSearchResult[] = [];
+  SearchControlTypes = SearchControlType;
   constructor(_generalService: GeneralService, private _dialog: MatDialog) {
     _generalService.$theme.subscribe(value => this.theme = value);
   }
@@ -124,12 +127,20 @@ export class DatatableComponent implements OnInit {
 
   }
   searchFieldChange(colIndex: number, target: any) {
-    this._fieldSearchResult[colIndex].propValue = target.value;
+    if(target instanceof MatDatepickerInput)
+    {
+      var value = target.value as Date;
+      console.log(value)
+      this._fieldSearchResult[colIndex].propValue = value.toISOString();
+    }
+    else
+    this._fieldSearchResult[colIndex].propValue = target.value.toString();
     var list = this._fieldSearchResult.filter(c => c.propValue != null && c.propValue.trim().length > 0);
     var index = list.indexOf(this._fieldSearchResult[colIndex]);
     var result: FieldsSearchListResult = { list: list, colIndex: index };
     this.FieldSearchResultEventEmitter.emit(result);
   }
+ 
   /******************* Configure Table Resizer ****************** */
   configureColumnsResizer() {
     var resizers = document.querySelectorAll(".resizer") as NodeListOf<HTMLElement>;
@@ -158,6 +169,7 @@ export class DatatableComponent implements OnInit {
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
     };
+    if(resizer)
     resizer.addEventListener('mousedown', mouseDownHandler);
   }
   // configure data importer

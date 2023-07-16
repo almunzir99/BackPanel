@@ -78,7 +78,25 @@
                 <ng-container *ngFor="let col of columns; let i = index">
                     <th class="search-cell">
                         <div *ngIf="col.searchable" class="search-row">
-                            <input placeholder="search..." (input)="searchFieldChange(i,$event.target)" type="text"  >
+                            <ng-container [ngSwitch]="col.searchControlType">
+                                <ng-container *ngSwitchCase="SearchControlTypes.Number">
+                                    <input placeholder="search..." (input)="searchFieldChange(i,$event.target)"
+                                        type="number">
+                                </ng-container>
+                                <ng-container *ngSwitchCase="SearchControlTypes.Email">
+                                    <input placeholder="search..." (input)="searchFieldChange(i,$event.target)"
+                                        type="email">
+                                </ng-container>
+                                <ng-container *ngSwitchCase="SearchControlTypes.DateTime">
+                                    <mat-datepicker-toggle  matPrefix [for]="picker"></mat-datepicker-toggle>
+                                        <input (dateInput)="searchFieldChange(i,$event.target)"  placeholder="MM/DD/YYYY" matInput [matDatepicker]="picker">
+                                        <mat-datepicker  #picker></mat-datepicker>
+                                </ng-container>
+                                <ng-container *ngSwitchDefault>
+                                    <input  placeholder="search..." (input)="searchFieldChange(i,$event.target)"
+                                        type="text">
+                                </ng-container>
+                            </ng-container>
                             <div mat-icon-button [matMenuTriggerFor]="operatorsMenu" class="search-button" matRipple>
                                 <i [classList]="_fieldSearchResult[i].operatorIcon"></i>
                             </div>
