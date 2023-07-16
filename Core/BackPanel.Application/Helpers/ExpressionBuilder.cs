@@ -25,7 +25,7 @@ public static class ExpressionBuilder
 
     private static Expression BuildComparison(Expression left, Expression right, ComparisonOperator op)
     {
-        if(!IsSupportedComparison(left.Type,op) || !IsSupportedComparison(right.Type, op))
+        if (!IsSupportedComparison(left.Type, op) || !IsSupportedComparison(right.Type, op))
         {
             return Expression.Equal(left, right);
         }
@@ -48,11 +48,15 @@ public static class ExpressionBuilder
         {
             return op == ComparisonOperator.Equal || op == ComparisonOperator.NotEqual || op == ComparisonOperator.Contains || op == ComparisonOperator.StartsWith || op == ComparisonOperator.EndsWith;
         }
-        else if (type == typeof(int) || type == typeof(double))
+        else if (type == typeof(int) || type == typeof(double) || type == typeof(float) || type == typeof(decimal) || type == typeof(DateTime))
         {
             return op == ComparisonOperator.Equal || op == ComparisonOperator.NotEqual ||
                    op == ComparisonOperator.LessThan || op == ComparisonOperator.LessThanOrEqual ||
                    op == ComparisonOperator.GreaterThan || op == ComparisonOperator.GreaterThanOrEqual;
+        }
+        else if (type == typeof(bool))
+        {
+            return op == ComparisonOperator.Equal || op == ComparisonOperator.NotEqual;
         }
 
         return false;
