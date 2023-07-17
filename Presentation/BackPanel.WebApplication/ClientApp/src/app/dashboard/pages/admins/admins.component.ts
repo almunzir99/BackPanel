@@ -132,7 +132,13 @@ export class AdminsComponent implements OnInit {
         prop: "status",
         title: "Active",
         show: true,
-        sortable: false
+        sortable: false,
+        searchable:true,
+        searchControlType:SearchControlType.Selection,
+        searchFieldData: [
+          "Active",
+          "Disabled"
+        ]
       },
       {
         prop: "Actions",
@@ -188,8 +194,6 @@ export class AdminsComponent implements OnInit {
     })
   }
   onImportData(data: any[]) {
-    console.log(data);
-    return;
     this.createAll(data);
   }
   async onActiveToggleClick(item: Admin) {

@@ -10,7 +10,7 @@ public static class ExpressionBuilder
     {
         var param = Expression.Parameter(typeof(T), "x");
         var property = Expression.Property(param, propertyName);
-        var parsedValue = ParseValue(value, property.Type);
+        var parsedValue = ParseValue(value, value == "true" || value == "false" ? typeof(bool) :  property.Type);
         var constant = Expression.Constant(parsedValue);
         var comparison = BuildComparison(property, constant, op);
 
@@ -19,6 +19,10 @@ public static class ExpressionBuilder
 
     private static object ParseValue(string value, Type targetType)
     {
+        if(targetType.IsEnum)
+        {
+           return  Enum.Parse(targetType,value);
+        }
         return Convert.ChangeType(value, targetType);
         throw new ArgumentException($"Unsupported data type: {targetType.Name}");
     }

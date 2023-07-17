@@ -8,4 +8,5 @@ export interface Column {
     importable?:boolean;
     searchable?:boolean;
     searchControlType?:SearchControlType;
+    searchFieldData?: string[] // data to populate the search field data
 }

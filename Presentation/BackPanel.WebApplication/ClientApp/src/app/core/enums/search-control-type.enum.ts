@@ -4,5 +4,5 @@ export enum SearchControlType{
     DateTime,
     CheckBox,
     Email,
-    
+    Selection
 }

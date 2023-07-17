@@ -88,16 +88,29 @@
                                         type="email">
                                 </ng-container>
                                 <ng-container *ngSwitchCase="SearchControlTypes.DateTime">
-                                    <mat-datepicker-toggle  matPrefix [for]="picker"></mat-datepicker-toggle>
-                                        <input (dateInput)="searchFieldChange(i,$event.target)"  placeholder="MM/DD/YYYY" matInput [matDatepicker]="picker">
-                                        <mat-datepicker  #picker></mat-datepicker>
+                                    <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+                                    <input (dateInput)="searchFieldChange(i,$event.target)" placeholder="MM/DD/YYYY"
+                                        matInput [matDatepicker]="picker">
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="SearchControlTypes.CheckBox">
+                                    <mat-checkbox (change)="searchFieldChange(i,$event)">
+                                        {{col.title}}
+                                    </mat-checkbox>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="SearchControlTypes.Selection">
+                                    <mat-select (selectionChange)="searchFieldChange(i,$event)">
+                                        <mat-option [value]="null">All</mat-option>
+                                        <mat-option [value]="item" *ngFor="let item of col.searchFieldData">{{item}}</mat-option>
+                                    </mat-select>
                                 </ng-container>
                                 <ng-container *ngSwitchDefault>
-                                    <input  placeholder="search..." (input)="searchFieldChange(i,$event.target)"
+                                    <input placeholder="search..." (input)="searchFieldChange(i,$event.target)"
                                         type="text">
                                 </ng-container>
                             </ng-container>
-                            <div mat-icon-button [matMenuTriggerFor]="operatorsMenu" class="search-button" matRipple>
+                            <div *ngIf="col.searchControlType != SearchControlTypes.CheckBox" mat-icon-button
+                                [matMenuTriggerFor]="operatorsMenu" class="search-button" matRipple>
                                 <i [classList]="_fieldSearchResult[i].operatorIcon"></i>
                             </div>
                         </div>
