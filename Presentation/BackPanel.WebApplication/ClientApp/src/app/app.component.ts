@@ -7,6 +7,7 @@ import { AuthService } from './core/services/auth.service';
 import { GeneralService } from './core/services/general.service';
 import { RolesService } from './core/services/roles.service';
 import { CompanyInfoService } from './core/services/company-info.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -21,14 +22,24 @@ export class AppComponent {
     private _generalService: GeneralService,
     private _companyInfoService: CompanyInfoService,
     @Inject('DIRECTION') public dir: string,
+    private _translateService: TranslateService,
     private overlay: OverlayContainer) {
+    // Configure Translations
+    _translateService.addLangs(["en","ar"]);
+    _translateService.setDefaultLang("en");
+    _translateService.onLangChange.subscribe({
+      next: (value:any) => {
+          dir = value.lang == 'ar' ? 'rtl' : 'ltr';
+      }
+    })
+    // Configure themes
     this._generalService.$theme.subscribe(value => {
       if (value == 'light') {
         var element = this.overlay.getContainerElement();
         if (element.classList.contains('dark-mode-theme'))
           element.classList.remove('dark-mode-theme')
         element.classList.add('light-mode-theme');
-      } 
+      }
       else {
         var element = this.overlay.getContainerElement();
         if (element.classList.contains('light-mode-theme'))
@@ -49,8 +60,8 @@ export class AppComponent {
         var role = await firstValueFrom(this._roleService.single(result.data.roleId!));
         this._authService.$role.next(role.data);
       }
-       // set company info
-       this._companyInfoService.setCompanyInfo(companyInfo.data);
+      // set company info
+      this._companyInfoService.setCompanyInfo(companyInfo.data);
       var notifications = await firstValueFrom(this._authService.getNotifications());
       this._authService.$notifications.next(notifications.data);
       this.requestStatus = RequestStatus.Success;

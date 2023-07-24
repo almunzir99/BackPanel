@@ -8,6 +8,7 @@ import { MenuGroup } from './menu.group';
 import { MenuList } from './menu.list';
 import { CompanyInfo } from 'src/app/core/models/company-info.model';
 import { CompanyInfoService } from 'src/app/core/services/company-info.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'dahboard-menu',
@@ -20,16 +21,22 @@ export class MenuComponent implements OnInit {
   currentUser: Admin | null = null;
   currentRole: Role | null = null;
   theme: 'light' | 'dark' = 'light';
+  dir:'rtl' | 'ltr' = 'rtl';
   company:CompanyInfo | null;
   constructor(_authService: AuthService,
     _generalService: GeneralService,
     _companyInfoService:CompanyInfoService,
     @Inject("BASE_API_URL") public baseUrl: string,
-    @Inject('DIRECTION') public dir: string) {
+     _translateService:TranslateService) {
     _authService.$currentUser.subscribe(res => {
       this.currentUser = res;
     })
     this.company = _companyInfoService.$companyIfo;
+    _translateService.onLangChange.subscribe({
+      next: (value:any) => {
+          this.dir = value.lang == 'ar' ? 'rtl' : 'ltr';
+      }
+    })
     _generalService.$theme.subscribe(value => this.theme = value);
     _authService.$role.subscribe(res => {
       this.currentRole = res;

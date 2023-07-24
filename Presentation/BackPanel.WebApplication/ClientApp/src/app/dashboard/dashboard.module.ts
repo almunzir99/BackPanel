@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { CoreModule } from '../core/core.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -26,7 +27,8 @@ import { CoreModule } from '../core/core.module';
     MatButtonModule,
     MatMenuModule,
     MatIconModule,
-    CoreModule
+    CoreModule,
+    SharedModule
   ]
 })
 export class DashboardModule { }

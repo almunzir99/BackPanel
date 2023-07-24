@@ -15,6 +15,7 @@ dayjs.extend(relativeTime)
 })
 export class HeaderComponent implements OnInit {
   @Output("toggleClick") toggleClickEventEmitter = new EventEmitter<boolean>();
+  @Output("languageChange") languageChange = new EventEmitter<string>();
   @Input("toggle") toggle = false;
   opened = false;
   isFullScreen = false;

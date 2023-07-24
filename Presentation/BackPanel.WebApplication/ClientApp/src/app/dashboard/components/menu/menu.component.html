@@ -35,7 +35,7 @@
                             [routerLinkActive]="!menuItem.children ? 'active' : ''" class="menu-item">
                             <div (click)="menuItem.open = !menuItem.open" matRipple class="menu-item-content parent">
                                 <i [attr.class]="menuItem.icon"></i>
-                                <div class="item-title">{{menuItem.title}}</div>
+                                <div class="item-title">{{menuItem.title ?? '' | translate}}</div>
                                 <i [class.rotated]="menuItem.open" *ngIf="menuItem.children"
                                     class="las la-angle-right dropdown"></i>
                             </div>

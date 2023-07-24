@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using BackPanel.Application.DTOs.Wrapper;
 using BackPanel.TranslationEditor.Interfaces;
 using BackPanel.TranslationEditor.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
@@ -66,6 +67,7 @@ public class TranslationsEditorController : ControllerBase
             return BadRequest(response);
         }
     }
+    [AllowAnonymous]
     [HttpGet("languages/{code}")]
     public async Task<IActionResult> GetLanguage(string code)
     {

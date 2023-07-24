@@ -4,7 +4,7 @@
     </div>
     <div  [class.shrink-page]="toggle" class="main-section">
         <div class="header">
-            <dashboard-header [toggle]="toggle" (toggleClick)="toggle = $event" ></dashboard-header>
+            <dashboard-header [toggle]="toggle" (languageChange)="onLanguageChange($event)" (toggleClick)="toggle = $event" ></dashboard-header>
 
         </div>
         <div [class.stretched-page]="!toggle" class="page background-color">

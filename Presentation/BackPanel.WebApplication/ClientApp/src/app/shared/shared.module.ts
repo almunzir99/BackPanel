@@ -26,6 +26,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxMatColorPickerModule } from '@angular-material-components/color-picker';
 import { FieldsMatcherComponent } from './components/fields-matcher/fields-matcher.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { LanguagesSwitchComponent } from './components/languages-switch/languages-switch.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({ 
@@ -39,6 +41,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     AlertMessageComponent,
     LocalFilesPickerComponent,
     FieldsMatcherComponent,
+    LanguagesSwitchComponent,
     
   ],
   imports: [
@@ -59,7 +62,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     QuillModule.forRoot(),
     AngularSvgIconModule.forRoot(),
     NgxMatColorPickerModule,
-    DragDropModule
+    DragDropModule,
+    TranslateModule
 
   ],
   exports:[
@@ -70,7 +74,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     OfflineComponent,
     SpinnerComponent,
     LocalFilesPickerComponent,
-
+    LanguagesSwitchComponent,
+    TranslateModule
   ]
 })
 export class SharedModule { }

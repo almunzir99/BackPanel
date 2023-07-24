@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,6 +18,8 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { MAT_COLOR_FORMATS, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 
 const globalRippleConfig: RippleGlobalOptions = {
@@ -44,7 +46,15 @@ const globalRippleConfig: RippleGlobalOptions = {
     MatNativeDateModule,
     MatDialogModule,
     AngularSvgIconModule.forRoot(),
-    QuillModule.forRoot()
+    QuillModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+      },
+      defaultLanguage:"en",
+  })
 
   ],
   providers: [
@@ -69,6 +79,9 @@ const globalRippleConfig: RippleGlobalOptions = {
 })
 export class AppModule {
 
+}
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http, `${environment.baseUrl}api/translations/languages/`, '');;
 }
 
 
