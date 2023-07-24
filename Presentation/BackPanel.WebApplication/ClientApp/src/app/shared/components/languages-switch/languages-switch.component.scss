@@ -1,0 +1,99 @@
+@import "variables";
+
+.switch {
+    position: relative;
+    display: inline-block;
+    margin: 0 5px;
+
+    &>span {
+        position: absolute;
+        top: 10px;
+        pointer-events: none;
+        font-weight: bold;
+        font-size: 12px;
+        text-transform: uppercase;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, .06);
+        width: 50%;
+        text-align: center;
+
+        &.on {
+            left: 0;
+            padding-left: 2px;
+            color: map-get($map: $primary-color, $key: 500);
+        }
+
+        &.off {
+            right: 0;
+            padding-right: 4px;
+            color: #fff;
+        }
+    }
+}
+
+input {
+    &.check-toggle-round-flat {
+        &:checked {
+            &~.off {
+                color: map-get($map: $primary-color, $key: 500);
+            }
+
+            &~.on {
+                color: #fff;
+            }
+
+            &+label {
+                &:after {
+                    margin-left: 35px;
+                }
+            }
+        }
+
+        &+label {
+            padding: 2px;
+            width: 80px;
+            height: 35px;
+            background-color: map-get($map: $primary-color, $key: 500);
+            border-radius: 60px;
+
+            &:before {
+                top: 2px;
+                left: 2px;
+                bottom: 2px;
+                right: 2px;
+                background-color: map-get($map: $primary-color, $key: 500);
+                border-radius: 60px;
+            }
+
+            &:after {
+                top: 4px;
+                left: 4px;
+                bottom: 4px;
+                width: 40px;
+                background-color: #fff;
+                border-radius: 52px;
+                transition: margin 0.2s;
+            }
+        }
+    }
+}
+
+.check-toggle {
+    position: absolute;
+    margin-left: -9999px;
+    visibility: hidden;
+
+    &+label {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        outline: none;
+        user-select: none;
+    }
+}
+
+input.check-toggle-round-flat+label:before,
+input.check-toggle-round-flat+label:after {
+    display: block;
+    position: absolute;
+    content: "";
+}
