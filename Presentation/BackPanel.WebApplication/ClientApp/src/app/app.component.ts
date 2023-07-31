@@ -1,5 +1,5 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, Inject } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { RequestStatus } from './core/models/request-status.enum';
@@ -16,20 +16,23 @@ import { TranslateService } from '@ngx-translate/core';
 export class AppComponent {
   requestStatus = RequestStatus.Initial;
   theme: 'light' | 'dark' = 'light';
+  @ViewChild("appContainer") appContainer!: ElementRef;
   constructor(private _authService: AuthService,
     private _roleService: RolesService,
     private router: Router,
     private _generalService: GeneralService,
     private _companyInfoService: CompanyInfoService,
     @Inject('DIRECTION') public dir: string,
-    private _translateService: TranslateService,
+     _translateService: TranslateService,
     private overlay: OverlayContainer) {
     // Configure Translations
     _translateService.addLangs(["en","ar"]);
     _translateService.setDefaultLang("en");
     _translateService.onLangChange.subscribe({
       next: (value:any) => {
-          dir = value.lang == 'ar' ? 'rtl' : 'ltr';
+      
+        if(this.appContainer)
+          this.appContainer.nativeElement.dir = value.lang == 'ar' ? 'rtl' : 'ltr';
       }
     })
     // Configure themes

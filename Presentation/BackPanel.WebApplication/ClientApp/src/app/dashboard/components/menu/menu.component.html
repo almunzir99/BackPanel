@@ -29,7 +29,7 @@
         <div class="menu-items-container">
             <ng-container *ngFor="let group of menuList">
                 <div    *ngIf="group.children && group.children.length > 0"class="menu-group">
-                    <div class="menu-group-title">{{group.title}}</div>
+                    <div class="menu-group-title">{{group.title! | translate}}</div>
                     <div class="menu-group-items">
                         <div *ngFor="let menuItem of group.children" [routerLink]="menuItem.route"
                             [routerLinkActive]="!menuItem.children ? 'active' : ''" class="menu-item">
@@ -44,7 +44,7 @@
                                     routerLinkActive="active" class="menu-item">
                                     <div matRipple class="menu-item-content child">
                                         <i [attr.class]="childItem.icon"></i>
-                                        <div class="item-title">{{childItem.title}}</div>
+                                        <div class="item-title">{{childItem.title! | translate}}</div>
                                     </div>
                                 </div>
                             </div>

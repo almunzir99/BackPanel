@@ -1,5 +1,5 @@
 <ng-container *ngIf="requestStatus != 1">
-    <div [class.dark-mode-theme]="theme == 'dark'" [class.light-mode-theme]="theme == 'light'" [dir]="dir == 'rtl' ? 'rtl' : 'ltr'">
+    <div #appContainer [class.dark-mode-theme]="theme == 'dark'" [class.light-mode-theme]="theme == 'light'">
         <router-outlet></router-outlet>
     </div>
 </ng-container>

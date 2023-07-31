@@ -53,7 +53,6 @@ const globalRippleConfig: RippleGlobalOptions = {
           useFactory: HttpLoaderFactory,
           deps: [HttpClient]
       },
-      defaultLanguage:"en",
   })
 
   ],
@@ -81,7 +80,7 @@ export class AppModule {
 
 }
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-  return new TranslateHttpLoader(http, `${environment.baseUrl}api/translations/languages/`, '');;
+  return new TranslateHttpLoader(http, `${environment.baseUrl}assets/contents/`, '.json');;
 }
 
 
