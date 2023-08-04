@@ -84,6 +84,21 @@ public class TranslationsEditorController : ControllerBase
             return BadRequest(response);
         }
     }
+    [HttpGet("languages-files/{code}")]
+    public async Task<IActionResult> GetLanguageFiles(string code)
+    {
+        try
+        {
+            var result = await _service.GetLanguage(code);
+            return Ok(result);
+        }
+        catch (Exception e)
+        {
+            var response =
+                new Response<String>(success: false, message: "operation failed", errors: new[] { e.Message });
+            return BadRequest(response);
+        }
+    }
 
     [HttpPost("parents/new")]
     public async Task<IActionResult> CreateParentNode([Required] [FromQuery] string title)

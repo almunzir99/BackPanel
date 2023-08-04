@@ -80,8 +80,9 @@ export class AppModule {
 
 }
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-  return new TranslateHttpLoader(http, `${environment.baseUrl}assets/contents/`, '.json');;
+  return new TranslateHttpLoader(http, `${environment.baseUrl}api/translations/languages-files/`, '');;
 }
 
 
 
+ 

@@ -28,7 +28,7 @@ export class AppComponent {
     // Configure Translations
     _translateService.addLangs(["en","ar"]);
     _translateService.setDefaultLang("en");
-    _translateService.onLangChange.subscribe({
+    _translateService.onLangChange.subscribe({ 
       next: (value:any) => {
       
         if(this.appContainer)

@@ -39,7 +39,7 @@ builder.Services.ConfigureSwagger();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
-        o => o.WithOrigins("*")
+        o => o.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
@@ -56,13 +56,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseRouting();
 app.UseCors("CorsPolicy");
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
-app.UseRouting();
-app.UseAuthentication();
-app.UseAuthorization();
 app.Run();
