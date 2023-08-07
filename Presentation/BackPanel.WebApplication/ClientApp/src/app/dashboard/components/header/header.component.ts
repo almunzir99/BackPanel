@@ -7,6 +7,7 @@ import * as relativeTime from 'dayjs/plugin/relativeTime';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';
 import { firstValueFrom } from 'rxjs';
 import { GeneralService } from 'src/app/core/services/general.service';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 dayjs.extend(relativeTime)
 @Component({
   selector: 'dashboard-header',
@@ -23,9 +24,13 @@ export class HeaderComponent implements OnInit {
   notifications: ApiNotification[] = [];
   readRequest = RequestStatus.Initial;
   theme:'light' | 'dark' = 'light';
-  constructor(private _authService: AuthService, private router: Router,private _generalService:GeneralService) {
+  currentLang = "en";
+  constructor(private _authService: AuthService, private router: Router,
+    private _generalService:GeneralService,
+    private _translateService:TranslateService
+    ) {
     _generalService.$theme.subscribe(value => this.theme = value);
-
+    this.currentLang = _translateService.currentLang;
    }
 
   ngOnInit(): void {

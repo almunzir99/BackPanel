@@ -1,6 +1,6 @@
 <div class="switch">
     <input (change)="onSwitch()" id="language-toggle" class="check-toggle check-toggle-round-flat" type="checkbox">
     <label for="language-toggle"></label>
-    <span class="on">EN</span>
-    <span class="off">AR</span>
+    <span [class.on]="selectedLang == 'en'" [class.off]="selectedLang != 'en'" >EN</span>
+    <span [class.on]="selectedLang == 'ar'" [class.off]="selectedLang != 'ar'" >AR</span>
 </div>

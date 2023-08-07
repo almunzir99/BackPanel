@@ -8,6 +8,7 @@ import { GeneralService } from './core/services/general.service';
 import { RolesService } from './core/services/roles.service';
 import { CompanyInfoService } from './core/services/company-info.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AppConstants } from './shared/constants/app_constants';
 
 @Component({
   selector: 'app-root',
@@ -16,25 +17,17 @@ import { TranslateService } from '@ngx-translate/core';
 export class AppComponent {
   requestStatus = RequestStatus.Initial;
   theme: 'light' | 'dark' = 'light';
-  @ViewChild("appContainer") appContainer!: ElementRef;
   constructor(private _authService: AuthService,
     private _roleService: RolesService,
     private router: Router,
     private _generalService: GeneralService,
     private _companyInfoService: CompanyInfoService,
     @Inject('DIRECTION') public dir: string,
-     _translateService: TranslateService,
+    private _translateService: TranslateService,
     private overlay: OverlayContainer) {
     // Configure Translations
     _translateService.addLangs(["en","ar"]);
     _translateService.setDefaultLang("en");
-    _translateService.onLangChange.subscribe({ 
-      next: (value:any) => {
-      
-        if(this.appContainer)
-          this.appContainer.nativeElement.dir = value.lang == 'ar' ? 'rtl' : 'ltr';
-      }
-    })
     // Configure themes
     this._generalService.$theme.subscribe(value => {
       if (value == 'light') {
@@ -52,6 +45,14 @@ export class AppComponent {
       this.theme = value;
     });
     this.getData();
+  }
+  ngAfterContentInit(){
+    this.loadLang();
+    this._translateService.onLangChange.subscribe({ 
+      next: (value:any) => {
+          this.dir = value.lang == 'ar' ? 'rtl' : 'ltr';
+      }
+    })
   }
   async getData() {
     try {
@@ -72,6 +73,10 @@ export class AppComponent {
       this.requestStatus = RequestStatus.Failed;
       this.router.navigate(['/', 'authentication']);
     }
+  }
+  loadLang() {
+    var lang = localStorage.getItem(AppConstants.LanguageLocalStorageKey);
+    this._translateService.use(lang ?? "en");
   }
   title = 'app';
 }

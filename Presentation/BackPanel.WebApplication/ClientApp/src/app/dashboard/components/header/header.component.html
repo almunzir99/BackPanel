@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class="widgets">
-        <languages-switch (onChange)="languageChange.emit($event)"></languages-switch>
+        <languages-switch [selectedLang]="currentLang" (onChange)="languageChange.emit($event)"></languages-switch>
         <div (click)="openFullScreen()" matRipple class="widget-button">
             <i class="las la-expand"></i>
         </div>

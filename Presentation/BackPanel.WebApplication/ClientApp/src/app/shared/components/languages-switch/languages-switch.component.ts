@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class LanguagesSwitchComponent implements OnInit {
   @Output("onChange") onChange = new EventEmitter<string>();
+  @Input("selectedLang") selectedLang:string = 'en';
   constructor(private translateService:TranslateService) { }
 
   ngOnInit(): void {
