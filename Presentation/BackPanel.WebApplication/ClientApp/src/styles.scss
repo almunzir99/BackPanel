@@ -74,7 +74,10 @@ body {
   outline: none;
   scrollbar-width: thin;
 }
-
+p{
+  margin:  0px!important;
+  padding: 0px!important;
+}
 /**********************************  override material default styles ********************************************/
 mat-form-field {
   width: 100%;

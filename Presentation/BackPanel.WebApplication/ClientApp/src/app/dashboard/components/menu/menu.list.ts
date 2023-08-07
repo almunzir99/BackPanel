@@ -46,7 +46,7 @@ export const MenuList: MenuGroup[] = [
         children: [
 
             {
-                title: "Files Manager",
+                title: "Files-Manager",
                 icon: "las la-folder-open",
                 route: "/dashboard/files-manager",
                 permissionName: "generalPermissions"
@@ -54,7 +54,7 @@ export const MenuList: MenuGroup[] = [
 
             },
             {
-                title: "Translation Editor",
+                title: "Translation-Editor",
                 icon: "las la-globe-europe",
                 route: "/dashboard/translation-editor",
                 permissionName: "generalPermissions"
@@ -73,7 +73,7 @@ export const MenuList: MenuGroup[] = [
 
             },
             {
-                title: "Company Information",
+                title: "Company-Information",
                 icon: "las la-business-time",
                 route: "/dashboard/company-info",
                 permissionName: "generalPermissions"

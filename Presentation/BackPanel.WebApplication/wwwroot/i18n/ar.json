@@ -1,4 +1,20 @@
 {
-  "Home":"الصفحة الرئيسية",
-  "Test":"This Test"
+  "Dashboard": {
+    "Home": "<p>الصفحة الرئيسية</p>",
+    "Admins": "<p>المشرفين</p>",
+    "Roles": "<p>الادوار و الصلاحيات</p>",
+    "Messages": "<p>الرسائل</p>",
+    "Files-Manager": "<p>مدير الملفات</p>",
+    "Translation-Editor": "<p>محرر الترجمة</p>",
+    "Profile": "<p>بيانات المؤسسة</p>",
+    "General": "<p>عام</p>",
+    "More": "<p>المزيد</p>",
+    "Pages": "<p>الصفحات</p>",
+    "Company-Information": "<p>معلومات الشركة</p>",
+    "Manager": "<p>مدير</p>",
+    "Dashboard-Manager": "<p>مدير النظام</p>",
+    "Admin": "<p>مشرف</p>",
+    "Search-Here": "<p>ابحث هنا</p>",
+    "Logout": "<p>تسجيل خروج</p>"
+  }
 }

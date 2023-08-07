@@ -1,5 +1,20 @@
 {
-  "Home":"Main Home",
-  "Test":"This Test"
-
+  "Dashboard": {
+    "Home": "<p>Home</p>",
+    "Admins": "<p>Admins</p>",
+    "Roles": "<p>Roles and Permissions</p>",
+    "Messages": "<p>Messages</p>",
+    "Files-Manager": "<p>Files Manager</p>",
+    "Translation-Editor": "<p>Translations Editor</p>",
+    "Profile": "<p>Profile</p>",
+    "General": "<p>General</p>",
+    "More": "<p>More</p>",
+    "Pages": "<p>Pages</p>",
+    "Company-Information": "<p>Company Information</p>",
+    "Manager": "<p>manager</p>",
+    "Dashboard-Manager": "<p>Dashboard Manager</p>",
+    "Admin": "<p>Admin</p>",
+    "Search-Here": "<p>Search here</p>",
+    "Logout": "<p>Logout</p>"
+  }
 }

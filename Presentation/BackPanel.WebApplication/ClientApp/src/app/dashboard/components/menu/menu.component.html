@@ -16,11 +16,11 @@
                         <img *ngIf="currentUser && currentUser.image && currentUser.image != 'none' " [src]="baseUrl + currentUser.image">
 
                     </div>
-                    <div [class.manager]="currentUser?.isManager" class="user-type" [textContent]="currentUser?.isManager ? 'Manager' : 'Admin'"></div>
+                    <div [class.manager]="currentUser?.isManager" class="user-type" [innerHTML]="currentUser?.isManager ? ('Dashboard.Manager' | translate) : ('Dashboard.Admin' | translate)"></div>
                 </div>
                <div>
                 <h6 class="username">{{currentUser?.username}}</h6>
-                <div  [textContent]="currentUser?.isManager ? 'Dashboard Manager' : currentUser?.role?.title" class="role"></div>
+                <div  [innerHTML]="currentUser?.isManager ? ('Dashboard.Dashboard-Manager' | translate) : currentUser?.role?.title" class="role"></div>
                </div>
 
             </div>
@@ -29,13 +29,13 @@
         <div class="menu-items-container">
             <ng-container *ngFor="let group of menuList">
                 <div    *ngIf="group.children && group.children.length > 0"class="menu-group">
-                    <div class="menu-group-title">{{group.title! | translate}}</div>
+                    <div class="menu-group-title" [innerHTML]="'Dashboard.'+group.title! | translate">{{"Dashboard."+group.title! | translate}}</div>
                     <div class="menu-group-items">
                         <div *ngFor="let menuItem of group.children" [routerLink]="menuItem.route"
                             [routerLinkActive]="!menuItem.children ? 'active' : ''" class="menu-item">
                             <div (click)="menuItem.open = !menuItem.open" matRipple class="menu-item-content parent">
                                 <i [attr.class]="menuItem.icon"></i>
-                                <div class="item-title">{{menuItem.title ?? '' | translate}}</div>
+                                <div class="item-title" [innerHTML]="'Dashboard.'+menuItem.title! | translate"></div>
                                 <i [class.rotated]="menuItem.open" *ngIf="menuItem.children"
                                     class="las la-angle-right dropdown"></i>
                             </div>
@@ -44,7 +44,7 @@
                                     routerLinkActive="active" class="menu-item">
                                     <div matRipple class="menu-item-content child">
                                         <i [attr.class]="childItem.icon"></i>
-                                        <div class="item-title">{{childItem.title! | translate}}</div>
+                                        <div class="item-title" [innerHTML]="'Dashboard.'+childItem.title! | translate"></div>
                                     </div>
                                 </div>
                             </div>

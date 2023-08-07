@@ -21,7 +21,7 @@ export class MenuComponent implements OnInit {
   currentUser: Admin | null = null;
   currentRole: Role | null = null;
   theme: 'light' | 'dark' = 'light';
-  dir:'rtl' | 'ltr' = 'rtl';
+  dir:'rtl' | 'ltr' = 'ltr';
   company:CompanyInfo | null;
   constructor(_authService: AuthService,
     _generalService: GeneralService,
@@ -32,6 +32,7 @@ export class MenuComponent implements OnInit {
       this.currentUser = res;
     })
     this.company = _companyInfoService.$companyIfo;
+    this.dir = _translateService.currentLang  == 'ar'? 'rtl' : 'ltr';
     _translateService.onLangChange.subscribe({
       next: (value:any) => {
           this.dir = value.lang == 'ar' ? 'rtl' : 'ltr';
