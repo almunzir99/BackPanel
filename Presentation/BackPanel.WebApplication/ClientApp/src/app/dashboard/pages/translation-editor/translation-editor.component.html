@@ -87,7 +87,7 @@
                         [styles]="{'height':'200px'}"></quill-editor>
                 </div>
                 <div class="act-buttons">
-                    <button (click)="onApply()" mat-flat-button color="primary">
+                    <button [disabled]="!selectedNode.parent" (click)="onApply()" mat-flat-button color="primary">
                         Apply
                     </button>
                     <button (click)="onDelete()" *ngIf="selectedNode.title != null" mat-flat-button color="warn">

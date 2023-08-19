@@ -13,6 +13,7 @@ import { GeneralService } from 'src/app/core/services/general.service';
 import { Role } from 'src/app/core/models/role.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Admin } from 'src/app/core/models/admin.model';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -36,10 +37,12 @@ export class HomeComponent implements OnInit {
     private _messageSerivce: MessagesService,
     _authService:AuthService,
     @Inject('DIRECTION') public dir:string, 
-  _generalService:GeneralService) {
+  _generalService:GeneralService,private _translateService:TranslateService) {
+    this.dir = _translateService.currentLang == 'ar' ? 'rtl' : 'ltr';
     _generalService.$theme.subscribe(value => this.theme = value);
     _authService.$role.subscribe(res => this.currentRole = res);
     _authService.$currentUser.subscribe(res => this.currentUser = res);
+  
   }
   async getData() {
     try {

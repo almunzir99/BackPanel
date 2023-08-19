@@ -95,7 +95,7 @@
                                 </ng-container>
                                 <ng-container *ngSwitchCase="SearchControlTypes.CheckBox">
                                     <mat-checkbox (change)="searchFieldChange(i,$event)">
-                                        {{col.title}}
+                                        {{'Dashboard.'+col.title | translate}}
                                     </mat-checkbox>
                                 </ng-container>
                                 <ng-container *ngSwitchCase="SearchControlTypes.Selection">

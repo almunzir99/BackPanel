@@ -1,14 +1,14 @@
 <spinner-placeholder class="placeholder" *ngIf="getRequest == 1"></spinner-placeholder>
 <offline-placeholder class="placeholder" *ngIf="getRequest == 3"></offline-placeholder>
 <div [class.dark-mode]="theme == 'dark'" *ngIf="getRequest == 2 && stats" class="home-layout">
-    <h1>Home</h1>
+    <h1 [innerHTML]="'Dashboard.Home' | translate"></h1>
     <div class="counter-cards">
         <div *ngFor="let card of counterCards " class="counter-card">
             <div [style.background-color]="card.color" class="icon-container">
                 <i [attr.class]="card.icon + ' icon'"></i>
             </div>
             <div class="info">
-                <div class="title">{{card.title}}</div>
+                <div class="title" [innerHTML]="'Dashboard.'+card.title | translate"></div>
                 <div [style.color]="card.color" class="count">{{card.count}}</div>
             </div>
             <i [dir]="dir == 'rtl' ? 'rtl' : 'ltr'" [style.color]="card.color" [attr.class]="card.icon + ' overlay'"></i>
@@ -18,9 +18,9 @@
     <div class="tables">
         <div *ngIf="currentUser?.isManager || currentRole?.messagesPermissions?.read" style="flex: 3;" class="table-container">
             <div class="table-container-header">
-                <h2>Messages Table</h2>
+                <h2 [innerHTML]="'Dashboard.Messages-Table' | translate"></h2>
                 <button [routerLink]="['/','dashboard','messages']"  class="show-all-button" mat-flat-button color="primary">
-                    Show All
+                    <span [innerHTML]="'Dashboard.Show-All' | translate"></span>
                     <mat-icon [textContent]="dir == 'rtl' ? 'arrow_backward' : 'arrow_forward'" ></mat-icon>
                 </button>
             </div>
@@ -48,9 +48,9 @@
         </div>
         <div *ngIf="currentUser?.isManager || currentRole?.adminsPermissions?.read" style="flex: 4;" class="table-container">
             <div class="table-container-header">
-                <h2>Users Activities</h2>
+                <h2 [innerHTML]="'Dashboard.Users-Activities' | translate"></h2>
                 <button [routerLink]="['/','dashboard','admins','activities']" class="show-all-button" mat-flat-button color="primary">
-                    Show All
+                    <span [innerHTML]="'Dashboard.Show-All' | translate"></span>
                     <mat-icon [textContent]="dir == 'rtl' ? 'arrow_backward' : 'arrow_forward'" ></mat-icon>
                 </button>
             </div>

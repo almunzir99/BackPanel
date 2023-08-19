@@ -15,6 +15,16 @@
     "Dashboard-Manager": "<p>Dashboard Manager</p>",
     "Admin": "<p>Admin</p>",
     "Search-Here": "<p>Search here</p>",
-    "Logout": "<p>Logout</p>"
+    "Logout": "<p>Logout</p>",
+    "Translation-Tree": "<p>Translation Tree</p>",
+    "Create-Parent-Node": "<p>Create Parent Node</p>",
+    "Create-Language": "<p>Create language</p>",
+    "Show-All": "Show All",
+    "Messages-Table": "<p>Messages Table</p>",
+    "Users-Activities": "<p>User Activities</p>",
+    "Actor": "<p>Actor</p>",
+    "ِِِEffected-Table": "<p>Effected Table</p>",
+    "Effected-Row": "<p>Effected Row</p>",
+    "Action": "<p>Action</p>"
   }
 }

@@ -22,12 +22,28 @@ export class TranslationEditorComponent implements OnInit {
   dimRequest = RequestStatus.Initial;
   editMode: 'new' | 'modify' = 'new';
   selectedNode: any = {};
-  theme:'light' | 'dark' = 'light';
+  theme: 'light' | 'dark' = 'light';
   closed = false; // toggle tree section on smaller devices
-  constructor(private _service: TranslationEditorService, 
+  controlPressed = false
+  constructor(private _service: TranslationEditorService,
     private _dialog: MatDialog,
-    _generalService:GeneralService) {
+    _generalService: GeneralService) {
     _generalService.$theme.subscribe(value => this.theme = value);
+    document.addEventListener("keydown", (event) => {
+      if (event.ctrlKey) {
+        this.controlPressed = true;
+        setTimeout(() => {
+          this.controlPressed = false;
+
+        }, 500);
+      }
+      if (this.controlPressed && event.code == 'KeyE') {
+        this.initializeSelectedNode(this.selectedNode.parent);
+      }
+      if(this.controlPressed && event.code == 'Equal') {
+        this.onApply();
+      }
+    })
 
   }
   initializeSelectedNode(parent: string | null = null) {
@@ -62,6 +78,7 @@ export class TranslationEditorComponent implements OnInit {
       this.createNode(this.selectedNode['parent'], this.selectedNode['title'], values)
     else
       this.updateNode(this.selectedNode['parent'], this.selectedNode['title'], values)
+    this.initializeSelectedNode(this.selectedNode.parent)
 
   }
   onDelete() {
@@ -98,8 +115,8 @@ export class TranslationEditorComponent implements OnInit {
       }
     })
   }
-  
-  onLangaugeCreate(){
+
+  onLangaugeCreate() {
     this.OpenLanguageDialog();
   }
   OpenParentDialog(title: string | undefined = undefined) {
@@ -122,10 +139,10 @@ export class TranslationEditorComponent implements OnInit {
         controlsGroups: formControlsGroup,
         onSubmit: (res) => {
           this._dialog.closeAll();
-          if(!title)
-          this.createParent(res['title']);
-          else 
-          this.updateParent(title,res['title']);
+          if (!title)
+            this.createParent(res['title']);
+          else
+            this.updateParent(title, res['title']);
         },
         onCancel: () => {
           this._dialog.closeAll();
@@ -141,9 +158,9 @@ export class TranslationEditorComponent implements OnInit {
           {
             title: "Language",
             name: "code",
-            data : langs,
-            labelProp:'name',
-            valueProp:'code',
+            data: langs,
+            labelProp: 'name',
+            valueProp: 'code',
             controlType: ControlTypes.Selection,
             icon: 'translate'
           }
@@ -221,10 +238,10 @@ export class TranslationEditorComponent implements OnInit {
       this.dimRequest = RequestStatus.Failed;
     }
   }
-  async updateParent(oldTitle: string,newTitle:string) {
+  async updateParent(oldTitle: string, newTitle: string) {
     this.dimRequest = RequestStatus.Loading;
     try {
-      await firstValueFrom(this._service.updateParent(oldTitle,newTitle));
+      await firstValueFrom(this._service.updateParent(oldTitle, newTitle));
       this.dimRequest = RequestStatus.Success;
       var value = this.translationTree[oldTitle];
       this.translationTree[newTitle] = value;

@@ -15,6 +15,16 @@
     "Dashboard-Manager": "<p>مدير النظام</p>",
     "Admin": "<p>مشرف</p>",
     "Search-Here": "<p>ابحث هنا</p>",
-    "Logout": "<p>تسجيل خروج</p>"
+    "Logout": "<p>تسجيل خروج</p>",
+    "Translation-Tree": "<p>شجرة الترجمة</p>",
+    "Create-Parent-Node": "<p>انشاء عقدة اصل</p>",
+    "Create-Language": "<p>انشاء لغة جديدة</p>",
+    "Show-All": "عرض المزيد",
+    "Messages-Table": "<p>جدول الرسائل</p>",
+    "Users-Activities": "<p>نشاطات المشرفين</p>",
+    "Actor": "<p>المستخدم</p>",
+    "ِِِEffected-Table": "<p>الجدول المتأثر</p>",
+    "Effected-Row": "<p>العنصر المتأثر</p>",
+    "Action": "<p>نوع الفعل </p>"
   }
 }
