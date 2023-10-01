@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
 import { GeneralService } from 'src/app/core/services/general.service';
 import { Column } from './column.model';
 import *  as XLSX from 'xlsx';
@@ -14,7 +14,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
   templateUrl: './datatable.component.html',
   styleUrls: ['./datatable.component.scss']
 })
-export class DatatableComponent implements OnInit {
+export class DatatableComponent implements OnInit, OnChanges {
 
   @Input('title') title: string = 'Data Table';
   @Input("columns") columns: Column[] = [];
@@ -53,8 +53,17 @@ export class DatatableComponent implements OnInit {
   _searchableColumns: Column[] = [];
   _fieldSearchResult: FieldSearchResult[] = [];
   SearchControlTypes = SearchControlType;
+  _searchDebounce: any;
+  searchContent = '';
   constructor(_generalService: GeneralService, private _dialog: MatDialog) {
     _generalService.$theme.subscribe(value => this.theme = value);
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.rows && !changes.rows.isFirstChange() && this.searchContent && !this.loading) {
+      setTimeout(() => {
+        this.highlightText(this.searchContent)
+      }, 100);
+    }
   }
   ngOnInit(): void {
     this.sortProp = this.columns[0].prop;
@@ -83,7 +92,11 @@ export class DatatableComponent implements OnInit {
     this.sortChangeEmitter.emit({ prop: this.sortProp, ascending: this.ascending });
   }
   onSearchChange(value: any) {
-    this.searchChangeEmitter.emit(value.target.value);
+    clearTimeout(this._searchDebounce);
+    this._searchDebounce = setTimeout(() => {
+      this.searchChangeEmitter.emit(value.target.value);
+      this.searchContent = value.target.value
+    }, 1000);
   }
   onCreateClick() {
     this.createClickEmitter.emit();
@@ -133,12 +146,12 @@ export class DatatableComponent implements OnInit {
 
     }
     else if (target instanceof MatDatepickerInput) {
-        var value = target.value as Date;
-        console.log(value)
-        this._fieldSearchResult[colIndex].propValue = value.toISOString();
-      }
-      else
-        this._fieldSearchResult[colIndex].propValue = target.value.toString();
+      var value = target.value as Date;
+      console.log(value)
+      this._fieldSearchResult[colIndex].propValue = value.toISOString();
+    }
+    else
+      this._fieldSearchResult[colIndex].propValue = target.value.toString();
     var list = this._fieldSearchResult.filter(c => c.propValue != null && c.propValue.trim().length > 0);
     var index = list.indexOf(this._fieldSearchResult[colIndex]);
     var result: FieldsSearchListResult = { list: list, colIndex: index };
@@ -211,8 +224,32 @@ export class DatatableComponent implements OnInit {
     });
     return newArray;
   }
-}
+  removeHighlights() {
+    const highlights = document.querySelectorAll(".highlight");
+    highlights.forEach(element => {
+      element.outerHTML = element.innerHTML; // Replace the span with its content
+    });
+  }
+  highlightText(search: string) {
+    const searchTerm = search.trim();
+    this.removeHighlights();
 
+    if (searchTerm !== "") {
+      var result = document.getElementById('rowResult');
+      console.log(result)
+      if (result) {
+        const textToHighlight = result.innerHTML;
+        const highlightedText = textToHighlight.replace(
+          new RegExp(searchTerm, "gi"),
+          match => `<span class="highlight">${match}</span>`
+        );
+        console.log(highlightedText)
+
+        result.innerHTML = highlightedText;
+      }
+    }
+  }
+}
 export interface SortSpec {
   prop: string;
   ascending: boolean;

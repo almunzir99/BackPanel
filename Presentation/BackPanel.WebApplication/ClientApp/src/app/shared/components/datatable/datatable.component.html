@@ -142,7 +142,7 @@
             </tr>
         </tbody>
 
-        <tbody *ngIf="rows.length > 0 && !loading">
+        <tbody id="rowResult" *ngIf="rows.length > 0 && !loading">
 
             <tr *ngFor="let row of rows; let rowIndex= index">
                 <ng-container *ngFor="let col of columns; let colIndex = index">

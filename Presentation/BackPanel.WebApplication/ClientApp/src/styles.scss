@@ -480,3 +480,6 @@ mat-form-field {
     color: map-get($map: $primary-color, $key: 500);
   }
 }
+.highlight {
+  background-color: rgba($color: map-get($map: $primary-color, $key: 500), $alpha: 0.5);
+}
