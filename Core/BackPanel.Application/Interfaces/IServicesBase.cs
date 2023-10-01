@@ -9,7 +9,7 @@ namespace BackPanel.Application.Interfaces;
 
 public interface IServicesBase<TEntity, TDto, TDtoRequest> where TEntity : EntityBase where TDto : DtoBase
 {
-    IQueryable<TDto> List(PaginationFilter? filter,
+    Task<IList<TDto>> ListAsync(PaginationFilter? filter,
         string? search = "", string orderBy = "LastUpdate", bool ascending = true,IList<SearchExpressionDtoRequest>? expressions = null);
     Task<TDto> SingleAsync(int id);
     Task<TDto> CreateAsync(TDtoRequest newItem);

@@ -10,6 +10,7 @@ using BackPanel.Domain.Entities;
 using BackPanel.Domain.Enums;
 using BackPanel.FilesManager.Interfaces;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackPanel.Application.Services;
 
@@ -78,38 +79,44 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
 
     public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null) => await Repository.GetTotalRecords(predicate);
 
-    public virtual IQueryable<TDto> List(PaginationFilter? filter,
-        string? search = "", string orderBy = "LastUpdate", bool ascending = true,IList<SearchExpressionDtoRequest>? expressions = null)
+    public virtual async Task<IList<TDto>> ListAsync(PaginationFilter? filter,
+        string? search = "", string orderBy = "LastUpdate", bool ascending = true, IList<SearchExpressionDtoRequest>? expressions = null)
     {
         if (search == null) search = "";
         var validFilter = (filter == null)
             ? new PaginationFilter()
             : new PaginationFilter(filter.PageIndex, filter.PageSize);
         var list = Repository.List();
-        // Apply Order
-        list = list.OrderByProperty(orderBy,!ascending);
+        var query = list.Select(c => Mapper.Map<TDto>(c));
+        // // Apply Order
+        // query = query.OrderByProperty(orderBy, !ascending);
+        var result = await query.ToListAsync();
         // Apply search Expressions
-        if(expressions != null)
+        if (expressions != null)
         {
             foreach (var expression in expressions)
             {
-                var lambda = ExpressionBuilder.BuildComparisonExpression<TEntity>(expression.PropName!,expression.Operator,expression.PropValue!);
-                list = list.Where(lambda);
+                var lambda = ExpressionBuilder.BuildComparisonExpression<TDto>(expression.PropName!, expression.Operator, expression.PropValue!);
+                result = result.Where(lambda.Compile()).ToList();
             }
         }
+         // apply unified search Expressions
+        var expr = GetUnifiedSearchExpression(search);
+        var func = expr?.Compile();
+        result = result.Where(func ?? (c => false)).ToList();
         // Apply Pagination
-        list = list
+        result = result
             .Skip((validFilter.PageIndex - 1) * validFilter.PageSize)
-            .Take(validFilter.PageSize).AsQueryable();
-        return list.Select(c => Mapper.Map<TDto>(c));
+            .Take(validFilter.PageSize).ToList();
+        return result;
     }
     public async Task ActiveToggleAsync(int id)
     {
         var target = await Repository.SingleAsync(c => c.Id == id);
-        if(target != null)
+        if (target != null)
         {
-             target.Status = target.Status == Status.Active ? Status.Disabled : Status.Active;
-             await Repository.Complete();
+            target.Status = target.Status == Status.Active ? Status.Disabled : Status.Active;
+            await Repository.Complete();
         }
     }
 
@@ -153,4 +160,30 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
         var propValue = searchProp?.GetValue(obj)?.ToString();
         return propValue ?? String.Empty;
     }
+     private static Expression<Func<TDto,bool>>? GetUnifiedSearchExpression(string? search)
+    {
+        var parameter = Expression.Parameter(typeof(TDto), "e");
+        var predicates = typeof(TDto).GetProperties().Where(c => c.PropertyType.IsPrimitive || c.PropertyType == typeof(string) 
+        || c.PropertyType == typeof(DateTime)).Select(propertyInfo =>
+        {
+            Expression propertyAccess = Expression.Property(parameter, propertyInfo);
+            // Convert non-string properties to string before calling Contains
+            if (propertyInfo.PropertyType != typeof(string))
+            {
+                propertyAccess = Expression.Call(propertyAccess, typeof(object).GetMethod("ToString")!);
+            }
+            propertyAccess =  Expression.Condition(Expression.Equal(propertyAccess, Expression.Constant(default)),
+                Expression.Constant("", typeof(string)),propertyAccess);
+            var searchTermExpression = Expression.Constant(search, typeof(string));
+            var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+            Expression containsCall = Expression.Call(propertyAccess, containsMethod!, searchTermExpression);
+            return containsCall;
+
+        }).ToList();
+        var orExpression = predicates
+            .Aggregate((accumulate, predicate) => Expression.Or(accumulate, predicate));
+        var finalExpression = Expression.Lambda<Func<TDto, bool>>(orExpression, parameter);
+        return finalExpression;
+    }
+    
 }
