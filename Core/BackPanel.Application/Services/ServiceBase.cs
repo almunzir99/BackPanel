@@ -88,9 +88,9 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
             : new PaginationFilter(filter.PageIndex, filter.PageSize);
         var list = Repository.List();
         var query = list.Select(c => Mapper.Map<TDto>(c));
-        // // Apply Order
-        // query = query.OrderByProperty(orderBy, !ascending);
         var result = await query.ToListAsync();
+        // // Apply Order
+        result = result.OrderByProperty(orderBy,ascending).ToList();
         // Apply search Expressions
         if (expressions != null)
         {
