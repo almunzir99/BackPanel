@@ -45,10 +45,10 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
             ? new PaginationFilter()
             : new PaginationFilter(pageIndex: filter.PageIndex, pageSize: filter.PageSize);
         var result = await Service.ListAsync(filter, title, orderBy!, ascending,expressions);
-        var totalRecords = await Service.GetTotalRecords();
+        var totalRecords = result.Item2;
         if (Request.Path.Value != null)
         {
-            return Ok(PaginationHelper.CreatePagedResponse(result,
+            return Ok(PaginationHelper.CreatePagedResponse(result.Item1,
                 validFilter, UriService, totalRecords, Request.Path.Value));
         }
 

@@ -9,6 +9,7 @@ using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
 using BackPanel.Domain.Enums;
 using BackPanel.FilesManager.Interfaces;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 
@@ -79,7 +80,7 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
 
     public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null) => await Repository.GetTotalRecords(predicate);
 
-    public virtual async Task<IList<TDto>> ListAsync(PaginationFilter? filter,
+    public virtual async Task<(IList<TDto>,int)> ListAsync(PaginationFilter? filter,
         string? search = "", string orderBy = "LastUpdate", bool ascending = true, IList<SearchExpressionDtoRequest>? expressions = null)
     {
         if (search == null) search = "";
@@ -89,6 +90,7 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
         var list = Repository.List();
         var query = list.Select(c => Mapper.Map<TDto>(c));
         var result = await query.ToListAsync();
+        var total = result.Count;
         // // Apply Order
         result = result.OrderByProperty(orderBy,ascending).ToList();
         // Apply search Expressions
@@ -108,7 +110,7 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
         result = result
             .Skip((validFilter.PageIndex - 1) * validFilter.PageSize)
             .Take(validFilter.PageSize).ToList();
-        return result;
+        return (result,total);
     }
     public async Task ActiveToggleAsync(int id)
     {
