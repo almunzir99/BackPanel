@@ -1,7 +1,7 @@
 <div [class.dark-mode]="theme == 'dark'" class="datatable-container">
     <div *ngIf="showHeader" class="datatable-header">
         <div *ngIf="showHeaderTitle" class="info">
-            <h1 class="title">{{title}}</h1>
+            <h1 class="title">{{'Dashboard.'+title | translate}}</h1>
         </div>
         <div *ngIf="controlTemplate" class="controls-bar">
             <ng-container [ngTemplateOutlet]="controlTemplate"></ng-container>
@@ -9,7 +9,7 @@
         <div *ngIf="showControls && !controlTemplate" class="controls-bar">
             <div class="filters">
                 <mat-form-field *ngIf="showSearch" (input)="onSearchChange($event)" [floatLabel]="'auto'">
-                    <input type="text" matInput placeholder="Search...">
+                    <input type="text" matInput placeholder="{{'Dashboard.Search' | translate}}">
                     <mat-icon matPrefix>search</mat-icon>
                 </mat-form-field>
             </div>
@@ -19,7 +19,7 @@
                         <label for="importFromInput">
                             <mat-icon>system_update_alt</mat-icon>
                             <span>
-                                Import from excel
+                                {{'Dashboard.Import' | translate}}
                             </span>
                         </label>
                     </button>
@@ -30,7 +30,7 @@
                 <button *ngIf="showExport" [matMenuTriggerFor]="menu" mat-stroked-button color="primary">
                     <mat-icon>ios_share</mat-icon>
                     <span>
-                        Export as
+                        {{'Dashboard.Export' | translate}}
                     </span>
                 </button>
                 <mat-menu #menu="matMenu">
@@ -50,7 +50,8 @@
                 <button *ngIf="showCreate" (click)="onCreateClick()" mat-flat-button color="primary">
                     <mat-icon>add</mat-icon>
                     <span>
-                        Create Item
+                        {{'Dashboard.Create' | translate}}
+
                     </span>
                 </button>
 
@@ -64,7 +65,7 @@
                 <ng-container *ngFor="let column of columns">
                     <th (click)="onSortChange(column.prop,column.sortable)" matRipple *ngIf="column.show">
                         <div class="th-content">
-                            <p>{{column.title}}</p>
+                            <p>{{'Dashboard.'+column.title | translate}}</p>
                             <div [style.visibility]="column.sortable && sortProp == column.prop ? 'visible' : 'hidden'">
                                 <mat-icon *ngIf="ascending">arrow_downward</mat-icon>
                                 <mat-icon *ngIf="!ascending">arrow_upward</mat-icon>
@@ -80,11 +81,11 @@
                         <div *ngIf="col.searchable" class="search-row">
                             <ng-container [ngSwitch]="col.searchControlType">
                                 <ng-container *ngSwitchCase="SearchControlTypes.Number">
-                                    <input placeholder="search..." (input)="searchFieldChange(i,$event.target)"
+                                    <input placeholder="{{'Dashboard.Search' | translate}}" (input)="searchFieldChange(i,$event.target)"
                                         type="number">
                                 </ng-container>
                                 <ng-container *ngSwitchCase="SearchControlTypes.Email">
-                                    <input placeholder="search..." (input)="searchFieldChange(i,$event.target)"
+                                    <input placeholder="{{'Dashboard.Search' | translate}}" (input)="searchFieldChange(i,$event.target)"
                                         type="email">
                                 </ng-container>
                                 <ng-container *ngSwitchCase="SearchControlTypes.DateTime">
@@ -105,7 +106,7 @@
                                     </mat-select>
                                 </ng-container>
                                 <ng-container *ngSwitchDefault>
-                                    <input placeholder="search..." (input)="searchFieldChange(i,$event.target)"
+                                    <input placeholder="{{'Dashboard.Search' | translate}}" (input)="searchFieldChange(i,$event.target)"
                                         type="text">
                                 </ng-container>
                             </ng-container>

@@ -9,7 +9,6 @@ using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
 using BackPanel.Domain.Enums;
 using BackPanel.FilesManager.Interfaces;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 

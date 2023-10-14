@@ -93,13 +93,13 @@ export class HomeComponent implements OnInit {
         show: true
       },
       {
-        title: "Effected Table",
+        title: "Effected-Table",
         prop: "effectedTable",
         sortable: true,
         show: true
       },
       {
-        title: "Effected Row Id",
+        title: "Effected-Row",
         prop: "effectedRowId",
         sortable: true,
         show: true

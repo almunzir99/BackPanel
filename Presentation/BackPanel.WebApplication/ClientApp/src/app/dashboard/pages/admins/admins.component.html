@@ -12,7 +12,7 @@
 [rows]="data" 
 [fixed]="true"
 [cell-template]="cellTemplate" 
-title="Admins Table">
+title="Admins">
     <ng-template #cellTemplate let-rowData="rowData" let-data="cellData" let-col="colIndex" let-row="rowIndex">
         <ng-container [ngSwitch]="col">
             <ng-container *ngSwitchCase="1">

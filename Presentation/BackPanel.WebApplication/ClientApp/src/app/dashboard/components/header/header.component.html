@@ -12,7 +12,7 @@
         </div>
         <div class="search-bar">
             <i class="las la-search"></i>
-            <input type="text" class="search-bar-input" placeholder="search here ...">
+            <input type="text" class="search-bar-input" placeholder="{{'Dashboard.SearchHere' | translate}}">
         </div>
         <div matRipple (click)="opened = !opened" class="header-toggle">
             <i class="las la-angle-down"></i>
@@ -30,9 +30,9 @@
             </div>
             <mat-menu backdropClass="notification-style" #notificationsMenu>
                 <div class="menu-header">
-                    <h2>Notification</h2>
+                    <h2>{{'Dashboard.Notifications' | translate}}</h2>
                     <div *ngIf="unread > 0" class="new">
-                        {{unread}} new
+                        {{unread}} {{'Dashboard.New' | translate}}
                     </div>
                 </div>
                 <div class="notifications-list">
@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <button [disabled]="readRequest == 1" (click)="onReadNotificationClick()" stopPropagation mat-flat-button color="primary">
-                    <span [textContent]="readRequest == 1 ? 'loading...' : 'Read All'"></span>
+                    <span [textContent]="(readRequest == 1 ? 'Dashboard.Loading' : 'Dashboard.ReadAll') | translate"></span>
                     <mat-icon *ngIf="readRequest != 1">done_all</mat-icon>
                 </button>
             </mat-menu>
@@ -61,7 +61,7 @@
         </div>
         <button (click)="logout()" mat-flat-button class="logout-button">
             <i class="las la-sign-out-alt"></i>
-            Logout
+            {{'Dashboard.Logout' | translate}}
         </button>
 
     </div>

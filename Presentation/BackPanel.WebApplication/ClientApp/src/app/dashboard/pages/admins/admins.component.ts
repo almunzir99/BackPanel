@@ -62,7 +62,7 @@ export class AdminsComponent implements OnInit {
     this.columns = [
       {
         prop: "id",
-        title: "#",
+        title: "Id",
         show: true,
         sortable: true,
         importable: false,
@@ -86,7 +86,7 @@ export class AdminsComponent implements OnInit {
       },
       {
         prop: "phone",
-        title: "Phone Number",
+        title: "Phone",
         show: true,
         sortable: true,
         importable: true,
@@ -95,7 +95,7 @@ export class AdminsComponent implements OnInit {
       },
       {
         prop: "email",
-        title: "email",
+        title: "Email",
         show: true,
         sortable: true,
         importable: true,
@@ -104,14 +104,14 @@ export class AdminsComponent implements OnInit {
       },
       {
         prop: "role",
-        title: "role",
+        title: "Role",
         show: true,
         sortable: false,
         importable: true
       },
       {
         prop: "createdAt",
-        title: "Created At",
+        title: "CreatedAt",
         show: true,
         sortable: true,
         importable: false,
@@ -121,7 +121,7 @@ export class AdminsComponent implements OnInit {
       },
       {
         prop: "lastUpdate",
-        title: "Last Update",
+        title: "LastUpdate",
         show: true,
         sortable: true,
         importable: false,
