@@ -90,7 +90,7 @@
                                 </ng-container>
                                 <ng-container *ngSwitchCase="SearchControlTypes.DateTime">
                                     <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
-                                    <input (dateInput)="searchFieldChange(i,$event.target)" placeholder="MM/DD/YYYY"
+                                    <input (dateInput)="searchFieldChange(i,$event.target)" (input)="searchFieldChange(i,$event.target)" placeholder="MM/DD/YYYY"
                                         matInput [matDatepicker]="picker">
                                     <mat-datepicker #picker></mat-datepicker>
                                 </ng-container>
@@ -110,7 +110,7 @@
                                         type="text">
                                 </ng-container>
                             </ng-container>
-                            <div *ngIf="col.searchControlType != SearchControlTypes.CheckBox" mat-icon-button
+                            <div *ngIf="col.searchControlType != SearchControlTypes.CheckBox && col.searchControlType != SearchControlTypes.Selection" mat-icon-button
                                 [matMenuTriggerFor]="operatorsMenu" class="search-button" matRipple>
                                 <i [classList]="_fieldSearchResult[i].operatorIcon"></i>
                             </div>

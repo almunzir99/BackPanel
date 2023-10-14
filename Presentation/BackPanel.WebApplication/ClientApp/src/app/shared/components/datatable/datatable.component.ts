@@ -151,7 +151,7 @@ export class DatatableComponent implements OnInit, OnChanges {
       this._fieldSearchResult[colIndex].propValue = value.toISOString();
     }
     else
-      this._fieldSearchResult[colIndex].propValue = target.value.toString();
+      this._fieldSearchResult[colIndex].propValue = target.value?.toString();
     var list = this._fieldSearchResult.filter(c => c.propValue != null && c.propValue.trim().length > 0);
     var index = list.indexOf(this._fieldSearchResult[colIndex]);
     var result: FieldsSearchListResult = { list: list, colIndex: index };
