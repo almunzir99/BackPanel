@@ -1,0 +1,32 @@
+ name: Dotnet publish 🚀
+ 
+ on:
+  workflow_dispatch:
+  push:
+   branches:
+   - main
+
+ jobs:
+   publish:
+     runs-on: windows
+     
+     steps:
+        - uses: actions/checkout@v3
+      
+        - name: Setup .NET
+          uses: actions/setup-dotnet@v3
+          with:
+            dotnet-version: '6.0.x'
+    
+        - name: Restore
+          run: dotnet restore ./BackPanel.sln
+    
+        - name: Build
+          run: dotnet build --configuration Release --no-restore
+    
+        - name: Publish
+          run: dotnet publish --configuration Release --no-build
+      
+         
+ 
+ 
