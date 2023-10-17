@@ -25,15 +25,17 @@
 
         - name: Install angular CLI
           run: npm install -g @angular/cli
-        
-        - name: Restore
-          run: dotnet restore ./BackPanel.sln
-    
-        - name: Build
-          run: dotnet build --configuration Release --no-restore
-    
-        - name: Publish
-          run: dotnet publish --configuration Release --no-build
+          
+        - name: Build Angular app
+          run: |
+            cd Presentation/BackPanel.WebApplication/ClientApp
+            npm install
+            ng build --prod
+
+        - name: Build .NET Core
+          run: |
+            cd ../../../
+            dotnet publish -c Release -o ./publish
       
          
  
