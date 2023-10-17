@@ -34,7 +34,7 @@
 
         - name: Build .NET Core
           run: |
-            dotnet publish ../../../ -c Release -o ./publish
+            dotnet publish -c Release
       
          
  
