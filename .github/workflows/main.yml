@@ -1,4 +1,4 @@
- name: Dotnet publish 🚀
+ name: .Net Core Publish 🚀
  
  on:
   workflow_dispatch:
@@ -25,15 +25,10 @@
 
         - name: Install angular CLI
           run: npm install -g @angular/cli
-
-        - name: Navigate to Client Project Folder
-          run: cd Presentation/BackPanel.WebApplication/ClientApp
           
         - name: Install dependencies
-          run: npm install 
-        - name: navigate back
-          run: cd ../../../
-          
+          run: npm install --prefix ./Presentation/BackPanel.WebApplication/ClientApp
+       
         - name: Restore
           run: dotnet restore ./BackPanel.sln
     
