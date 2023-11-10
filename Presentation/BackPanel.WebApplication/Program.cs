@@ -7,6 +7,7 @@ using BackPanel.SMTP.DI;
 using BackPanel.TranslationEditor.DI;
 using BackPanel.WebApplication.Extensions;
 using BackPanel.WebApplication.implementation;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -25,7 +26,7 @@ builder.Services.RegisterRequiredSmtpServices();
 builder.Services.RegisterRequiredFilesManagerServices();
 builder.Services.ImplementPathProvider<PathProvider>();
 builder.Services.AddScoped<IWebConfiguration, WebConfiguration>();
-builder.Services.RegisterJwtConfiguration(builder.Configuration.GetValue<string>("SecretKey:key"));
+builder.Services.RegisterJwtConfiguration(builder.Configuration.GetValue<string>("SecretKey:key")!);
 builder.Services.ImplementPathProviderToTranslationService<PathProvider>();
 builder.Services.RegisterRequiredTranslationEditorServices();
 builder.Services.ImplementUriService(o =>
@@ -42,6 +43,10 @@ builder.Services.AddCors(options =>
         o => o.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader());
+});
+// Configure Serilog 
+builder.Host.UseSerilog((context,configuration) => {
+    configuration.ReadFrom.Configuration(context.Configuration);
 });
 var app = builder.Build();
 // load company info 
