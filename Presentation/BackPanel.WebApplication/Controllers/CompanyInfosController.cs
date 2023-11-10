@@ -19,17 +19,9 @@ public class CompanyInfosController : ApiController<CompanyInfo, CompanyInfoDto,
     [HttpGet("single")]
     public async Task<IActionResult> GetCompanyInfoAsync()
     {
-        try
-        {
             var result = await Service.GetCompanyInfoAsync();
             var response = new Response<CompanyInfoDto>(data: result);
             return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<string>(success: false, errors: new List<string>() { e.Message });
-            return BadRequest(response);
-        }
     }
     public override string PermissionTitle => "CompanyInfosPermissions";
 }

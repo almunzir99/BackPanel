@@ -57,27 +57,20 @@ public class AdminsController : UserBaseController<Admin, AdminDto, AdminDtoRequ
     [HttpGet("{userId}/activities")]
     public async Task<IActionResult> GetAdminActivitiesAsync(int userId, [FromQuery] PaginationFilter? filter = null)
     {
-        try
-        {
-            var validFilter = (filter == null)
-                      ? new PaginationFilter()
-                      : new PaginationFilter(pageIndex: filter.PageIndex, pageSize: filter.PageSize);
-            var result = await Service.AdminActivitiesListAsync(userId, filter);
-            var totalRecords = await Service.GetActivitiesTotalRecords(c => c.AdminId == userId);
-            if (Request.Path.Value != null)
-            {
-                return Ok(PaginationHelper.CreatePagedResponse(result,
-                    validFilter, UriService, totalRecords, Request.Path.Value));
-            }
 
-            var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
-            return BadRequest(response);
-        }
-        catch (Exception e)
+        var validFilter = (filter == null)
+                  ? new PaginationFilter()
+                  : new PaginationFilter(pageIndex: filter.PageIndex, pageSize: filter.PageSize);
+        var result = await Service.AdminActivitiesListAsync(userId, filter);
+        var totalRecords = await Service.GetActivitiesTotalRecords(c => c.AdminId == userId);
+        if (Request.Path.Value != null)
         {
-            var response = new Response<string>(success: false, errors: new List<string>() { e.Message });
-            return BadRequest(response);
+            return Ok(PaginationHelper.CreatePagedResponse(result,
+                validFilter, UriService, totalRecords, Request.Path.Value));
         }
+
+        var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
+        return BadRequest(response);
     }
 
     public override string PermissionTitle => "AdminsPermissions";

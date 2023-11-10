@@ -7,6 +7,7 @@ using BackPanel.SMTP.DI;
 using BackPanel.TranslationEditor.DI;
 using BackPanel.WebApplication.Extensions;
 using BackPanel.WebApplication.implementation;
+using BackPanel.WebApplication.Middlewares;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +30,7 @@ builder.Services.AddScoped<IWebConfiguration, WebConfiguration>();
 builder.Services.RegisterJwtConfiguration(builder.Configuration.GetValue<string>("SecretKey:key")!);
 builder.Services.ImplementPathProviderToTranslationService<PathProvider>();
 builder.Services.RegisterRequiredTranslationEditorServices();
+builder.Services.RegisterMiddlewares();
 builder.Services.ImplementUriService(o =>
 {
     var accessor = o.GetRequiredService<IHttpContextAccessor>();
@@ -58,9 +60,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts. app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 app.UseRouting();
 app.UseCors("CorsPolicy");
 app.UseAuthentication();

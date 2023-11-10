@@ -20,15 +20,8 @@ public class StatisticsController : ControllerBase
     [HttpGet()]
     public async Task<IActionResult> GetStatisticsController()
     {
-        try
-        {   var result = await _service.GetCounters();
+          var result = await _service.GetCounters();
             var response = new Response<StatisticsDto>(data:result,message:"data retreived successfully !");
             return Ok(response);
-        }
-        catch (System.Exception e)
-        {
-            var response = new Response<StatisticsDto>(success: false, errors: new List<string>() { e.Message });
-            return BadRequest(response);
-        }
     }
 }

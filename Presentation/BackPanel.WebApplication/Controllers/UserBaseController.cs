@@ -35,76 +35,45 @@ public abstract class
     [HttpPost("Authenticate")]
     public virtual async Task<IActionResult> Authenticate(AuthenticationModel model)
     {
-        try
-        {
-            var user = await Service.Authenticate(model);
-            var response = new Response<TDto>(data: user, message: "you logged in successfully");
-            return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<TDto>(success: false, message: "logging in failed, check errors below",
-                errors: new[] { e.Message });
-            return BadRequest(response);
-        }
+
+        var user = await Service.Authenticate(model);
+        var response = new Response<TDto>(data: user, message: "you logged in successfully");
+        return Ok(response);
+
     }
     [Permission(true, PermissionTypes.CREATE)]
     [HttpPost("Register")]
     public virtual async Task<IActionResult> Register(TDtoRequest body)
     {
-        try
-        {
-            var user = await Service.Register(body);
-            var response = new Response<TDto>(data: user, message: "account created successfully");
-            return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<TDto>(success: false, message: "Registration failed, check errors below",
-                errors: new[] { e.Message });
-            return BadRequest(response);
-        }
+
+        var user = await Service.Register(body);
+        var response = new Response<TDto>(data: user, message: "account created successfully");
+        return Ok(response);
     }
 
     [AllowAnonymous]
     [HttpGet("password/recovery/request")]
-    public virtual async Task<IActionResult> PasswordRecoveryRequest([Required] [FromQuery] string email)
+    public virtual async Task<IActionResult> PasswordRecoveryRequest([Required][FromQuery] string email)
     {
-        try
-        {
-            await Service.PasswordRecoveryRequest(email);
-            var response = new Response<TDto>(success: true, message: "request send successfully");
-            return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
-                errors: new[] { e.Message });
-            return BadRequest(response);
-        }
+
+        await Service.PasswordRecoveryRequest(email);
+        var response = new Response<TDto>(success: true, message: "request send successfully");
+        return Ok(response);
     }
 
     [AllowAnonymous]
     [HttpPost("password/recovery")]
     public virtual async Task<IActionResult> PasswordRecovery(PasswordRecoveryRequest recovery)
     {
-        try
-        {
-            if (recovery.NewPassword != null)
-            {
-                if (recovery.Key != null)
-                    await Service.PasswordRecovery(recovery.Key, recovery.NewPassword);
-            }
 
-            var response = new Response<TDto>(success: true, message: "password reset successfully");
-            return Ok(response);
-        }
-        catch (Exception e)
+        if (recovery.NewPassword != null)
         {
-            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
-                errors: new[] { e.Message });
-            return BadRequest(response);
+            if (recovery.Key != null)
+                await Service.PasswordRecovery(recovery.Key, recovery.NewPassword);
         }
+
+        var response = new Response<TDto>(success: true, message: "password reset successfully");
+        return Ok(response);
     }
 
     [Authorize]
@@ -114,24 +83,16 @@ public abstract class
         var type = GetCurrentUserType();
         if (type != this.Type)
             return StatusCode(403);
-        try
-        {
-            var id = GetCurrentUserId();
-            if (recovery.OldPassword != null)
-            {
-                if (recovery.NewPassword != null)
-                    await Service.ResetPassword(id, recovery.OldPassword, recovery.NewPassword);
-            }
 
-            var response = new Response<TDto>(success: true, message: "password reset successfully");
-            return Ok(response);
-        }
-        catch (Exception e)
+        var id = GetCurrentUserId();
+        if (recovery.OldPassword != null)
         {
-            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
-                errors: new[] { e.Message });
-            return BadRequest(response);
+            if (recovery.NewPassword != null)
+                await Service.ResetPassword(id, recovery.OldPassword, recovery.NewPassword);
         }
+
+        var response = new Response<TDto>(success: true, message: "password reset successfully");
+        return Ok(response);
     }
 
     [Authorize]
@@ -141,21 +102,13 @@ public abstract class
         var type = GetCurrentUserType();
         if (type != this.Type)
             return StatusCode(403);
-        try
-        {
-            var id = GetCurrentUserId();
-            var webFile = new WebFormFile(file, file.FileName);
-            var result = await Service.ChangePersonalPhoto(id, webFile);
-            var response = new Response<string>(data: result, success: true,
-message: "personal photo updated successfully");
-            return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
-                errors: new[] { e.Message });
-            return BadRequest(response);
-        }
+
+        var id = GetCurrentUserId();
+        var webFile = new WebFormFile(file, file.FileName);
+        var result = await Service.ChangePersonalPhoto(id, webFile);
+        var response = new Response<string>(data: result, success: true,
+    message: "personal photo updated successfully");
+        return Ok(response);
     }
 
     [Authorize]
@@ -165,20 +118,12 @@ message: "personal photo updated successfully");
         var type = GetCurrentUserType();
         if (type != this.Type)
             return StatusCode(403);
-        try
-        {
-            var id = GetCurrentUserId();
-            var result = await Service.UpdatePersonalInfo(id, body);
-            var response = new Response<TDto>(data: result, success: true,
-message: "personal Information updated successfully");
-            return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
-                errors: new[] { e.Message });
-            return BadRequest(response);
-        }
+
+        var id = GetCurrentUserId();
+        var result = await Service.UpdatePersonalInfo(id, body);
+        var response = new Response<TDto>(data: result, success: true,
+    message: "personal Information updated successfully");
+        return Ok(response);
     }
 
     [Authorize]
@@ -188,100 +133,61 @@ message: "personal Information updated successfully");
         var type = GetCurrentUserType();
         if (type != this.Type)
             return StatusCode(403);
-        try
-        {
-            var id = GetCurrentUserId();
-            var result = await Service.GetProfileAsync(id);
-            var response = new Response<TDto>(data: result, success: true, message: "information fetched successfully");
-            return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
-                errors: new[] { e.Message });
-            return BadRequest(response);
-        }
+
+        var id = GetCurrentUserId();
+        var result = await Service.GetProfileAsync(id);
+        var response = new Response<TDto>(data: result, success: true, message: "information fetched successfully");
+        return Ok(response);
     }
 
     [HttpGet("notifications")]
     public virtual async Task<IActionResult> GetNotificationAsync([FromQuery] PaginationFilter? filter)
     {
-        try
-        {
-            var userId = GetCurrentUserId();
-            filter ??= new PaginationFilter();
-            var result = await _notificationService.ListNotificationsAsync(userId, Type, filter);
-            if (Request.Path.Value != null)
-            {
-                var response = PaginationHelper.CreatePagedResponse(
-                    result, filter, UriService, 0, Request.Path.Value
-                );
-                return Ok(response);
-            }
 
-            var badResponse = new Response<TDto>(success: false, message: "Registration failed, check errors below",
-                errors: new[] { "Request.Path.value  == null" });
-            return BadRequest(badResponse);
-        }
-        catch (Exception e)
+        var userId = GetCurrentUserId();
+        filter ??= new PaginationFilter();
+        var result = await _notificationService.ListNotificationsAsync(userId, Type, filter);
+        if (Request.Path.Value != null)
         {
-            var response = new Response<TDto>(success: false, message: "Registration failed, check errors below",
-                errors: new[] { e.Message });
-            return BadRequest(response);
+            var response = PaginationHelper.CreatePagedResponse(
+                result, filter, UriService, 0, Request.Path.Value
+            );
+            return Ok(response);
         }
+
+        var badResponse = new Response<TDto>(success: false, message: "Registration failed, check errors below",
+            errors: new[] { "Request.Path.value  == null" });
+        return BadRequest(badResponse);
     }
+
 
     [HttpDelete("notifications/clear")]
     public virtual async Task<IActionResult> ClearNotifications()
     {
-        try
-        {
-            var userId = GetCurrentUserId();
-            await _notificationService.ClearNotificationAsync(userId, Type);
-            var response = new Response<string>(message: "Notifications cleared successfully");
-            return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
-                errors: new[] { e.Message });
-            return BadRequest(response);
-        }
+
+        var userId = GetCurrentUserId();
+        await _notificationService.ClearNotificationAsync(userId, Type);
+        var response = new Response<string>(message: "Notifications cleared successfully");
+        return Ok(response);
     }
 
     [HttpDelete("notifications/{notificationId}")]
     public virtual async Task<IActionResult> DeleteNotification(int notificationId)
     {
-        try
-        {
-            await _notificationService.DeleteNotificationAsync(notificationId);
-            var response = new Response<string>(message: "Notification deleted successfully");
-            return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
-                errors: new[] { e.Message });
-            return BadRequest(response);
-        }
+
+        await _notificationService.DeleteNotificationAsync(notificationId);
+        var response = new Response<string>(message: "Notification deleted successfully");
+        return Ok(response);
     }
 
     [HttpGet("notifications/unread")]
     public virtual async Task<IActionResult> GetUnreadNotifications([FromQuery] bool autoRead = false)
     {
-        try
-        {
-            var userId = GetCurrentUserId();
-            var result = await _notificationService.GetUnreadNotification(userId, Type, autoRead);
-            var response =
-                new Response<IList<NotificationDto>>(data: result, message: "notification fetch successfully");
-            return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<TDto>(success: false, message: "operation failed, check errors below",
-                errors: new[] { e.Message });
-            return BadRequest(response);
-        }
+
+        var userId = GetCurrentUserId();
+        var result = await _notificationService.GetUnreadNotification(userId, Type, autoRead);
+        var response =
+            new Response<IList<NotificationDto>>(data: result, message: "notification fetch successfully");
+        return Ok(response);
     }
 }

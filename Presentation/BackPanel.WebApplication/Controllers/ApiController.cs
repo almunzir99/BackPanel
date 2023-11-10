@@ -44,7 +44,7 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
         var validFilter = (filter == null)
             ? new PaginationFilter()
             : new PaginationFilter(pageIndex: filter.PageIndex, pageSize: filter.PageSize);
-        var result = await Service.ListAsync(filter, title, orderBy!, ascending,expressions);
+        var result = await Service.ListAsync(filter, title, orderBy!, ascending, expressions);
         var totalRecords = result.Item2;
         if (Request.Path.Value != null)
         {
@@ -59,108 +59,64 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> SingleAsync(int id)
     {
-        try
-        {
-            var result = await Service.SingleAsync(id);
-            var response = new Response<TDto>(data: result);
-            return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
-            return BadRequest(response);
-        }
+        var result = await Service.SingleAsync(id);
+        var response = new Response<TDto>(data: result);
+        return Ok(response);
     }
     [Permission(true, PermissionTypes.CREATE)]
 
     [HttpPost]
     public virtual async Task<IActionResult> PostAsync(TDtoRequest body)
     {
-        try
-        {
-            int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
-            var result = await Service.CreateAsync(body);
-            var response = new Response<TDto>(data: result);
-            //create Activity
-            if (!IsAnonymous("PostAsync"))
-                await Service.CreateActivity(currentUserId, result.Id, "Create");
-            return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
-            return BadRequest(response);
-        }
+
+        int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
+        var result = await Service.CreateAsync(body);
+        var response = new Response<TDto>(data: result);
+        //create Activity
+        if (!IsAnonymous("PostAsync"))
+            await Service.CreateActivity(currentUserId, result.Id, "Create");
+        return Ok(response);
     }
     [Permission(true, PermissionTypes.CREATE)]
     [HttpPost("all")]
     public async Task<IActionResult> PostAllAsync(IList<TDtoRequest> list)
     {
-        try
-        {
-            await Service.CreateAllAsync(list);
-            var response = new Response<TDto>(success: true, message: "data created successfully");
-            return Ok(response);
-        }
-        catch (System.Exception e)
-        {
-            var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
-            return BadRequest(response);
-        }
+        await Service.CreateAllAsync(list);
+        var response = new Response<TDto>(success: true, message: "data created successfully");
+        return Ok(response);
+
     }
     [Permission(true, PermissionTypes.UPDATE)]
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> PutAsync(int id, TDtoRequest body)
     {
-        try
-        {
-            var result = await Service.UpdateAsync(id, body);
-            var response = new Response<TDto>(data: result);
-            //create Activity
-            int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
-            await Service.CreateActivity(currentUserId, id, "Update");
-            return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
-            return BadRequest(response);
-        }
+        var result = await Service.UpdateAsync(id, body);
+        var response = new Response<TDto>(data: result);
+        //create Activity
+        int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
+        await Service.CreateActivity(currentUserId, id, "Update");
+        return Ok(response);
     }
     [Permission(true, PermissionTypes.DETELE)]
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(int id)
     {
-        try
-        {
-            await Service.DeleteAsync(id);
-            var response = new Response<TDto>(message: "Item Deleted Successfully");
-            //create Activity
-            int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
-            await Service.CreateActivity(currentUserId, id, "Delete");
-            return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
-            return BadRequest(response);
-        }
+
+        await Service.DeleteAsync(id);
+        var response = new Response<TDto>(message: "Item Deleted Successfully");
+        //create Activity
+        int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
+        await Service.CreateActivity(currentUserId, id, "Delete");
+        return Ok(response);
     }
     [Permission(true, PermissionTypes.UPDATE)]
     [HttpPatch("{id}")]
     public virtual async Task<IActionResult> PatchAsync(int id, [FromBody] JsonPatchDocument<TEntity> body)
     {
-        try
-        {
-            var result = await Service.UpdateAsync(id, body);
-            var response = new Response<TDto>(data: result);
-            return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
-            return BadRequest(response);
-        }
+        var result = await Service.UpdateAsync(id, body);
+        var response = new Response<TDto>(data: result);
+        return Ok(response);
+
     }
     [HttpGet("export/excel")]
     public virtual async Task<IActionResult> ExportToExcel()
@@ -187,17 +143,10 @@ where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<T
     [HttpGet("active")]
     public async Task<IActionResult> ActiveToggleAsync(int id)
     {
-        try
-        {
+       
             await Service.ActiveToggleAsync(id);
             var response = new Response<TDto>(message: "item activation toggled successfully");
             return Ok(response);
-        }
-        catch (Exception e)
-        {
-            var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
-            return BadRequest(response);
-        }
     }
     private bool IsAnonymous(string name)
     {
