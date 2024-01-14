@@ -46,6 +46,20 @@
     "New": "New",
     "ReadAll": "Read All",
     "Loading": "Loading...",
-    "Id": "ID"
+    "Id": "ID",
+    "#": "#",
+    "Title": "Title",
+    "Permissions": "Permissions",
+    "ShowPermissions":"Show Permissions",
+    "View":"View",
+    "Update":"Update",
+    "Delete":"Delete",
+    "RoleTitle":"Role title",
+    "CompanyInfo":"Company Info",
+    "CreateNewRole":"Create new role",
+    "admins":"admins",
+    "messages":"Messages",
+    "roles": "roles and Permissions",
+    "companyInfos":"Company Information"
   }
 }

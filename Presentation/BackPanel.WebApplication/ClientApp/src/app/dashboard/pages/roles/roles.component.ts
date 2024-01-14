@@ -83,13 +83,13 @@ export class RolesComponent implements OnInit {
       },
       {
         prop: "createdAt",
-        title: "Created At",
+        title: "CreatedAt",
         show: true,
         sortable: true
       },
       {
         prop: "lastUpdate",
-        title: "Last Update",
+        title: "LastUpdate",
         show: true,
         sortable: true
       },

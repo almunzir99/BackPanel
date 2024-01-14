@@ -1,12 +1,12 @@
 <data-table (createClick)="onCreate()" (searchChange)="onSearch($event)" (sortChange)="onSortChange($event)"
     (pageChange)="onPageChange($event)" [total]="totalRecords" (exportClick)="onExportClick($event)" [loading]="getRequest == 1" [columns]="columns"
-    [rows]="data" [cell-template]="cellTemplate" title="Roles Table">
+    [rows]="data" [cell-template]="cellTemplate" [title]="'Roles'">
     <ng-template #cellTemplate let-rowData="rowData" let-data="cellData" let-col="colIndex" let-row="rowIndex">
         <ng-container [ngSwitch]="col">
             <ng-container *ngSwitchCase="2">
                 <button (click)="onShowPermissionsClick(rowData)" matRipple class="table-act-button text primary">
                     <i class="las la-user-cog"></i>
-                    Show Permissions
+                    {{'Dashboard.ShowPermissions' | translate}}
                 </button>
             </ng-container>
             <ng-container *ngSwitchCase="5">
@@ -29,26 +29,26 @@
 </dimmer-loading>
 
 <ng-template #roleForm>
-    <h2 mat-dialog-title [textContent]="templateOnlyShow ? 'Show Permission' : 'Create New Role'">Create New Role</h2>
+    <h2 mat-dialog-title [textContent]="(templateOnlyShow ? 'Dashboard.ShowPermissions' : 'Dashboard.CreateNewRole') | translate "></h2>
     <mat-dialog-content>
         <mat-form-field *ngIf="!templateOnlyShow">
-            <mat-label>Role Title</mat-label>
+            <mat-label>{{'Dashboard.RoleTitle' | translate}}</mat-label>
             <input [(ngModel)]="role.title" type="text" matInput placeholder="Role Title" name="title">
         </mat-form-field>
         <table [class.dark-mode]="theme == 'dark'" class="role-table">
             <thead>
                 <tr>
-                    <td>Title</td>
-                    <th>View</th>
-                    <th>Create</th>
-                    <th>Update</th>
-                    <th>Delete</th>
+                    <td>{{'Dashboard.Title' | translate}}</td>
+                    <th>{{'Dashboard.View' | translate}}</th>
+                    <th>{{'Dashboard.Create' | translate}}</th>
+                    <th>{{'Dashboard.Update' | translate}}</th>
+                    <th>{{'Dashboard.Delete' | translate}}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let key of getRoleKeys()">
                     <td data-label="Title">
-                        <div>{{key}}</div>
+                        <div>{{'Dashboard.'+key | translate}}</div>
                     </td>
                     <td data-label="read">
                         <mat-checkbox [disabled]="templateOnlyShow" [(ngModel)]="role[key+'Permissions']['read']">
