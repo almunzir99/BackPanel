@@ -1,27 +1,44 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using BackPanel.Domain.Enums;
+using Marbat.Domain.Enums;
 
-namespace BackPanel.Application.Helpers;
+namespace Marbat.Application.Helpers;
 public static class ExpressionBuilder
 {
     public static Expression<Func<T, bool>> BuildComparisonExpression<T>(string propertyName, ComparisonOperator op, string value)
     {
         var param = Expression.Parameter(typeof(T), "x");
-        var property = Expression.Property(param, propertyName);
-        var parsedValue = ParseValue(value, value == "true" || value == "false" ? typeof(bool) :  property.Type);
+        MemberExpression? property = null;
+        if (propertyName.Contains("."))
+        {
+            var nestedProps = propertyName.Split(".");
+            foreach (var nestedProp in nestedProps)
+            {
+                if (property != null)
+                    property = Expression.Property(property, nestedProp);
+                else
+                    property = Expression.Property(param, nestedProp);
+
+            }
+        }
+        else
+        {
+            property = Expression.Property(param, propertyName);
+        }
+        var parsedValue = ParseValue(value, value == "true" || value == "false" ? typeof(bool) : property!.Type);
         var constant = Expression.Constant(parsedValue);
-        var comparison = BuildComparison(property, constant, op);
+        var comparison = BuildComparison(property!, constant, op);
 
         return Expression.Lambda<Func<T, bool>>(comparison, param);
     }
 
+
     private static object ParseValue(string value, Type targetType)
     {
-        if(targetType.IsEnum)
+        if (targetType.IsEnum)
         {
-           return  Enum.Parse(targetType,value);
+            return Enum.Parse(targetType, value);
         }
         return Convert.ChangeType(value, targetType);
         throw new ArgumentException($"Unsupported data type: {targetType.Name}");
