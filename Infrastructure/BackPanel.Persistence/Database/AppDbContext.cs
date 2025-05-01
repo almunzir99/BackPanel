@@ -18,17 +18,10 @@ public class AppDbContext : DbContext
         }
 
         builder.Entity<Admin>().HasIndex(c => c.Email).IsUnique();
-        builder.Entity<Admin>().HasData(GetManagerUser());
         builder.Entity<Role>().HasIndex(c => c.Title).IsUnique();
     }
 
-    private static Admin GetManagerUser()
-    {
-        HashingHelper.CreateHashPassword("maze@0099", out var pHash, out var pSalt);
-        return new Admin()
-        {Id = 1, Username = "almunzir99", PasswordHash = pHash, PasswordSalt = pSalt, Phone = "249128647019", Email = "almunzir99@gmail.com", IsManager = true, CreatedAt = DateTime.Now, LastUpdate = DateTime.Now};
-    }
-
+    
     public DbSet<Admin> Admins => Set<Admin>();
     public DbSet<Message> Messages => Set<Message>();
     public DbSet<Role> Roles => Set<Role>();

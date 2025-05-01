@@ -1,9 +1,9 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using Marbat.Domain.Enums;
+using BackPanel.Domain.Enums;
 
-namespace Marbat.Application.Helpers;
+namespace BackPanel.Application.Helpers;
 public static class ExpressionBuilder
 {
     public static Expression<Func<T, bool>> BuildComparisonExpression<T>(string propertyName, ComparisonOperator op, string value)
