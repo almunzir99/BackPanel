@@ -1,0 +1,52 @@
+# Version control
+.git/
+.gitignore
+.gitattributes
+
+# Visual Studio files
+.vs/
+**/.vs/
+**/*.user
+**/*.userosscache
+**/*.suo
+**/*.userprefs
+
+# Build results
+**/[Dd]ebug/
+**/[Dd]ebugPublic/
+**/[Rr]elease/
+**/[Rr]eleases/
+**/x64/
+**/x86/
+**/build/
+**/bld/
+**/[Bb]in/
+**/[Oo]bj/
+**/[Ll]og/
+**/[Ll]ogs/
+
+# Build output
+**/bin/
+**/obj/
+**/out/
+**/publish/
+
+# Node modules (for Angular projects)
+**/node_modules/
+**/dist/
+**/.angular/cache/
+
+# Test results
+**/TestResults/
+**/*.coverage
+**/*.coveragexml
+
+# NuGet packages
+**/*.nupkg
+**/*.snupkg
+
+# Others
+.DS_Store
+**/.DS_Store
+*.tmp
+**/*.tmp

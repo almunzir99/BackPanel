@@ -1,0 +1,33 @@
+version: '1.0'
+services:
+  sql_server:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Maze@0099
+    ports:
+      - "1433:1433"
+    volumes:
+        - backpanel-volume:/var/opt/mssql
+    networks:
+      - backpanel-network
+  backpanel: 
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sql_server;Database=BackPanel;User Id=sa;Password=Maze@0099;TrustServerCertificate=True
+      - ASPNETCORE_URLS=http://0.0.0.0:5000
+    ports:
+      - "5000:5000"
+    depends_on:
+      - sql_server
+    networks:
+      - backpanel-network
+
+      
+networks:
+  backpanel-network:
+volumes:
+  backpanel-volume:
