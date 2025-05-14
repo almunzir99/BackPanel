@@ -28,7 +28,7 @@ jobs:
 
     - name: Install project dependencies (npm)
       run: npm install
-      working-directory: ClientApp  # adjust this if your Angular app is in a different folder
+      working-directory: BackPanel.WebApplication/ClientApp  # adjust this if your Angular app is in a different folder
 
     - name: Build Angular app
       run: ng build --configuration=production
