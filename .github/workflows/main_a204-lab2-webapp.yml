@@ -1,12 +1,9 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: 'Build and deploy ASP.Net Core app to Azure Web App: a204-lab2-webapp'
+name: 'Build and deploy ASP.NET Core with Angular to Azure Web App: a204-lab2-webapp'
 
 on:
   push:
     branches:
-    - main
+      - main
   workflow_dispatch:
 
 jobs:
@@ -15,17 +12,30 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '8.x'
 
-    - name: Build with dotnet
-      run: dotnet build --configuration Release
-    
-    - name: dotnet publish
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp 
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+
+    - name: Install Angular CLI
+      run: npm install -g @angular/cli
+
+    - name: Install project dependencies (npm)
+      run: npm install
+      working-directory: ClientApp  # adjust this if your Angular app is in a different folder
+
+    - name: Build Angular app
+      run: ng build --configuration=production
+      working-directory: ClientApp
+
+    - name: Publish ASP.NET Core app
+      run: dotnet publish -c Release -o publish
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
@@ -33,4 +43,4 @@ jobs:
         app-name: 'a204-lab2-webapp'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_33a25860435941b1ab6a70fe622afb3b }}
-        package: ${{env.DOTNET_ROOT}}/myapp 
+        package: publish
