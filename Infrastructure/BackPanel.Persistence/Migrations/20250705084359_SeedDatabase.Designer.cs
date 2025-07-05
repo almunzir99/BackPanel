@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackPanel.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220913201824_migrationEditActivityTable")]
-    partial class MigrationEditActivityTable
+    [Migration("20250705084359_SeedDatabase")]
+    partial class SeedDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,6 +49,9 @@ namespace BackPanel.Persistence.Migrations
 
                     b.Property<DateTime>("LastUpdate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -93,10 +96,10 @@ namespace BackPanel.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Photo")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
@@ -111,21 +114,80 @@ namespace BackPanel.Persistence.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Admins");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2022, 9, 13, 22, 18, 24, 508, DateTimeKind.Local).AddTicks(3376),
-                            Email = "almunzir99@gmail.com",
-                            IsManager = true,
-                            LastUpdate = new DateTime(2022, 9, 13, 22, 18, 24, 508, DateTimeKind.Local).AddTicks(3386),
-                            PasswordHash = new byte[] { 57, 223, 110, 167, 248, 149, 136, 97, 44, 170, 146, 220, 167, 97, 128, 176, 96, 247, 28, 110, 81, 151, 62, 13, 13, 76, 70, 154, 10, 68, 51, 190, 169, 179, 102, 76, 250, 24, 28, 49, 157, 7, 213, 228, 160, 247, 253, 152, 169, 173, 78, 187, 181, 53, 101, 127, 51, 109, 225, 240, 186, 155, 107, 229 },
-                            PasswordSalt = new byte[] { 127, 49, 43, 176, 94, 104, 142, 139, 77, 24, 37, 136, 249, 103, 42, 10, 15, 132, 194, 83, 195, 72, 118, 247, 85, 27, 202, 39, 152, 32, 102, 141, 46, 96, 31, 16, 153, 173, 243, 34, 203, 169, 244, 107, 73, 191, 44, 63, 243, 250, 81, 84, 45, 214, 251, 116, 82, 138, 251, 40, 192, 156, 210, 243, 67, 64, 251, 106, 68, 117, 164, 21, 210, 251, 38, 106, 139, 169, 253, 161, 89, 153, 237, 196, 137, 155, 176, 102, 140, 118, 180, 228, 251, 56, 143, 206, 44, 13, 36, 203, 116, 186, 196, 142, 187, 205, 196, 14, 149, 168, 5, 238, 172, 40, 12, 107, 172, 102, 64, 6, 162, 241, 44, 112, 157, 121, 187, 129 },
-                            Phone = "249128647019",
-                            Username = "almunzir99"
-                        });
+            modelBuilder.Entity("BackPanel.Domain.Entities.CompanyInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AboutUs")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Fax")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LogoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LogoId");
+
+                    b.ToTable("CompanyInfos");
+                });
+
+            modelBuilder.Entity("BackPanel.Domain.Entities.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Image");
                 });
 
             modelBuilder.Entity("BackPanel.Domain.Entities.Message", b =>
@@ -153,6 +215,9 @@ namespace BackPanel.Persistence.Migrations
 
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -191,6 +256,9 @@ namespace BackPanel.Persistence.Migrations
                     b.Property<bool>("Read")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
@@ -227,6 +295,9 @@ namespace BackPanel.Persistence.Migrations
                     b.Property<bool>("Read")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Update")
                         .HasColumnType("bit");
 
@@ -246,6 +317,9 @@ namespace BackPanel.Persistence.Migrations
                     b.Property<int?>("AdminsPermissionsId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CompanyInfosPermissionsId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -258,12 +332,17 @@ namespace BackPanel.Persistence.Migrations
                     b.Property<int?>("RolesPermissionsId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AdminsPermissionsId");
+
+                    b.HasIndex("CompanyInfosPermissionsId");
 
                     b.HasIndex("MessagesPermissionsId");
 
@@ -297,6 +376,17 @@ namespace BackPanel.Persistence.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("BackPanel.Domain.Entities.CompanyInfo", b =>
+                {
+                    b.HasOne("BackPanel.Domain.Entities.Image", "Logo")
+                        .WithMany()
+                        .HasForeignKey("LogoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Logo");
+                });
+
             modelBuilder.Entity("BackPanel.Domain.Entities.Notification", b =>
                 {
                     b.HasOne("BackPanel.Domain.Entities.Admin", null)
@@ -312,6 +402,11 @@ namespace BackPanel.Persistence.Migrations
                         .HasForeignKey("AdminsPermissionsId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("BackPanel.Domain.Entities.Permission", "CompanyInfosPermissions")
+                        .WithMany()
+                        .HasForeignKey("CompanyInfosPermissionsId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("BackPanel.Domain.Entities.Permission", "MessagesPermissions")
                         .WithMany()
                         .HasForeignKey("MessagesPermissionsId")
@@ -323,6 +418,8 @@ namespace BackPanel.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("AdminsPermissions");
+
+                    b.Navigation("CompanyInfosPermissions");
 
                     b.Navigation("MessagesPermissions");
 

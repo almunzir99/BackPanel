@@ -5,10 +5,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BackPanel.Persistence.Migrations
 {
-    public partial class InitializeWithBasicEntities : Migration
+    public partial class InitDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Image",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Path = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Image", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Messages",
                 columns: table => new
@@ -19,11 +35,14 @@ namespace BackPanel.Persistence.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: true)
+                    LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
-                constraints: table => table.PrimaryKey("PK_Messages", x => x.Id));
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Permissions",
@@ -35,11 +54,42 @@ namespace BackPanel.Persistence.Migrations
                     Read = table.Column<bool>(type: "bit", nullable: false),
                     Update = table.Column<bool>(type: "bit", nullable: false),
                     Delete = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: true)
+                    LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
-                constraints: table => table.PrimaryKey("PK_Permissions", x => x.Id));
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permissions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CompanyInfos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LogoId = table.Column<int>(type: "int", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Fax = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AboutUs = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompanyInfos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CompanyInfos_Image_LogoId",
+                        column: x => x.LogoId,
+                        principalTable: "Image",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Roles",
@@ -51,9 +101,10 @@ namespace BackPanel.Persistence.Migrations
                     MessagesPermissionsId = table.Column<int>(type: "int", nullable: true),
                     AdminsPermissionsId = table.Column<int>(type: "int", nullable: true),
                     RolesPermissionsId = table.Column<int>(type: "int", nullable: true),
+                    CompanyInfosPermissionsId = table.Column<int>(type: "int", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: true)
+                    LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -61,6 +112,12 @@ namespace BackPanel.Persistence.Migrations
                     table.ForeignKey(
                         name: "FK_Roles_Permissions_AdminsPermissionsId",
                         column: x => x.AdminsPermissionsId,
+                        principalTable: "Permissions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Roles_Permissions_CompanyInfosPermissionsId",
+                        column: x => x.CompanyInfosPermissionsId,
                         principalTable: "Permissions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -79,29 +136,28 @@ namespace BackPanel.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Admins",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IsManager = table.Column<bool>(type: "bit", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: true),
                     Username = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Admins", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Roles_RoleId",
+                        name: "FK_Admins_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
@@ -114,20 +170,21 @@ namespace BackPanel.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    AdminId = table.Column<int>(type: "int", nullable: false),
                     EffectedTable = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EffectedRowId = table.Column<int>(type: "int", nullable: false),
                     Action = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AdminId = table.Column<int>(type: "int", nullable: true)
+                    LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Activity", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Activity_Users_AdminId",
+                        name: "FK_Activity_Admins_AdminId",
                         column: x => x.AdminId,
-                        principalTable: "Users",
+                        principalTable: "Admins",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -146,30 +203,41 @@ namespace BackPanel.Persistence.Migrations
                     Read = table.Column<bool>(type: "bit", nullable: false),
                     GroupedItem = table.Column<int>(type: "int", nullable: true),
                     AdminId = table.Column<int>(type: "int", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: true)
+                    LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Notifications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Notifications_Users_AdminId",
+                        name: "FK_Notifications_Admins_AdminId",
                         column: x => x.AdminId,
-                        principalTable: "Users",
+                        principalTable: "Admins",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "CreatedAt", "CreatedBy", "Email", "Image", "IsManager", "LastUpdate", "PasswordHash", "PasswordSalt", "Phone", "Photo", "RoleId", "Username" },
-                values: new object[] { 1, new DateTime(2022, 8, 8, 21, 17, 20, 37, DateTimeKind.Local).AddTicks(5239), null, "almunzir99@gmail.com", null, true, new DateTime(2022, 8, 8, 21, 17, 20, 37, DateTimeKind.Local).AddTicks(5247), new byte[] { 34, 244, 156, 255, 137, 230, 196, 12, 114, 19, 40, 206, 4, 66, 220, 94, 91, 222, 196, 89, 207, 46, 158, 220, 106, 134, 194, 139, 77, 117, 246, 26, 120, 160, 85, 48, 4, 205, 221, 166, 150, 39, 31, 192, 0, 165, 133, 233, 248, 112, 237, 8, 147, 114, 239, 119, 9, 182, 187, 41, 243, 237, 161, 122 }, new byte[] { 53, 50, 8, 78, 88, 33, 101, 194, 31, 243, 110, 9, 230, 61, 205, 181, 143, 24, 12, 203, 55, 92, 102, 161, 228, 132, 19, 220, 65, 214, 55, 142, 77, 54, 25, 62, 62, 129, 93, 77, 243, 180, 140, 158, 96, 174, 23, 238, 64, 197, 230, 55, 166, 67, 158, 22, 253, 201, 30, 115, 165, 179, 230, 76, 112, 14, 108, 95, 204, 75, 192, 224, 195, 251, 108, 219, 45, 74, 162, 29, 166, 4, 209, 217, 59, 113, 90, 86, 92, 112, 233, 217, 190, 226, 223, 169, 64, 181, 151, 180, 73, 27, 232, 59, 145, 11, 112, 242, 116, 21, 23, 89, 107, 255, 167, 41, 151, 107, 20, 215, 218, 196, 220, 95, 180, 193, 209, 79 }, "249128647019", null, null, "almunzir99" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Activity_AdminId",
                 table: "Activity",
                 column: "AdminId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Admins_Email",
+                table: "Admins",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Admins_RoleId",
+                table: "Admins",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CompanyInfos_LogoId",
+                table: "CompanyInfos",
+                column: "LogoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_AdminId",
@@ -180,6 +248,11 @@ namespace BackPanel.Persistence.Migrations
                 name: "IX_Roles_AdminsPermissionsId",
                 table: "Roles",
                 column: "AdminsPermissionsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Roles_CompanyInfosPermissionsId",
+                table: "Roles",
+                column: "CompanyInfosPermissionsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Roles_MessagesPermissionsId",
@@ -197,17 +270,6 @@ namespace BackPanel.Persistence.Migrations
                 column: "Title",
                 unique: true,
                 filter: "[Title] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
-                table: "Users",
-                column: "Email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_RoleId",
-                table: "Users",
-                column: "RoleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -216,13 +278,19 @@ namespace BackPanel.Persistence.Migrations
                 name: "Activity");
 
             migrationBuilder.DropTable(
+                name: "CompanyInfos");
+
+            migrationBuilder.DropTable(
                 name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "Notifications");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Image");
+
+            migrationBuilder.DropTable(
+                name: "Admins");
 
             migrationBuilder.DropTable(
                 name: "Roles");

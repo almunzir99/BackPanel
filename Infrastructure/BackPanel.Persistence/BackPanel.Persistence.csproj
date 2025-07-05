@@ -24,4 +24,8 @@
       <ProjectReference Include="..\..\Core\BackPanel.Domain\BackPanel.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Migrations\" />
+    </ItemGroup>
+
 </Project>
