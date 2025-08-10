@@ -2,15 +2,9 @@
 using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BackPanel.Application.Generic.Commands
+namespace BackPanel.Application.Generic.Commands.CreateCommandBase
 {
-    public record CreateCommandBase<TDTORequest, TDTO>(TDTORequest Request) : IRequest<TDTO>;
     public class CreateCommandHandlerBase<TEntity, TDTORequest, TDTO, TCommand> : IRequestHandler<TCommand, TDTO>
         where TEntity : EntityBase
         where TDTO : class

@@ -1,6 +1,6 @@
 using System.Text;
 using BackPanel.Application.DTOs;
-using BackPanel.Application.Generic.Commands;
+using BackPanel.Application.Generic.Commands.CreateCommandBase;
 using BackPanel.Application.Interfaces;
 using BackPanel.Application.Services;
 using BackPanel.Domain.Entities;

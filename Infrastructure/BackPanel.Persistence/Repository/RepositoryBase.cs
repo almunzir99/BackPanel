@@ -66,7 +66,7 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
          }
         return await query.ToListAsync();
     }
-    public virtual  IQueryable<TEntity> List()
+    public virtual  IQueryable<TEntity> Query()
     {
         return _includeableDbSet.Where(c => c.Status != Status.Deleted).AsQueryable();
     }

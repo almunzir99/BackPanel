@@ -86,7 +86,7 @@ public abstract class ServiceBase<TEntity, TDto, TDtoRequest> : IServicesBase<TE
         var validFilter = (filter == null)
             ? new PaginationFilter()
             : new PaginationFilter(filter.PageIndex, filter.PageSize);
-        var list = Repository.List();
+        var list = Repository.Query();
         var query = list.Select(c => Mapper.Map<TDto>(c));
         var result = await query.ToListAsync();
         var total = result.Count;
