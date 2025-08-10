@@ -1,4 +1,6 @@
 using System.Text;
+using BackPanel.Application.DTOs;
+using BackPanel.Application.Generic.Commands;
 using BackPanel.Application.Interfaces;
 using BackPanel.Application.Services;
 using BackPanel.Domain.Entities;
@@ -18,6 +20,13 @@ public static class RegisterWithDependencyInjection
         services.AddScoped<IMessageService, MessagesService>();
         services.AddScoped<IStatisticsService, StatisticsService>();
         services.AddScoped<ICompanyInfosService, CompanyInfosService>();
+    }
+
+    public static void RegisterApplicationCQRS(this IServiceCollection services)
+    {
+        services.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssembly(typeof(CreateCommandBase<DtoBase, DtoBase>).Assembly)
+        );
     }
 
     public static void ImplementUriService(this IServiceCollection services, Func<IServiceProvider, IUriService> implementationFactory)

@@ -17,5 +17,5 @@ public interface IRepositoryBase<TEntity> where TEntity : EntityBase
     void Delete<T>(T target) where  T: EntityBase;
     Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null);
     IQueryable<TEntity> IncludeableDbSet {get; set;}
-    Task<int> Complete();
+    Task<int> Complete(CancellationToken cancellationToken = default);
 }

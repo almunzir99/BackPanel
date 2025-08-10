@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BackPanel.WebApplication.Interfaces;
 
-public interface IApiController<TEntity, TDto, TDtoRequest, TService>
-    where TEntity : EntityBase where TDto : DtoBase where TService : IServicesBase<TEntity, TDto, TDtoRequest>
+public interface IApiController<TEntity, TDto, TDtoRequest>
+    where TEntity : EntityBase where TDto : DtoBase  
 {
     Task<IActionResult> GetAsync(PaginationFilter? filter = null, string title = "",
         [FromQuery] string orderBy = "LastUpdate", bool ascending = true,[FromQuery] IList<SearchExpressionDtoRequest>? expressions = null);

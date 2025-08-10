@@ -116,11 +116,11 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         return result;
     }
 
-    public async Task<int> Complete()
+    public async Task<int> Complete(CancellationToken cancellationToken = default)
     {
         try
         {
-            return await Context.SaveChangesAsync();
+            return await Context.SaveChangesAsync(cancellationToken);
         }
         catch (DbUpdateException exception)
         {

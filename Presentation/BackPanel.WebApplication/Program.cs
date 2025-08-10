@@ -29,6 +29,7 @@ builder.Services.AddScoped<IWebConfiguration, WebConfiguration>();
 builder.Services.RegisterJwtConfiguration(builder.Configuration.GetValue<string>("SecretKey:key")!);
 builder.Services.ImplementPathProviderToTranslationService<PathProvider>();
 builder.Services.RegisterRequiredTranslationEditorServices();
+builder.Services.RegisterApplicationCQRS();
 builder.Services.ImplementUriService(o =>
 {
     var accessor = o.GetRequiredService<IHttpContextAccessor>();
@@ -68,6 +69,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
+
 
 app.MapFallbackToFile("index.html");
 app.Run();
