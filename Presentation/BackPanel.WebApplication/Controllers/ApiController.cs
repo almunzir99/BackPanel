@@ -5,8 +5,15 @@ using BackPanel.Application.DTOs.Filters;
 using BackPanel.Application.DTOs.Wrapper;
 using BackPanel.Application.DTOsRequests;
 using BackPanel.Application.Extensions;
-using BackPanel.Application.Features.Users.Commands;
 using BackPanel.Application.Generic.Commands;
+using BackPanel.Application.Generic.Commands.CreateBulkCommandBase;
+using BackPanel.Application.Generic.Commands.CreateCommandBase;
+using BackPanel.Application.Generic.Commands.DeleteCommandBase;
+using BackPanel.Application.Generic.Commands.ToggleActiveCommandBase;
+using BackPanel.Application.Generic.Commands.UpdateCommandBase;
+using BackPanel.Application.Generic.Queries.ExportToExcelQueryBase;
+using BackPanel.Application.Generic.Queries.GetAllQueryBase;
+using BackPanel.Application.Generic.Queries.GetByIdQueryBase;
 using BackPanel.Application.Helpers;
 using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
@@ -23,48 +30,59 @@ namespace BackPanel.WebApplication.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public abstract class ApiController<TEntity, TDto, TDtoRequest> : ControllerBase, IApiController<TEntity, TDto, TDtoRequest>
+public abstract class ApiController<TEntity, TDto, TDtoRequest> : ControllerBase
 where TEntity : EntityBase where TDto : DtoBase
 {
     protected readonly IUriService UriService;
     public abstract string PermissionTitle { get; }
-    private readonly IMediator _mediator;
+    protected readonly IMediator Mediator;
 
     protected ApiController(IUriService uriService, IMediator mediator)
     {
         UriService = uriService;
-        _mediator = mediator;
+        Mediator = mediator;
     }
     [Permission(true, PermissionTypes.READ)]
     [HttpGet]
     public virtual async Task<IActionResult> GetAsync(
-        [FromQuery] PaginationFilter? filter = null,
-        [FromQuery] string? title = "",
-        [FromQuery] string? orderBy = "LastUpdate",
-        [FromQuery] bool ascending = true,
-        [FromQuery] IList<SearchExpressionDtoRequest>? expressions = null
+        [FromQuery] ListFilter filter
         )
     {
+        try
+        {
+            var result = await Mediator.Send(new GetAllQueryBase<TDto>(filter));
+            if (Request.Path.Value != null)
+            {
+                return Ok(PaginationHelper.CreatePagedResponse(result.Item1,
+                    filter.PaginationFilter, UriService, result.Item2, Request.Path.Value));
+            }
+            var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
+            return BadRequest(response);
+        }
+        catch (Exception e)
+        {
 
-        var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
-        return BadRequest(response);
+            var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
+            return BadRequest(response);
+        }
+
     }
     [Permission(true, PermissionTypes.READ)]
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> SingleAsync(int id)
     {
-        //try
-        //{
-        //    var result = await Service.SingleAsync(id);
-        //    var response = new Response<TDto>(data: result);
-        //    return Ok(response);
-        //}
-        //catch (Exception e)
-        //{
-        //    var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
-        //    return BadRequest(response);
-        //}
-        return Ok(new Response<TDto>(success: false, message: "This method is not implemented yet."));
+
+        try
+        {
+            var result = await Mediator.Send(new GetByIdQueryBase<TDto>(id));
+            var response = new Response<TDto>(data: result);
+            return Ok(response);
+        }
+        catch (Exception e)
+        {
+            var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
+            return BadRequest(response);
+        }
     }
     [HttpPost]
     public virtual async Task<IActionResult> PostAsync(TDtoRequest body)
@@ -72,7 +90,7 @@ where TEntity : EntityBase where TDto : DtoBase
         try
         {
             var command = new CreateCommandBase<TDtoRequest, TDto>(body);
-            var result = await _mediator.Send(command);
+            var result = await Mediator.Send(command);
             var response = new Response<TDto>(data: result);
             return Ok(response);
         }
@@ -84,140 +102,100 @@ where TEntity : EntityBase where TDto : DtoBase
     }
     [Permission(true, PermissionTypes.CREATE)]
     [HttpPost("all")]
-    public async Task<IActionResult> PostAllAsync(IList<TDtoRequest> list)
+    public async Task<IActionResult> PostAllAsync(List<TDtoRequest> list)
     {
-        //try
-        //{
-        //    await Service.CreateAllAsync(list);
-        //    var response = new Response<TDto>(success: true, message: "data created successfully");
-        //    return Ok(response);
-        //}
-        //catch (System.Exception e)
-        //{
-        //    var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
-        //    return BadRequest(response);
-        //}
-        return Ok(new Response<TDto>(success: false, message: "This method is not implemented yet."));
+        try
+        {
+            await Mediator.Send(new CreateBulkCommandBase<TDtoRequest>(list));
+            var response = new Response<TDto>(success: true, message: "data created successfully");
+            return Ok(response);
+        }
+        catch (System.Exception e)
+        {
+            var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
+            return BadRequest(response);
+        }
 
     }
     [Permission(true, PermissionTypes.UPDATE)]
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> PutAsync(int id, TDtoRequest body)
     {
-        //try
-        //{
-        //    var result = await Service.UpdateAsync(id, body);
-        //    var response = new Response<TDto>(data: result);
-        //    //create Activity
-        //    int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
-        //    await Service.CreateActivity(currentUserId, id, "Update");
-        //    return Ok(response);
-        //}
-        //catch (Exception e)
-        //{
-        //    var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
-        //    return BadRequest(response);
-        //}
-        return Ok(new Response<TDto>(success: false, message: "This method is not implemented yet."));
+        try
+        {
+            var result = await Mediator.Send(new UpdateCommandBase<TDtoRequest, TDto>(id, body));
+            var response = new Response<TDto>(data: result);
+            return Ok(response);
+        }
+        catch (Exception e)
+        {
+            var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
+            return BadRequest(response);
+        }
 
     }
     [Permission(true, PermissionTypes.DETELE)]
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(int id)
     {
-        //try
-        //{
-        //    await Service.DeleteAsync(id);
-        //    var response = new Response<TDto>(message: "Item Deleted Successfully");
-        //    //create Activity
-        //    int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
-        //    await Service.CreateActivity(currentUserId, id, "Delete");
-        //    return Ok(response);
-        //}
-        //catch (Exception e)
-        //{
-        //    var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
-        //    return BadRequest(response);
-        //}
-        return Ok(new Response<TDto>(success: false, message: "This method is not implemented yet."));
+        try
+        {
+            await Mediator.Send(new DeleteCommandBase<TEntity>(id));
+            var response = new Response<TDto>(message: "Item Deleted Successfully");
+            return Ok(response);
+        }
+        catch (Exception e)
+        {
+            var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
+            return BadRequest(response);
+        }
 
     }
-    [Permission(true, PermissionTypes.UPDATE)]
-    [HttpPatch("{id}")]
-    public virtual async Task<IActionResult> PatchAsync(int id, [FromBody] JsonPatchDocument<TEntity> body)
-    {
-        //try
-        //{
-        //    var result = await Service.UpdateAsync(id, body);
-        //    var response = new Response<TDto>(data: result);
-        //    return Ok(response);
-        //}
-        //catch (Exception e)
-        //{
-        //    var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
-        //    return BadRequest(response);
-        //}
-        return Ok(new Response<TDto>(success: false, message: "This method is not implemented yet."));
 
-    }
     [HttpGet("export/excel")]
     public virtual async Task<IActionResult> ExportToExcel()
     {
-        //var content = await this.Service.ExportToExcel();
-        //var result = new FileContentResult(content,
-        //    "application/xls")
-        //{
-        //    FileDownloadName = "data.xls",
-        //};
-        //return result;
-        return Ok(new Response<TDto>(success: false, message: "This method is not implemented yet."));
+        var content = await Mediator.Send(new ExportToExcelQueryBase<TEntity>());
+        var result = new FileContentResult(content,
+            "application/xls")
+        {
+            FileDownloadName = "data.xls",
+        };
+        return result;
 
     }
-    [HttpGet("export/pdf")]
-    public virtual async Task<IActionResult> ExportToPdf()
-    {
-        //var content = await this.Service.ExportToPdf();
-        //var result = new FileContentResult(content,
-        //    "application/pdf")
-        //{
-        //    FileDownloadName = "data.pdf",
-        //};
-        //return result;
-        return Ok(new Response<TDto>(success: false, message: "This method is not implemented yet."));
 
-    }
     [HttpGet("active")]
     public async Task<IActionResult> ActiveToggleAsync(int id)
     {
-        //try
-        //{
-        //    await Service.ActiveToggleAsync(id);
-        //    var response = new Response<TDto>(message: "item activation toggled successfully");
-        //    return Ok(response);
-        //}
-        //catch (Exception e)
-        //{
-        //    var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
-        //    return BadRequest(response);
-        //}
-        return Ok(new Response<TDto>(success: false, message: "This method is not implemented yet."));
+        try
+        {
+            await Mediator.Send(new ToggleActiveCommandBase<TEntity>(id));
+            var response = new Response<TDto>(message: "item activation toggled successfully");
+            return Ok(response);
+        }
+        catch (Exception e)
+        {
+            var response = new Response<TDto>(success: false, errors: new List<string>() { e.Message });
+            return BadRequest(response);
+        }
 
     }
-    private bool IsAnonymous(string name)
+    protected int CurrentUserId
     {
-        var type = this.GetType();
-        var targetMethod = Array.Find(type.GetMethods(), c => c.Name == name);
-        var isAnonymous = targetMethod?.GetCustomAttributes(true).SingleOrDefault(c => c.GetType().Name == "AllowAnonymousAttribute");
-        return isAnonymous != null;
+        get
+        {
+            int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
+            return currentUserId;
+        }
     }
-    protected int GetCurrentUserId()
+
+    protected string CurrentUserType
     {
-        int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
-        return currentUserId;
-    }
-    protected string GetCurrentUserType()
-    {
-        string type = HttpContext.User.GetClaimValue("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
-        return type;
+        get
+        {
+            string type = HttpContext.User.GetClaimValue("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+            return type;
+        }
     }
 }

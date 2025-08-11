@@ -8,15 +8,15 @@ namespace BackPanel.Application.Generic.Commands.DeleteCommandBase
         where TEntity : EntityBase
         where TCommand : DeleteCommandBase<TEntity>
     {
-        private readonly IRepositoryBase<TEntity> _repository;
+        protected readonly IRepositoryBase<TEntity> Repository;
         public DeleteCommandHandlerBase(IRepositoryBase<TEntity> repository)
         {
-            _repository = repository;
+            Repository = repository;
         }
         public virtual async Task Handle(TCommand request, CancellationToken cancellationToken)
         {
-            await _repository.DeleteAsync(request.Id);
-            await _repository.Complete();
+            await Repository.DeleteAsync(request.Id);
+            await Repository.Complete();
         }
     }
 

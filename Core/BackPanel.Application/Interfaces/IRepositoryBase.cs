@@ -11,6 +11,7 @@ public interface IRepositoryBase<TEntity> where TEntity : EntityBase
     Task<TEntity> SingleAsync(int id);
     Task<TEntity?> SingleAsync(Expression<Func<TEntity, bool>> predicate);
     Task<TEntity> CreateAsync(TEntity newItem);
+    Task CreateBulkAsync(List<TEntity> data);
     Task<TEntity> UpdateAsync(int id, TEntity newItem);
     Task<TEntity> UpdateAsync(int id, JsonPatchDocument<TEntity> newItem);
     Task DeleteAsync(int id,bool softDelete = true) ;

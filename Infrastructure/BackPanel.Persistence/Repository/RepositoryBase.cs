@@ -56,17 +56,17 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
     }
     public virtual async Task<IList<TEntity>> ListAsync(IList<Expression<Func<TEntity, bool>>>? predicates = null)
     {
-        var query =  _includeableDbSet.Where(c => c.Status != Status.Deleted).AsQueryable();
-        if(predicates != null)
-         {
+        var query = _includeableDbSet.Where(c => c.Status != Status.Deleted).AsQueryable();
+        if (predicates != null)
+        {
             foreach (var predicate in predicates)
             {
                 query = query.Where(predicate);
             }
-         }
+        }
         return await query.ToListAsync();
     }
-    public virtual  IQueryable<TEntity> Query()
+    public virtual IQueryable<TEntity> Query()
     {
         return _includeableDbSet.Where(c => c.Status != Status.Deleted).AsQueryable();
     }
@@ -105,7 +105,17 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         result.LastUpdate = DateTime.Now;
         return result;
     }
-
+    public async Task CreateBulkAsync(List<TEntity> data)
+    {
+        if (data == null || data.Count == 0)
+            throw new ArgumentNullException(nameof(data), "data shouldn't be null or empty");
+        foreach (var item in data)
+        {
+            item.Status = Status.Active;
+            item.CreatedAt = DateTime.Now;
+        }
+        await DbSet.AddRangeAsync(data);
+    }
     public virtual async Task<TEntity> UpdateAsync(int id, JsonPatchDocument<TEntity> newItem)
     {
         var result = await _includeableDbSet.SingleOrDefaultAsync(c => c.Id == id);
@@ -127,4 +137,6 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
             throw new Exception(exception.Decode());
         }
     }
+
+
 }

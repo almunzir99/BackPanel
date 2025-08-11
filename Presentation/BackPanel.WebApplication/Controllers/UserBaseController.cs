@@ -15,18 +15,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace BackPanel.WebApplication.Controllers;
 
 public abstract class
-    UserBaseController<TEntity, TDto, TDtoRequest, TService> : ApiController<TEntity, TDto, TDtoRequest, TService>
+    UserBaseController<TEntity, TDto, TDtoRequest, TService>
     where TEntity : UserEntityBase
     where TDto : UserDtoBase
     where TDtoRequest : UserBaseDtoRequest
     where TService : IUserBaseService<TEntity, TDto, TDtoRequest>
 {
-    public abstract override string PermissionTitle { get; }
+    public abstract string PermissionTitle { get; }
     protected abstract string Type { get; }
     private readonly INotificationService _notificationService;
 
     protected UserBaseController(TService service, IUriService uriService, INotificationService notificationService) :
-        base(service, uriService)
     {
         _notificationService = notificationService;
     }
@@ -68,7 +67,7 @@ public abstract class
 
     [AllowAnonymous]
     [HttpGet("password/recovery/request")]
-    public virtual async Task<IActionResult> PasswordRecoveryRequest([Required] [FromQuery] string email)
+    public virtual async Task<IActionResult> PasswordRecoveryRequest([Required][FromQuery] string email)
     {
         try
         {

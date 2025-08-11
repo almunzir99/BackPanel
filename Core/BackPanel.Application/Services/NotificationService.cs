@@ -10,7 +10,7 @@ namespace BackPanel.Application.Services;
 public class NotificationService : INotificationService
 {
     private readonly IRepositoryBase<Notification> _repositoryBase;
-    private readonly IMapper _mapper;
+    protected readonly IMapper Mapper;
     private readonly IRepositoryBase<Admin> _adminRepository;
 
     public NotificationService(IRepositoryBase<Notification> repositoryBase, IMapper mapper,

@@ -11,17 +11,17 @@ namespace BackPanel.Application.Generic.Queries.ExportToExcelQueryBase
         where TDTO : class
         where TQuery : ExportToExcelQueryBase<TEntity>
     {
-        protected readonly IRepositoryBase<TEntity> _repository;
-        protected readonly IMapper mapper;
+        protected readonly IRepositoryBase<TEntity> Repository;
+        protected readonly IMapper Mapper;
         public ExportToExcelQueryHandlerBase(IRepositoryBase<TEntity> repository, IMapper mapper)
         {
-            _repository = repository;
-            this.mapper = mapper;
+            Repository = repository;
+            this.Mapper = mapper;
         }
 
         public virtual async Task<byte[]> Handle(TQuery request, CancellationToken cancellationToken)
         {
-            var data = await _repository.ListAsync();
+            var data = await Repository.ListAsync();
             return DataExportHelper<TEntity>.ExportToExcel(data);
         }
     }

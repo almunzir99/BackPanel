@@ -10,20 +10,20 @@ namespace BackPanel.Application.Generic.Commands.UpdateCommandBase
        where TDTO : class
        where TCommand : UpdateCommandBase<TDTORequest, TDTO>
     {
-        private readonly IRepositoryBase<TEntity> _repository;
-        private readonly IMapper _mapper;
+        protected readonly IRepositoryBase<TEntity> Repository;
+        protected readonly IMapper Mapper;
         public UpdateCommandHandlerBase(IRepositoryBase<TEntity> repository, IMapper mapper)
         {
-            _repository = repository;
-            _mapper = mapper;
+            Repository = repository;
+            Mapper = mapper;
         }
         public virtual async Task<TDTO> Handle(TCommand request, CancellationToken cancellationToken)
         {
             var id = request.Id;
-            var mappedItem = _mapper.Map<TDTORequest, TEntity>(request.Request);
-            var result = await _repository.UpdateAsync(id, mappedItem);
-            await _repository.Complete();
-            return _mapper.Map<TEntity, TDTO>(result);
+            var mappedItem = Mapper.Map<TDTORequest, TEntity>(request.Request);
+            var result = await Repository.UpdateAsync(id, mappedItem);
+            await Repository.Complete();
+            return Mapper.Map<TEntity, TDTO>(result);
         }
 
     }

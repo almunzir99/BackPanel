@@ -9,22 +9,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackPanel.Application.Generic.Queries.GetAllQueryBase
 {
-    public  class GetAllQueryHandlerBase<TEntity, TDTO, TQuery> : IRequestHandler<TQuery, Tuple<List<TDTO>, int>>
+    public class GetAllQueryHandlerBase<TEntity, TDTO, TQuery> : IRequestHandler<TQuery, Tuple<List<TDTO>, int>>
     where TEntity : EntityBase
     where TDTO : DtoBase
     where TQuery : GetAllQueryBase<TDTO>
     {
-        private readonly IRepositoryBase<TEntity> _repository;
-        private readonly IMapper _mapper;
+        protected readonly IRepositoryBase<TEntity> Repository;
+        protected readonly IMapper Mapper;
         public GetAllQueryHandlerBase(IRepositoryBase<TEntity> repository, IMapper mapper)
         {
-            _repository = repository;
-            _mapper = mapper;
+            Repository = repository;
+            Mapper = mapper;
         }
         public virtual async Task<Tuple<List<TDTO>, int>> Handle(TQuery request, CancellationToken cancellationToken)
         {
-            var list = _repository.Query();
-            var query = list.Select(c => _mapper.Map<TDTO>(c));
+            var list = Repository.Query();
+            var query = list.Select(c => Mapper.Map<TDTO>(c));
             var result = await query.ToListAsync();
             var total = result.Count;
             // Apply Order

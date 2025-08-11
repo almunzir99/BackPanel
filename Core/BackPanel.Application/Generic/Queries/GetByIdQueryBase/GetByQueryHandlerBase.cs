@@ -10,17 +10,17 @@ namespace BackPanel.Application.Generic.Queries.GetByIdQueryBase
         where TDTO : DtoBase
         where TEntity : EntityBase
     {
-        private readonly IRepositoryBase<TEntity> _repository;
-        private readonly IMapper _mapper;
+        protected readonly IRepositoryBase<TEntity> Repository;
+        protected readonly IMapper Mapper;
         public GetByQueryHandlerBase(IRepositoryBase<TEntity> repository, IMapper mapper)
         {
-            _repository = repository;
-            _mapper = mapper;
+            Repository = repository;
+            Mapper = mapper;
         }
         public async Task<TDTO> Handle(GetByIdQueryBase<TDTO> request, CancellationToken cancellationToken)
         {
-            var entity = await _repository.SingleAsync(request.Id);
-            return _mapper.Map<TDTO>(entity);
+            var entity = await Repository.SingleAsync(request.Id);
+            return Mapper.Map<TDTO>(entity);
         }
     }
 

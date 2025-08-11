@@ -9,20 +9,20 @@ namespace BackPanel.Application.Generic.Commands.ToggleActiveCommandBase
         where TEntity : EntityBase
         where TCommand : ToggleActiveCommandBase<TEntity>
     {
-        protected readonly IRepositoryBase<TEntity> _repository;
+        protected readonly IRepositoryBase<TEntity> Repository;
         protected ToggleActiveCommandBaseHandler(IRepositoryBase<TEntity> repository)
         {
-            _repository = repository;
+            Repository = repository;
         }
         public async Task Handle(TCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _repository.SingleAsync(request.Id);
+            var entity = await Repository.SingleAsync(request.Id);
             if (entity == null)
             {
                 throw new KeyNotFoundException($"Entity with ID {request.Id} not found.");
             }
             entity.Status = entity.Status == Status.Active ? Status.Disabled : Status.Active;
-            await _repository.Complete(); ;
+            await Repository.Complete(); ;
         }
 
     }
