@@ -5,12 +5,12 @@ using MediatR;
 
 namespace BackPanel.Application.Generic.Commands.ToggleActiveCommandBase
 {
-    public class ToggleActiveCommandBaseHandler<TEntity, TCommand> : IRequestHandler<TCommand>
+    public class ToggleActiveCommandBaseHandlerBase<TEntity, TCommand> : IRequestHandler<TCommand>
         where TEntity : EntityBase
         where TCommand : ToggleActiveCommandBase<TEntity>
     {
         protected readonly IRepositoryBase<TEntity> Repository;
-        protected ToggleActiveCommandBaseHandler(IRepositoryBase<TEntity> repository)
+        protected ToggleActiveCommandBaseHandlerBase(IRepositoryBase<TEntity> repository)
         {
             Repository = repository;
         }
