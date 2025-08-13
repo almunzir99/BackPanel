@@ -2,7 +2,9 @@ using BackPanel.Application.Attributes.Permissions;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOsRequests;
 using BackPanel.Application.Interfaces;
+using BackPanel.Application.Resolvers.UriResolver;
 using BackPanel.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +12,11 @@ namespace BackPanel.WebApplication.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class MessagesController : ApiController<Message, MessageDto,MessageDtoRequest, IMessageService>
+public class MessagesController : ApiController<Message, MessageDto, MessageDtoRequest>
 {
     private readonly INotificationService _notificationService;
 
-    public MessagesController(IMessageService service, IUriService uriSerivce,INotificationService notificationService) : base(service, uriSerivce)
+    public MessagesController(IUriResolver uriService, IMediator mediator, INotificationService notificationService) : base(uriService, mediator)
     {
         _notificationService = notificationService;
     }
@@ -24,18 +26,20 @@ public class MessagesController : ApiController<Message, MessageDto,MessageDtoRe
     [Permission(false, PermissionTypes.CREATE)]
     [AllowAnonymous]
     [HttpPost]
-    public override async Task<IActionResult> PostAsync([FromBody] MessageDtoRequest body){
+    public override async Task<IActionResult> PostAsync([FromBody] MessageDtoRequest body)
+    {
         // Push Notifications
-        var notification = new NotificationDto(){
+        var notification = new NotificationDto()
+        {
             Title = "New Message",
-            Message ="There is a new Message submitted, please check messages page",
+            Message = "There is a new Message submitted, please check messages page",
             Module = "MESSAGES",
             Action = "CREATE",
             Url = "/dashboard/messages",
             CreatedAt = DateTime.Now,
             LastUpdate = DateTime.Now,
         };
-        await _notificationService.BroadCastNotification(notification,"admin");
+        await _notificationService.BroadCastNotification(notification, "admin");
         return await base.PostAsync(body);
     }
 }

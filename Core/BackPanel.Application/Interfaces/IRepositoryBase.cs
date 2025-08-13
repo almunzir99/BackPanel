@@ -19,4 +19,5 @@ public interface IRepositoryBase<TEntity> where TEntity : EntityBase
     Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null);
     IQueryable<TEntity> IncludeableDbSet {get; set;}
     Task<int> Complete(CancellationToken cancellationToken = default);
+    Task<TEntity> FirstOrDefaultAsync();
 }

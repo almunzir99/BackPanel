@@ -10,7 +10,7 @@ namespace BackPanel.Application.Services;
 public class NotificationService : INotificationService
 {
     private readonly IRepositoryBase<Notification> _repositoryBase;
-    protected readonly IMapper Mapper;
+    protected readonly IMapper _mapper;
     private readonly IRepositoryBase<Admin> _adminRepository;
 
     public NotificationService(IRepositoryBase<Notification> repositoryBase, IMapper mapper,
@@ -62,14 +62,13 @@ public class NotificationService : INotificationService
         return mappedNotifications;
     }
 
-    public async Task PushNotification(int userId,string userType, NotificationDto notification,UserEntityBase? target = null)
+    public async Task PushNotification(int userId, string userType, NotificationDto notification, UserEntityBase? target = null)
     {
         UserEntityBase user = target ?? await GetUser(userId, userType);
         var mappedNotification = _mapper.Map<NotificationDto, Notification>(notification);
         user.Notifications.Add(mappedNotification);
         var _ = _mapper.Map<Notification, NotificationDto>(mappedNotification);
         await _repositoryBase.Complete();
-        // await PushNotificationWithSignalR(userId, userType, result);
     }
 
     private async Task<UserEntityBase> GetUser(int userId, string userType)
@@ -111,19 +110,8 @@ public class NotificationService : INotificationService
 
         foreach (var user in users)
         {
-            await PushNotification(user.Id,userType,notification,user);
+            await PushNotification(user.Id, userType, notification, user);
         }
-        // foreach (var user in users)
-        // {
-        //     await PushNotificationWithSignalR(user.Id, userType, notification);
-        // }
+
     }
-    // private async Task PushNotificationWithSignalR(int userId, string userType, NotificationDto notification)
-    // {
-    //     var target = _connectionManager.GetUserConnections(userId, userType);
-    //     foreach (var id in target)
-    //     {
-    //         await _hubContext.Clients.Client(id).SendAsync("recieveNotification", notification);
-    //     }
-    // }
 }

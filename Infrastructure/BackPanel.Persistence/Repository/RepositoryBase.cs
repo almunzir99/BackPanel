@@ -91,7 +91,14 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
 
     public async Task<TEntity?> SingleAsync(Expression<Func<TEntity, bool>> predicate)
     {
-        var result = await _includeableDbSet.Where(c => c.Status != Status.Deleted).SingleOrDefaultAsync(predicate);
+        var result = await _includeableDbSet.Where(c => c.Status != Status.Deleted).FirstOrDefaultAsync(predicate);
+        return result;
+    }
+    public async Task<TEntity> FirstOrDefaultAsync()
+    {
+        var result = await _includeableDbSet.FirstOrDefaultAsync();
+        if (result == null)
+            throw new Exception("item is not found");
         return result;
     }
 

@@ -15,7 +15,7 @@ using BackPanel.Application.Generic.Queries.ExportToExcelQueryBase;
 using BackPanel.Application.Generic.Queries.GetAllQueryBase;
 using BackPanel.Application.Generic.Queries.GetByIdQueryBase;
 using BackPanel.Application.Helpers;
-using BackPanel.Application.Interfaces;
+using BackPanel.Application.Resolvers.UriResolver;
 using BackPanel.Domain.Entities;
 using BackPanel.WebApplication.Interfaces;
 using MediatR;
@@ -33,11 +33,11 @@ namespace BackPanel.WebApplication.Controllers;
 public abstract class ApiController<TEntity, TDto, TDtoRequest> : ControllerBase
 where TEntity : EntityBase where TDto : DtoBase
 {
-    protected readonly IUriService UriService;
+    protected readonly IUriResolver UriService;
     public abstract string PermissionTitle { get; }
     protected readonly IMediator Mediator;
 
-    protected ApiController(IUriService uriService, IMediator mediator)
+    protected ApiController(IUriResolver uriService, IMediator mediator)
     {
         UriService = uriService;
         Mediator = mediator;
