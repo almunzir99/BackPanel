@@ -3,27 +3,21 @@ using BackPanel.Application.Attributes.Permissions;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
 using BackPanel.Application.DTOs.Wrapper;
-using BackPanel.Application.DTOsRequests;
 using BackPanel.Application.Extensions;
-using BackPanel.Application.Generic.Commands;
-using BackPanel.Application.Generic.Commands.CreateBulkCommandBase;
-using BackPanel.Application.Generic.Commands.CreateCommandBase;
-using BackPanel.Application.Generic.Commands.DeleteCommandBase;
-using BackPanel.Application.Generic.Commands.ToggleActiveCommandBase;
-using BackPanel.Application.Generic.Commands.UpdateCommandBase;
-using BackPanel.Application.Generic.Queries.ExportToExcelQueryBase;
-using BackPanel.Application.Generic.Queries.GetAllQueryBase;
-using BackPanel.Application.Generic.Queries.GetByIdQueryBase;
+using BackPanel.Application.Generic.Commands.CreateBulkBase;
+using BackPanel.Application.Generic.Commands.CreateBase;
+using BackPanel.Application.Generic.Commands.DeleteBase;
+using BackPanel.Application.Generic.Commands.ToggleActiveBase;
+using BackPanel.Application.Generic.Commands.UpdateBase;
+using BackPanel.Application.Generic.Queries.ExportToExcelBase;
+using BackPanel.Application.Generic.Queries.GetAllBase;
+using BackPanel.Application.Generic.Queries.GetByIdBase;
 using BackPanel.Application.Helpers;
 using BackPanel.Application.Resolvers.UriResolver;
 using BackPanel.Domain.Entities;
-using BackPanel.WebApplication.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.DataProtection.Internal;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BackPanel.WebApplication.Controllers;
 
@@ -33,13 +27,13 @@ namespace BackPanel.WebApplication.Controllers;
 public abstract class ApiController<TEntity, TDto, TDtoRequest> : ControllerBase
 where TEntity : EntityBase where TDto : DtoBase
 {
-    protected readonly IUriResolver UriService;
+    protected readonly IUriResolver UriResolver;
     public abstract string PermissionTitle { get; }
     protected readonly IMediator Mediator;
 
-    protected ApiController(IUriResolver uriService, IMediator mediator)
+    protected ApiController(IUriResolver uriResolver, IMediator mediator)
     {
-        UriService = uriService;
+        this.UriResolver = uriResolver;
         Mediator = mediator;
     }
     [Permission(true, PermissionTypes.READ)]
@@ -54,7 +48,7 @@ where TEntity : EntityBase where TDto : DtoBase
             if (Request.Path.Value != null)
             {
                 return Ok(PaginationHelper.CreatePagedResponse(result.Item1,
-                    filter.PaginationFilter, UriService, result.Item2, Request.Path.Value));
+                    filter.PaginationFilter, UriResolver, result.Item2, Request.Path.Value));
             }
             var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
             return BadRequest(response);

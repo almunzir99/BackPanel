@@ -3,7 +3,7 @@ using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
 using BackPanel.Application.DTOs.Wrapper;
 using BackPanel.Application.DTOsRequests;
-using BackPanel.Application.Generic.Queries.GetAllQueryBase;
+using BackPanel.Application.Generic.Queries.GetAllBase;
 using BackPanel.Application.Helpers;
 using BackPanel.Application.Resolvers.UriResolver;
 using BackPanel.Domain.Entities;
@@ -35,7 +35,7 @@ public class AdminsController : ApiController<Admin, AdminDto, AdminDtoRequest>
             if (Request.Path.Value != null)
             {
                 return Ok(PaginationHelper.CreatePagedResponse(result.Item1,
-                    filter.PaginationFilter, UriService, result.Item2, Request.Path.Value));
+                    filter.PaginationFilter, UriResolver, result.Item2, Request.Path.Value));
             }
             var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
             return BadRequest(response);
