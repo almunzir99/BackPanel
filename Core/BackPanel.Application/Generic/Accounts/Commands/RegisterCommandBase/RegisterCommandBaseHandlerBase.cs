@@ -8,7 +8,7 @@ using MediatR;
 
 namespace BackPanel.Application.Generic.Authentication.Commands.RegisterCommandBase
 {
-    public abstract class RegisterCommandBaseHandlerBase<TEntity, TDTORequest, TDTO> : IRequestHandler<RegisterCommandBase<TDTORequest, TDTO>, TDTO>
+    public abstract class RegisterCommandBaseHandlerBase<TEntity, TDTORequest, TDTO,TCommand> : IRequestHandler<RegisterCommandBase<TDTORequest, TDTO>, TDTO>
         where TEntity : UserEntityBase
         where TDTORequest : UserBaseDtoRequest
         where TDTO : UserDtoBase
