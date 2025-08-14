@@ -1,5 +1,5 @@
 using BackPanel.Application.Extensions;
-using BackPanel.Application.Features.Roles.Queries.GetByTitleRole;
+using BackPanel.Application.Features.Roles.Queries;
 using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
 using MediatR;

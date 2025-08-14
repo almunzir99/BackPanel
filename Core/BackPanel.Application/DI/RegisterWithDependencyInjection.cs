@@ -1,6 +1,6 @@
 using System.Text;
 using BackPanel.Application.DTOs;
-using BackPanel.Application.Generic.Commands.CreateBase;
+using BackPanel.Application.Generic.Common.Commands;
 using BackPanel.Application.Interfaces;
 using BackPanel.Application.Resolvers.UriResolver;
 using BackPanel.Application.Resolvers.UserResolver;
