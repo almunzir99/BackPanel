@@ -3,7 +3,7 @@ using BackPanel.Application.DTOsRequests;
 using BackPanel.Application.Resolvers.UriResolver;
 using BackPanel.Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BackPanel.WebApplication.Areas.API.Controllers.Accounts
 {

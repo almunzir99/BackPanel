@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
 import { Admin } from 'src/app/core/models/admin.model';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AccountService } from 'src/app/core/services/account.service';
 import { GeneralService } from 'src/app/core/services/general.service';
 import { AlertMessage, AlertMessageComponent, MessageTypes } from 'src/app/shared/components/alert-message/alert-message.component';
 import { ControlTypes } from 'src/app/shared/components/form-builder/control-type.enum';
@@ -22,7 +22,7 @@ export class ProfileComponent implements OnInit {
   dimRequest = RequestStatus.Initial;
   theme:'light' | 'dark' = 'light';
   constructor(
-    private _service: AuthService, 
+    private _service: AccountService, 
     @Inject("BASE_API_URL") public baseUrl: string, 
     private _dialog: MatDialog,
     _generalService:GeneralService) {

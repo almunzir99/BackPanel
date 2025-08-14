@@ -15,8 +15,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BackPanel.WebApplication.Areas.API.Controllers.Accounts;
 
-[Authorize()]
+[Authorize]
 [ApiController]
+[Route("api/[controller]")]
 public abstract class
     AccountBaseController<TEntity, TDto, TDtoRequest> : ControllerBase
     where TEntity : UserEntityBase

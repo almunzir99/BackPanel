@@ -11,7 +11,7 @@ import { Activity } from 'src/app/core/models/activity.model';
 import { AdminsService } from 'src/app/core/services/admins.service';
 import { GeneralService } from 'src/app/core/services/general.service';
 import { Role } from 'src/app/core/models/role.model';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AccountService } from 'src/app/core/services/account.service';
 import { Admin } from 'src/app/core/models/admin.model';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
     private _service: StatisticsService, 
     private _adminService:AdminsService, 
     private _messageSerivce: MessagesService,
-    _authService:AuthService,
+    _authService:AccountService,
     @Inject('DIRECTION') public dir:string, 
   _generalService:GeneralService,private _translateService:TranslateService) {
     this.dir = _translateService.currentLang == 'ar' ? 'rtl' : 'ltr';

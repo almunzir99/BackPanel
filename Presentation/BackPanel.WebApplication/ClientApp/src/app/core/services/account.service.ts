@@ -10,11 +10,10 @@ import { ApiResponse } from '../models/wrappers/api-response.model';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AccountService {
   private moduleBaseUrl = ``;
   private authTokenKey = "auth_token";
   private _$currentUser = new BehaviorSubject<Admin | null>(null);
-  public $notifications = new BehaviorSubject<ApiNotification[]>([]);
   public $role = new BehaviorSubject<Role | null>(null);
   public get $currentUser() {
     return this._$currentUser;
@@ -23,7 +22,7 @@ export class AuthService {
     this._$currentUser.next(value);
   }
   constructor(private http: HttpClient, @Inject("BASE_API_URL") baseUrl: string) {
-    this.moduleBaseUrl = `${baseUrl}api/admins/`;
+    this.moduleBaseUrl = `${baseUrl}api/admin-accounts/`;
   }
   autthenticate(model: AuthenticationModel): Observable<ApiResponse<Admin>> {
     return this.http.post(`${this.moduleBaseUrl}authenticate`, model) as Observable<ApiResponse<Admin>>;
@@ -39,15 +38,7 @@ export class AuthService {
     return this.http.put(`${this.moduleBaseUrl}profile/password-reset`, { newPassword: newPassword, oldPassword: oldPassword });
 
   }
-  getNotifications(): Observable<ApiResponse<ApiNotification[]>> {
-    return this.http.get(`${this.moduleBaseUrl}notifications`) as Observable<ApiResponse<ApiNotification[]>>;
 
-  }
-  readNotifications(): Observable<ApiResponse<ApiNotification[]>> {
-    return this.http.get(`${this.moduleBaseUrl}notifications/unread?autoRead=true`) as Observable<ApiResponse<ApiNotification[]>>;
-
-  }
-  
   saveToken(token: string) {
     localStorage.setItem(this.authTokenKey, token);
   }

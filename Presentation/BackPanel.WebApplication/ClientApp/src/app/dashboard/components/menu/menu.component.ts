@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Admin } from 'src/app/core/models/admin.model';
 import { Permission } from 'src/app/core/models/permission.model';
 import { Role } from 'src/app/core/models/role.model';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AccountService } from 'src/app/core/services/account.service';
 import { GeneralService } from 'src/app/core/services/general.service';
 import { MenuGroup } from './menu.group';
 import { MenuList } from './menu.list';
@@ -23,7 +23,7 @@ export class MenuComponent implements OnInit {
   theme: 'light' | 'dark' = 'light';
   dir:'rtl' | 'ltr' = 'ltr';
   company:CompanyInfo | null;
-  constructor(_authService: AuthService,
+  constructor(_authService: AccountService,
     _generalService: GeneralService,
     _companyInfoService:CompanyInfoService,
     @Inject("BASE_API_URL") public baseUrl: string,

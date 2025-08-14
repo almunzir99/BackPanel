@@ -40,12 +40,11 @@ namespace BackPanel.WebApplication.Areas.API.Controllers.Common
 
         [HttpGet()]
         public async Task<ActionResult<IList<NotificationDto>>> GetNotifications(
-            int userId,
             [FromQuery] string userType,
             [FromQuery] PaginationFilter filter
          )
         {
-            var notifications = await _mediator.Send(new ListNotificationsQuery(userId, userType, filter));
+            var notifications = await _mediator.Send(new ListNotificationsQuery(CurrentUserId, userType, filter));
 
             return Ok(notifications);
         }
