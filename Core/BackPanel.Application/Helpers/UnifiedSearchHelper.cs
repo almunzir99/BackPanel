@@ -19,7 +19,7 @@ namespace BackPanel.Application.Helpers
             bool includeNullValues = false)
         {
             if (string.IsNullOrWhiteSpace(search))
-                return null;
+                return (c => true);
 
             var parameter = Expression.Parameter(typeof(T), "e");
             var searchTerm = caseSensitive ? search : search.ToLowerInvariant();

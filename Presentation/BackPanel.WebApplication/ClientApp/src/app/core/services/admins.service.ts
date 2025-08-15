@@ -31,7 +31,7 @@ export class AdminsService {
   }
   post(admin: Admin) {
     console.log(admin);
-    return this.http.post(`${this.moduleBaseUrl}register`, admin);
+    return this.http.post(`${this.moduleBaseUrl}`, admin);
   }
   postAll(items: any[]) {
     return this.http.post(`${this.moduleBaseUrl}all`, items);
