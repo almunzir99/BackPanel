@@ -9,4 +9,5 @@ namespace BackPanel.Application.Generic.Common.Queries
 {
     public record ExportToExcelQueryBase<TEntity> : IRequest<byte[]>
         where TEntity : class;
+
 }

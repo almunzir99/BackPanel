@@ -8,9 +8,9 @@ using BackPanel.Domain.Entities;
 
 namespace BackPanel.Application.Features.Admins.Commands.Handlers
 {
-    public class CreateCommandHander : CreateCommandHandlerBase<Admin, AdminDtoRequest, AdminDto, CreateCommandBase<AdminDtoRequest, AdminDto>>
+    public class UpdateAdminCommandHander : UpdateCommandHandlerBase<Admin, AdminDtoRequest, AdminDto, UpdateCommandBase<AdminDtoRequest, AdminDto>>
     {
-        public CreateCommandHander(IRepositoryBase<Admin> repository, IMapper mapper) : base(repository, mapper)
+        public UpdateAdminCommandHander(IRepositoryBase<Admin> repository, IMapper mapper) : base(repository, mapper)
         {
         }
     }
