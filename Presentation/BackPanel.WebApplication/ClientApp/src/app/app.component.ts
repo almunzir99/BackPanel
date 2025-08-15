@@ -3,12 +3,13 @@ import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { RequestStatus } from './core/models/request-status.enum';
-import { AuthService } from './core/services/auth.service';
+import { AccountService } from './core/services/account.service';
 import { GeneralService } from './core/services/general.service';
 import { RolesService } from './core/services/roles.service';
 import { CompanyInfoService } from './core/services/company-info.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConstants } from './shared/constants/app_constants';
+import { NotificationsService } from './core/services/notifications.service';
 
 @Component({
   selector: 'app-root',
@@ -17,16 +18,17 @@ import { AppConstants } from './shared/constants/app_constants';
 export class AppComponent {
   requestStatus = RequestStatus.Initial;
   theme: 'light' | 'dark' = 'light';
-  constructor(private _authService: AuthService,
+  constructor(private _authService: AccountService,
     private _roleService: RolesService,
     private router: Router,
     private _generalService: GeneralService,
     private _companyInfoService: CompanyInfoService,
     @Inject('DIRECTION') public dir: string,
     private _translateService: TranslateService,
+    private _notificationsService: NotificationsService,
     private overlay: OverlayContainer) {
     // Configure Translations
-    _translateService.addLangs(["en","ar"]);
+    _translateService.addLangs(["en", "ar"]);
     _translateService.setDefaultLang("en");
     // Configure themes
     this._generalService.$theme.subscribe(value => {
@@ -46,11 +48,11 @@ export class AppComponent {
     });
     this.getData();
   }
-  ngAfterContentInit(){
+  ngAfterContentInit() {
     this.loadLang();
-    this._translateService.onLangChange.subscribe({ 
-      next: (value:any) => {
-          this.dir = value.lang == 'ar' ? 'rtl' : 'ltr';
+    this._translateService.onLangChange.subscribe({
+      next: (value: any) => {
+        this.dir = value.lang == 'ar' ? 'rtl' : 'ltr';
       }
     })
   }
@@ -66,8 +68,8 @@ export class AppComponent {
       }
       // set company info
       this._companyInfoService.setCompanyInfo(companyInfo.data);
-      var notifications = await firstValueFrom(this._authService.getNotifications());
-      this._authService.$notifications.next(notifications.data);
+      var notifications = await firstValueFrom(this._notificationsService.getNotifications());
+      this._notificationsService.$notifications.next(notifications.data);
       this.requestStatus = RequestStatus.Success;
     } catch (error) {
       this.requestStatus = RequestStatus.Failed;

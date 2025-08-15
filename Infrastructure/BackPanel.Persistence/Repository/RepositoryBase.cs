@@ -56,17 +56,17 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
     }
     public virtual async Task<IList<TEntity>> ListAsync(IList<Expression<Func<TEntity, bool>>>? predicates = null)
     {
-        var query =  _includeableDbSet.Where(c => c.Status != Status.Deleted).AsQueryable();
-        if(predicates != null)
-         {
+        var query = _includeableDbSet.Where(c => c.Status != Status.Deleted).AsQueryable();
+        if (predicates != null)
+        {
             foreach (var predicate in predicates)
             {
                 query = query.Where(predicate);
             }
-         }
+        }
         return await query.ToListAsync();
     }
-    public virtual  IQueryable<TEntity> List()
+    public virtual IQueryable<TEntity> Query()
     {
         return _includeableDbSet.Where(c => c.Status != Status.Deleted).AsQueryable();
     }
@@ -91,7 +91,14 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
 
     public async Task<TEntity?> SingleAsync(Expression<Func<TEntity, bool>> predicate)
     {
-        var result = await _includeableDbSet.Where(c => c.Status != Status.Deleted).SingleOrDefaultAsync(predicate);
+        var result = await _includeableDbSet.Where(c => c.Status != Status.Deleted).FirstOrDefaultAsync(predicate);
+        return result;
+    }
+    public async Task<TEntity> FirstOrDefaultAsync()
+    {
+        var result = await _includeableDbSet.FirstOrDefaultAsync();
+        if (result == null)
+            throw new Exception("item is not found");
         return result;
     }
 
@@ -105,7 +112,17 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         result.LastUpdate = DateTime.Now;
         return result;
     }
-
+    public async Task CreateBulkAsync(List<TEntity> data)
+    {
+        if (data == null || data.Count == 0)
+            throw new ArgumentNullException(nameof(data), "data shouldn't be null or empty");
+        foreach (var item in data)
+        {
+            item.Status = Status.Active;
+            item.CreatedAt = DateTime.Now;
+        }
+        await DbSet.AddRangeAsync(data);
+    }
     public virtual async Task<TEntity> UpdateAsync(int id, JsonPatchDocument<TEntity> newItem)
     {
         var result = await _includeableDbSet.SingleOrDefaultAsync(c => c.Id == id);
@@ -116,15 +133,17 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         return result;
     }
 
-    public async Task<int> Complete()
+    public async Task<int> Complete(CancellationToken cancellationToken = default)
     {
         try
         {
-            return await Context.SaveChangesAsync();
+            return await Context.SaveChangesAsync(cancellationToken);
         }
         catch (DbUpdateException exception)
         {
             throw new Exception(exception.Decode());
         }
     }
+
+
 }

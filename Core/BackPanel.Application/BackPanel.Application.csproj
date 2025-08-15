@@ -1,26 +1,27 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\Infrastructure\BackPanel.FilesManager\BackPanel.FilesManager.csproj" />
-      <ProjectReference Include="..\..\Infrastructure\BackPanel.SMTP\BackPanel.SMTP.csproj" />
-      <ProjectReference Include="..\BackPanel.Domain\BackPanel.Domain.csproj" />
-    </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Infrastructure\BackPanel.FilesManager\BackPanel.FilesManager.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\BackPanel.SMTP\BackPanel.SMTP.csproj" />
+		<ProjectReference Include="..\BackPanel.Domain\BackPanel.Domain.csproj" />
+	</ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="11.0.1" />
-      <PackageReference Include="ClosedXML" Version="0.100.3" />
-      <PackageReference Include="DinkToPdf" Version="1.0.8" />
-      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
-      <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="6.0.7" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
-      <PackageReference Include="PuppeteerSharp" Version="10.0.0" />
-      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.0" />
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="12.0.1" />
+		<PackageReference Include="ClosedXML" Version="0.105.0" />
+		<PackageReference Include="DinkToPdf" Version="1.0.8" />
+		<PackageReference Include="MediatR" Version="13.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.8" />
+		<PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="9.0.8" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />
+		<PackageReference Include="PuppeteerSharp" Version="11.0.0-preview" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.13.0" />
+	</ItemGroup>
 
 </Project>

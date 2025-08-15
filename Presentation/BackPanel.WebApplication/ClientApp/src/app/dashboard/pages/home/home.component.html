@@ -11,23 +11,26 @@
                 <div class="title" [innerHTML]="'Dashboard.'+card.title | translate"></div>
                 <div [style.color]="card.color" class="count">{{card.count}}</div>
             </div>
-            <i [dir]="dir == 'rtl' ? 'rtl' : 'ltr'" [style.color]="card.color" [attr.class]="card.icon + ' overlay'"></i>
+            <i [dir]="dir == 'rtl' ? 'rtl' : 'ltr'" [style.color]="card.color"
+                [attr.class]="card.icon + ' overlay'"></i>
         </div>
     </div>
     <br>
     <div class="tables">
-        <div *ngIf="currentUser?.isManager || currentRole?.messagesPermissions?.read" style="flex: 3;" class="table-container">
+        <div *ngIf="currentUser?.isManager || currentRole?.messagesPermissions?.read" style="flex: 3;"
+            class="table-container">
             <div class="table-container-header">
                 <h2 [innerHTML]="'Dashboard.Messages-Table' | translate"></h2>
-                <button [routerLink]="['/','dashboard','messages']"  class="show-all-button" mat-flat-button color="primary">
+                <button [routerLink]="['/','dashboard','messages']" class="show-all-button" mat-flat-button
+                    color="primary">
                     <span [innerHTML]="'Dashboard.Show-All' | translate"></span>
-                    <mat-icon [textContent]="dir == 'rtl' ? 'arrow_backward' : 'arrow_forward'" ></mat-icon>
+                    <mat-icon [textContent]="dir == 'rtl' ? 'arrow_backward' : 'arrow_forward'"></mat-icon>
                 </button>
             </div>
             <div class="content">
                 <spinner-placeholder class="placeholder" *ngIf="messageRequest == 1"></spinner-placeholder>
                 <offline-placeholder class="placeholder" *ngIf="messageRequest == 3"></offline-placeholder>
-                <div  *ngIf="messageRequest == 2" class="message-list">
+                <div *ngIf="messageRequest == 2" class="message-list">
                     <div *ngFor="let message of messages" class="message">
                         <div [dir]="dir == 'rtl' ? 'rtl' : 'ltr'" class="icon-container">
                             <i class="las la-envelope"></i>
@@ -44,46 +47,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div *ngIf="currentUser?.isManager || currentRole?.adminsPermissions?.read" style="flex: 4;" class="table-container">
-            <div class="table-container-header">
-                <h2 [innerHTML]="'Dashboard.Users-Activities' | translate"></h2>
-                <button [routerLink]="['/','dashboard','admins','activities']" class="show-all-button" mat-flat-button color="primary">
-                    <span [innerHTML]="'Dashboard.Show-All' | translate"></span>
-                    <mat-icon [textContent]="dir == 'rtl' ? 'arrow_backward' : 'arrow_forward'" ></mat-icon>
-                </button>
-            </div>
-            <div class="content">
-                <data-table [loading]="activitiesRequest == 1" [break-word]="false" [rows]="activities" [columns]="activitiesCols" [show-header]="false" [show-footer]="false"
-                    [cell-template]="cellTemplate">
-                    <ng-template #cellTemplate let-rowData="rowData" let-data="cellData" let-col="colIndex"
-                        let-row="rowIndex">
-                        <ng-container [ngSwitch]="col">
-                            <ng-container *ngSwitchCase="0">
-                                {{data?.username}}
-
-                            </ng-container>
-                            <ng-container *ngSwitchCase="3">
-                                <div 
-                                [class.red]="data == 'Delete'"
-                                [class.accent]="data == 'Update'"
-                                [class.primary]="data == 'Create'"
-                                class="action-container">
-                                    {{data}}
-
-                                </div>
-                            </ng-container>
-                            <ng-container  *ngSwitchDefault>
-                                <div style="text-align: center;">
-                                {{data}}
-                                    
-                                </div>
-                            </ng-container>
-
-                        </ng-container>
-                    </ng-template>
-                </data-table>
             </div>
         </div>
     </div>

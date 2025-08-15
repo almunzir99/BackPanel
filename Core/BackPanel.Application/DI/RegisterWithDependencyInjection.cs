@@ -1,5 +1,9 @@
 using System.Text;
+using BackPanel.Application.DTOs;
+using BackPanel.Application.Generic.Common.Commands;
 using BackPanel.Application.Interfaces;
+using BackPanel.Application.Resolvers.UriResolver;
+using BackPanel.Application.Resolvers.UserResolver;
 using BackPanel.Application.Services;
 using BackPanel.Domain.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,17 +16,20 @@ public static class RegisterWithDependencyInjection
 {
     public static void RegisterRequiredApplicationService(this IServiceCollection services)
     {
-        services.AddScoped<IAdminService, AdminService>();
-        services.AddScoped<IRolesService, RolesService>();
-        services.AddScoped<INotificationService, NotificationService>();
-        services.AddScoped<IMessageService, MessagesService>();
         services.AddScoped<IStatisticsService, StatisticsService>();
-        services.AddScoped<ICompanyInfosService, CompanyInfosService>();
     }
 
-    public static void ImplementUriService(this IServiceCollection services, Func<IServiceProvider, IUriService> implementationFactory)
+    public static void RegisterApplicationCQRS(this IServiceCollection services)
     {
-        _ = services.AddScoped(implementationFactory);
+        services.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssembly(typeof(CreateCommandBase<DtoBase, DtoBase>).Assembly)
+        );
+    }
+
+    public static void RegisterResolvers(this IServiceCollection services, Func<IServiceProvider, IUriResolver> implementationFactory)
+    {
+        services.AddScoped<IUserResolver, UserResolver>();
+        services.AddScoped(implementationFactory);
     }
 
     public static void RegisterJwtConfiguration(this IServiceCollection services, string secretKey)
@@ -38,14 +45,5 @@ public static class RegisterWithDependencyInjection
             o.RequireHttpsMetadata = false;
             o.TokenValidationParameters = new TokenValidationParameters { ValidateIssuerSigningKey = true, IssuerSigningKey = new SymmetricSecurityKey(key), ValidateIssuer = false, ValidateAudience = false };
         });
-    }
-    public static async Task LoadCompanyInfo(this WebApplication app)
-    {
-        using var scope = app.Services.CreateScope();
-        var companyInfoService = scope.ServiceProvider.GetRequiredService<ICompanyInfosService>();
-        if (companyInfoService != null)
-        {
-            await companyInfoService.GetCompanyInfoAsync();
-        }
     }
 }

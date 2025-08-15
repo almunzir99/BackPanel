@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Activity } from '../models/activity.model';
 import { Admin } from '../models/admin.model';
 import { PagedResponse } from '../models/wrappers/paged-response.model';
 import { FieldSearchResult } from 'src/app/shared/components/datatable/datatable.component';
@@ -30,25 +29,9 @@ export class AdminsService {
     });
     return this.http.get(`${this.moduleBaseUrl}`, { params: params }) as Observable<PagedResponse<Admin[]>>;
   }
-  getActivities(pageIndex = 1, pageSize = 5): Observable<PagedResponse<Activity[]>> {
-    var params: any = {
-      PageIndex: pageIndex,
-      PageSize: pageSize,
-    }
-    return this.http.get(`${this.moduleBaseUrl}activities`, { params: params }) as Observable<PagedResponse<Activity[]>>;
-
-  }
-  getAdminActivities(userId: number, pageIndex = 1, pageSize = 10): Observable<PagedResponse<Activity[]>> {
-    var params: any = {
-      PageIndex: pageIndex,
-      PageSize: pageSize,
-    }
-    return this.http.get(`${this.moduleBaseUrl}${userId}/activities`, { params: params }) as Observable<PagedResponse<Activity[]>>;
-
-  }
   post(admin: Admin) {
     console.log(admin);
-    return this.http.post(`${this.moduleBaseUrl}register`, admin);
+    return this.http.post(`${this.moduleBaseUrl}`, admin);
   }
   postAll(items: any[]) {
     return this.http.post(`${this.moduleBaseUrl}all`, items);

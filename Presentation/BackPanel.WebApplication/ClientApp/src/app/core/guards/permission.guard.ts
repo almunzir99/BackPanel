@@ -5,7 +5,7 @@ import { MenuList } from 'src/app/dashboard/components/menu/menu.list';
 import { Admin } from '../models/admin.model';
 import { Permission } from '../models/permission.model';
 import { Role } from '../models/role.model';
-import { AuthService } from '../services/auth.service';
+import { AccountService } from '../services/account.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class PermissionGuard implements CanActivateChild {
   currentRole: Role | null = null;
   currentUser: Admin | null = null;
   menuList = MenuList;
-  constructor(_authService: AuthService,private router:Router) {
+  constructor(_authService: AccountService,private router:Router) {
     _authService.$role.subscribe(role => {
       this.currentRole = role
     })

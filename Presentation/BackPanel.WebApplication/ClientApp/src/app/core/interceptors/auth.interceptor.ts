@@ -6,12 +6,12 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { AccountService } from '../services/account.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(@Inject("BASE_API_URL") private _baseUrl: string,private _authService:AuthService) {}
+  constructor(@Inject("BASE_API_URL") private _baseUrl: string,private _authService:AccountService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     var token = this._authService.getToken();

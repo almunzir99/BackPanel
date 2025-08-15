@@ -1,0 +1,11 @@
+using AutoMapper;
+using @[ProjectName].Application.DTOs;
+using @[ProjectName].Application.Generic.Common.Queries;
+using @[ProjectName].Application.Generic.Common.Queries.Handlers;
+using @[ProjectName].Application.Interfaces;
+using @[ProjectName].Domain.Entities;
+
+namespace @[ProjectName].Application.Features.@[Models].Queries.Handlers;
+public class GetAll@[Model]QueryHandler: GetAllQueryHandlerBase < @[Model], @[Model]Dto, GetAllQueryBase < @[Model]Dto >> {
+  public GetAll@[Model]QueryHandler(IRepositoryBase < @[Model]> repository, IMapper mapper): base(repository, mapper) {}
+}

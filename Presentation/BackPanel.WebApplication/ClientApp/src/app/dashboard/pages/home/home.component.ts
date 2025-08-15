@@ -5,13 +5,11 @@ import { RequestStatus } from 'src/app/core/models/request-status.enum';
 import { Stats } from 'src/app/core/models/stats.model';
 import { MessagesService } from 'src/app/core/services/messages.service';
 import { StatisticsService } from 'src/app/core/services/statistics.service';
-import { Column } from 'src/app/shared/components/datatable/column.model';
 import * as dayjs from 'dayjs';
-import { Activity } from 'src/app/core/models/activity.model';
 import { AdminsService } from 'src/app/core/services/admins.service';
 import { GeneralService } from 'src/app/core/services/general.service';
 import { Role } from 'src/app/core/models/role.model';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AccountService } from 'src/app/core/services/account.service';
 import { Admin } from 'src/app/core/models/admin.model';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
@@ -24,25 +22,22 @@ export class HomeComponent implements OnInit {
   getRequest = RequestStatus.Initial;
   counterCards: CounterCardSpec[] = [];
   messageRequest = RequestStatus.Loading;
-  activitiesRequest = RequestStatus.Loading;
-  activitiesCols: Column[] = [];
   messages: Message[] = [];
-  activities: Activity[] = [];
-  theme:'light' | 'dark' = 'light';
-  currentRole :Role | null = null;
+  theme: 'light' | 'dark' = 'light';
+  currentRole: Role | null = null;
   currentUser: Admin | null = null;
   constructor(
-    private _service: StatisticsService, 
-    private _adminService:AdminsService, 
+    private _service: StatisticsService,
+    private _adminService: AdminsService,
     private _messageSerivce: MessagesService,
-    _authService:AuthService,
-    @Inject('DIRECTION') public dir:string, 
-  _generalService:GeneralService,private _translateService:TranslateService) {
+    _authService: AccountService,
+    @Inject('DIRECTION') public dir: string,
+    _generalService: GeneralService, private _translateService: TranslateService) {
     this.dir = _translateService.currentLang == 'ar' ? 'rtl' : 'ltr';
     _generalService.$theme.subscribe(value => this.theme = value);
     _authService.$role.subscribe(res => this.currentRole = res);
     _authService.$currentUser.subscribe(res => this.currentUser = res);
-  
+
   }
   async getData() {
     try {
@@ -51,11 +46,9 @@ export class HomeComponent implements OnInit {
       this.stats = result.data;
       this.initCards();
       this.getRequest = RequestStatus.Success;
-      if(this.currentRole?.messagesPermissions.read || this.currentUser?.isManager)
-      await this.getMessages();
-      if(this.currentRole?.adminsPermissions.read || this.currentUser?.isManager)
-      await this.getActivities();
-      
+      if (this.currentRole?.messagesPermissions.read || this.currentUser?.isManager)
+        await this.getMessages();
+
     } catch (error) {
       this.getRequest = RequestStatus.Failed;
     }
@@ -70,48 +63,10 @@ export class HomeComponent implements OnInit {
       this.messageRequest = RequestStatus.Failed;
     }
   }
-  async getActivities() {
-    try {
-      this.activitiesRequest = RequestStatus.Loading;
-      var result = await firstValueFrom(this._adminService.getActivities());
-      this.activities = result.data;
-      this.activitiesRequest = RequestStatus.Success;
-    } catch (error) {
-      this.activitiesRequest = RequestStatus.Failed;
-    }
-  }
   ngOnInit(): void {
-    this.initActivitiesCols();
     this.getData();
   }
-  initActivitiesCols() {
-    this.activitiesCols = [
-      {
-        title: "Actor",
-        prop: "admin",
-        sortable: true,
-        show: true
-      },
-      {
-        title: "Effected-Table",
-        prop: "effectedTable",
-        sortable: true,
-        show: true
-      },
-      {
-        title: "Effected-Row",
-        prop: "effectedRowId",
-        sortable: true,
-        show: true
-      },
-      {
-        title: "Action",
-        prop: "action",
-        sortable: true,
-        show: true
-      }
-    ]
-  }
+
   initCards() {
     this.counterCards = [
       {

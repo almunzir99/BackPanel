@@ -30,13 +30,14 @@ builder.Services.AddScoped<IWebConfiguration, WebConfiguration>();
 builder.Services.RegisterJwtConfiguration(builder.Configuration.GetValue<string>("SecretKey:key")!);
 builder.Services.ImplementPathProviderToTranslationService<PathProvider>();
 builder.Services.RegisterRequiredTranslationEditorServices();
+builder.Services.RegisterApplicationCQRS();
 builder.Services.RegisterMiddlewares();
-builder.Services.ImplementUriService(o =>
+builder.Services.RegisterResolvers(o =>
 {
     var accessor = o.GetRequiredService<IHttpContextAccessor>();
     var request = accessor.HttpContext?.Request;
     var uri = string.Concat(request?.Scheme, "://", request?.Host.ToUriComponent());
-    return new UriService(uri);
+    return new UriResolver(uri);
 });
 builder.Services.ConfigureSwagger();
 builder.Services.AddCors(options =>
@@ -52,7 +53,6 @@ builder.Host.UseSerilog((context,configuration) => {
 });
 var app = builder.Build();
 // load company info 
-await app.LoadCompanyInfo();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -70,6 +70,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
+
 
 app.MapFallbackToFile("index.html");
 app.Run();

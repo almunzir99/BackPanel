@@ -21,7 +21,7 @@ public class AppDbContext : DbContext
         builder.Entity<Role>().HasIndex(c => c.Title).IsUnique();
     }
 
-
+    
     public DbSet<Admin> Admins => Set<Admin>();
     public DbSet<Message> Messages => Set<Message>();
     public DbSet<Role> Roles => Set<Role>();

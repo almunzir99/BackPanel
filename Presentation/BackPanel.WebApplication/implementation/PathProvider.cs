@@ -1,13 +1,13 @@
-using BackPanel.Application.Interfaces;
+using BackPanel.Application.Resolvers.UriResolver;
 using BackPanel.FilesManager.Interfaces;
 
 namespace BackPanel.WebApplication.implementation;
 
 public class PathProvider : IPathProvider
 {
-    private readonly IUriService _uriService;
+    private readonly IUriResolver _uriService;
     private readonly IWebHostEnvironment _environment;
-    public PathProvider(IUriService uriService, IWebHostEnvironment environment)
+    public PathProvider(IUriResolver uriService, IWebHostEnvironment environment)
     {
         _uriService = uriService;
         _environment = environment;

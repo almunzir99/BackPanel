@@ -1,12 +1,12 @@
 using BackPanel.Application.DTOs.Filters;
 using BackPanel.Application.DTOs.Wrapper;
-using BackPanel.Application.Interfaces;
+using BackPanel.Application.Resolvers.UriResolver;
 
 namespace BackPanel.Application.Helpers;
 
 public static class PaginationHelper
 {
-    public static PagedResponse<IList<T>> CreatePagedResponse<T>(IList<T> data, PaginationFilter filter, IUriService _uriSerivce, int totalRecords, string route)
+    public static PagedResponse<IList<T>> CreatePagedResponse<T>(IList<T> data, PaginationFilter filter, IUriResolver _uriSerivce, int totalRecords, string route)
     {
         var totalPages = (int)Math.Ceiling(totalRecords / (filter.PageSize * 1.0));
         return new PagedResponse<IList<T>>(data: data,

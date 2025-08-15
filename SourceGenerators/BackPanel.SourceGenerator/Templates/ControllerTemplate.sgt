@@ -10,7 +10,7 @@ namespace @[ProjectName].WebApplication.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class @[Models]Controller : ApiController<@[Model], @[Model]Dto,@[Model]DtoRequest, I@[Models]Service>
+public class @[Models]Controller : ApiController<@[Model],@[Model]Dto,@[Model]DtoRequest, I@[Models]Service>
 {
     private readonly IRolesService _roleService;
     private readonly INotificationService _notificationService;

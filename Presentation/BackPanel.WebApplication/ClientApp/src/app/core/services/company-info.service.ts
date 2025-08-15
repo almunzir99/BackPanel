@@ -17,7 +17,7 @@ export class CompanyInfoService {
     this._$companyIfo.next(value);
   }
   constructor(private http: HttpClient, @Inject("BASE_API_URL") baseUrl: string) {
-    this.moduleBaseUrl = `${baseUrl}api/companyInfos/`;
+    this.moduleBaseUrl = `${baseUrl}api/company-info/`;
   }
   single() : Observable<ApiResponse<CompanyInfo>> {
     return this.http.get(`${this.moduleBaseUrl}single`) as Observable<ApiResponse<CompanyInfo>>;

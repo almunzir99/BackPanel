@@ -1,0 +1,9 @@
+using @[ProjectName].Application.Generic.Common.Commands;
+using @[ProjectName].Application.Generic.Common.Commands.Handlers;
+using @[ProjectName].Application.Interfaces;
+using @[ProjectName].Domain.Entities;
+
+namespace @[ProjectName].Application.Features.@[Models].Commands.Handlers;
+public class ToggleActive@[Model]CommandHander: ToggleActiveCommandHandlerBase< @[Model], ToggleActiveCommandBase <@[Model]>> {
+  public ToggleActive@[Model]CommandHander(IRepositoryBase < @[Model]> repository): base(repository) {}
+}

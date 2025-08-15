@@ -1,6 +1,6 @@
 @[Usings]
 namespace @[ProjectName].Application.DTOsRequests;
-public class @[Model]DtoRequest
+public class@[Model]DtoRequest
 {
    @[Props]
 }

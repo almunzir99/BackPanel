@@ -1,0 +1,12 @@
+using AutoMapper;
+using BackPanel.Application.DTOs;
+using BackPanel.Application.DTOsRequests;
+using BackPanel.Application.Generic.Common.Commands;
+using BackPanel.Application.Generic.Common.Commands.Handlers;
+using BackPanel.Application.Interfaces;
+using BackPanel.Domain.Entities;
+
+namespace @[ProjectName].Application.Features.@[Models].Commands.Handlers;
+public class Create@[Model]CommandHander: CreateCommandHandlerBase < @[Model], @[Model]DtoRequest, @[Model]Dto, CreateCommandBase < @[Model]DtoRequest, @[Model]Dto >> {
+  public Create@[Model]CommandHander(IRepositoryBase < @[Model] > repository, IMapper mapper): base(repository, mapper) {}
+}
