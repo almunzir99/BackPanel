@@ -77,7 +77,7 @@ public class FilesManagerService : IFilesManagerService
         var combinedPath = Path.Combine(_rootPath,
             path);
         if (!Directory.Exists(combinedPath))
-            throw new DirectoryNotFoundException($"directory {path} is not found ");
+            Directory.CreateDirectory(combinedPath);
         return Directory.GetDirectories(combinedPath)
             .Select(c => this.GetDirectoryModel(combinedPath, c)).ToArray();
     }

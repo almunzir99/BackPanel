@@ -1,6 +1,7 @@
 using BackPanel.Application.Attributes.Permissions;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOsRequests;
+using BackPanel.Application.Features.Notifications.Commands;
 using BackPanel.Application.Interfaces;
 using BackPanel.Application.Resolvers.UriResolver;
 using BackPanel.Domain.Entities;
@@ -14,11 +15,8 @@ namespace BackPanel.WebApplication.Areas.API.Controllers.Common;
 [Route("api/messages")]
 public class MessagesController : ApiController<Message, MessageDto, MessageDtoRequest>
 {
-    private readonly INotificationService _notificationService;
-
-    public MessagesController(IUriResolver uriService, IMediator mediator, INotificationService notificationService) : base(uriService, mediator)
+    public MessagesController(IUriResolver uriService, IMediator mediator) : base(uriService, mediator)
     {
-        _notificationService = notificationService;
     }
 
     public override string PermissionTitle => "MessagesPermissions";
@@ -39,7 +37,7 @@ public class MessagesController : ApiController<Message, MessageDto, MessageDtoR
             CreatedAt = DateTime.Now,
             LastUpdate = DateTime.Now,
         };
-        await _notificationService.BroadCastNotification(notification, "admin");
+        await Mediator.Send(new BroadcastNotificationCommand(notification, "admin"));
         return await base.PostAsync(body);
     }
 }
