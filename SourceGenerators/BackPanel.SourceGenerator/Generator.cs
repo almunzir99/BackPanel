@@ -19,13 +19,13 @@ public class Generator
     {
         if (_options.Model == null)
             throw new NullReferenceException("model parameter shouldn't be null");
-        var dtoGen = new DtoGenerator(_options.Model,workingDirectory,projectName);
-        var dtoRequestGen = new DtoGenerator(_options.Model,workingDirectory,projectName, DtoType.DtoRequest);
-        var interfaceGen = new InterfaceGenerator(_options.Model,workingDirectory,projectName);
-        var serviceGen = new ServiceGenerator(_options.Model,workingDirectory,projectName);
-        var controllerGen = new ControllerGenerator(_options.Model,workingDirectory,projectName);
-        var codeModifier = new CodeModifier(_options.Model,workingDirectory,projectName);
-        var dbCommandRunner = new DbCommandRunner(_options.Model,workingDirectory,projectName);
+        var dtoGen = new DtoGenerator(_options.Model, workingDirectory, projectName);
+        var CQRsGen = new CQRSGenerator(_options.Model, workingDirectory, projectName);
+
+        var dtoRequestGen = new DtoGenerator(_options.Model, workingDirectory, projectName, DtoType.DtoRequest);
+        var controllerGen = new ControllerGenerator(_options.Model, workingDirectory, projectName);
+        var codeModifier = new CodeModifier(_options.Model, workingDirectory, projectName);
+        var dbCommandRunner = new DbCommandRunner(_options.Model, workingDirectory, projectName);
         /* **************** Step 1: Generate Dto File ********************  */
         if (_options.Dto!.Value)
         {
@@ -38,12 +38,6 @@ public class Generator
             await dtoRequestGen.Generate();
             Console.WriteLine("Dto Request File Generated Successfully");
         }
-        else
-        {
-            return;
-        }
-
-        if (!_options.Dto.Value) return;
         if (_options.DbContext!.Value)
         {
             /* **************** Step 3: Update DbContext  File ********************  */
@@ -54,11 +48,6 @@ public class Generator
             await dbCommandRunner.MigrateAsync();
             Console.WriteLine(" EF Migrating Completed Successfully");
         }
-        else
-        {
-            return;
-        }
-
         if (_options.Permission!.Value)
         {
             /* **************** Step 5: Update Role Entity  File ********************  */
@@ -75,38 +64,23 @@ public class Generator
             await dbCommandRunner.MigrateAsync($"Add{_options.Model}Permissions");
             Console.WriteLine(" EF Migrating Completed Successfully");
         }
-        else
+        if (_options.CQRS!.Value)
         {
-            return;
-        }
-
-        if (_options.Service!.Value)
-        {
-            /* **************** Step 9: Generate Interface File ********************  */
-            await interfaceGen.Generate();
-            Console.WriteLine("Interface File Generated Successfully");
-            /* **************** Step 10: Generate Service File ********************  */
-            await serviceGen.Generate();
-            Console.WriteLine("Service File Generated Successfully");
+            /* **************** Step 9: Generate Service File ********************  */
+            await CQRsGen.Generate();
+            Console.WriteLine("CQRS Generated Successfully");
             /* **************** Step  11: Update RegisterRequiredApplicationService  File ********************  */
-            await codeModifier.AddServiceToDiFile();
-            Console.WriteLine("RegisterRequiredApplicationService.cs updated Successfully");
         }
-        else
-        {
-            return;
-        }
-
         if (_options.DatabaseUpdate!.Value)
         {
-            /* **************** Step  13: EF Db Update ********************  */
+            /* **************** Step  10: EF Db Update ********************  */
             Console.WriteLine("Start EF DataBase Update ....");
             await dbCommandRunner.DbUpdateAsync();
             Console.WriteLine(" EF Database Update Completed Successfully");
         }
         if (_options.Controller!.Value)
         {
-            /* **************** Step 5: Generate Controller File ********************  */
+            /* **************** Step 11: Generate Controller File ********************  */
             await controllerGen.Generate();
             Console.WriteLine("Controller File Generated Successfully");
         }

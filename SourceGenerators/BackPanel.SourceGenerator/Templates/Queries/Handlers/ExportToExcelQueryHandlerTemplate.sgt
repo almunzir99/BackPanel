@@ -1,0 +1,11 @@
+using AutoMapper;
+using @[ProjectName].Application.DTOs;
+using @[ProjectName].Application.Generic.Common.Queries;
+using @[ProjectName].Application.Generic.Common.Queries.Handlers;
+using @[ProjectName].Application.Interfaces;
+using @[ProjectName].Domain.Entities;
+
+namespace @[ProjectName].Application.Features.@[Models].Queries.Handlers;
+public class ExportToExcel@[Model]QueryHandler: ExportToExcelQueryHandlerBase <@[Model],@[Model]Dto, ExportToExcelQueryBase <@[Model]>> {
+  public ExportToExcel@[Model]QueryHandler(IRepositoryBase <@[Model]> repository, IMapper mapper): base(repository, mapper) {}
+}

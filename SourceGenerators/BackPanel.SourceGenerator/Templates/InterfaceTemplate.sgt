@@ -1,9 +1,0 @@
-using @[ProjectName].Application.DTOs;
-using @[ProjectName].Application.DTOsRequests;
-using @[ProjectName].Domain.Entities;
-
-namespace @[ProjectName].Application.Interfaces;
-
-public interface I@[Models]Service : IServicesBase<@[Model],@[Model]Dto,@[Model]DtoRequest>
-{
-}

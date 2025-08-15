@@ -1,0 +1,12 @@
+using AutoMapper;
+using @[ProjectName].Application.DTOs;
+using @[ProjectName].Application.DTOsRequests;
+using @[ProjectName].Application.Generic.Common.Commands;
+using @[ProjectName].Application.Generic.Common.Commands.Handlers;
+using @[ProjectName].Application.Interfaces;
+using @[ProjectName].Domain.Entities;
+
+namespace @[ProjectName].Application.Features.@[Models].Commands.Handlers;
+public class Update@[Model]CommandHander: UpdateCommandHandlerBase < @[Model],@[Model]DtoRequest, @[Model]Dto, UpdateCommandBase < @[Model]DtoRequest, @[Model]Dto >> {
+  public Update@[Model]CommandHander(IRepositoryBase < @[Model]> repository, IMapper mapper): base(repository, mapper) {}
+}

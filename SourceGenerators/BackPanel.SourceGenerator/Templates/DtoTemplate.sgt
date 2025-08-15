@@ -1,7 +1,7 @@
 @[Usings]
 
 namespace @[ProjectName].Application.DTOs;
-public class @[Model]Dto : DtoBase
+public class@[Model]Dto : DtoBase
 {
     @[Props]
 }
