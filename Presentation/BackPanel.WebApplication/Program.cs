@@ -22,6 +22,8 @@ builder.Services.RegisterDbContext<AppDbContext>(builder.Configuration);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddHttpContextAccessor();
 builder.Services.RegisterRepositories();
+builder.Services.RegisterUnitOfWork();
+
 builder.Services.RegisterRequiredApplicationService();
 builder.Services.RegisterRequiredSmtpServices();
 builder.Services.RegisterRequiredFilesManagerServices();
@@ -48,7 +50,8 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 });
 // Configure Serilog 
-builder.Host.UseSerilog((context,configuration) => {
+builder.Host.UseSerilog((context, configuration) =>
+{
     configuration.ReadFrom.Configuration(context.Configuration);
 });
 var app = builder.Build();

@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackPanel.Persistence.Repository;
-
 public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
     where TEntity : EntityBase
 {
@@ -32,28 +31,6 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         _includeableDbSet = Context.Set<TEntity>();
     }
 
-    public virtual async Task<TEntity> CreateAsync(TEntity item)
-    {
-        item.Status = Status.Active;
-        await DbSet.AddAsync(item);
-        return item;
-    }
-
-    public virtual async Task DeleteAsync(int id, bool softDelete = true)
-    {
-        var target = await _includeableDbSet.SingleOrDefaultAsync(c => c.Id == id);
-        if (target == null)
-            throw new Exception("The target Item doesn't Exist");
-        if (softDelete)
-            target.Status = Status.Deleted;
-        else
-            DbSet.Remove(target);
-    }
-
-    public virtual void Delete<T>(T target) where T : EntityBase
-    {
-        Context.Remove(target);
-    }
     public virtual async Task<IList<TEntity>> ListAsync(IList<Expression<Func<TEntity, bool>>>? predicates = null)
     {
         var query = _includeableDbSet.Where(c => c.Status != Status.Deleted).AsQueryable();
@@ -66,14 +43,6 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         }
         return await query.ToListAsync();
     }
-    public virtual IQueryable<TEntity> Query()
-    {
-        return _includeableDbSet.Where(c => c.Status != Status.Deleted).AsQueryable();
-    }
-    public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null)
-    {
-        return (predicate != null) ? await DbSet.CountAsync(predicate) : await DbSet.CountAsync();
-    }
 
     public async Task<IList<TEntity>> SearchAsync(Func<TEntity, bool> predicate)
     {
@@ -83,7 +52,7 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
 
     public virtual async Task<TEntity> SingleAsync(int id)
     {
-        var result = await _includeableDbSet.SingleOrDefaultAsync(c => c.Id == id);
+        var result = await _includeableDbSet.FirstOrDefaultAsync(c => c.Id == id);
         if (result == null)
             throw new Exception("item is not found");
         return result;
@@ -94,6 +63,10 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         var result = await _includeableDbSet.Where(c => c.Status != Status.Deleted).FirstOrDefaultAsync(predicate);
         return result;
     }
+    public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null)
+    {
+        return (predicate != null) ? await DbSet.CountAsync(predicate) : await DbSet.CountAsync();
+    }
     public async Task<TEntity> FirstOrDefaultAsync()
     {
         var result = await _includeableDbSet.FirstOrDefaultAsync();
@@ -101,16 +74,11 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
             throw new Exception("item is not found");
         return result;
     }
-
-    public virtual async Task<TEntity> UpdateAsync(int id, TEntity newItem)
+    public virtual async Task<TEntity> CreateAsync(TEntity item)
     {
-        var result = await _includeableDbSet.SingleOrDefaultAsync(c => c.Id == id);
-        if (result == null)
-            throw new Exception("item is not found");
-        Context.Attach(result);
-        _mapperHelper.Map<TEntity, TEntity>(newItem, result, propsToExclude: new[] { "Id", "CreatedAt" });
-        result.LastUpdate = DateTime.Now;
-        return result;
+        item.Status = Status.Active;
+        await DbSet.AddAsync(item);
+        return item;
     }
     public async Task CreateBulkAsync(List<TEntity> data)
     {
@@ -123,6 +91,17 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         }
         await DbSet.AddRangeAsync(data);
     }
+
+    public virtual async Task<TEntity> UpdateAsync(int id, TEntity newItem)
+    {
+        var result = await _includeableDbSet.SingleOrDefaultAsync(c => c.Id == id);
+        if (result == null)
+            throw new Exception("item is not found");
+        Context.Attach(result);
+        _mapperHelper.Map(newItem, result, propsToExclude: new[] { "Id", "CreatedAt" });
+        result.LastUpdate = DateTime.Now;
+        return result;
+    }
     public virtual async Task<TEntity> UpdateAsync(int id, JsonPatchDocument<TEntity> newItem)
     {
         var result = await _includeableDbSet.SingleOrDefaultAsync(c => c.Id == id);
@@ -133,6 +112,24 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         return result;
     }
 
+    public virtual async Task DeleteAsync(int id, bool softDelete = true)
+    {
+        var target = await _includeableDbSet.SingleOrDefaultAsync(c => c.Id == id);
+            throw new Exception("The target Item doesn't Exist");
+        if (softDelete)
+            target.Status = Status.Deleted;
+        else
+            DbSet.Remove(target);
+    }
+
+    public virtual void Delete<T>(T target) where T : EntityBase
+    {
+        Context.Remove(target);
+    }
+    public virtual IQueryable<TEntity> Query()
+    {
+        return _includeableDbSet.Where(c => c.Status != Status.Deleted).AsQueryable();
+    }
     public async Task<int> Complete(CancellationToken cancellationToken = default)
     {
         try
@@ -144,6 +141,7 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
             throw new Exception(exception.Decode());
         }
     }
+
 
 
 }

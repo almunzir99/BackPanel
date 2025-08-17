@@ -21,12 +21,16 @@ public static class RegisterWithDependencyInjection
         services.AddTransient<MapperHelper>();
     }
 
+    public static void RegisterUnitOfWork(this IServiceCollection services)
+    {
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+    }
     public static void RegisterRepositories(this IServiceCollection services)
     {
         var assembly = typeof(EntityBase).Assembly;
         foreach (var type in assembly.GetTypes())
         {
-            if (typeof(EntityBase).IsAssignableFrom(type) && type.Name != "EntityBase" )
+            if (typeof(EntityBase).IsAssignableFrom(type) && type.Name != "EntityBase")
             {
                 var method = typeof(RegisterWithDependencyInjection).GetMethod("RegisterRepositoriesWithDi");
                 if (method != null)
