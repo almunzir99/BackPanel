@@ -2,9 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Message } from 'src/app/core/models/message.model';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';
-import { Stats } from 'src/app/core/models/stats.model';
+import { counters } from 'src/app/core/models/counters.model';
 import { MessagesService } from 'src/app/core/services/messages.service';
-import { StatisticsService } from 'src/app/core/services/statistics.service';
+import { DashboardService } from 'src/app/core/services/dashboard.service';
 import * as dayjs from 'dayjs';
 import { AdminsService } from 'src/app/core/services/admins.service';
 import { GeneralService } from 'src/app/core/services/general.service';
@@ -18,7 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  stats: Stats | null = null;
+  stats: counters | null = null;
   getRequest = RequestStatus.Initial;
   counterCards: CounterCardSpec[] = [];
   messageRequest = RequestStatus.Loading;
@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
   currentRole: Role | null = null;
   currentUser: Admin | null = null;
   constructor(
-    private _service: StatisticsService,
+    private _service: DashboardService,
     private _adminService: AdminsService,
     private _messageSerivce: MessagesService,
     _authService: AccountService,
@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
   async getData() {
     try {
       this.getRequest = RequestStatus.Loading;
-      var result = await firstValueFrom(this._service.getStats());
+      var result = await firstValueFrom(this._service.getCounters());
       this.stats = result.data;
       this.initCards();
       this.getRequest = RequestStatus.Success;

@@ -4,7 +4,6 @@ using BackPanel.Application.Generic.Common.Commands;
 using BackPanel.Application.Interfaces;
 using BackPanel.Application.Resolvers.UriResolver;
 using BackPanel.Application.Resolvers.UserResolver;
-using BackPanel.Application.Services;
 using BackPanel.Domain.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -14,11 +13,6 @@ using Microsoft.IdentityModel.Tokens;
 namespace BackPanel.Application.DI;
 public static class RegisterWithDependencyInjection
 {
-    public static void RegisterRequiredApplicationService(this IServiceCollection services)
-    {
-        services.AddScoped<IStatisticsService, StatisticsService>();
-    }
-
     public static void RegisterApplicationCQRS(this IServiceCollection services)
     {
         services.AddMediatR(cfg =>

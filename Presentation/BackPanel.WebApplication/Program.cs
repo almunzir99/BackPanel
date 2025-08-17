@@ -24,7 +24,6 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.RegisterRepositories();
 builder.Services.RegisterUnitOfWork();
 
-builder.Services.RegisterRequiredApplicationService();
 builder.Services.RegisterRequiredSmtpServices();
 builder.Services.RegisterRequiredFilesManagerServices();
 builder.Services.ImplementPathProvider<PathProvider>();
