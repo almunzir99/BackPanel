@@ -48,7 +48,7 @@ export class AdminsComponent implements OnInit {
   async getData() {
     try {
       this.getRequest = RequestStatus.Loading;
-      var result = await firstValueFrom(this._service.get(this.pageIndex, this.pageSize, this.searchValue, this.orderBy, this.ascending,this.fieldsSearchList));
+      var result = await firstValueFrom(this._service.get(this.pageIndex, this.pageSize, this.searchValue, this.orderBy, this.ascending, this.fieldsSearchList));
       this.data = result.data;
       this.totalPages = result.totalPages;
       this.totalRecords = result.totalRecords;
@@ -82,7 +82,7 @@ export class AdminsComponent implements OnInit {
         sortable: true,
         importable: true,
         searchable: true,
-        searchControlType:SearchControlType.Text
+        searchControlType: SearchControlType.Text
       },
       {
         prop: "phone",
@@ -91,7 +91,7 @@ export class AdminsComponent implements OnInit {
         sortable: true,
         importable: true,
         searchable: true,
-        searchControlType:SearchControlType.Number
+        searchControlType: SearchControlType.Number
       },
       {
         prop: "email",
@@ -100,7 +100,7 @@ export class AdminsComponent implements OnInit {
         sortable: true,
         importable: true,
         searchable: true,
-        searchControlType:SearchControlType.Email
+        searchControlType: SearchControlType.Email
       },
       {
         prop: "role",
@@ -116,7 +116,7 @@ export class AdminsComponent implements OnInit {
         sortable: true,
         importable: false,
         searchable: true,
-        searchControlType:SearchControlType.DateTime
+        searchControlType: SearchControlType.DateTime
 
       },
       {
@@ -126,15 +126,15 @@ export class AdminsComponent implements OnInit {
         sortable: true,
         importable: false,
         searchable: true,
-        searchControlType:SearchControlType.DateTime
+        searchControlType: SearchControlType.DateTime
       },
       {
         prop: "status",
         title: "Active",
         show: true,
         sortable: false,
-        searchable:true,
-        searchControlType:SearchControlType.Selection,
+        searchable: true,
+        searchControlType: SearchControlType.Selection,
         searchFieldData: [
           "Active",
           "Disabled"
@@ -205,17 +205,17 @@ export class AdminsComponent implements OnInit {
     var controlGroups: FormBuilderGroup[] = [
       {
 
-        title: "General",
+        title: "Dashboard.General",
         controls: [
           {
-            title: "id",
+            title: "Dashboard.Id",
             name: "id",
             controlType: ControlTypes.Hidden,
             width: "0px",
             value: item ? item.id : undefined
           },
           {
-            title: "username",
+            title: "Dashboard.Username",
             name: "username",
             icon: "person",
             controlType: ControlTypes.TextInput,
@@ -228,7 +228,7 @@ export class AdminsComponent implements OnInit {
             ]
           },
           {
-            title: "phone",
+            title: "Dashboard.Phone",
             name: "phone",
             icon: "phone",
             controlType: ControlTypes.NumberInput,
@@ -243,7 +243,7 @@ export class AdminsComponent implements OnInit {
 
           },
           {
-            title: "email",
+            title: "Dashboard.Email",
             name: "email",
             icon: "mail",
             controlType: ControlTypes.TextInput,
@@ -255,7 +255,7 @@ export class AdminsComponent implements OnInit {
 
           },
           {
-            title: "password",
+            title: "Dashboard.Password",
             name: "password",
             icon: "key",
 
@@ -267,7 +267,7 @@ export class AdminsComponent implements OnInit {
 
           },
           {
-            title: "re-enter the password",
+            title: "Dashboard.PasswordConfirmation",
             name: "repassword",
             icon: "key",
             validators: item ? [] : [
@@ -278,7 +278,7 @@ export class AdminsComponent implements OnInit {
             width: "50%"
           },
           {
-            title: "Role",
+            title: "Dashboard.Role",
             name: "roleId",
             controlType: ControlTypes.Selection,
             data: roles,
@@ -294,7 +294,7 @@ export class AdminsComponent implements OnInit {
 
           },
           {
-            title: "image",
+            title: "Dashboard.PersonalImage",
             name: "image",
             controlType: ControlTypes.LocalFilePicker,
             width: "100%",
@@ -312,7 +312,7 @@ export class AdminsComponent implements OnInit {
     var form = this.getForm(item, roles);
     this._dialog.open<FormBuilderComponent, FormBuilderPropsSpec, any>(FormBuilderComponent, {
       data: {
-        title: "Create New Admin",
+        title: "Dashboard.CreateAdmin",
         controlsGroups: form,
         onSubmit: (result) => {
           this._dialog.closeAll();
@@ -334,8 +334,8 @@ export class AdminsComponent implements OnInit {
     })
   }
   onFieldSearchListChange(ev: FieldsSearchListResult) {
-      this.fieldsSearchList = ev.list;
-      this.getData();
+    this.fieldsSearchList = ev.list;
+    this.getData();
   }
 
   /********************************* Api Integration ******************************************** */
