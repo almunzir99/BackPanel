@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { firstValueFrom } from 'rxjs';
 import { Message } from 'src/app/core/models/message.model';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';

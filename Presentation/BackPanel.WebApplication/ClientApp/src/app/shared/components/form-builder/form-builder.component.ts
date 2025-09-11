@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { FileModel } from 'src/app/core/models/file.models';
 import { ControlTypes } from './control-type.enum';
 import { FormBuilderGroup } from './form-builder-group.model';

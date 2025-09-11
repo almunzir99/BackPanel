@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { firstValueFrom } from 'rxjs';
 import { Admin } from 'src/app/core/models/admin.model';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';

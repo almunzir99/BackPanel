@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { firstValueFrom } from 'rxjs';
 import { SearchControlType } from 'src/app/core/enums/search-control-type.enum';
 import { Status } from 'src/app/core/enums/status.enum';

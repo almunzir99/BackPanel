@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { firstValueFrom, forkJoin, map } from 'rxjs';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';
 import { GeneralService } from 'src/app/core/services/general.service';

@@ -2,13 +2,13 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { GeneralService } from 'src/app/core/services/general.service';
 import { Column } from './column.model';
 import *  as XLSX from 'xlsx';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { fieldMatcherSpec, FieldsMatcherComponent } from '../fields-matcher/fields-matcher.component';
 import { comparisonOperators } from '../../constants/comparison-operator.list';
 import { ComparisonOperator } from 'src/app/core/enums/comparison-operator.enum';
 import { SearchControlType } from 'src/app/core/enums/search-control-type.enum';
 import { MatDatepickerInput } from '@angular/material/datepicker';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
 @Component({
   selector: 'data-table',
   templateUrl: './datatable.component.html',

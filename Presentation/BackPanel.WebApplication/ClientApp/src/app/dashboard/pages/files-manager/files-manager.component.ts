@@ -1,7 +1,7 @@
 import { HttpEventType } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { forkJoin, map, Subscription } from 'rxjs';
 import { DirectoryModel } from 'src/app/core/models/directory.model';
 import { FileModel } from 'src/app/core/models/file.models';
