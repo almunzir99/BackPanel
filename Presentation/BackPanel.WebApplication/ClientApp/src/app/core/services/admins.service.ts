@@ -22,9 +22,9 @@ export class AdminsService {
       title: searchValue
     }
     list.forEach((element,index) => {
-      params[`expressions[${index}].propName`] = element.propName;
-      params[`expressions[${index}].propValue`] = element.propValue;
-      params[`expressions[${index}].operator`] = element.operator;
+      params[`searchExpressions[${index}].propName`] = element.propName;
+      params[`searchExpressions[${index}].propValue`] = element.propValue;
+      params[`searchExpressions[${index}].operator`] = element.operator;
 
     });
     return this.http.get(`${this.moduleBaseUrl}`, { params: params }) as Observable<PagedResponse<Admin[]>>;

@@ -1,147 +1,336 @@
-using System.Linq.Expressions;
-using BackPanel.Application.Helpers;
 using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
 using BackPanel.Domain.Enums;
 using BackPanel.Persistence.Database;
-using BackPanel.Persistence.Database.Extensions;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
-namespace BackPanel.Persistence.Repository;
-public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
-    where TEntity : EntityBase
+ 
+public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : EntityBase
 {
-    protected readonly AppDbContext Context;
-    protected readonly DbSet<TEntity> DbSet;
-    private IQueryable<TEntity> _includeableDbSet;
-    private readonly MapperHelper _mapperHelper;
+    private readonly AppDbContext _dbContext;
+    private IQueryable<TEntity> _query;
 
-    public IQueryable<TEntity> IncludeableDbSet
+    public RepositoryBase(AppDbContext dbContext)
     {
-        get => _includeableDbSet;
-        set { _includeableDbSet = value ?? throw new ArgumentNullException(nameof(value), "value shouldn't be null"); }
+        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        _query = _dbContext.Set<TEntity>();
     }
 
-    public RepositoryBase(AppDbContext context, MapperHelper mapperHelper)
-    {
-        Context = context;
-        _mapperHelper = mapperHelper;
-        DbSet = Context.Set<TEntity>();
-        _includeableDbSet = Context.Set<TEntity>();
-    }
-
-    public virtual async Task<IList<TEntity>> ListAsync(IList<Expression<Func<TEntity, bool>>>? predicates = null)
-    {
-        var query = _includeableDbSet.Where(c => c.Status != Status.Deleted).AsQueryable();
-        if (predicates != null)
-        {
-            foreach (var predicate in predicates)
-            {
-                query = query.Where(predicate);
-            }
-        }
-        return await query.ToListAsync();
-    }
-
-    public async Task<IList<TEntity>> SearchAsync(Func<TEntity, bool> predicate)
-    {
-        var result = await _includeableDbSet.ToListAsync();
-        return result.Where(predicate).ToList();
-    }
-
-    public virtual async Task<TEntity> SingleAsync(int id)
-    {
-        var result = await _includeableDbSet.FirstOrDefaultAsync(c => c.Id == id);
-        if (result == null)
-            throw new Exception("item is not found");
-        return result;
-    }
-
-    public async Task<TEntity?> SingleAsync(Expression<Func<TEntity, bool>> predicate)
-    {
-        var result = await _includeableDbSet.Where(c => c.Status != Status.Deleted).FirstOrDefaultAsync(predicate);
-        return result;
-    }
-    public virtual async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null)
-    {
-        return (predicate != null) ? await DbSet.CountAsync(predicate) : await DbSet.CountAsync();
-    }
-    public async Task<TEntity> FirstOrDefaultAsync()
-    {
-        var result = await _includeableDbSet.FirstOrDefaultAsync();
-        if (result == null)
-            throw new Exception("item is not found");
-        return result;
-    }
-    public virtual async Task<TEntity> CreateAsync(TEntity item)
-    {
-        item.Status = Status.Active;
-        await DbSet.AddAsync(item);
-        return item;
-    }
-    public async Task CreateBulkAsync(List<TEntity> data)
-    {
-        if (data == null || data.Count == 0)
-            throw new ArgumentNullException(nameof(data), "data shouldn't be null or empty");
-        foreach (var item in data)
-        {
-            item.Status = Status.Active;
-            item.CreatedAt = DateTime.Now;
-        }
-        await DbSet.AddRangeAsync(data);
-    }
-
-    public virtual async Task<TEntity> UpdateAsync(int id, TEntity newItem)
-    {
-        var result = await _includeableDbSet.SingleOrDefaultAsync(c => c.Id == id);
-        if (result == null)
-            throw new Exception("item is not found");
-        Context.Attach(result);
-        _mapperHelper.Map(newItem, result, propsToExclude: new[] { "Id", "CreatedAt" });
-        result.LastUpdate = DateTime.Now;
-        return result;
-    }
-    public virtual async Task<TEntity> UpdateAsync(int id, JsonPatchDocument<TEntity> newItem)
-    {
-        var result = await _includeableDbSet.SingleOrDefaultAsync(c => c.Id == id);
-        if (result == null)
-            throw new Exception("item is not found");
-        newItem.ApplyTo(result);
-        result.LastUpdate = DateTime.Now;
-        return result;
-    }
-
-    public virtual async Task DeleteAsync(int id, bool softDelete = true)
-    {
-        var target = await _includeableDbSet.SingleOrDefaultAsync(c => c.Id == id);
-            throw new Exception("The target Item doesn't Exist");
-        if (softDelete)
-            target.Status = Status.Deleted;
-        else
-            DbSet.Remove(target);
-    }
-
-    public virtual void Delete<T>(T target) where T : EntityBase
-    {
-        Context.Remove(target);
-    }
-    public virtual IQueryable<TEntity> Query()
-    {
-        return _includeableDbSet.Where(c => c.Status != Status.Deleted).AsQueryable();
-    }
-    public async Task<int> Complete(CancellationToken cancellationToken = default)
+    // **CRUD Methods:**
+    public async Task<TEntity> CreateAsync(TEntity newItem, CancellationToken cancellationToken = default)
     {
         try
         {
-            return await Context.SaveChangesAsync(cancellationToken);
+            if (newItem == null)
+            {
+                throw new ArgumentNullException(nameof(newItem), "New item cannot be null");
+            }
+
+            await _dbContext.Set<TEntity>().AddAsync(newItem, cancellationToken);
+            return newItem;
         }
-        catch (DbUpdateException exception)
+        catch (Exception ex) when (!(ex is ArgumentNullException))
         {
-            throw new Exception(exception.Decode());
+            throw new InvalidOperationException($"Failed to create entity of type {typeof(TEntity).Name}", ex);
         }
     }
 
+    public async Task CreateBulkAsync(List<TEntity> data, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            if (data == null || !data.Any())
+            {
+                throw new ArgumentNullException(nameof(data), "Data cannot be null or empty");
+            }
 
+            // Validate all items are not null
+            if (data.Any(item => item == null))
+            {
+                throw new ArgumentException("Data collection contains null items", nameof(data));
+            }
 
+            await _dbContext.Set<TEntity>().AddRangeAsync(data, cancellationToken);
+        }
+        catch (Exception ex) when (!(ex is ArgumentNullException || ex is ArgumentException))
+        {
+            throw new InvalidOperationException($"Failed to create bulk entities of type {typeof(TEntity).Name}", ex);
+        }
+    }
+
+    public async Task<TEntity> UpdateAsync(TEntity newItem, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            if (newItem == null)
+            {
+                throw new ArgumentNullException(nameof(newItem), "New item cannot be null");
+            }
+
+            var existingItem = await _query.FirstOrDefaultAsync(x => x.Id == newItem.Id, cancellationToken);
+            if (existingItem == null)
+            {
+                throw new KeyNotFoundException($"Entity with ID {newItem.Id} not found.");
+            }
+
+            existingItem.LastUpdate = DateTime.Now;
+            _dbContext.Entry(existingItem).CurrentValues.SetValues(newItem);
+
+            return existingItem;
+        }
+        catch (Exception ex) when (!(ex is ArgumentNullException || ex is KeyNotFoundException))
+        {
+            throw new InvalidOperationException($"Failed to update entity of type {typeof(TEntity).Name} with ID {newItem?.Id}", ex);
+        }
+    }
+
+    public async Task DeleteAsync(int id, bool softDelete = true, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("ID must be greater than zero", nameof(id));
+            }
+
+            var entity = await _query.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+            if (entity == null)
+            {
+                throw new KeyNotFoundException($"Entity with ID {id} not found.");
+            }
+
+            if (softDelete)
+            {
+                entity.Status = Status.Deleted;
+                _dbContext.Update(entity);
+            }
+            else
+            {
+                _dbContext.Set<TEntity>().Remove(entity);
+            }
+        }
+        catch (Exception ex) when (!(ex is ArgumentException || ex is KeyNotFoundException))
+        {
+            throw new InvalidOperationException($"Failed to delete entity of type {typeof(TEntity).Name} with ID {id}", ex);
+        }
+    }
+
+    public void Delete<T>(T target) where T : EntityBase
+    {
+        try
+        {
+            if (target == null)
+            {
+                throw new ArgumentNullException(nameof(target), "Target entity cannot be null");
+            }
+
+            _dbContext.Remove<T>(target);
+        }
+        catch (Exception ex) when (!(ex is ArgumentNullException))
+        {
+            throw new InvalidOperationException($"Failed to delete entity of type {typeof(T).Name}", ex);
+        }
+    }
+
+    // **Read Methods:**
+    public async Task<TEntity> GetById(int id, params Expression<Func<TEntity, object>>[] includes)
+    {
+        try
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("ID must be greater than zero", nameof(id));
+            }
+
+            var query = _query.AsQueryable();
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    if (include != null)
+                    {
+                        query = query.Include(include);
+                    }
+                }
+            }
+
+            var entity = await query.FirstOrDefaultAsync(x => x.Id == id);
+            if (entity == null)
+            {
+                throw new KeyNotFoundException($"Entity with ID {id} not found.");
+            }
+
+            return entity;
+        }
+        catch (Exception ex) when (!(ex is ArgumentException || ex is KeyNotFoundException))
+        {
+            throw new InvalidOperationException($"Failed to get entity of type {typeof(TEntity).Name} with ID {id}", ex);
+        }
+    }
+
+    public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
+    {
+        try
+        {
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate), "Predicate cannot be null");
+            }
+
+            var query = _query.AsQueryable();
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    if (include != null)
+                    {
+                        query = query.Include(include);
+                    }
+                }
+            }
+
+            return await query.FirstOrDefaultAsync(predicate);
+        }
+        catch (Exception ex) when (!(ex is ArgumentNullException))
+        {
+            throw new InvalidOperationException($"Failed to find entity of type {typeof(TEntity).Name}", ex);
+        }
+    }
+
+    public async Task<TEntity?> FirstOrDefaultAsync(params Expression<Func<TEntity, object>>[] includes)
+    {
+        try
+        {
+            var query = _query.AsQueryable();
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    if (include != null)
+                    {
+                        query = query.Include(include);
+                    }
+                }
+            }
+
+            return await query.FirstOrDefaultAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Failed to get first entity of type {typeof(TEntity).Name}", ex);
+        }
+    }
+
+    // **Query Methods:**
+    public Task<List<TEntity>> ListAsync(List<Expression<Func<TEntity, bool>>>? predicates = null, params Expression<Func<TEntity, object>>[] includes)
+    {
+        try
+        {
+            if (predicates == null || !predicates.Any())
+            {
+                var simpleQuery = _query.AsQueryable();
+                if (includes != null)
+                {
+                    foreach (var include in includes)
+                    {
+                        if (include != null)
+                        {
+                            simpleQuery = simpleQuery.Include(include);
+                        }
+                    }
+                }
+                return simpleQuery.ToListAsync();
+            }
+
+            IQueryable<TEntity> query = _query;
+            foreach (var predicate in predicates)
+            {
+                if (predicate != null)
+                {
+                    query = query.Where(predicate);
+                }
+            }
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    if (include != null)
+                    {
+                        query = query.Include(include);
+                    }
+                }
+            }
+
+            return query.ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Failed to list entities of type {typeof(TEntity).Name}", ex);
+        }
+    }
+
+    public IQueryable<TEntity> Query()
+    {
+        return _query.AsQueryable();
+    }
+
+    // **Utility Methods:**
+    public async Task<int> GetTotalRecords(Expression<Func<TEntity, bool>>? predicate = null)
+    {
+        try
+        {
+            if (predicate == null)
+            {
+                return await _query.CountAsync();
+            }
+            return await _query.CountAsync(predicate);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Failed to count entities of type {typeof(TEntity).Name}", ex);
+        }
+    }
+
+    public Task<int> Complete(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            return _dbContext.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            throw new InvalidOperationException("Concurrency conflict occurred while saving changes", ex);
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new InvalidOperationException("Database update failed", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("Failed to save changes to the database", ex);
+        }
+    }
+
+    public void PrepareDbSet(params Expression<Func<TEntity, object>>[] includes)
+    {
+        try
+        {
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    if (include != null)
+                    {
+                        _query = _query.Include(include);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Failed to prepare DbSet with includes for type {typeof(TEntity).Name}", ex);
+        }
+    }
 }

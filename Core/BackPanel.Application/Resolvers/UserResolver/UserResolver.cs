@@ -16,14 +16,13 @@ namespace BackPanel.Application.Resolvers.UserResolver
         public UserResolver(IRepositoryBase<Admin> adminRepository)
         {
             _adminRepository = adminRepository;
-            _adminRepository.IncludeableDbSet = _adminRepository.IncludeableDbSet.Include(c => c.Notifications);
         }
 
         public async Task<UserEntityBase> GetUserAsync(int userId, string userType)
         {
             UserEntityBase user = userType.ToLowerInvariant() switch
             {
-                "admin" => await _adminRepository.SingleAsync(userId),
+                "admin" => await _adminRepository.GetById(userId, x => x.Notifications),
                 _ => throw new ArgumentException($"Unsupported user type: {userType}", nameof(userType))
             };
 
@@ -34,7 +33,7 @@ namespace BackPanel.Application.Resolvers.UserResolver
         {
             return userType.ToLowerInvariant() switch
             {
-                "admin" => (await _adminRepository.ListAsync()).Cast<UserEntityBase>().ToList(),
+                "admin" => (await _adminRepository.ListAsync(null,x => x.Notifications)).Cast<UserEntityBase>().ToList(),
                 _ => throw new ArgumentException($"Unsupported user type: {userType}", nameof(userType))
             };
         }

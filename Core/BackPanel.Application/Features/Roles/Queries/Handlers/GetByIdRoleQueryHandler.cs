@@ -10,5 +10,7 @@ public class GetByIdRoleQueryHandler : GetByIdQueryHandlerBase<Role, RoleDto, Ge
 {
     public GetByIdRoleQueryHandler(IRepositoryBase<Role> repository, IMapper mapper) : base(repository, mapper)
     {
+        repository.PrepareDbSet(x => x.AdminsPermissions!, x => x.RolesPermissions!, x => x.CompanyInfosPermissions!, x => x.MessagesPermissions!);
+
     }
 }

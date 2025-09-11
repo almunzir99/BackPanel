@@ -27,7 +27,7 @@ namespace BackPanel.Application.Generic.Accounts.Commands.Handlers
         {
             var model = request.Model;
             // Get User By Email
-            var user = await Repository.SingleAsync(c => c.Email == model.Email);
+            var user = await Repository.FindAsync(c => c.Email == model.Email);
             if (user == null)
                 throw new Exception("This account isn't available");
             if (user.Status == Status.Disabled)

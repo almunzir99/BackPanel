@@ -15,6 +15,8 @@ namespace BackPanel.Application.Features.Admins.Commands.Handlers
     {
         public AuthenticateAdminCommandHandler(IRepositoryBase<Admin> repository, IMapper mapper, IWebConfiguration webConfiguration) : base(repository, mapper, webConfiguration)
         {
+
+            repository.PrepareDbSet(x => x.Role!);
         }
 
         protected override string UserType => "ADMIN";

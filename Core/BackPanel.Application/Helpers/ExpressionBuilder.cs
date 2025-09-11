@@ -50,7 +50,16 @@ public static class ExpressionBuilder
         {
             return Expression.Equal(left, right);
         }
+
+        if (left.Type == typeof(string) && right.Type == typeof(string))
+        {
+            var toLower = typeof(string).GetMethod("ToLower", Type.EmptyTypes)!;
+            left = Expression.Call(left, toLower);
+            right = Expression.Call(right, toLower);
+        }
+
         MethodInfo containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) })!;
+
         return op switch
         {
             ComparisonOperator.Equal => Expression.Equal(left, right),
@@ -63,6 +72,7 @@ public static class ExpressionBuilder
             _ => throw new ArgumentException("Invalid comparison operator."),
         };
     }
+
     private static bool IsSupportedComparison(Type type, ComparisonOperator op)
     {
         if (type == typeof(string))

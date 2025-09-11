@@ -15,7 +15,7 @@ namespace BackPanel.Application.Generic.Accounts.Commands.Handlers
         }
         public async Task<bool> Handle(TCommand request, CancellationToken cancellationToken)
         {
-            var user = await Repository.SingleAsync(c => c.Email == request.Email);
+            var user = await Repository.FindAsync(c => c.Email == request.Email);
             if (user == null)
                 throw new Exception("This email is not registered");
             // Logic to send password recovery email goes here

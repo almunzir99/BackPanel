@@ -11,6 +11,7 @@ namespace BackPanel.Application.Features.Admins.Queries.Handlers
     {
         public GetAllAdminQueryHandler(IRepositoryBase<Admin> repository, IMapper mapper) : base(repository, mapper)
         {
+            repository.PrepareDbSet(x => x.Role!);
         }
     }
 }

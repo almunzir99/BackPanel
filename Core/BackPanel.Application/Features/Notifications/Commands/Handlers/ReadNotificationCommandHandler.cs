@@ -22,7 +22,7 @@ namespace BackPanel.Application.Features.Notifications.Commands.Handlers
 
         public async Task<NotificationDto> Handle(ReadNotificationCommand request, CancellationToken cancellationToken)
         {
-            var notification = await _repositoryBase.SingleAsync(request.NotificationId);
+            var notification = await _repositoryBase.GetById(request.NotificationId);
             if (notification == null)
                 throw new Exception($"Notification with ID {request.NotificationId} not found");
 

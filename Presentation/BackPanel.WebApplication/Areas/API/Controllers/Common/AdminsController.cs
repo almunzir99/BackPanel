@@ -25,7 +25,6 @@ public class AdminsController : ApiController<Admin, AdminDto, AdminDtoRequest>
     {
         try
         {
-            // Exclude the managers for the list
             filter.SearchExpressions.Add(new SearchExpressionDtoRequest
             {
                 PropName = nameof(AdminDto.IsManager),

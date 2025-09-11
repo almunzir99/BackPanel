@@ -15,10 +15,12 @@ namespace BackPanel.Application.Features.Roles.Queries.Handlers
         {
             _repository = repository;
             _mapper = mapper;
+            repository.PrepareDbSet(x => x.AdminsPermissions!, x => x.RolesPermissions!, x => x.CompanyInfosPermissions!, x => x.MessagesPermissions!);
+
         }
         public async Task<RoleDto> Handle(GetByTitleRoleQuery request, CancellationToken cancellationToken)
         {
-            var role = await _repository.SingleAsync(c => c.Title == request.Title);
+            var role = await _repository.FindAsync(c => c.Title == request.Title);
             if (role == null)
             {
                 throw new KeyNotFoundException($"Role with title '{request.Title}' not found.");

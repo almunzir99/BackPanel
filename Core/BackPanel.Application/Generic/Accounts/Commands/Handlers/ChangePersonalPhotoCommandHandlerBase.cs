@@ -19,7 +19,7 @@ namespace BackPanel.Application.Generic.Accounts.Commands.Handlers
         }
         public async Task<string> Handle(TCommand request, CancellationToken cancellationToken)
         {
-            var user = await Repository.SingleAsync(c => c.Id == request.Id);
+            var user = await Repository.FindAsync(c => c.Id == request.Id);
             if (user == null)
                 throw new Exception("this user isn't available");
             var oldPhoto = user.Image;

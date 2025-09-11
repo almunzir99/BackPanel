@@ -16,7 +16,7 @@ namespace BackPanel.Application.Generic.Common.Commands.Handlers
         }
         public async Task Handle(TCommand request, CancellationToken cancellationToken)
         {
-            var entity = await Repository.SingleAsync(request.Id);
+            var entity = await Repository.GetById(request.Id);
             if (entity == null)
             {
                 throw new KeyNotFoundException($"Entity with ID {request.Id} not found.");

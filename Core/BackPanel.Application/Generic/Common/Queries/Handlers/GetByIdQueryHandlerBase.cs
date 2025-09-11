@@ -20,7 +20,7 @@ namespace BackPanel.Application.Generic.Common.Queries.Handlers
         }
         public async Task<TDTO> Handle(TQuery request, CancellationToken cancellationToken)
         {
-            var entity = await Repository.SingleAsync(request.Id);
+            var entity = await Repository.GetById(request.Id);
             return Mapper.Map<TDTO>(entity);
         }
     }

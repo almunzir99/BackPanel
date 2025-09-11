@@ -22,7 +22,7 @@ namespace BackPanel.Application.Generic.Accounts.Queries.Handlers
 
         public async Task<TDTO> Handle(TQuery request, CancellationToken cancellationToken)
         {
-            var target = await Repository.SingleAsync(x => x.Id == request.Id);
+            var target = await Repository.FindAsync(x => x.Id == request.Id);
             return Mapper.Map<TDTO>(target);
         }
     }

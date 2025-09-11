@@ -21,7 +21,8 @@ namespace BackPanel.Application.Generic.Common.Commands.Handlers
         {
             var id = request.Id;
             var mappedItem = Mapper.Map<TDTORequest, TEntity>(request.Request);
-            var result = await Repository.UpdateAsync(id, mappedItem);
+            mappedItem.Id = id;
+            var result = await Repository.UpdateAsync( mappedItem);
             await Repository.Complete();
             return Mapper.Map<TEntity, TDTO>(result);
         }

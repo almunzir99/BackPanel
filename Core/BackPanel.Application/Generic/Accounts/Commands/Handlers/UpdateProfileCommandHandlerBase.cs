@@ -21,12 +21,12 @@ namespace BackPanel.Application.Generic.Accounts.Commands.Handlers
         }
         public virtual async Task<TDTO> Handle(TCommand request, CancellationToken cancellationToken)
         {
-            var entity = await Repository.SingleAsync(request.Id);
+            var entity = await Repository.GetById(request.Id);
             if (entity == null)
                 throw new Exception("User not found");
             Mapper.Map(request.Request, entity);
             entity.LastUpdate = DateTime.Now;
-            await Repository.UpdateAsync(request.Id, entity);
+            await Repository.UpdateAsync(  entity);
             await Repository.Complete();
             return Mapper.Map<TEntity, TDTO>(entity);
         }
