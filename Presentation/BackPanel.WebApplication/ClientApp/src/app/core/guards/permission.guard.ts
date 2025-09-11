@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MenuList } from 'src/app/dashboard/components/menu/menu.list';
 import { Admin } from '../models/admin.model';
@@ -10,7 +10,7 @@ import { AccountService } from '../services/account.service';
 @Injectable({
   providedIn: 'root'
 })
-export class PermissionGuard implements CanActivateChild {
+export class PermissionGuard  {
   currentRole: Role | null = null;
   currentUser: Admin | null = null;
   menuList = MenuList;
