@@ -4,6 +4,8 @@
     text-align: center;
     width: 70vw;
     max-width: 400px;
+    overflow: hidden;
+    padding-bottom: 30px;
 }
 
 .message-container .vector {
@@ -37,7 +39,7 @@
     justify-content: center;
     flex-direction: column;
     margin: 15px;
-    width: 100%;
+    width: 98%;
 
     .header {
         display: flex;

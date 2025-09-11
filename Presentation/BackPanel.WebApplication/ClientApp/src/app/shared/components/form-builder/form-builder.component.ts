@@ -4,6 +4,7 @@ import { FileModel } from 'src/app/core/models/file.models';
 import { ControlTypes } from './control-type.enum';
 import { FormBuilderGroup } from './form-builder-group.model';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'form-builder',
@@ -21,12 +22,17 @@ export class FormBuilderComponent implements OnInit {
   @Output("tableDelete") tableDeleteEvent = new EventEmitter<any>();
   formGroup: UntypedFormGroup = new UntypedFormGroup({});
   controlTypes = ControlTypes;
-  constructor(@Inject(MAT_DIALOG_DATA) public data:FormBuilderPropsSpec,@Inject('DIRECTION') public direction:string) {
+  direction = 'ltr';
+  constructor(@Inject(MAT_DIALOG_DATA) public data:FormBuilderPropsSpec,private translate:TranslateService) {
       if(data)
       {
         if(data.controlsGroups) this.controlsGroups = data.controlsGroups;
         this.title = data.title; 
       }
+      this.direction = this.translate.currentLang == 'ar' ? 'rtl' : 'ltr';
+      this.translate.onLangChange.subscribe((event) => {
+        this.direction = event.lang == 'ar' ? 'rtl' : 'ltr';
+      })
   }
   onSubmit() {
     this.submitEventEmitter.emit(this.formGroup.value);

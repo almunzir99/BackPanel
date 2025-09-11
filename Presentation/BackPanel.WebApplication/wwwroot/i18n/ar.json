@@ -56,11 +56,19 @@
     "Delete": "حذف",
     "RoleTitle": "اسم الدور",
     "CompanyInfo": "بيانات المؤسسة",
-    "CreateNewRole":"انشاء دور جديد",
-    "admins":"المشرفين",
-    "messages":"الرسائل",
-    "roles":"الادوار و الصلاحيات",
-    "companyInfos":"بيانات المؤسسة"
-
+    "CreateNewRole": "انشاء دور جديد",
+    "admins": "المشرفين",
+    "messages": "الرسائل",
+    "roles": "الادوار و الصلاحيات",
+    "companyInfos": "بيانات المؤسسة",
+    "TITLE": "عنوان النموذج",
+    "SUBMIT": "إرسال",
+    "CANCEL": "إلغاء",
+    "DATE_HINT": "يوم/شهر/سنة",
+    "REQUIRED": "الحقل {{field}} مطلوب.",
+    "MINLENGTH": "الحد الأدنى لطول {{field}} هو {{length}}.",
+    "MAXLENGTH": "الحد الأقصى لطول {{field}} هو {{length}}.",
+    "Password": "كلمة المرور",
+    "PasswordConfirmation": "تأكيد كلمة المرور"
   }
 }

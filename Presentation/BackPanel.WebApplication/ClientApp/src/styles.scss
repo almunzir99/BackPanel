@@ -1,14 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Provide sufficient contrast against white background */
-@import 'themes';
-@import 'variables';
-@import 'themes-helper';
+@import "themes";
+@import "variables";
+@import "themes-helper";
 @font-face {
   font-family: "Poppin";
   src: url("assets/fonts/Poppins-Regular.ttf");
   unicode-range: U+0000-007F;
-
 }
 
 @font-face {
@@ -16,7 +15,6 @@
   src: url("assets/fonts/Poppins-Bold.ttf");
   font-weight: 700;
   unicode-range: U+0000-007F;
-
 }
 
 @font-face {
@@ -24,7 +22,6 @@
   src: url("assets/fonts/Poppins-ExtraBold.ttf");
   font-weight: 800;
   unicode-range: U+0000-007F;
-
 }
 
 @font-face {
@@ -32,7 +29,6 @@
   src: url("assets/fonts/Poppins-Medium.ttf");
   font-weight: 500;
   unicode-range: U+0000-007F;
-
 }
 
 @font-face {
@@ -40,7 +36,6 @@
   src: url("assets/fonts/Poppins-SemiBold.ttf");
   font-weight: 600;
   unicode-range: U+0000-007F;
-
 }
 
 @font-face {
@@ -57,16 +52,16 @@ body {
 }
 
 * {
-  font-family: 'Poppin';
+  font-family: "Poppin";
   outline: none;
   scrollbar-width: thin;
 }
-p{
-  margin:  0px!important;
-  padding: 0px!important;
+p {
+  margin: 0px !important;
+  padding: 0px !important;
 }
 /**********************************  override material default styles ********************************************/
- 
+
 mat-form-field {
   width: 100%;
 }
@@ -74,7 +69,6 @@ mat-form-field {
 .mdc-text-field--outlined {
   --mdc-outlined-text-field-container-shape: 12px !important;
 }
-
 
 /***************************** datatable overrides  *********************************************/
 .datatable-container {
@@ -100,7 +94,6 @@ mat-form-field {
 
 /***************************** local files picker overrides   *********************************************/
 
-
 .lfp-container {
   .mat-mdc-form-field-appearance-outline .mat-mdc-form-field-infix {
     padding: 0.8em 0em;
@@ -118,7 +111,13 @@ mat-form-field {
     border-radius: 0 0px 0px 0px !important;
     border-left: none;
   }
-
+  .mat-mdc-form-field-subscript-wrapper,
+  .mat-mdc-form-field-bottom-align::before {
+    display: none;
+  }
+  button {
+    margin-left: -10px;
+  }
 }
 
 .lfp-container.rtl {
@@ -129,7 +128,13 @@ mat-form-field {
   .mat-mdc-form-field-appearance-outline .mat-mdc-form-field-outline-start {
     border-radius: 0px 0x 0px 0px !important;
     min-width: 0px !important;
-
+  }
+  .mat-mdc-form-field-subscript-wrapper,
+  .mat-mdc-form-field-bottom-align::before {
+    display: none;
+  }
+  button {
+    margin-right: -10px;
   }
 }
 
@@ -176,12 +181,11 @@ mat-form-field {
   justify-content: flex-end;
   flex-wrap: wrap;
   margin-left: auto;
-
 }
 
 .table-act-button {
   border: none;
-  background-color: map-get($map: $primary-color , $key: 500);
+  background-color: map-get($map: $primary-color, $key: 500);
   color: white;
   flex: 1;
   min-width: fit-content;
@@ -190,7 +194,6 @@ mat-form-field {
   i {
     font-size: 23px;
   }
-
 }
 
 .table-act-button.text {
@@ -198,16 +201,15 @@ mat-form-field {
 }
 
 .table-act-button.accent {
-  background-color: map-get($map: $accent-color , $key: 500);
+  background-color: map-get($map: $accent-color, $key: 500);
 }
 
 .table-act-button.warn {
-  background-color: #F44236;
+  background-color: #f44236;
   color: white;
-
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width: 768px) {
   .cdk-overlay-pane {
     max-width: 95vw !important;
   }
@@ -216,7 +218,6 @@ mat-form-field {
 .mat-mdc-tab-nav-bar,
 .mat-mdc-tab-header {
   border-bottom: none !important;
-
 }
 
 .mat-mdc-tab-label {
@@ -228,19 +229,19 @@ mat-form-field {
 
   mat-mdc-icon {
     color: map-get($map: $primary-color, $key: 500);
-
   }
 }
 
 .role-table {
-
-  .mat-mdc-checkbox-disabled.mat-mdc-checkbox-checked .mat-mdc-checkbox-background,
-  .mat-mdc-checkbox-disabled.mat-mdc-checkbox-indeterminate .mat-mdc-checkbox-background {
+  .mat-mdc-checkbox-disabled.mat-mdc-checkbox-checked
+    .mat-mdc-checkbox-background,
+  .mat-mdc-checkbox-disabled.mat-mdc-checkbox-indeterminate
+    .mat-mdc-checkbox-background {
     background-color: map-get($map: $accent-color, $key: 500);
   }
 }
 
-.notification-style+* .mat-mdc-menu-panel {
+.notification-style + * .mat-mdc-menu-panel {
   border-radius: 15px;
   box-shadow: none;
   height: 500px;
@@ -259,7 +260,6 @@ mat-form-field {
     align-items: center;
     border-bottom: 1px solid #f7f6f696;
 
-
     h2 {
       margin: 0;
       padding: 0;
@@ -276,7 +276,7 @@ mat-form-field {
   }
 
   .menu-header.rtl {
-    flex-direction: row-reverse ;
+    flex-direction: row-reverse;
   }
   .notifications-list {
     height: calc(100% - 120px);
@@ -301,7 +301,6 @@ mat-form-field {
         i {
           font-size: 26px;
           color: map-get($map: $accent-color, $key: 500);
-
         }
       }
 
@@ -314,7 +313,6 @@ mat-form-field {
 
         .title {
           font-weight: bold;
-
         }
 
         .message {
@@ -346,7 +344,10 @@ mat-form-field {
 .dark-mode,
 .dark-mode-theme {
   .dimmer {
-    background-color: rgba($color: $dark-background-color, $alpha: 0.8)!important;
+    background-color: rgba(
+      $color: $dark-background-color,
+      $alpha: 0.8
+    ) !important;
   }
 
   .placeholder {
@@ -363,7 +364,6 @@ mat-form-field {
     color: #ffffff83;
   }
 
-
   .mat-mdc-tab-label-content {
     color: white !important;
   }
@@ -375,7 +375,6 @@ mat-form-field {
 
   input::placeholder {
     color: white;
-
   }
 
   mat-mdc-label {
@@ -390,20 +389,21 @@ mat-form-field {
     color: white;
   }
 
-  .notification-style+* .mat-mdc-menu-panel {
-    border-color: rgba($color: $secondary-dark-background-color, $alpha: .7);
+  .notification-style + * .mat-mdc-menu-panel {
+    border-color: rgba($color: $secondary-dark-background-color, $alpha: 0.7);
 
     .menu-header {
       color: white;
-      border-color: rgba($color: $secondary-dark-background-color, $alpha: .7);
-
-
+      border-color: rgba($color: $secondary-dark-background-color, $alpha: 0.7);
     }
 
     .notifications-list {
       .notification {
         color: white;
-        border-color: rgba($color: $secondary-dark-background-color, $alpha: .7);
+        border-color: rgba(
+          $color: $secondary-dark-background-color,
+          $alpha: 0.7
+        );
 
         .icon-container {
           background-color: map-get($map: $accent-color, $key: 500);
@@ -421,7 +421,10 @@ mat-form-field {
       }
 
       .notification.uread {
-        background-color: rgba($color: $secondary-dark-background-color, $alpha: 1);
+        background-color: rgba(
+          $color: $secondary-dark-background-color,
+          $alpha: 1
+        );
       }
     }
 
@@ -435,20 +438,27 @@ mat-form-field {
     background-color: $secondary-dark-background-color;
   }
 }
-.operators-menu{
-  .mat-mdc-menu-item{
-      span{
-          font-size: 13px;
-      }
-      i{
-          font-size: 20px;
-          margin: 0px 10px;
-      }
+.operators-menu {
+  .mat-mdc-menu-item {
+    span {
+      font-size: 13px;
+    }
+    i {
+      font-size: 20px;
+      margin: 0px 10px;
+    }
   }
-  .mat-mdc-menu-item:hover{
+  .mat-mdc-menu-item:hover {
     color: map-get($map: $primary-color, $key: 500);
   }
 }
 .highlight {
-  background-color: rgba($color: map-get($map: $primary-color, $key: 500), $alpha: 0.5);
+  background-color: rgba(
+    $color: map-get($map: $primary-color, $key: 500),
+    $alpha: 0.5
+  );
+}
+
+.mdc-button {
+  min-height: 45px;
 }

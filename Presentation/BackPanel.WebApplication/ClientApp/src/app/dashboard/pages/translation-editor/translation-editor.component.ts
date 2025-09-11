@@ -145,6 +145,7 @@ export class TranslationEditorComponent implements OnInit {
             this.updateParent(title, res['title']);
         },
         onCancel: () => {
+          this._dialog.closeAll();
         },
       },
     })
@@ -174,6 +175,8 @@ export class TranslationEditorComponent implements OnInit {
           this._dialog.closeAll();
         },
         onCancel: () => {
+          this._dialog.closeAll();
+          
         },
       },
     })
