@@ -2,18 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilderComponent } from './components/form-builder/form-builder.component';
 import {ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
-import {MatLegacyCheckboxModule as MatCheckboxModule} from '@angular/material/legacy-checkbox';
-import {MatLegacySelectModule as MatSelectModule} from '@angular/material/legacy-select';
+import { MatButtonModule } from '@angular/material/button';
+ 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { QuillModule } from 'ngx-quill';
 import { DatatableComponent } from './components/datatable/datatable.component';
-import {MatLegacyPaginatorModule as MatPaginatorModule} from '@angular/material/legacy-paginator'; 
-import {MatLegacyMenuModule as MatMenuModule} from '@angular/material/legacy-menu';
+ 
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { OfflineComponent } from './components/placeholders/offline/offline.component';
 import { EmptyComponent } from './components/placeholders/empty/empty.component';
@@ -21,15 +17,20 @@ import { SpinnerComponent } from './components/placeholders/spinner/spinner.comp
 import { DimmerLoadingComponent } from './components/dimmer-loading/dimmer-loading.component';
 import { AlertMessageComponent } from './components/alert-message/alert-message.component';
 import { LocalFilesPickerComponent } from './components/local-files-picker/local-files-picker.component';
-import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+
 import { NgxMatColorPickerModule } from '@angular-material-components/color-picker';
 import { FieldsMatcherComponent } from './components/fields-matcher/fields-matcher.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { LanguagesSwitchComponent } from './components/languages-switch/languages-switch.component';
 import { TranslateModule } from '@ngx-translate/core';
-
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import {MatSelectModule} from '@angular/material/select';
+import {MatPaginatorModule} from '@angular/material/paginator';
 @NgModule({ 
   declarations: [
     FormBuilderComponent,
@@ -53,9 +54,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatRippleModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatSelectModule,
     MatDatepickerModule,
-    MatPaginatorModule,
     MatMenuModule,
     MatDialogModule,
     MatSnackBarModule,
@@ -63,7 +62,9 @@ import { TranslateModule } from '@ngx-translate/core';
     AngularSvgIconModule.forRoot(),
     NgxMatColorPickerModule,
     DragDropModule,
-    TranslateModule
+    TranslateModule,
+    MatSelectModule,
+    MatPaginatorModule
 
   ],
   exports:[

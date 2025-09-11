@@ -1,7 +1,5 @@
 import { HttpEventType } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { forkJoin, map, Subscription } from 'rxjs';
 import { DirectoryModel } from 'src/app/core/models/directory.model';
 import { FileModel } from 'src/app/core/models/file.models';
@@ -14,6 +12,8 @@ import { FormBuilderComponent, FormBuilderPropsSpec } from 'src/app/shared/compo
 import { Clipboard } from '@angular/cdk/clipboard';
 import * as dayjs from 'dayjs'
 import { GeneralService } from 'src/app/core/services/general.service';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-files-manager',

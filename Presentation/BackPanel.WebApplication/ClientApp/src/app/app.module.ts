@@ -5,21 +5,21 @@ import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromD
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyFormFieldModule as MatFormFieldModule, MAT_LEGACY_FORM_FIELD_DEFAULT_OPTIONS as MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/legacy-form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AppRoutingModule } from './app-routing.module';
 import { MatNativeDateModule, MAT_RIPPLE_GLOBAL_OPTIONS, RippleGlobalOptions } from '@angular/material/core';
 import { QuillModule } from 'ngx-quill';
 import { environment } from 'src/environments/environment';
-import { MatLegacyDialogModule as MatDialogModule, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { MAT_COLOR_FORMATS, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 const globalRippleConfig: RippleGlobalOptions = {
@@ -29,42 +29,44 @@ const globalRippleConfig: RippleGlobalOptions = {
     exitDuration: 500
   }
 };
-@NgModule({ declarations: [
-        AppComponent,
-    ],
-    bootstrap: [AppComponent], imports: [BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-        AppRoutingModule,
-        FormsModule,
-        BrowserAnimationsModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
-        MatNativeDateModule,
-        MatDialogModule,
-        AngularSvgIconModule.forRoot(),
-        QuillModule.forRoot(),
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient]
-            },
-        })], providers: [
-        { provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: globalRippleConfig },
-        { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
-        { provide: "BASE_API_URL", useValue: environment.baseUrl },
-        { provide: "DIRECTION", useValue: environment.direction },
-        { provide: MAT_DIALOG_DATA, useValue: undefined },
-        {
-            provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
-        },
-        {
-            provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true
-        },
-        { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS },
-        provideHttpClient(withInterceptorsFromDi())
-    ] })
+@NgModule({
+  declarations: [
+    AppComponent,
+  ],
+  bootstrap: [AppComponent], imports: [
+    AppRoutingModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatNativeDateModule,
+    MatDialogModule,
+    AngularSvgIconModule.forRoot(),
+    QuillModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      },
+    })], providers: [
+      { provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: globalRippleConfig },
+      { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
+      { provide: "BASE_API_URL", useValue: environment.baseUrl },
+      { provide: "DIRECTION", useValue: environment.direction },
+      { provide: MAT_DIALOG_DATA, useValue: undefined },
+      {
+        provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
+      },
+      {
+        provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true
+      },
+      { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS },
+      provideHttpClient(withInterceptorsFromDi())
+    ]
+})
 export class AppModule {
 
 }
@@ -74,4 +76,3 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 
 
 
- 

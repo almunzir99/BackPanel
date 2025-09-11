@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { FileModel } from 'src/app/core/models/file.models';
 import { FilesManagerComponent, FilesManagerSpec } from 'src/app/dashboard/pages/files-manager/files-manager.component';
 
