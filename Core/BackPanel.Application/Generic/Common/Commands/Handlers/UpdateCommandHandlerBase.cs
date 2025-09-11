@@ -19,10 +19,9 @@ namespace BackPanel.Application.Generic.Common.Commands.Handlers
         }
         public virtual async Task<TDTO> Handle(TCommand request, CancellationToken cancellationToken)
         {
-            var id = request.Id;
-            var mappedItem = Mapper.Map<TDTORequest, TEntity>(request.Request);
-            mappedItem.Id = id;
-            var result = await Repository.UpdateAsync( mappedItem);
+            var entity = await Repository.GetById(request.Id);
+            Mapper.Map(request.Request, entity);
+            var result = await Repository.UpdateAsync(entity);
             await Repository.Complete();
             return Mapper.Map<TEntity, TDTO>(result);
         }
