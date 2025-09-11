@@ -13,6 +13,7 @@ import { langs } from 'src/app/shared/extras/languages';
 @Component({
   selector: 'app-translation-editor',
   templateUrl: './translation-editor.component.html',
+  standalone: false,
   styleUrls: ['./translation-editor.component.scss']
 })
 export class TranslationEditorComponent implements OnInit {

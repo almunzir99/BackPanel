@@ -6,6 +6,7 @@ import { AppConstants } from '../shared/constants/app_constants';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
+  standalone: false,
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {

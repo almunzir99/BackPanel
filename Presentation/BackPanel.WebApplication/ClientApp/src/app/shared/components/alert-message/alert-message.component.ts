@@ -5,6 +5,7 @@ import { GeneralService } from 'src/app/core/services/general.service';
 @Component({
   selector: 'alert-message',
   templateUrl: './alert-message.component.html',
+  standalone: false,
   styleUrls: ['./alert-message.component.scss']
 })
 export class AlertMessageComponent implements OnInit {

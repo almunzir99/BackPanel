@@ -5,6 +5,7 @@ import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@an
 @Component({
   selector: 'dimmer-loading',
   templateUrl: './dimmer-loading.component.html',
+  standalone: false,
   styleUrls: ['./dimmer-loading.component.scss']
 })
 export class DimmerLoadingComponent implements OnInit {

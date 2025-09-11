@@ -13,6 +13,7 @@ dayjs.extend(relativeTime)
 @Component({
   selector: 'dashboard-header',
   templateUrl: './header.component.html',
+  standalone: false,
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {

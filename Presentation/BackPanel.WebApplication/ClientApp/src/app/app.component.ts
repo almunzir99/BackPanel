@@ -13,6 +13,7 @@ import { NotificationsService } from './core/services/notifications.service';
 
 @Component({
   selector: 'app-root',
+  standalone: false,
   templateUrl: './app.component.html'
 })
 export class AppComponent {

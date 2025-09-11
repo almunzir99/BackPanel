@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'spinner-placeholder',
   templateUrl: './spinner.component.html',
+  standalone: false,
   styleUrls: ['./spinner.component.scss']
 })
 export class SpinnerComponent implements OnInit {

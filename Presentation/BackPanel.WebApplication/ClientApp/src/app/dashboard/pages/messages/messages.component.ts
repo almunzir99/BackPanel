@@ -11,6 +11,7 @@ import { PageSpec, SortSpec } from 'src/app/shared/components/datatable/datatabl
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
+  standalone: false,
   styleUrls: ['./messages.component.scss']
 })
 export class MessagesComponent implements OnInit {

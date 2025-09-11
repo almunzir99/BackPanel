@@ -13,6 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'dahboard-menu',
   templateUrl: './menu.component.html',
+  standalone: false,
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {

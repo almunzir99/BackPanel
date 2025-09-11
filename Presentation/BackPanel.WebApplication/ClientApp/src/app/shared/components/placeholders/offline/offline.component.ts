@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'offline-placeholder',
   templateUrl: './offline.component.html',
+  standalone: false,
   styleUrls: ['./offline.component.scss']
 })
 export class OfflineComponent implements OnInit {

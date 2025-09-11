@@ -87,16 +87,7 @@
                             <local-files-picker (filesPicked)="onFilesPicked(control.name!,$event)">
                             </local-files-picker>
                         </div>
-                        <!-- 6. Colors Picker -->
-                        <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.ColorsPicker"
-                            class="control-container">
-                            <mat-form-field>
-                                <mat-label>{{control.title}}</mat-label>
-                                <input matInput [ngxMatColorPicker]="picker" [formControlName]="control.name!">
-                                <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
-                                <ngx-mat-color-picker #picker></ngx-mat-color-picker>
-                            </mat-form-field>
-                        </div>
+                        
                     </ng-container>
                 </div>
             </div>

@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'empty-placeholder',
   templateUrl: './empty.component.html',
+  standalone: false,
   styleUrls: ['./empty.component.scss']
 })
 export class EmptyComponent implements OnInit {

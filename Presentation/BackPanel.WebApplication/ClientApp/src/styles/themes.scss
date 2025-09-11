@@ -1,9 +1,23 @@
-@import '~@angular/material/theming';
-@import 'variables';
-@include mat-core();
-$main-typography: mat-typography-config($font-family: 'Poppin');
-$primary-color-platte: mat-palette($primary-color);
-$accent-color-platte: mat-palette($accent-color);
-$default-theme: mat-light-theme($primary-color-platte, $accent-color-platte);
-$dark-theme: mat-dark-theme($primary-color-platte, $accent-color-platte);
-@include mat-core($main-typography);
+@use '@angular/material' as mat;
+// @use 'variables' as *; // Import your color variables
+
+// // Include Material core styles
+@include mat.core();
+
+// $primary-color-palette: mat.define-palette(mat.$azure-palette);
+// $accent-color-palette: mat.define-palette(mat.$blue-palette, A200, A100, A400);
+
+// // Define a theme
+// $default-theme: mat.define-theme((
+//   color: (
+//     primary: $primary-color-palette,
+//     accent: $accent-color-palette
+//   ),
+//   typography: (
+//     brand-family: 'Poppins, sans-serif'
+//   ),
+//   density: 0
+// ));
+
+// // Apply the theme globally
+// @include mat.all-component-themes($default-theme);

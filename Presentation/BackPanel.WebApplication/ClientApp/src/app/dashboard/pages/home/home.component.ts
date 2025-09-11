@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
+  standalone: false,
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {

@@ -19,6 +19,7 @@ import { FormBuilderComponent, FormBuilderPropsSpec } from 'src/app/shared/compo
 @Component({
   selector: 'app-admins',
   templateUrl: './admins.component.html',
+  standalone: false,
   styleUrls: ['./admins.component.scss']
 })
 export class AdminsComponent implements OnInit {

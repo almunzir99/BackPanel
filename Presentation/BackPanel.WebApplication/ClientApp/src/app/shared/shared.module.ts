@@ -19,7 +19,6 @@ import { AlertMessageComponent } from './components/alert-message/alert-message.
 import { LocalFilesPickerComponent } from './components/local-files-picker/local-files-picker.component';
 import { MatDialogModule } from '@angular/material/dialog';
 
-import { NgxMatColorPickerModule } from '@angular-material-components/color-picker';
 import { FieldsMatcherComponent } from './components/fields-matcher/fields-matcher.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { LanguagesSwitchComponent } from './components/languages-switch/languages-switch.component';
@@ -60,7 +59,6 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatSnackBarModule,
     QuillModule.forRoot(),
     AngularSvgIconModule.forRoot(),
-    NgxMatColorPickerModule,
     DragDropModule,
     TranslateModule,
     MatSelectModule,

@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-fields-matcher',
   templateUrl: './fields-matcher.component.html',
+  standalone: false,
   styleUrls: ['./fields-matcher.component.scss']
 })
 export class FieldsMatcherComponent implements OnInit {

@@ -15,6 +15,7 @@ import { NotificationsService } from 'src/app/core/services/notifications.servic
 @Component({
   selector: 'app-authentication',
   templateUrl: './authentication.component.html',
+  standalone: false,
   styleUrls: ['./authentication.component.scss']
 })
 export class AuthenticationComponent implements OnInit {

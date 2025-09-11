@@ -6,6 +6,7 @@ import { FilesManagerComponent, FilesManagerSpec } from 'src/app/dashboard/pages
 @Component({
   selector: 'local-files-picker',
   templateUrl: './local-files-picker.component.html',
+  standalone: false,
   styleUrls: ['./local-files-picker.component.scss']
 })
 export class LocalFilesPickerComponent implements OnInit {

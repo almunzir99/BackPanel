@@ -18,6 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-files-manager',
   templateUrl: './files-manager.component.html',
+  standalone: false,
   styleUrls: ['./files-manager.component.scss']
 })
 export class FilesManagerComponent implements OnInit {

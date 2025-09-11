@@ -13,6 +13,7 @@ import { FormBuilderGroup } from 'src/app/shared/components/form-builder/form-bu
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
+  standalone: false,
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {

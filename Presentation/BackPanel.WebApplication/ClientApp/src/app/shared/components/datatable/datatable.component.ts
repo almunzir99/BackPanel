@@ -12,6 +12,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 @Component({
   selector: 'data-table',
   templateUrl: './datatable.component.html',
+  standalone: false,
   styleUrls: ['./datatable.component.scss']
 })
 export class DatatableComponent implements OnInit, OnChanges {

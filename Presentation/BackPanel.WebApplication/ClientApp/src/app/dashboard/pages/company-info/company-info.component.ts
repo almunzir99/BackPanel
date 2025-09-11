@@ -13,6 +13,7 @@ import { FormBuilderGroup } from 'src/app/shared/components/form-builder/form-bu
 @Component({
   selector: 'app-company-info',
   templateUrl: './company-info.component.html',
+  standalone: false,
   styleUrls: ['./company-info.component.scss']
 })
 export class CompanyInfoComponent implements OnInit {

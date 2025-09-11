@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'languages-switch',
   templateUrl: './languages-switch.component.html',
+  standalone: false,
   styleUrls: ['./languages-switch.component.scss']
 })
 export class LanguagesSwitchComponent implements OnInit {

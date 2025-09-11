@@ -13,6 +13,7 @@ import { PageSpec, SortSpec } from 'src/app/shared/components/datatable/datatabl
 @Component({
   selector: 'app-roles',
   templateUrl: './roles.component.html',
+  standalone: false,
   styleUrls: ['./roles.component.scss']
 })
 export class RolesComponent implements OnInit {
