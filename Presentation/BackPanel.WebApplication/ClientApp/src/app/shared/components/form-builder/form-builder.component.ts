@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileModel } from 'src/app/core/models/file.models';
 import { ControlTypes } from './control-type.enum';
@@ -18,7 +18,7 @@ export class FormBuilderComponent implements OnInit {
   @Output("formSubmit") submitEventEmitter = new EventEmitter<any>();
   @Output("cancel") cancelEventEmitter = new EventEmitter<void>();
   @Output("tableDelete") tableDeleteEvent = new EventEmitter<any>();
-  formGroup: FormGroup = new FormGroup({});
+  formGroup: UntypedFormGroup = new UntypedFormGroup({});
   controlTypes = ControlTypes;
   constructor(@Inject(MAT_DIALOG_DATA) public data:FormBuilderPropsSpec,@Inject('DIRECTION') public direction:string) {
       if(data)
@@ -52,7 +52,7 @@ export class FormBuilderComponent implements OnInit {
     this.controlsGroups.forEach(group => {
       group.controls.forEach(control => {
         if(control.name)
-        this.formGroup.addControl(control.name, new FormControl(control.value, control.validators));
+        this.formGroup.addControl(control.name, new UntypedFormControl(control.value, control.validators));
       });
     });
   }
