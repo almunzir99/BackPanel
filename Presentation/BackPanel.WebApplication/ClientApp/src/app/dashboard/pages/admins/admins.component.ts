@@ -315,7 +315,6 @@ export class AdminsComponent implements OnInit {
         title: "Create New Admin",
         controlsGroups: form,
         onSubmit: (result) => {
-          this._dialog.closeAll();
           var admin = result as Admin;
           admin.image = !result['image'] ? 'none' : result['image'][0]['path'];
           if (item) {
@@ -325,7 +324,6 @@ export class AdminsComponent implements OnInit {
             this.create(admin);
         },
         onCancel: () => {
-          this._dialog.closeAll();
 
         }
       },

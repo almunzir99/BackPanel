@@ -138,14 +138,12 @@ export class TranslationEditorComponent implements OnInit {
       data: {
         controlsGroups: formControlsGroup,
         onSubmit: (res) => {
-          this._dialog.closeAll();
           if (!title)
             this.createParent(res['title']);
           else
             this.updateParent(title, res['title']);
         },
         onCancel: () => {
-          this._dialog.closeAll();
         },
       },
     })
@@ -175,7 +173,6 @@ export class TranslationEditorComponent implements OnInit {
           this._dialog.closeAll();
         },
         onCancel: () => {
-          this._dialog.closeAll();
         },
       },
     })
