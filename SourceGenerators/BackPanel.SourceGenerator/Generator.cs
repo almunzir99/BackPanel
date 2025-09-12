@@ -44,9 +44,12 @@ public class Generator
             await codeModifier.AddDbSetToDbContext();
             Console.WriteLine("DbContext updated Successfully");
             /* **************** Step  4: EF Migration ********************  */
-            Console.WriteLine("Start EF Migrating Process ....");
-            await dbCommandRunner.MigrateAsync();
-            Console.WriteLine(" EF Migrating Completed Successfully");
+            if (_options.DatabaseUpdate!.Value)
+            {
+                Console.WriteLine("Start EF Migrating Process ....");
+                await dbCommandRunner.MigrateAsync();
+                Console.WriteLine(" EF Migrating Completed Successfully");
+            }
         }
         if (_options.Permission!.Value)
         {
@@ -61,8 +64,11 @@ public class Generator
             Console.WriteLine("RoleDtoRequest.cs updated Successfully");
             /* **************** Step  8: EF Migration ********************  */
             Console.WriteLine("Start EF Migrating Process ....");
-            await dbCommandRunner.MigrateAsync($"Add{_options.Model}Permissions");
-            Console.WriteLine(" EF Migrating Completed Successfully");
+            if (_options.DatabaseUpdate!.Value)
+            {
+                await dbCommandRunner.MigrateAsync($"Add{_options.Model}Permissions");
+                Console.WriteLine(" EF Migrating Completed Successfully");
+            }
         }
         if (_options.CQRS!.Value)
         {
