@@ -462,3 +462,18 @@ mat-form-field {
 .mdc-button {
   min-height: 45px;
 }
+button[color="accent"] {
+  background-color: map-get($map: $accent-color, $key: 500) !important;
+}
+.cdk-overlay-pane.mat-mdc-dialog-panel {
+  width: auto !important;
+  max-width: 75vw !important;
+  height: auto !important;
+}
+.mat-mdc-dialog-surface {
+  border-radius: 10px !important;
+}
+.cdk-overlay-container {
+  position: fixed;
+  background: rgba(128, 128, 128, 0.459);
+}
