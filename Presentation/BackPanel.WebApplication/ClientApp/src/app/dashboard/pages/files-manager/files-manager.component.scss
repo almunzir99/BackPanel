@@ -6,10 +6,10 @@
     height: 93%;
     overflow: hidden;
     position: relative;
-
+    min-width: 60vw;
     .selection-act-button {
         position: absolute;
-        bottom: 0;
+        bottom: 30px;
         right: 0;
 
         button {

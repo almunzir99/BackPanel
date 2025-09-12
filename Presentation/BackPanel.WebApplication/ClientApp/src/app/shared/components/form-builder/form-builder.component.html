@@ -1,5 +1,5 @@
 <div [dir]="direction =='rtl' ? 'rtl' : 'ltr'" [class.dialog-mode]="data" class="form-container">
-    <h1>{{ 'Dashboard.TITLE' | translate }}</h1>
+    <h1>{{ title! | translate }}</h1>
     <form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
         <div class="form-inputs">
             <div class="form-group" *ngFor="let group of controlsGroups">
@@ -87,10 +87,17 @@
                         </div>
 
                         <!-- 6. Local Files Picker -->
-                        <div style="padding: 15px;padding-left: 0px;" [style.width]="control.width"
-                            *ngIf="control.controlType == controlTypes.LocalFilePicker" class="control-container">
-                            <local-files-picker (filesPicked)="onFilesPicked(control.name!,$event)">
+                        <div [class.rtl]="direction == 'rtl'" [style.width]="control.width"
+                            *ngIf="control.controlType == controlTypes.LocalFilePicker"
+                            class="control-container file-picker">
+                            <local-files-picker [file-extensions]="control.extensions"
+                                [allow-mulitple-files]="control.allowMultipleFile ?? false"
+                                [button-disabled]="control.disabled ?? false"
+                                [initial-value]="getFileValue(control.value)" [form-group]="formGroup"
+                                [placeholder]="(control.title! | translate) ?? ('general.selectedFiles' | translate)"
+                                [formControlName]="control.name!" (filesPicked)="onFilesPicked(control.name!,$event)">
                             </local-files-picker>
+
                         </div>
 
                         <!-- 7. Colors Picker -->
