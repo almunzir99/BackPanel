@@ -53,12 +53,12 @@
   }
 }
 .file-picker {
-  padding: 15px 25px;
-  padding-left: 0px;
+  padding: 15px 0px;
+  margin-left: 25px;
 }
 .file-picker.rtl {
-  padding: 15px 25px;
-  padding-right: 0px;
+  padding: 15px 0px;
+  margin-right: 25px;
 }
 @media screen and (max-width: 768px) {
   .form-group {

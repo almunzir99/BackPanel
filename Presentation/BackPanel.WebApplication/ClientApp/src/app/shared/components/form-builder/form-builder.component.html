@@ -1,4 +1,4 @@
-<div [dir]="direction =='rtl' ? 'rtl' : 'ltr'" [class.dialog-mode]="data" class="form-container">
+<div [dir]="dir =='rtl' ? 'rtl' : 'ltr'" [class.dialog-mode]="data" [class.rtl]="dir == 'rtl'" class="form-container">
     <h1>{{ title! | translate }}</h1>
     <form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
         <div class="form-inputs">
@@ -9,15 +9,21 @@
                 <div class="form-controls">
                     <ng-container *ngFor="let control of group.controls">
                         <!-- 1. Inputs -->
-                        <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.TextInput ||
+                        <div [style.width]="control.width"
+                            *ngIf="control.controlType == controlTypes.TextInput ||
                          control.controlType == controlTypes.PasswordInput ||
                          control.controlType == controlTypes.Url ||
-                         control.controlType == controlTypes.NumberInput" class="control-container">
+                         control.controlType == controlTypes.NumberInput || control.controlType == controlTypes.TextArea" class="control-container">
                             <mat-form-field>
                                 <mat-label>{{ control.title! | translate }}</mat-label>
-                                <input [type]="control.controlType.toString()!"
+                                <input *ngIf="control.controlType != controlTypes.TextArea"
+                                    [type]="control.controlType.toString()!"
                                     [attr.placeholder]="(control.title! | translate)" [formControlName]="control.name!"
                                     matInput>
+                                <textarea matInput *ngIf="control.controlType == controlTypes.TextArea"
+                                    [type]="control.controlType.toString()!"
+                                    [attr.placeholder]="control.title! | translate" rows="3"
+                                    [formControlName]="control.name!" matInput type="text"></textarea>
                                 <mat-icon *ngIf="control.icon" matPrefix>{{control.icon}}</mat-icon>
                                 <mat-hint class="error-hint"
                                     *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].hasError('required')">
@@ -100,16 +106,28 @@
 
                         </div>
 
-                        <!-- 7. Colors Picker -->
-                        <!-- <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.ColorsPicker"
-                            class="control-container">
+                        <!-- 7. Custom Control -->
+                        <div [style.width]="control.width" class="control-container"
+                            *ngIf="control.controlType == controlTypes.CustomComponent && control.template">
+                            <ng-container [ngTemplateOutlet]="control.template"></ng-container>
+                        </div>
+                        <!-- 8. AutoComplete -->
+                        <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.Autocompele
+                         " class="control-container">
                             <mat-form-field>
-                                <mat-label>{{ control.title! | translate }}</mat-label>
-                                <input matInput [ngxMatColorPicker]="picker" [formControlName]="control.name!">
-                                <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
-                                <ngx-mat-color-picker #picker></ngx-mat-color-picker>
+                                <mat-label>{{control.title! | translate}}</mat-label>
+                                <input [formControlName]="control.name!" (input)="onAutoCompleteChanged($event,control)"
+                                    type="text" [placeholder]="(control.title ?? '' | translate)" matInput
+                                    [matAutocomplete]="auto">
+                                <mat-autocomplete [displayWith]="control.displayWith ?? null" autoActiveFirstOption
+                                    #auto="matAutocomplete">
+                                    <mat-option *ngFor="let option of control.filterData; let i = index"
+                                        [value]="control.valueProp ? control.valueProp == 'index' ? i : option[control.valueProp!] : option">
+                                        {{control.labelProp ? option[control.labelProp!] : option}}
+                                    </mat-option>
+                                </mat-autocomplete>
                             </mat-form-field>
-                        </div> -->
+                        </div>
                     </ng-container>
                 </div>
             </div>
