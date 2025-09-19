@@ -12,7 +12,7 @@ namespace BackPanel.Application.DTOs.Filters
         public PaginationFilter PaginationFilter { get; set; } = new PaginationFilter();
         public string OrderBy { get; set; } = "LastUpdate";
         public bool Descending { get; set; } = true;
-        public string Search { get; set; } = string.Empty;
+        public string? Search { get; set; } = string.Empty;
         public List<SearchExpressionDtoRequest> SearchExpressions { get; set; } = new();
     }
 }
