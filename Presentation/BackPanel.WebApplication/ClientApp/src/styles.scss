@@ -3,25 +3,6 @@
 @import "themes";
 @import "variables";
 @import "themes-helper";
-html {
-  @include mat.theme(
-    (
-      color: (
-        primary: my-theme.$primary-palette,
-        tertiary: my-theme.$tertiary-palette,
-      ),
-      typography: Poppin,
-      density: 0,
-    )
-  );
-  @include mat.form-field-overrides(
-    (
-      outlined-outline-color: #eeeaea // Change this to your desired color,,
-    )
-  );
-  @include mat.form-field-density(-2);
-}
-
 
 @font-face {
   font-family: "Poppin";

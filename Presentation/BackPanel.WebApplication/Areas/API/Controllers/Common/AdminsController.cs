@@ -10,7 +10,7 @@ using BackPanel.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BackPanel.WebApplication.Areas.API.Controllers;
+namespace BackPanel.WebApplication.Areas.API.Controllers.Common;
 
 [Route("api/admins")]
 public class AdminsController : ApiController<Admin, AdminDto, AdminDtoRequest>
