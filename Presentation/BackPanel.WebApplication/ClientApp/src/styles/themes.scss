@@ -3,6 +3,8 @@
 
 // // Include Material core styles
 @include mat.core();
+@include mat.form-field-density(-2);
+
 
 // $primary-color-palette: mat.define-palette(mat.$azure-palette);
 // $accent-color-palette: mat.define-palette(mat.$blue-palette, A200, A100, A400);

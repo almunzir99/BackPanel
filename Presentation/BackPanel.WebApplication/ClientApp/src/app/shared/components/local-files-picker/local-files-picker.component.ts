@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { FileModel } from 'src/app/core/models/file.models';
 import { FilesManagerComponent, FilesManagerSpec } from 'src/app/dashboard/pages/files-manager/files-manager.component';
 
@@ -12,7 +13,13 @@ import { FilesManagerComponent, FilesManagerSpec } from 'src/app/dashboard/pages
 export class LocalFilesPickerComponent implements OnInit {
   inputTextContent = "Files picked here";
   @Output('filesPicked') filesPickedEventEmitter = new EventEmitter<FileModel[]>();
-  constructor(private dialog: MatDialog,@Inject('DIRECTION') public dir:string) { }
+  dir = 'ltr';
+  constructor(private dialog: MatDialog, private translate: TranslateService) {
+    this.dir = this.translate.currentLang == 'ar' ? 'rtl' : 'ltr';
+    this.translate.onLangChange.subscribe((event) => {
+      this.dir = event.lang == 'ar' ? 'rtl' : 'ltr';
+    })
+  }
   onPickFiles() {
     this.dialog.open<FilesManagerComponent, FilesManagerSpec, any>(FilesManagerComponent, {
       data: {
@@ -20,7 +27,7 @@ export class LocalFilesPickerComponent implements OnInit {
         onFilesSubmitted: this.onFilesSubmitted
 
       },
-      id:"form-builder-dialog",
+      id: "form-builder-dialog",
       panelClass: 'dialog-container-bg'
     })
   }

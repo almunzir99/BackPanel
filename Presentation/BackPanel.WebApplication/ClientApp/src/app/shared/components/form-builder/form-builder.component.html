@@ -1,10 +1,10 @@
 <div [dir]="direction =='rtl' ? 'rtl' : 'ltr'" [class.dialog-mode]="data" class="form-container">
-    <h1>{{title}}</h1>
+    <h1>{{ 'Dashboard.TITLE' | translate }}</h1>
     <form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
         <div class="form-inputs">
             <div class="form-group" *ngFor="let group of controlsGroups">
                 <div class="group-title">
-                    {{group.title}}
+                    {{ group.title! | translate }}
                 </div>
                 <div class="form-controls">
                     <ng-container *ngFor="let control of group.controls">
@@ -14,89 +14,107 @@
                          control.controlType == controlTypes.Url ||
                          control.controlType == controlTypes.NumberInput" class="control-container">
                             <mat-form-field>
-                                <mat-label>{{control.title}}</mat-label>
-                                <input [type]="control.controlType.toString()!" [attr.placeholder]="control.title"
-                                    [formControlName]="control.name!" matInput type="text">
+                                <mat-label>{{ control.title! | translate }}</mat-label>
+                                <input [type]="control.controlType.toString()!"
+                                    [attr.placeholder]="(control.title! | translate)" [formControlName]="control.name!"
+                                    matInput>
                                 <mat-icon *ngIf="control.icon" matPrefix>{{control.icon}}</mat-icon>
                                 <mat-hint class="error-hint"
                                     *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].hasError('required')">
-                                    the field {{control.name}} is Required
+                                    {{ 'Dashboard.REQUIRED' | translate:{ field: (control.title! | translate) } }}
                                 </mat-hint>
                                 <mat-hint class="error-hint"
                                     *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].hasError('minlength')">
-                                    the minimum length field {{control.name}} is
-                                    {{formGroup.controls[control.name!].errors!.minlength.requiredLength}}
+                                    {{ 'Dashboard.MINLENGTH' | translate:{ field: (control.title! | translate), length:
+                                    formGroup.controls[control.name!].errors!.minlength.requiredLength } }}
                                 </mat-hint>
                                 <mat-hint class="error-hint"
                                     *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].hasError('maxlength')">
-                                    the maximum length field {{control.name}} is
-                                    {{formGroup.controls[control.name!].errors!.maxlength.requiredLength}}
+                                    {{ 'Dashboard.MAXLENGTH' | translate:{ field: (control.title! | translate), length:
+                                    formGroup.controls[control.name!].errors!.maxlength.requiredLength } }}
                                 </mat-hint>
                             </mat-form-field>
                         </div>
-                        <!-- 2. Selection (select + multi-select ) -->
+
+                        <!-- 2. Selection -->
                         <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.Selection
                              || control.controlType == controlTypes.MultiSelection" class="control-container">
                             <mat-form-field>
-                                <mat-label>{{control.title}}</mat-label>
+                                <mat-label>{{ control.title! | translate }}</mat-label>
                                 <mat-select [formControlName]="control.name!"
                                     [multiple]="control.controlType == controlTypes.MultiSelection">
                                     <mat-option *ngFor="let option of control.data"
                                         [value]="option[control.valueProp!]">
-                                        {{option[control.labelProp!]}}
+                                        {{ option[control.labelProp!] | translate }}
                                     </mat-option>
                                 </mat-select>
                                 <mat-icon *ngIf="control.icon" matPrefix>{{control.icon}}</mat-icon>
                                 <mat-hint class="error-hint"
-                                *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].hasError('required')">
-                                the field {{control.name}} is Required
-                            </mat-hint>
-                            
+                                    *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].hasError('required')">
+                                    {{ 'Dashboard.REQUIRED' | translate:{ field: (control.title! | translate) } }}
+                                </mat-hint>
                             </mat-form-field>
                         </div>
+
                         <!-- 3. checkbox -->
                         <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.CheckBox"
                             class="control-container">
-                            <mat-checkbox [formControlName]="control.name!">{{control.title}}</mat-checkbox>
+                            <mat-checkbox [formControlName]="control.name!">{{ control.title! | translate
+                                }}</mat-checkbox>
                         </div>
+
                         <!-- 4. Date Picker -->
                         <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.DatePicker"
                             class="control-container">
                             <mat-form-field>
-                                <mat-label>{{control.title}}</mat-label>
+                                <mat-label>{{ control.title! | translate }}</mat-label>
                                 <input [formControlName]="control.name!" matInput [matDatepicker]="picker">
-                                <mat-hint>MM/DD/YYYY</mat-hint>
+                                <mat-hint>{{ 'Dashboard.DATE_HINT' | translate }}</mat-hint>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
                                 <mat-hint class="error-hint"
-                                *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].hasError('required')">
-                                the field {{control.name}} is Required
-                            </mat-hint>
- 
+                                    *ngIf="formGroup.controls[control.name!].touched && formGroup.controls[control.name!].hasError('required')">
+                                    {{ 'Dashboard.REQUIRED' | translate:{ field: (control.title! | translate) } }}
+                                </mat-hint>
                             </mat-form-field>
                         </div>
+
                         <!-- 5. Rich Editor -->
                         <div style="padding-right: 15px;margin: 15px 0px;" [style.width]="control.width"
                             *ngIf="control.controlType == controlTypes.RichTextEditor" class="control-container">
-                            <quill-editor [placeholder]="control.title" [styles]="{'height':'300px'}"
+                            <quill-editor [placeholder]="control.title! | translate" [styles]="{'height':'300px'}"
                                 [formControlName]="control.name!"></quill-editor>
                         </div>
+
                         <!-- 6. Local Files Picker -->
                         <div style="padding: 15px;padding-left: 0px;" [style.width]="control.width"
                             *ngIf="control.controlType == controlTypes.LocalFilePicker" class="control-container">
                             <local-files-picker (filesPicked)="onFilesPicked(control.name!,$event)">
                             </local-files-picker>
                         </div>
-                        
+
+                        <!-- 7. Colors Picker -->
+                        <!-- <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.ColorsPicker"
+                            class="control-container">
+                            <mat-form-field>
+                                <mat-label>{{ control.title! | translate }}</mat-label>
+                                <input matInput [ngxMatColorPicker]="picker" [formControlName]="control.name!">
+                                <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+                                <ngx-mat-color-picker #picker></ngx-mat-color-picker>
+                            </mat-form-field>
+                        </div> -->
                     </ng-container>
                 </div>
             </div>
         </div>
-        <div class="act-buttons">
-            <button [disabled]="formGroup.invalid" type="submit" mat-flat-button color="primary">Submit</button>
-            <button *ngIf="showCancelButton" (click)="onCancel($event)" type="button" mat-flat-button
-                color="accent">Cancel</button>
 
+        <div class="act-buttons">
+            <button [disabled]="formGroup.invalid" type="submit" mat-flat-button color="primary">
+                {{ 'Dashboard.SUBMIT' | translate }}
+            </button>
+            <button *ngIf="showCancelButton" (click)="onCancel($event)" type="button" mat-flat-button color="accent">
+                {{ 'Dashboard.CANCEL' | translate }}
+            </button>
         </div>
     </form>
 </div>

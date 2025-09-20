@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(opts =>
 {
     opts.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
-    opts.SerializerSettings.DateFormatString = "yyyy'-'MM'-'dd'  'HH':'mm':'ss";
+    opts.SerializerSettings.DateFormatString = "yyyy'-'MM'-'dd'  'HH':'mm";
 });
 builder.Services.RegisterDbContext<AppDbContext>(builder.Configuration);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
