@@ -39,7 +39,7 @@
 
         </div>
     </div>
-    <div class="fm-content-layout">
+    <div [class.selection]="selectionMode" class="fm-content-layout">
         <spinner-placeholder class="placeholder" *ngIf="getStatus == 1"></spinner-placeholder>
         <offline-placeholder class="placeholder" *ngIf="getStatus == 3"></offline-placeholder>
         <empty-placeholder class="placeholder" [showButton]="false"
