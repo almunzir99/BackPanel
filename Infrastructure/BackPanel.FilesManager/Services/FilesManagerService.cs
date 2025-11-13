@@ -79,7 +79,7 @@ public class FilesManagerService : IFilesManagerService
         if (!Directory.Exists(combinedPath))
             Directory.CreateDirectory(combinedPath);
         return Directory.GetDirectories(combinedPath)
-            .Select(c => this.GetDirectoryModel(combinedPath, c)).ToArray();
+            .Select(c => this.GetDirectoryModel(combinedPath, c)).OrderByDescending(x => x.CreatedAt).ToArray();
     }
 
     public IList<FileModel> GetAllFiles(string path)
@@ -90,7 +90,7 @@ public class FilesManagerService : IFilesManagerService
         {
             var fileModel = GetFileModel(relativePath, Path.GetFileName(file));
             return fileModel;
-        }).ToArray();
+        }).OrderByDescending(x => x.CreatedAt).ToArray();
     }
 
     public async Task<IList<FileModel>> UploadMultiFiles(string path, IList<IWebFormFile> files)

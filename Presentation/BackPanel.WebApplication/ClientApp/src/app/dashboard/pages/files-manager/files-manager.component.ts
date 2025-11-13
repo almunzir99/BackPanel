@@ -416,11 +416,14 @@ export class FilesManagerComponent implements OnInit {
         if (events.type === HttpEventType.UploadProgress) {
           if (events.total)
             this.progress = Math.round(100 * events.loaded / events.total);
+          console.log(this.progress)
         }
         if (this.progress == 100) {
-          this.uploadFilesStatus = RequestStatus.Success;
-          this.getDirectoriesAndFiles();
-          this.progress = 0;
+          setTimeout(() => {
+            this.uploadFilesStatus = RequestStatus.Success;
+            this.getDirectoriesAndFiles();
+            this.progress = 0;
+          }, 1000);
         }
       }, error: err => {
         console.log(err);
