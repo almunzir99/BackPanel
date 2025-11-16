@@ -169,6 +169,30 @@ public abstract class
             return BadRequest(response);
         }
     }
+
+    [AllowAnonymous]
+    [HttpGet("password-recovery/request")]
+    public async Task<IActionResult> RequestPasswordRecovery([FromQuery] string email)
+    {
+
+        var result = await Mediator.Send(new PasswordRecoveryRequestCommandBase<TEntity>(email));
+        return Ok(new Response<string>(success: true, data: null, message: "Password code sent successfully to email"));
+
+    }
+    [AllowAnonymous]
+    [HttpGet("password-recovery/validate-code")]
+    public async Task<IActionResult> ValidateCode([FromQuery] string email, [FromQuery] int code)
+    {
+        var result = await Mediator.Send(new ValidateCodeCommandBase<TEntity>(email, code));
+        return Ok(new Response<EmailRecoveryRequest>(success: true, data: result, message: "Code is validated successfully"));
+    }
+    [AllowAnonymous]
+    [HttpGet("password-recovery/recover")]
+    public async Task<IActionResult> RecoverPassword([FromQuery] int userId, [FromQuery] string password)
+    {
+        await Mediator.Send(new RecoverPasswordCommandBase<TEntity>(userId, password));
+        return Ok(new Response<string>(success: true, data: null, message: "password recovered successfully"));
+    }
     protected int CurrentUserId
     {
         get
