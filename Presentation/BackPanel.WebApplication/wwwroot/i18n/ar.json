@@ -69,6 +69,11 @@
     "MINLENGTH": "الحد الأدنى لطول {{field}} هو {{length}}.",
     "MAXLENGTH": "الحد الأقصى لطول {{field}} هو {{length}}.",
     "Password": "كلمة المرور",
-    "PasswordConfirmation": "تأكيد كلمة المرور"
+    "PasswordConfirmation": "تأكيد كلمة المرور",
+    "LoginTitle": "مرحبا بعودتك 👋🏾",
+    "LoginDescription": "الرجاء تسجيل الدخول إلى حسابك وبدء المغامرة",
+    "RememberMe": "تذكرني !",
+    "ForgotPassword": "نسيت كلمة السر ؟",
+    "Login": "تسجيل الدخول"
   }
 }

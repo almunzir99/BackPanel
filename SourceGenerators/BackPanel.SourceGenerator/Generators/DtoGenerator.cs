@@ -13,12 +13,13 @@ public class DtoGenerator
     private readonly string _outPutPath;
     private readonly string _templatePath;
     private readonly string _model;
+    private readonly string? parentModel;
     private readonly DtoType _dtoType;
     private readonly CodeModifier _codeModifier;
     private readonly string workingDirectory;
     private readonly string projectName;
 
-    public DtoGenerator(string model, string workingDirectory, string projectName, DtoType dtoType = DtoType.Dto)
+    public DtoGenerator(string model, string workingDirectory, string projectName, DtoType dtoType = DtoType.Dto, string? parentModel = null)
     {
         _dtoType = dtoType;
         _codeModifier = new CodeModifier(model, workingDirectory, projectName);
@@ -45,6 +46,7 @@ public class DtoGenerator
 
         this.workingDirectory = workingDirectory;
         this.projectName = projectName;
+        this.parentModel = parentModel;
     }
 
     public async Task Generate()
@@ -156,6 +158,8 @@ public class DtoGenerator
 
     private async Task GeneratePropDto(string model)
     {
+        if (model == parentModel)
+            return;
         var dtos = Directory.GetFiles(Path.Combine(
             workingDirectory,
              _dtoType == DtoType.DtoRequest ? AppSettings.DtosRequestsRelativePath.Replace("ProjectName", projectName) : AppSettings.DtosRelativePath.Replace("ProjectName", projectName)
@@ -173,7 +177,7 @@ public class DtoGenerator
         }
         if (found)
             return;
-        var generator = new DtoGenerator(model, workingDirectory, projectName, _dtoType);
+        var generator = new DtoGenerator(model, workingDirectory, projectName, _dtoType, this._model);
         await generator.Generate();
     }
 }

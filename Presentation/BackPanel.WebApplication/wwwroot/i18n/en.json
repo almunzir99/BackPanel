@@ -69,6 +69,11 @@
     "MINLENGTH": "The minimum length for {{field}} is {{length}}.",
     "MAXLENGTH": "The maximum length for {{field}} is {{length}}.",
     "Password": "Password",
-    "PasswordConfirmation": "Password Confirmation"
+    "PasswordConfirmation": "Password Confirmation",
+    "LoginTitle": "Welcome back",
+    "LoginDescription": "Please sign-in to your account and start the adventure",
+    "RememberMe": "Remember Me",
+    "ForgotPassword": "Forgot your password ?",
+    "Login": "Login"
   }
 }

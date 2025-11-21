@@ -1,102 +1,103 @@
 <spinner-placeholder class="placeholder" *ngIf="getRequest == 1"></spinner-placeholder>
 <offline-placeholder class="placeholder" *ngIf="getRequest == 3"></offline-placeholder>
 <div [class.dark-mode]="theme == 'dark'" *ngIf="getRequest == 2" class="te-layout">
-    <div class="header">
-        <h2>Translation Editor</h2>
-        <button class="res-button" (click)="onLangaugeCreate()" mat-flat-button color="primary">
-            <mat-icon>add</mat-icon>
-            <span class="button-text">
-                Create Language
-            </span>
+  <div class="header">
+    <h2>Translation Editor</h2>
+    <button class="res-button" (click)="onLangaugeCreate()" mat-flat-button color="primary">
+      <mat-icon>add</mat-icon>
+      <span class="button-text">
+        Create Language
+      </span>
+    </button>
+  </div>
+  <div class="te-body">
+    <div [class.closed]="closed" class="tree-section">
+      <div class="tree-section-header">
+        <div>
+          <button (click)="closed = true" class="menu-button" mat-icon-button color="primary">
+            <mat-icon>close</mat-icon>
+          </button>
+          <h3>Translation Tree</h3>
+        </div>
+        <button (click)="onParentCreate()" class="small-button res-button" mat-flat-button color="accent">
+          <mat-icon>add</mat-icon>
+          <span class="button-text">
+            Create parent node
+          </span>
         </button>
-    </div>
-    <div class="te-body">
-        <div [class.closed]="closed" class="tree-section">
-            <div class="tree-section-header">
-                <div>
-                    <button (click)="closed = true" class="menu-button" mat-icon-button color="primary">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                    <h3>Translation Tree</h3>
-                </div>
-                <button (click)="onParentCreate()" class="small-button res-button"  mat-flat-button color="accent">
-                    <mat-icon>add</mat-icon>
-                    <span class="button-text">
-                        Create parent node
-                    </span>
-                </button>
-            </div>
-            <div class="tree">
-                <mat-accordion>
-                    <mat-expansion-panel style="box-shadow: none;" *ngFor="let parent of getKeys(translationTree)">
-                        <mat-expansion-panel-header>
-                            <mat-icon style="margin-right:10px;" color="accent">folder</mat-icon>
-                            {{parent}}
+      </div>
+      <div class="tree">
+        <mat-accordion>
+          <mat-expansion-panel style="box-shadow: none;" *ngFor="let parent of getKeys(translationTree)">
+            <mat-expansion-panel-header>
+              <mat-icon style="margin-right:10px;" color="accent">folder</mat-icon>
+              {{parent}}
 
-                        </mat-expansion-panel-header>
+            </mat-expansion-panel-header>
 
-                        <mat-selection-list [multiple]="false">
-                            <mat-list-option (click)="initializeSelectedNode(parent)">
-                                <mat-icon color="primary" mat-list-icon>add</mat-icon>
-                                <p>
-                                    Create New Node
-                                </p>
-                            </mat-list-option>
-                            <mat-list-option (click)="selectNode(parent,node,translationTree[parent][node])"
-                                *ngFor="let node of getKeys(translationTree[parent])">
-                                <mat-icon color="primary" mat-list-icon>translate</mat-icon>
-                                <p>{{node}}</p>
-                            </mat-list-option>
-                        </mat-selection-list>
-                    </mat-expansion-panel>
-                </mat-accordion>
-            </div>
-        </div>
-        <div [class.show]="closed" class="values-section">
-            <div class="value-section-header">
-                <div>
-                    <button (click)="closed = false" class="menu-button " mat-icon-button color="primary">
-                        <mat-icon>menu</mat-icon>
-                    </button>
-                    <h3 [textContent]="selectedNode['parent'] ?? 'New Node Values'"></h3>
-                </div>
-                <div *ngIf="selectedNode['parent']" class="act-button">
-                    <button (click)="onParentUpdate()" class="small-button res-button" mat-flat-button color="accent">
-                        <mat-icon>edit</mat-icon>
-                        <span class="button-text">
-                            Rename Parent
-                        </span>
-                    </button>
-                    <button (click)="onParentDelete()" class="small-button res-button" mat-flat-button color="warn">
-                        <mat-icon>delete</mat-icon>
-                        <span class="button-text">
-                            Remove Parent
-                        </span>
-                    </button>
-                </div>
-            </div>
-            <form #valuesForm="ngForm">
-                <mat-form-field>
-                    <mat-label>Node Title</mat-label>
-                    <input [disabled]="editMode == 'modify'" [(ngModel)]="selectedNode['title']" name="title"
-                        type="text" matInput placeholder="Node Title">
-                </mat-form-field>
-                <div *ngFor="let lang of languages" class="rich-text">
-                    <div class="label">Content of <strong>{{lang}}</strong> language :</div>
-                    <quill-editor [(ngModel)]="selectedNode[lang]" [name]="lang" [placeholder]="'content of ' + lang"
-                        [styles]="{'height':'200px'}"></quill-editor>
-                </div>
-                <div class="act-buttons">
-                    <button [disabled]="!selectedNode.parent" (click)="onApply()" mat-flat-button color="primary">
-                        Apply
-                    </button>
-                    <button (click)="onDelete()" *ngIf="selectedNode.title != null" mat-flat-button color="warn">
-                        Delete
-                    </button>
-                </div>
-            </form>
-        </div>
+            <mat-selection-list [multiple]="false">
+              <mat-list-item (click)="initializeSelectedNode(parent)">
+                <mat-icon color="primary" mat-list-icon>add</mat-icon>
+                Create New Node
+              </mat-list-item>
+              <mat-list-item (click)="selectNode(parent,node,translationTree[parent][node])"
+                             *ngFor="let node of getKeys(translationTree[parent])">
+                <mat-icon color="primary" mat-list-icon>translate</mat-icon>
+                {{node}}
+              </mat-list-item>
+            </mat-selection-list>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
     </div>
+    <div [class.show]="closed" class="values-section">
+      <div class="value-section-header">
+        <div>
+          <button (click)="closed = false" class="menu-button " mat-icon-button color="primary">
+            <mat-icon>menu</mat-icon>
+          </button>
+          <h3 [textContent]="selectedNode['parent'] ?? 'New Node Values'"></h3>
+        </div>
+        <div *ngIf="selectedNode['parent']" class="act-button">
+          <button (click)="onParentUpdate()" class="small-button res-button" mat-flat-button color="accent">
+            <mat-icon>edit</mat-icon>
+            <span class="button-text">
+              Rename Parent
+            </span>
+          </button>
+          <button (click)="onParentDelete()" class="small-button res-button" mat-flat-button color="warn">
+            <mat-icon>delete</mat-icon>
+            <span class="button-text">
+              Remove Parent
+            </span>
+          </button>
+        </div>
+      </div>
+      <form #valuesForm="ngForm">
+        <mat-form-field>
+          <mat-label>Node Title</mat-label>
+          <input [disabled]="editMode == 'modify'" [(ngModel)]="selectedNode['title']" name="title"
+                 type="text" matInput placeholder="Node Title">
+        </mat-form-field>
+        <div *ngFor="let lang of languages" class="rich-text">
+          <div class="label">Content of <strong>{{lang}}</strong> language :</div>
+          <mat-form-field>
+            <mat-label>{{'content of ' + lang}}</mat-label>
+            <textarea matInput [(ngModel)]="selectedNode[lang]" [name]="lang"
+                      [placeholder]="'content f ' + lang"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="act-buttons">
+          <button (click)="onApply()" mat-flat-button color="primary">
+            Apply
+          </button>
+          <button (click)="onDelete()" *ngIf="selectedNode.title != null" mat-flat-button color="warn">
+            Delete
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 <dimmer-loading *ngIf="dimRequest == 1">
 </dimmer-loading>

@@ -13,6 +13,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
   ],
   imports: [
     CommonModule,
+    TranslateModule,
     AuthenticationRoutingModule,
     MatFormFieldModule,
     MatInputModule,

@@ -30,6 +30,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatSelectModule} from '@angular/material/select';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+
 @NgModule({ 
   declarations: [
     FormBuilderComponent,
@@ -62,7 +64,10 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     DragDropModule,
     TranslateModule,
     MatSelectModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    TranslateModule,
+    MatAutocompleteModule
+
 
   ],
   exports:[

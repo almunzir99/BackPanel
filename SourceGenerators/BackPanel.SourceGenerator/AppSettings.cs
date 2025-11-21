@@ -12,7 +12,7 @@ public static class AppSettings
     public const string DtosRequestsRelativePath = "Core/ProjectName.Application/DTOsRequests";
     public const string InterfacesRelativePath = "Core/ProjectName.Application/Interfaces";
     public const string ServicesRelativePath = "Core/ProjectName.Application/Services";
-    public const string ControllersRelativePath = "Presentation/ProjectName.WebApplication/Controllers";
+    public const string ControllersRelativePath = "Presentation/ProjectName.WebApplication/Areas/API/Controllers";
     public const string MappingProfilePath = $"{ApplicationProjectRelativePath}/Mapping/MappingProfile.cs";
     public const string DbContextPath = $"{PersistenceProjectRelativePath}/Database/AppDbContext.cs";
     public const string CommandsRelativePath = "Core/ProjectName.Application/Features/FeaturePuralName/Commands";

@@ -1,11 +1,25 @@
-<div [class.rtl]="dir == 'rtl'" class="lfp-container">
-    <mat-form-field>
-        <input [value]="inputTextContent"  disabled matInput type="text" placeholder="Files picked here">
-    </mat-form-field>
-    <button type="button" (click)="onPickFiles()" mat-flat-button color="accent">
-        <mat-icon>folder</mat-icon>
-        <span class="btn-text">
-        Pick Here
-        </span>
-    </button>
-</div>
+<form *ngIf="formGroup" [formGroup]="formGroup" class="lfp-form">
+    <div [class.rtl]="dir == 'rtl'" class="lfp-container">
+        <!-- <div class="title">
+            {{InitialValue ?? ((placeholder ??'' )| translate)}}
+        </div> -->
+        <input [readonly]="true" [disabled]="true" [formControlName]="formControlName" style="display: none;" type="text">
+        <mat-form-field>
+            <input value="  {{InitialValue ?? ((placeholder ??'' )| translate)}}" [readonly]="true" [disabled]="true" matInput type="text"
+                [placeholder]="((placeholder ??'' )| translate) ?? ''">
+        </mat-form-field>
+        <a class="download-btn" target="_blank" *ngIf="InitialValue" href="{{baseUrl}}{{InitialValue}}" type="button"
+            mat-flat-button color="primary">
+            <mat-icon>download</mat-icon>
+            <span class="btn-text">
+                {{'Dashboard.ShowFile' | translate}}
+            </span>
+        </a>
+        <button [disabled]="buttonDisabled" type="button" (click)="onPickFiles()" mat-flat-button color="accent">
+            <mat-icon>folder</mat-icon>
+            <span class="btn-text">
+                {{'Dashboard.chooseFile' | translate}}
+            </span>
+        </button>
+    </div>
+</form>

@@ -5,20 +5,21 @@ using @[ProjectName].Application.Interfaces;
 using @[ProjectName].Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using @[ProjectName].WebApplication.Areas.API.Controllers.Common;
+using @[ProjectName].Application.Resolvers.UriResolver;
+
+using MediatR;
 
 namespace @[ProjectName].WebApplication.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class @[Models]Controller : ApiController<@[Model],@[Model]Dto,@[Model]DtoRequest, I@[Models]Service>
+public class @[Models]Controller : ApiController<@[Model],@[Model]Dto,@[Model]DtoRequest>
 {
-    private readonly IRolesService _roleService;
-    private readonly INotificationService _notificationService;
-
-    public @[Models]Controller(I@[Models]Service service, IUriService uriSerivce, IRolesService roleService, INotificationService notificationService) : base(service, uriSerivce)
+    
+    public @[Models]Controller(IUriResolver uriService, IMediator mediator) : base(uriService, mediator)
     {
-        _roleService = roleService;
-        _notificationService = notificationService;
+        
     }
     public override string PermissionTitle => "@[Models]Permissions";
 }
