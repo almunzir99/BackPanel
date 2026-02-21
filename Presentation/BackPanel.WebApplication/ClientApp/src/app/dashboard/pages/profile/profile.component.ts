@@ -100,11 +100,11 @@ export class ProfileComponent implements OnInit {
           },
           {
             title: "Name",
-            name: "username",
+            name: "userName",
             icon: "user tie icon",
             controlType: ControlTypes.TextInput,
             width: "50%",
-            value: this.user ? this.user.username : undefined,
+            value: this.user ? this.user.userName : undefined,
             validators: [
               Validators.required,
               Validators.minLength(8),
@@ -113,11 +113,11 @@ export class ProfileComponent implements OnInit {
           },
           {
             title: "phone",
-            name: "phone",
+            name: "phoneNumber",
             icon: "phone icon",
             controlType: ControlTypes.NumberInput,
             width: "50%",
-            value: this.user ? this.user.phone : undefined,
+            value: this.user ? this.user.phoneNumber : undefined,
             validators: [
               Validators.required,
               Validators.minLength(10),
@@ -161,8 +161,8 @@ export class ProfileComponent implements OnInit {
       var result = await firstValueFrom(this._service.updateProfile(user as Admin));
       this.dimRequest = RequestStatus.Success;
       if (this._service.$currentUser.value) {
-        this._service.$currentUser.value.username = result.data.username;
-        this._service.$currentUser.value.phone = result.data.phone;
+        this._service.$currentUser.value.userName = result.data.userName;
+        this._service.$currentUser.value.phoneNumber = result.data.phoneNumber;
         this._service.$currentUser.value.email = result.data.email;
         this._service.$currentUser.value.image = result.data.image;
       }

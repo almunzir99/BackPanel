@@ -1,5 +1,4 @@
 using System.Text;
-using BackPanel.Application.Attributes.Permissions;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
 using BackPanel.Application.DTOs.Wrapper;
@@ -30,7 +29,7 @@ where TEntity : EntityBase where TDto : DtoBase
         UriResolver = uriResolver;
         Mediator = mediator;
     }
-    [Permission(true, PermissionTypes.READ)]
+    [Authorize(Roles = "ADMIN")]
     [HttpGet]
     public virtual async Task<IActionResult> GetAsync(
         [FromQuery] ListFilter filter
@@ -47,7 +46,7 @@ where TEntity : EntityBase where TDto : DtoBase
             var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
             return BadRequest(response);
         }
-        catch (Exception e)
+        catch (Exception)
         {
 
             var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
@@ -55,7 +54,7 @@ where TEntity : EntityBase where TDto : DtoBase
         }
 
     }
-    [Permission(true, PermissionTypes.READ)]
+    [Authorize(Roles = "ADMIN")]
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> SingleAsync(int id)
     {
@@ -88,7 +87,7 @@ where TEntity : EntityBase where TDto : DtoBase
             return BadRequest(response);
         }
     }
-    [Permission(true, PermissionTypes.CREATE)]
+    [Authorize(Roles = "ADMIN")]
     [HttpPost("all")]
     public async Task<IActionResult> PostAllAsync(List<TDtoRequest> list)
     {
@@ -105,7 +104,7 @@ where TEntity : EntityBase where TDto : DtoBase
         }
 
     }
-    [Permission(true, PermissionTypes.UPDATE)]
+    [Authorize(Roles = "ADMIN")]
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> PutAsync(int id, TDtoRequest body)
     {
@@ -122,7 +121,7 @@ where TEntity : EntityBase where TDto : DtoBase
         }
 
     }
-    [Permission(true, PermissionTypes.DETELE)]
+    [Authorize(Roles = "ADMIN")]
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(int id)
     {
@@ -182,8 +181,10 @@ where TEntity : EntityBase where TDto : DtoBase
     {
         get
         {
-            string type = HttpContext.User.GetClaimValue("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
-            return type;
+            string type = HttpContext.User.GetClaimValue("user_type");
+            if (!string.IsNullOrEmpty(type))
+                return type;
+            return HttpContext.User.GetClaimValue("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
         }
     }
 }

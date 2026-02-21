@@ -4,5 +4,6 @@ export class MenuItem{
     route?:string;
     open?:boolean = false;
     permissionName?:string;
+    allowedRoles?:string[];
     children?:MenuItem[];
 }

@@ -13,6 +13,7 @@ public class WebConfiguration : IWebConfiguration
 
     public string GetSecretKey()
     {
-        return _configuration.GetValue<string>("SecretKey:key");
+        return _configuration.GetValue<string>("SecretKey:key")
+               ?? throw new InvalidOperationException("SecretKey:key is not configured");
     }
 }

@@ -63,8 +63,12 @@ export class AppComponent {
       var result = await firstValueFrom(this._authService.getCurrentUser());
       var companyInfo = await firstValueFrom(this._companyInfoService.single());
       this._authService.setCurrentUser(result.data);
-      if (!result.data.isManager) {
-        var role = await firstValueFrom(this._roleService.single(result.data.roleId!));
+      if (result.data.isManager)
+        this._authService.$role.next(null);
+      else if (result.data.role)
+        this._authService.$role.next(result.data.role);
+      else if (result.data.roleId) {
+        var role = await firstValueFrom(this._roleService.single(result.data.roleId));
         this._authService.$role.next(role.data);
       }
       // set company info

@@ -3,13 +3,7 @@
     [rows]="data" [cell-template]="cellTemplate" [title]="'Roles'">
     <ng-template #cellTemplate let-rowData="rowData" let-data="cellData" let-col="colIndex" let-row="rowIndex">
         <ng-container [ngSwitch]="col">
-            <ng-container *ngSwitchCase="2">
-                <button (click)="onShowPermissionsClick(rowData)" matRipple class="table-act-button text primary">
-                    <i class="las la-user-cog"></i>
-                    {{'Dashboard.ShowPermissions' | translate}}
-                </button>
-            </ng-container>
-            <ng-container *ngSwitchCase="5">
+            <ng-container *ngSwitchCase="4">
                 <button (click)="onUpdate(rowData)" matRipple class="table-act-button accent">
                     <i class="las la-edit"></i>
                 </button>
@@ -29,48 +23,14 @@
 </dimmer-loading>
 
 <ng-template #roleForm>
-    <h2 mat-dialog-title [textContent]="(templateOnlyShow ? 'Dashboard.ShowPermissions' : 'Dashboard.CreateNewRole') | translate "></h2>
+    <h2 mat-dialog-title [textContent]="'Dashboard.CreateNewRole' | translate "></h2>
     <mat-dialog-content>
-        <mat-form-field *ngIf="!templateOnlyShow">
+        <mat-form-field>
             <mat-label>{{'Dashboard.RoleTitle' | translate}}</mat-label>
             <input [(ngModel)]="role.title" type="text" matInput placeholder="Role Title" name="title">
         </mat-form-field>
-        <table [class.dark-mode]="theme == 'dark'" class="role-table">
-            <thead>
-                <tr>
-                    <td>{{'Dashboard.Title' | translate}}</td>
-                    <th>{{'Dashboard.View' | translate}}</th>
-                    <th>{{'Dashboard.Create' | translate}}</th>
-                    <th>{{'Dashboard.Update' | translate}}</th>
-                    <th>{{'Dashboard.Delete' | translate}}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let key of getRoleKeys()">
-                    <td data-label="Title">
-                        <div>{{'Dashboard.'+key | translate}}</div>
-                    </td>
-                    <td data-label="read">
-                        <mat-checkbox [disabled]="templateOnlyShow" [(ngModel)]="role[key+'Permissions']['read']">
-                        </mat-checkbox>
-                    </td>
-                    <td data-label="create">
-                        <mat-checkbox [disabled]="templateOnlyShow" [(ngModel)]="role[key+'Permissions']['create']">
-                        </mat-checkbox>
-                    </td>
-                    <td data-label="update">
-                        <mat-checkbox [disabled]="templateOnlyShow" [(ngModel)]="role[key+'Permissions']['update']">
-                        </mat-checkbox>
-                    </td>
-                    <td data-label="delete">
-                        <mat-checkbox [disabled]="templateOnlyShow" [(ngModel)]="role[key+'Permissions']['delete']">
-                        </mat-checkbox>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
     </mat-dialog-content>
-    <mat-dialog-actions *ngIf="!templateOnlyShow">
+    <mat-dialog-actions>
         <button (click)="onFormSubmit()" mat-flat-button color="primary">Submit</button>
         <button (click)="closeDialog()" mat-flat-button>Close</button>
     </mat-dialog-actions>

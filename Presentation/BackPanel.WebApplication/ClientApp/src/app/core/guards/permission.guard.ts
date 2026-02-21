@@ -3,7 +3,6 @@ import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@a
 import { Observable } from 'rxjs';
 import { MenuList } from 'src/app/dashboard/components/menu/menu.list';
 import { Admin } from '../models/admin.model';
-import { Permission } from '../models/permission.model';
 import { Role } from '../models/role.model';
 import { AccountService } from '../services/account.service';
 
@@ -31,28 +30,22 @@ export class PermissionGuard  {
   }
   checkIfRouteAccessPermitted(route: string): boolean {
     var result = false;
+    const currentRoleTitle = this.currentRole?.title?.toLowerCase().trim();
     this.menuList.forEach(group => {
       group.children!.forEach(item => {
         if (item.route == route) {
-          if (item.permissionName == "generalPermissions") {
-            console.log(item.permissionName)
+          if (!item.allowedRoles || item.allowedRoles.length == 0) {
             result = true;
             return;
           }
-          else {
-            if(this.currentRole)
-            {
-              var permission = (this.currentRole as any)[item.permissionName!] as Permission;
-              if (permission)
-                result = permission.read;
-              return;
-            }
+          if (currentRoleTitle) {
+            result = item.allowedRoles.some(x => x.toLowerCase().trim() == currentRoleTitle);
+            return;
           }
         }
          
       });
     });
-    console.log(result)
     return result;
   }
 

@@ -77,7 +77,7 @@ export class AdminsComponent implements OnInit {
 
       },
       {
-        prop: "username",
+        prop: "userName",
         title: "Username",
         show: true,
         sortable: true,
@@ -86,7 +86,7 @@ export class AdminsComponent implements OnInit {
         searchControlType: SearchControlType.Text
       },
       {
-        prop: "phone",
+        prop: "phoneNumber",
         title: "Phone",
         show: true,
         sortable: true,
@@ -186,16 +186,12 @@ export class AdminsComponent implements OnInit {
       }
     })
   }
-  onExportClick(type: string) {
+  onExportClick() {
     this.dimRequest = RequestStatus.Loading;
-    this._service.export(type, () => {
-      this.dimRequest = RequestStatus.Success;
-    }, (err) => {
-      this.dimRequest = RequestStatus.Failed;
-    })
-  }
-  onImportData(data: any[]) {
-    this.createAll(data);
+    this._service.exportExcel(
+      () => { this.dimRequest = RequestStatus.Success; },
+      () => { this.dimRequest = RequestStatus.Failed; }
+    );
   }
   async onActiveToggleClick(item: Admin) {
     await this.activeToggle(item);
@@ -217,11 +213,11 @@ export class AdminsComponent implements OnInit {
           },
           {
             title: "Dashboard.Username",
-            name: "username",
+            name: "userName",
             icon: "person",
             controlType: ControlTypes.TextInput,
             width: "50%",
-            value: item ? item.username : undefined,
+            value: item ? item.userName : undefined,
             validators: [
               Validators.required,
               Validators.minLength(8),
@@ -230,11 +226,11 @@ export class AdminsComponent implements OnInit {
           },
           {
             title: "Dashboard.Phone",
-            name: "phone",
+            name: "phoneNumber",
             icon: "phone",
             controlType: ControlTypes.NumberInput,
             width: "50%",
-            value: item ? item.phone : undefined,
+            value: item ? item.phoneNumber : undefined,
             validators: [
               Validators.required,
               Validators.minLength(10),
@@ -341,6 +337,7 @@ export class AdminsComponent implements OnInit {
 
   /********************************* Api Integration ******************************************** */
   async getRoles(): Promise<Role[]> {
+
     try {
       this.dimRequest = RequestStatus.Loading;
       var result = await firstValueFrom(this._rolesService.get());
@@ -350,23 +347,6 @@ export class AdminsComponent implements OnInit {
     } catch (error) {
       this.dimRequest = RequestStatus.Failed;
       return [];
-    }
-  }
-  createAll = async (items: any[]) => {
-    try {
-      this.dimRequest = RequestStatus.Loading;
-      await firstValueFrom(this._service.postAll(items));
-      this.dimRequest = RequestStatus.Success;
-      this._dialog.open<AlertMessageComponent, AlertMessage>(AlertMessageComponent, {
-        data: {
-          type: MessageTypes.SUCCESS,
-          message: "Items Added Successfully",
-          title: "Success"
-        }
-      }).afterClosed().subscribe(_ => this._dialog.closeAll())
-      this.getData();
-    } catch (error) {
-      this.dimRequest = RequestStatus.Failed;
     }
   }
   create = async (item: Admin) => {

@@ -32,7 +32,7 @@ export class AccountService {
 
   }
   updateProfile(admin: Admin): Observable<ApiResponse<Admin>> {
-    return this.http.put(`${this.moduleBaseUrl}${admin.id}`, admin) as Observable<ApiResponse<Admin>>;
+    return this.http.put(`${this.moduleBaseUrl}profile`, admin) as Observable<ApiResponse<Admin>>;
   }
   changePassword(oldPassword: string, newPassword: string) {
     return this.http.put(`${this.moduleBaseUrl}profile/password-reset`, { newPassword: newPassword, oldPassword: oldPassword });

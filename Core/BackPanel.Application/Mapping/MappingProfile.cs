@@ -10,12 +10,8 @@ public class MappingProfile : Profile
     {
         CreateMap<RoleDto, Role>().ReverseMap();
         CreateMap<RoleDtoRequest, Role>().ReverseMap();
-        CreateMap<PermissionDto, Permission>().ReverseMap();
-        CreateMap<AdminDto, Admin>().ReverseMap();
-        CreateMap<AdminDtoRequest, Admin>().ReverseMap();
         CreateMap<MessageDto, Message>().ReverseMap();
         CreateMap<MessageDtoRequest, Message>().ReverseMap();
-        CreateMap<AdminDto, Admin>().ReverseMap();
         CreateMap<ActivityDto, Activity>().ReverseMap();
         CreateMap<NotificationDto, Notification>().ReverseMap();
         CreateMap<ImageDtoRequest, Image>().ReverseMap();

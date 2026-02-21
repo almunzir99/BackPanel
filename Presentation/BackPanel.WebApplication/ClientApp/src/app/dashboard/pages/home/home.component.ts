@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
       this.stats = result.data;
       this.initCards();
       this.getRequest = RequestStatus.Success;
-      if (this.currentRole?.messagesPermissions.read || this.currentUser?.isManager)
+      if (this.currentUser?.isManager || this.currentRole?.title?.toLowerCase() == 'messages' || this.currentRole?.title?.toLowerCase() == 'administrator' || this.currentRole?.title?.toLowerCase() == 'superadmin')
         await this.getMessages();
 
     } catch (error) {

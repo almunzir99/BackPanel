@@ -1,19 +1,22 @@
-﻿using BackPanel.Application.DTOs;
+using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOsRequests;
-using BackPanel.Application.Resolvers.UriResolver;
-using BackPanel.Domain.Entities;
-using MediatR;
+using BackPanel.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackPanel.WebApplication.Areas.API.Controllers.Accounts
 {
+    [Authorize]
+    [ApiController]
     [Route("api/admin-accounts")]
-    public class AdminAccountController : AccountBaseController<Admin, AdminDto, AdminDtoRequest>
+    public class AdminAccountController : UserAccountControllerBase<AppUserDto, AppUserDtoRequest>
     {
-        public override string PermissionTitle => "AdminAccountsPermissions";
-        protected override string Type => "ADMIN";
-        public AdminAccountController(IUriResolver uriService, IMediator mediator) : base(uriService, mediator)
+        private readonly IUserService _userService;
+        protected override IUserService UserService => _userService;
+
+        public AdminAccountController(IUserService userService)
         {
+            _userService = userService;
         }
     }
 }

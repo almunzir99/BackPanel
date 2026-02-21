@@ -19,7 +19,7 @@
                     <div [class.manager]="currentUser?.isManager" class="user-type" [innerHTML]="currentUser?.isManager ? ('Dashboard.Manager' | translate) : ('Dashboard.Admin' | translate)"></div>
                 </div>
                <div>
-                <h6 class="username">{{currentUser?.username}}</h6>
+                <h6 class="username">{{currentUser?.userName}}</h6>
                 <div  [innerHTML]="currentUser?.isManager ? ('Dashboard.Dashboard-Manager' | translate) : currentUser?.role?.title" class="role"></div>
                </div>
 

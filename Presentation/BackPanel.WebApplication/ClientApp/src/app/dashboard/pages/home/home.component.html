@@ -17,7 +17,7 @@
     </div>
     <br>
     <div class="tables">
-        <div *ngIf="currentUser?.isManager || currentRole?.messagesPermissions?.read" style="flex: 3;"
+        <div *ngIf="currentUser?.isManager || currentRole?.title?.toLowerCase() == 'messages' || currentRole?.title?.toLowerCase() == 'administrator' || currentRole?.title?.toLowerCase() == 'superadmin'" style="flex: 3;"
             class="table-container">
             <div class="table-container-header">
                 <h2 [innerHTML]="'Dashboard.Messages-Table' | translate"></h2>

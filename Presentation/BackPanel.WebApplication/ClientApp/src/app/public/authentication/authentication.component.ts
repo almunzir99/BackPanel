@@ -38,12 +38,14 @@ export class AuthenticationComponent implements OnInit {
       var result = await firstValueFrom(this._authService.autthenticate(model));
       this._authService.setCurrentUser(result.data);
       this._authService.saveToken(result.data.token);
-      if (result.data.isManager == false) {
-        var role = await firstValueFrom(this._roleService.single(result.data.roleId!));
+      if (result.data.isManager)
+        this._authService.$role.next(null);
+      else if (result.data.role)
+        this._authService.$role.next(result.data.role);
+      else if (result.data.roleId) {
+        var role = await firstValueFrom(this._roleService.single(result.data.roleId));
         this._authService.$role.next(role.data);
       }
-      else
-        this._authService.$role.next(null);
       var notifications = await firstValueFrom(this._notificationsService.getNotifications());
       this._notificationsService.$notifications.next(notifications.data);
       this.requestStatus = RequestStatus.Success;

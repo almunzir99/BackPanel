@@ -1,8 +1,9 @@
 namespace BackPanel.Application.DTOs;
 
-public class AdminDto : UserDtoBase
+/// <summary>
+/// DTO for admin users. Extends AppUserDto so admin-specific fields can be
+/// added here without touching the base user DTO.
+/// </summary>
+public class AdminDto : AppUserDto
 {
-    public bool IsManager { get; set; }
-    public int? RoleId { get; set; }
-    public RoleDto? Role { get; set; }
 }

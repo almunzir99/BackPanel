@@ -8,20 +8,20 @@ export const MenuList: MenuGroup[] = [
                 title: "Home",
                 icon: "las la-home",
                 route: "/dashboard/home",
-                permissionName: "generalPermissions"
+                allowedRoles: []
 
             },
             {
                 title: "Admins",
                 icon: "las la-user-tie",
                 route: "/dashboard/admins",
-                permissionName: "adminsPermissions"
+                allowedRoles: ["Admins", "Administrator", "SuperAdmin"]
             },
             {
                 title: "Roles",
                 icon: "las la-users-cog",
                 route: "/dashboard/roles",
-                permissionName: "rolesPermissions"
+                allowedRoles: ["Roles", "Administrator", "SuperAdmin"]
 
 
             }
@@ -35,7 +35,7 @@ export const MenuList: MenuGroup[] = [
                 title: "Messages",
                 icon: "las la-envelope",
                 route: "/dashboard/messages",
-                permissionName: "messagesPermissions"
+                allowedRoles: ["Messages", "Administrator", "SuperAdmin"]
 
 
             },
@@ -49,7 +49,7 @@ export const MenuList: MenuGroup[] = [
                 title: "Files-Manager",
                 icon: "las la-folder-open",
                 route: "/dashboard/files-manager",
-                permissionName: "generalPermissions"
+                allowedRoles: []
 
 
             },
@@ -57,7 +57,7 @@ export const MenuList: MenuGroup[] = [
                 title: "Translation-Editor",
                 icon: "las la-globe-europe",
                 route: "/dashboard/translation-editor",
-                permissionName: "generalPermissions"
+                allowedRoles: []
 
 
             },
@@ -67,7 +67,7 @@ export const MenuList: MenuGroup[] = [
                 title: "Profile",
                 icon: "las la-user-cog",
                 route: "/dashboard/profile",
-                permissionName: "generalPermissions"
+                allowedRoles: []
 
 
 
@@ -76,7 +76,7 @@ export const MenuList: MenuGroup[] = [
                 title: "Company-Information",
                 icon: "las la-business-time",
                 route: "/dashboard/company-info",
-                permissionName: "generalPermissions"
+                allowedRoles: ["CompanyInfo", "Administrator", "SuperAdmin"]
             }
         ]
     }

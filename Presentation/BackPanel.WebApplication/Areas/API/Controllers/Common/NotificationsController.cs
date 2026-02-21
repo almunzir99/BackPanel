@@ -1,6 +1,5 @@
-﻿using BackPanel.Application.DTOs.Filters;
+using BackPanel.Application.DTOs.Filters;
 using BackPanel.Application.DTOs;
-using BackPanel.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -24,31 +23,23 @@ namespace BackPanel.WebApplication.Areas.API.Controllers.Common
 
         [HttpGet("unread")]
         public async Task<ActionResult<IList<NotificationDto>>> GetUnreadNotifications(
-            int userId,
-            [FromQuery] string userType,
             [FromQuery] bool autoRead = false)
         {
-            var notifications = await _mediator.Send(new GetUnreadNotificationsQuery(userId, userType));
+            var notifications = await _mediator.Send(new GetUnreadNotificationsQuery(CurrentUserId));
 
             if (autoRead && notifications.Any())
-            {
-                await _mediator.Send(new MarkNotificationsAsReadCommand(userId, userType));
-            }
+                await _mediator.Send(new MarkNotificationsAsReadCommand(CurrentUserId));
 
             return Ok(notifications);
         }
 
-        [HttpGet()]
+        [HttpGet]
         public async Task<ActionResult<IList<NotificationDto>>> GetNotifications(
-            [FromQuery] string userType,
-            [FromQuery] PaginationFilter filter
-         )
+            [FromQuery] PaginationFilter filter)
         {
-            var notifications = await _mediator.Send(new ListNotificationsQuery(CurrentUserId, userType, filter));
-
+            var notifications = await _mediator.Send(new ListNotificationsQuery(CurrentUserId, filter));
             return Ok(notifications);
         }
-
 
         [HttpPut("{id}/read")]
         public async Task<ActionResult<NotificationDto>> ReadNotification(int id)
@@ -58,20 +49,16 @@ namespace BackPanel.WebApplication.Areas.API.Controllers.Common
         }
 
         [HttpPut("read-all")]
-        public async Task<ActionResult> MarkAllAsRead(
-            int userId,
-            [FromQuery] string userType)
+        public async Task<ActionResult> MarkAllAsRead()
         {
-            await _mediator.Send(new MarkNotificationsAsReadCommand(CurrentUserId, userType));
+            await _mediator.Send(new MarkNotificationsAsReadCommand(CurrentUserId));
             return Ok(new { Message = "All notifications marked as read" });
         }
 
-
         [HttpDelete("clear")]
-        public async Task<ActionResult> ClearNotifications(
-            [FromQuery] string userType)
+        public async Task<ActionResult> ClearNotifications()
         {
-            await _mediator.Send(new ClearNotificationsCommand(CurrentUserId, userType));
+            await _mediator.Send(new ClearNotificationsCommand(CurrentUserId));
             return Ok(new { Message = "All notifications cleared" });
         }
 
@@ -81,23 +68,10 @@ namespace BackPanel.WebApplication.Areas.API.Controllers.Common
             await _mediator.Send(new DeleteNotificationCommand(id));
             return Ok(new { Message = "Notification deleted successfully" });
         }
+
         protected int CurrentUserId
         {
-            get
-            {
-                int currentUserId = int.Parse(HttpContext.User.GetClaimValue("id"));
-                return currentUserId;
-            }
-        }
-
-        protected string CurrentUserType
-        {
-            get
-            {
-                string type = HttpContext.User.GetClaimValue("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
-                return type;
-            }
+            get => int.Parse(HttpContext.User.GetClaimValue("id"));
         }
     }
-
 }

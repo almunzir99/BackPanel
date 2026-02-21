@@ -1,10 +1,11 @@
 import { BaseModel } from "./base.model";
 
 export interface UserBaseModel extends BaseModel {
-    username: string;
+    userName: string;
     email: string;
-    phone: string;
-    photo: string;
+    phoneNumber: string;
     token: string;
-    notifications: Notification[];
+    image: string | null;
+    isManager: boolean;
+    roleId: number | null;
 }

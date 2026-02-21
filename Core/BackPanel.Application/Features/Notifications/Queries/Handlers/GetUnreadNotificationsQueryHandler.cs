@@ -1,30 +1,35 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BackPanel.Application.DTOs;
+using BackPanel.Application.Features.Notifications.Queries;
+using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
 using MediatR;
-using BackPanel.Application.Resolvers.UserResolver;
-using BackPanel.Application.Features.Notifications.Queries;
+using System.Linq.Expressions;
 
 namespace BackPanel.Application.Features.Notifications.Queries.Handlers
 {
     public class GetUnreadNotificationsQueryHandler : IRequestHandler<GetUnreadNotificationsQuery, IList<NotificationDto>>
     {
-        private readonly IUserResolver _userResolver;
+        private readonly IRepositoryBase<Notification> _repositoryBase;
         private readonly IMapper _mapper;
 
         public GetUnreadNotificationsQueryHandler(
-            IUserResolver userResolver,
+            IRepositoryBase<Notification> repositoryBase,
             IMapper mapper)
         {
-            _userResolver = userResolver;
+            _repositoryBase = repositoryBase;
             _mapper = mapper;
         }
 
         public async Task<IList<NotificationDto>> Handle(GetUnreadNotificationsQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userResolver.GetUserAsync(request.UserId, request.UserType);
-            var unreadNotifications = user.Notifications.Where(n => !n.Read).ToList();
-            return _mapper.Map<IList<Notification>, IList<NotificationDto>>(unreadNotifications);
+            var predicates = new List<Expression<Func<Notification, bool>>>
+            {
+                n => n.UserId == request.UserId,
+                n => !n.Read
+            };
+            var notifications = await _repositoryBase.ListAsync(predicates);
+            return _mapper.Map<IList<Notification>, IList<NotificationDto>>(notifications);
         }
     }
 }

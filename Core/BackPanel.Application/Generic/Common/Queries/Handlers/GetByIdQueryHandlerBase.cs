@@ -18,7 +18,7 @@ namespace BackPanel.Application.Generic.Common.Queries.Handlers
             Repository = repository;
             Mapper = mapper;
         }
-        public async Task<TDTO> Handle(TQuery request, CancellationToken cancellationToken)
+        public virtual async Task<TDTO> Handle(TQuery request, CancellationToken cancellationToken)
         {
             var entity = await Repository.GetById(request.Id);
             return Mapper.Map<TDTO>(entity);

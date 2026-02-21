@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Admin } from 'src/app/core/models/admin.model';
-import { Permission } from 'src/app/core/models/permission.model';
 import { Role } from 'src/app/core/models/role.model';
 import { AccountService } from 'src/app/core/services/account.service';
 import { GeneralService } from 'src/app/core/services/general.service';
@@ -49,21 +48,18 @@ export class MenuComponent implements OnInit {
     this.menuList = JSON.parse(JSON.stringify(MenuList)) as MenuGroup[];
     this.menuList.forEach(group => {
       group.children = group.children?.filter(c => {
-        return this.checkIfMenuItemPermittedToDisplay(c.permissionName!);
+        return this.checkIfMenuItemPermittedToDisplay(c.allowedRoles);
       });
     });
-    console.log(this.menuList)
   }
-  checkIfMenuItemPermittedToDisplay(permissionName: string): boolean {
+  checkIfMenuItemPermittedToDisplay(allowedRoles?: string[]): boolean {
     if (this.currentUser?.isManager)
       return true;
-    else if (permissionName == "generalPermissions")
+    if (!allowedRoles || allowedRoles.length == 0)
       return true;
-    else if (this.currentRole) {
-      var permission = (this.currentRole as any)[permissionName] as Permission;
-      if (permission)
-        return permission.read;
-      return false;
+    if (this.currentRole?.title) {
+      const currentRoleTitle = this.currentRole.title.toLowerCase().trim();
+      return allowedRoles.some(x => x.toLowerCase().trim() == currentRoleTitle);
     }
     return false;
   }

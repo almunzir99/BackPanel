@@ -1,34 +1,35 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BackPanel.Application.DTOs;
+using BackPanel.Application.Features.Notifications.Queries;
+using BackPanel.Application.Interfaces;
 using BackPanel.Domain.Entities;
 using MediatR;
-using BackPanel.Application.Resolvers.UserResolver;
-using BackPanel.Application.Features.Notifications.Queries;
+using System.Linq.Expressions;
 
 namespace BackPanel.Application.Features.Notifications.Queries.Handlers
 {
-
     public class ListNotificationsQueryHandler : IRequestHandler<ListNotificationsQuery, IList<NotificationDto>>
     {
-        private readonly IUserResolver _userResolver;
+        private readonly IRepositoryBase<Notification> _repositoryBase;
         private readonly IMapper _mapper;
 
         public ListNotificationsQueryHandler(
-            IUserResolver userResolver,
+            IRepositoryBase<Notification> repositoryBase,
             IMapper mapper)
         {
-            _userResolver = userResolver;
+            _repositoryBase = repositoryBase;
             _mapper = mapper;
         }
 
         public async Task<IList<NotificationDto>> Handle(ListNotificationsQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userResolver.GetUserAsync(request.UserId, request.UserType);
-            var notifications = user.Notifications
-                .OrderByDescending(n => n.CreatedAt)
-                .ToList();
-
-            return _mapper.Map<IList<Notification>, IList<NotificationDto>>(notifications);
+            var predicates = new List<Expression<Func<Notification, bool>>>
+            {
+                n => n.UserId == request.UserId
+            };
+            var notifications = await _repositoryBase.ListAsync(predicates);
+            var sorted = notifications.OrderByDescending(n => n.CreatedAt).ToList();
+            return _mapper.Map<IList<Notification>, IList<NotificationDto>>(sorted);
         }
     }
 }

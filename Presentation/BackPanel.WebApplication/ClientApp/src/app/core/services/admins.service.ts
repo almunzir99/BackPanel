@@ -15,26 +15,21 @@ export class AdminsService {
   }
   get(pageIndex = 1, pageSize = 10, searchValue = "", orderBy = "lastUpdate", ascending = false, list: FieldSearchResult[] = []): Observable<PagedResponse<Admin[]>> {
     var params: any = {
-      PageIndex: pageIndex,
-      PageSize: pageSize,
-      orderBy: orderBy,
-      ascending: ascending,
-      title: searchValue
-    }
-    list.forEach((element,index) => {
-      params[`searchExpressions[${index}].propName`] = element.propName;
-      params[`searchExpressions[${index}].propValue`] = element.propValue;
-      params[`searchExpressions[${index}].operator`] = element.operator;
-
+      'PaginationFilter.PageIndex': pageIndex,
+      'PaginationFilter.PageSize': pageSize,
+      OrderBy: orderBy,
+      Descending: !ascending,
+      Search: searchValue
+    };
+    list.forEach((element, index) => {
+      params[`SearchExpressions[${index}].PropName`] = element.propName;
+      params[`SearchExpressions[${index}].PropValue`] = element.propValue;
+      params[`SearchExpressions[${index}].Operator`] = element.operator;
     });
     return this.http.get(`${this.moduleBaseUrl}`, { params: params }) as Observable<PagedResponse<Admin[]>>;
   }
   post(admin: Admin) {
-    console.log(admin);
     return this.http.post(`${this.moduleBaseUrl}`, admin);
-  }
-  postAll(items: any[]) {
-    return this.http.post(`${this.moduleBaseUrl}all`, items);
   }
   put(admin: Admin) {
     return this.http.put(`${this.moduleBaseUrl}${admin.id}`, admin);
@@ -42,21 +37,20 @@ export class AdminsService {
   delete(id: number) {
     return this.http.delete(`${this.moduleBaseUrl}${id}`);
   }
-  export(type: string, next?: () => void, failed?: (err: any) => void) {
-    this.http.get(`${this.moduleBaseUrl}export/${type}`, { responseType: 'blob' }).subscribe(res => {
-      let blob = new Blob([res], { type: 'text/plain' });
-      var downloadURL = window.URL.createObjectURL(res);
-      var link = document.createElement('a');
-      link.href = downloadURL;
-      var ext = (type == 'excel') ? '.xlsx' : '.pdf';
-      link.download = `data${ext}`;
-      link.click();
-      if (next)
-        next();
-    }, error => { if (failed) failed(error) })
+  exportExcel(next?: () => void, failed?: (err: any) => void) {
+    this.http.get(`${this.moduleBaseUrl}export/excel`, { responseType: 'blob' }).subscribe({
+      next: (res) => {
+        const downloadURL = window.URL.createObjectURL(res);
+        const link = document.createElement('a');
+        link.href = downloadURL;
+        link.download = 'admins.xlsx';
+        link.click();
+        if (next) next();
+      },
+      error: (error) => { if (failed) failed(error); }
+    });
   }
   activeToggle(id: number) {
-    return this.http.get(`${this.moduleBaseUrl}active?id=${id}`);
+    return this.http.get(`${this.moduleBaseUrl}active`, { params: { id: id } });
   }
-
 }

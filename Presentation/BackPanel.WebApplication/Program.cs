@@ -3,12 +3,14 @@ using BackPanel.Application.Interfaces;
 using BackPanel.FilesManager.DI;
 using BackPanel.Persistence.Database;
 using BackPanel.Persistence.DI;
+using BackPanel.Persistence.Identity;
 using BackPanel.SMTP.DI;
 using BackPanel.SMTP.Models;
 using BackPanel.TranslationEditor.DI;
 using BackPanel.WebApplication.Extensions;
 using BackPanel.WebApplication.implementation;
 using BackPanel.WebApplication.Middlewares;
+using Microsoft.AspNetCore.Identity;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,10 +26,19 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddHttpContextAccessor();
 builder.Services.RegisterRepositories();
 builder.Services.RegisterUnitOfWork();
+builder.Services.AddIdentityCore<AppUser>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+})
+    .AddRoles<AppRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.RegisterRequiredFilesManagerServices();
 builder.Services.ImplementPathProvider<PathProvider>();
 builder.Services.AddScoped<IWebConfiguration, WebConfiguration>();
+builder.Services.AddScoped<IIdentityRoleService, IdentityRoleService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.RegisterJwtConfiguration(builder.Configuration.GetValue<string>("SecretKey:key")!);
 builder.Services.ImplementPathProviderToTranslationService<PathProvider>();
 builder.Services.RegisterRequiredTranslationEditorServices();

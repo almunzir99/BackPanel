@@ -1,51 +1,36 @@
-using BackPanel.Application.Attributes.Permissions;
 using BackPanel.Application.DTOs;
-using BackPanel.Application.DTOs.Filters;
-using BackPanel.Application.DTOs.Wrapper;
 using BackPanel.Application.DTOsRequests;
-using BackPanel.Application.Generic.Common.Queries;
-using BackPanel.Application.Helpers;
+using BackPanel.Application.Interfaces;
 using BackPanel.Application.Resolvers.UriResolver;
-using BackPanel.Domain.Entities;
-using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackPanel.WebApplication.Areas.API.Controllers.Common;
 
-[Route("api/admins")]
-public class AdminsController : ApiController<Admin, AdminDto, AdminDtoRequest>
+/// <summary>
+/// Manages admin users (list, create, update, delete, activate, export).
+/// Extends UserControllerBase which mirrors the ApiController shape.
+///
+/// All authentication endpoints (login, password recovery, profile) live in
+/// AdminAccountController — this controller is purely for admin management
+/// from the dashboard.
+/// </summary>
+[Authorize]
+[ApiController]
+[Route("api/[controller]")]
+public class AdminsController : UserControllerBase<AppUserDto, AppUserDtoRequest>
 {
-    public AdminsController(IUriResolver uriService, IMediator mediator) : base(uriService, mediator)
-    {
-    }
+    public override string PermissionTitle => "ADMINS";
 
-    [Permission(true, PermissionTypes.READ)]
-    [HttpGet]
-    public override async Task<IActionResult> GetAsync([FromQuery] ListFilter filter)
-    {
-        try
-        {
-            filter.SearchExpressions.Add(new SearchExpressionDtoRequest
-            {
-                PropName = nameof(AdminDto.IsManager),
-                PropValue = "false",
-                Operator = Domain.Enums.ComparisonOperator.Equal
-            });
-            var result = await Mediator.Send(new GetAllQueryBase<AdminDto>(filter));
-            if (Request.Path.Value != null)
-            {
-                return Ok(PaginationHelper.CreatePagedResponse(result.Item1,
-                    filter.PaginationFilter, UriResolver, result.Item2, Request.Path.Value));
-            }
-            var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
-            return BadRequest(response);
-        }
-        catch (Exception e)
-        {
+    private readonly IUserService _userService;
+    private readonly IUriResolver _uriResolver;
 
-            var response = new Response<string>(message: "Operation Failed because Request.Path.Value == null");
-            return BadRequest(response);
-        }
+    protected override IUserService UserService => _userService;
+    protected override IUriResolver UriResolver => _uriResolver;
+
+    public AdminsController(IUserService userService, IUriResolver uriResolver)
+    {
+        _userService = userService;
+        _uriResolver = uriResolver;
     }
-    public override string PermissionTitle => "AdminsPermissions";
 }

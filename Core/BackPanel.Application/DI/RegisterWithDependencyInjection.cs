@@ -3,7 +3,6 @@ using BackPanel.Application.DTOs;
 using BackPanel.Application.Generic.Common.Commands;
 using BackPanel.Application.Interfaces;
 using BackPanel.Application.Resolvers.UriResolver;
-using BackPanel.Application.Resolvers.UserResolver;
 using BackPanel.Domain.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -22,7 +21,6 @@ public static class RegisterWithDependencyInjection
 
     public static void RegisterResolvers(this IServiceCollection services, Func<IServiceProvider, IUriResolver> implementationFactory)
     {
-        services.AddScoped<IUserResolver, UserResolver>();
         services.AddScoped(implementationFactory);
     }
 

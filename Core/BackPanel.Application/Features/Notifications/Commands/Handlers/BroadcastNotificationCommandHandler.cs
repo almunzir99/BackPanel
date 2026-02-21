@@ -1,32 +1,28 @@
-﻿using MediatR;
-using BackPanel.Application.Resolvers.UserResolver;
 using BackPanel.Application.Features.Notifications.Commands;
+using BackPanel.Application.Interfaces;
+using MediatR;
 
 namespace BackPanel.Application.Features.Notifications.Commands.Handlers
 {
     public class BroadcastNotificationCommandHandler : IRequestHandler<BroadcastNotificationCommand>
     {
-        private readonly IUserResolver _userResolver;
+        private readonly IUserService _userService;
         private readonly IMediator _mediator;
 
         public BroadcastNotificationCommandHandler(
-            IUserResolver userResolver,
+            IUserService userService,
             IMediator mediator)
         {
-            _userResolver = userResolver;
+            _userService = userService;
             _mediator = mediator;
         }
 
         public async Task Handle(BroadcastNotificationCommand request, CancellationToken cancellationToken)
         {
-            var users = await _userResolver.GetUsersByTypeAsync(request.UserType);
+            var userIds = await _userService.GetAllUserIdsAsync();
 
-            var pushTasks = users.Select(user =>
-                _mediator.Send(new PushNotificationCommand(
-                    user.Id,
-                    request.UserType,
-                    request.Notification,
-                    user), cancellationToken));
+            var pushTasks = userIds.Select(userId =>
+                _mediator.Send(new PushNotificationCommand(userId, request.Notification), cancellationToken));
 
             await Task.WhenAll(pushTasks);
         }

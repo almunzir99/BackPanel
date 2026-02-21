@@ -9,4 +9,5 @@ public class Notification : EntityBase
     public string? Url { get; set; }
     public bool Read { get; set; }
     public int? GroupedItem { get; set; }
+    public int? UserId { get; set; }
 }

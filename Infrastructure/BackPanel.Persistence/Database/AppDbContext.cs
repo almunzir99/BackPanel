@@ -1,13 +1,15 @@
 using BackPanel.Application.Helpers;
 using BackPanel.Domain.Entities;
 using BackPanel.Domain.Enums;
+using BackPanel.Persistence.Identity;
 using BackPanel.Shared.Helpers;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Reflection.Emit;
 
 namespace BackPanel.Persistence.Database;
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
 {
     public AppDbContext(DbContextOptions options) : base(options)
     {
@@ -15,16 +17,30 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        base.OnModelCreating(builder);
+
         foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
         {
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
         }
 
-        builder.Entity<Admin>().HasIndex(c => c.Email).IsUnique();
         builder.Entity<Role>().HasIndex(c => c.Title).IsUnique();
 
-        ConfigureDeleteStatusFilter(builder);
+        // AppUser -> Notification (one-to-many via Notification.UserId)
+        builder.Entity<AppUser>()
+            .HasMany(u => u.Notifications)
+            .WithOne()
+            .HasForeignKey(n => n.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
 
+        // Activity -> AppUser (UserId FK)
+        builder.Entity<Activity>()
+            .HasOne<AppUser>()
+            .WithMany()
+            .HasForeignKey(a => a.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        ConfigureDeleteStatusFilter(builder);
     }
 
     private static void ConfigureDeleteStatusFilter(ModelBuilder builder)
@@ -38,7 +54,6 @@ public class AppDbContext : DbContext
                 var deletedStatus = Expression.Constant(Status.Deleted);
                 var notEqual = Expression.NotEqual(statusProperty, deletedStatus);
                 var lambda = Expression.Lambda(notEqual, parameter);
-
                 builder.Entity(entityType.ClrType).HasQueryFilter(lambda);
             }
         }
@@ -51,10 +66,11 @@ public class AppDbContext : DbContext
     {
         return Set<T>().IgnoreQueryFilters().Where(e => e.Status == Status.Deleted);
     }
-    public DbSet<Admin> Admins => Set<Admin>();
+    public DbSet<Activity> Activities => Set<Activity>();
     public DbSet<Message> Messages => Set<Message>();
-    public DbSet<Role> Roles => Set<Role>();
-    public DbSet<Permission> Permissions => Set<Permission>();
+    public new DbSet<Role> Roles => Set<Role>();
     public DbSet<Notification> Notifications => Set<Notification>();
     public DbSet<CompanyInfo> CompanyInfos => Set<CompanyInfo>();
+    public DbSet<AppUser> AppUsers => Set<AppUser>();
+    public DbSet<AppRole> AppRoles => Set<AppRole>();
 }

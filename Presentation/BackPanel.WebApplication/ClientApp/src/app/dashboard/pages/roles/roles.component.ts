@@ -1,7 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
-import { Permission } from 'src/app/core/models/permission.model';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';
 import { Role } from 'src/app/core/models/role.model';
 import { GeneralService } from 'src/app/core/services/general.service';
@@ -28,7 +27,6 @@ export class RolesComponent implements OnInit {
   searchValue = "";
   getRequest = RequestStatus.Initial;
   dimRequest = RequestStatus.Initial;
-  templateOnlyShow:boolean = false; // wether to show only permissions table or  from
   theme:'light' | 'dark' = 'light';
   @ViewChild("roleForm") roleForm?: TemplateRef<any>;
   role: any;
@@ -56,10 +54,7 @@ export class RolesComponent implements OnInit {
   initRole(){
     this.role = {
       id: 0,
-      title: '',
-      rolesPermissions: { create: false, read: false, update: false, delete: false },
-      adminsPermissions: { create: false, read: false, update: false, delete: false },
-      messagesPermissions: { create: false, read: false, update: false, delete: false }
+      title: ''
     };
   }
   initColumns() {
@@ -75,12 +70,6 @@ export class RolesComponent implements OnInit {
         title: "Title",
         show: true,
         sortable: true
-      },
-      {
-        prop: "permissions",
-        title: "Permissions",
-        show: true,
-        sortable: false
       },
       {
         prop: "createdAt",
@@ -101,9 +90,6 @@ export class RolesComponent implements OnInit {
         sortable: false
       }
     ];
-  }
-  getRoleKeys(): string[] {
-    return Object.keys(this.role).filter(c => c.includes("Permissions")).map(o => o.replace("Permissions", ""));
   }
 
   /********************************* Event Binding ******************************************** */
@@ -150,11 +136,6 @@ export class RolesComponent implements OnInit {
       this.update(this.role); 
     }
   }
-  onShowPermissionsClick(item:Role){
-    this.role = item;
-    this.templateOnlyShow = true;
-    this._dialog.open(this.roleForm!);
-  }
   closeDialog = () => this._dialog.closeAll();
   onExportClick(type: string) {
     this.dimRequest = RequestStatus.Loading;
@@ -167,7 +148,6 @@ export class RolesComponent implements OnInit {
   /********************************* Form Configuration ******************************************** */
 
   openForm(item?: Role) {
-    this.templateOnlyShow = false;
     if(item)
     this.role = item;
     else

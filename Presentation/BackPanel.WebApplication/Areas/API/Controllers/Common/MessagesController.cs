@@ -37,7 +37,7 @@ public class MessagesController : ApiController<Message, MessageDto, MessageDtoR
             CreatedAt = DateTime.Now,
             LastUpdate = DateTime.Now,
         };
-        await Mediator.Send(new BroadcastNotificationCommand(notification, "admin"));
+        await Mediator.Send(new BroadcastNotificationCommand(notification));
         return await base.PostAsync(body);
     }
 }

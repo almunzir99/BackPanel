@@ -9,9 +9,9 @@ public static class IdentityExtension
     {
         var claimIdentity = user.Identity as ClaimsIdentity;
         var value = claimIdentity?.Claims
-            .SingleOrDefault(c => c.Type.Equals(claim));
+            .FirstOrDefault(c => c.Type.Equals(claim));
         if (value == null)
-            return "0";
+            return string.Empty;
         return value.Value;
     }
 }
