@@ -57,6 +57,8 @@
     "RoleTitle": "اسم الدور",
     "CompanyInfo": "بيانات المؤسسة",
     "CreateNewRole": "انشاء دور جديد",
+    "EditRole": "تعديل مجموعة الصلاحيات",
+    "RoleNameHint": "(إسم إنجليزي بدون مسافات)",
     "admins": "المشرفين",
     "messages": "الرسائل",
     "roles": "الادوار و الصلاحيات",
@@ -134,7 +136,16 @@
     "TE_Rename": "إعادة تسمية",
     "TE_Remove": "حذف",
     "TE_ConfirmDelete": "هل أنت متأكد أنك تريد حذف هذا العنصر؟",
-    "TE_Confirm": "تأكيد"
-
+    "TE_Confirm": "تأكيد",
+    "Perm_Administration": "الإداره",
+    "Perm_Admins": "المشرفين",
+    "Perm_Roles": "الأدوار",
+    "Perm_Messages": "الرسائل",
+    "Perm_CompanyInfo": "بيانات المؤسسة",
+    "Perm_View": "عرض",
+    "Perm_Add": "إضافة",
+    "Perm_Edit": "تعديل",
+    "Perm_Delete": "حذف",
+    "Perm_ChangePassword": "تغيير كلمة المرور"
   }
 }

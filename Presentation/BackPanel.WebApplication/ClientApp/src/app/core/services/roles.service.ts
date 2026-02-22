@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Role } from '../models/role.model';
+import { PermissionSection } from '../models/permission-group.model';
 import { ApiResponse } from '../models/wrappers/api-response.model';
 import { PagedResponse } from '../models/wrappers/paged-response.model';
 
@@ -52,6 +53,10 @@ export class RolesService {
   }
   postAll(items: any[]) {
     return this.http.post(`${this.moduleBaseUrl}all`, items);
+  }
+
+  getAvailablePermissions(): Observable<ApiResponse<PermissionSection[]>> {
+    return this.http.get(`${this.moduleBaseUrl}available-permissions`) as Observable<ApiResponse<PermissionSection[]>>;
   }
   
 }

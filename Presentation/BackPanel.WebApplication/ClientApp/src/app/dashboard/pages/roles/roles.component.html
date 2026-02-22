@@ -1,6 +1,6 @@
 <data-table (createClick)="onCreate()" (searchChange)="onSearch($event)" (sortChange)="onSortChange($event)"
-    (pageChange)="onPageChange($event)" [total]="totalRecords" (exportClick)="onExportClick($event)" [loading]="getRequest == 1" [columns]="columns"
-    [rows]="data" [cell-template]="cellTemplate" [title]="'Roles'">
+    (pageChange)="onPageChange($event)" [total]="totalRecords" (exportClick)="onExportClick($event)"
+    [loading]="getRequest == 1" [columns]="columns" [rows]="data" [cell-template]="cellTemplate" [title]="'Roles'">
     <ng-template #cellTemplate let-rowData="rowData" let-data="cellData" let-col="colIndex" let-row="rowIndex">
         <ng-container [ngSwitch]="col">
             <ng-container *ngSwitchCase="4">
@@ -11,27 +11,96 @@
                     <i class="las la-trash"></i>
                 </button>
             </ng-container>
-            <ng-container *ngSwitchDefault>
-                {{data}}
-            </ng-container>
-
+            <ng-container *ngSwitchDefault>{{data}}</ng-container>
         </ng-container>
     </ng-template>
 </data-table>
 
-<dimmer-loading *ngIf="dimRequest == 1">
-</dimmer-loading>
+<dimmer-loading *ngIf="dimRequest == 1"></dimmer-loading>
 
 <ng-template #roleForm>
-    <h2 mat-dialog-title [textContent]="'Dashboard.CreateNewRole' | translate "></h2>
-    <mat-dialog-content>
-        <mat-form-field>
-            <mat-label>{{'Dashboard.RoleTitle' | translate}}</mat-label>
-            <input [(ngModel)]="role.title" type="text" matInput placeholder="Role Title" name="title">
-        </mat-form-field>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-        <button (click)="onFormSubmit()" mat-flat-button color="primary">Submit</button>
-        <button (click)="closeDialog()" mat-flat-button>Close</button>
-    </mat-dialog-actions>
+    <div [dir]="dir">
+        <h2 mat-dialog-title [textContent]="role.id == 0 ? ('Dashboard.CreateNewRole' | translate) : ('Dashboard.EditRole' | translate)"></h2>
+
+        <mat-dialog-content class="role-form-content">
+
+            <!-- Role name field -->
+            <mat-form-field class="full-width">
+                <mat-label>{{'Dashboard.RoleTitle' | translate}} {{'Dashboard.RoleNameHint' | translate}}</mat-label>
+                <input [(ngModel)]="role.title" type="text" matInput placeholder="e.g. ContentManager" name="title">
+            </mat-form-field>
+
+            <!-- ── Permissions Tree (3-level: Section > Module > Action) ───── -->
+            <div class="permissions-section">
+                <div class="permissions-header">{{'Dashboard.Permissions' | translate}}</div>
+
+                <div *ngIf="permissionsLoading" class="permissions-loading">
+                    {{'Dashboard.Loading' | translate}}
+                </div>
+
+                <div *ngIf="!permissionsLoading" class="permission-tree">
+
+                    <!-- Level 1 — Section (e.g. "Administration") -->
+                    <div *ngFor="let section of permissionSections" class="perm-section">
+
+                        <div class="perm-row perm-section-header" (click)="toggleSectionExpanded(section)">
+                            <mat-checkbox
+                                [checked]="section.allChecked"
+                                [indeterminate]="section.someChecked"
+                                (change)="onSectionCheckChange(section, $event.checked)"
+                                (click)="$event.stopPropagation()"
+                                color="primary">
+                                <span class="perm-label section-label">{{ ('Dashboard.Perm_' + section.label) | translate }}</span>
+                            </mat-checkbox>
+                            <i class="las perm-chevron"
+                               [class.la-angle-down]="section.expanded"
+                               [class.la-angle-up]="!section.expanded"></i>
+                        </div>
+
+                        <div *ngIf="section.expanded" class="perm-modules">
+
+                            <!-- Level 2 — Module (e.g. "Admins") -->
+                            <div *ngFor="let mod of section.modules" class="perm-module">
+
+                                <div class="perm-row perm-module-header" (click)="toggleModuleExpanded(mod)">
+                                    <mat-checkbox
+                                        [checked]="mod.allChecked"
+                                        [indeterminate]="mod.someChecked"
+                                        (change)="onModuleCheckChange(section, mod, $event.checked)"
+                                        (click)="$event.stopPropagation()"
+                                        color="primary">
+                                        <span class="perm-label module-label">{{ ('Dashboard.Perm_' + mod.label) | translate }}</span>
+                                    </mat-checkbox>
+                                    <i class="las perm-chevron"
+                                       [class.la-angle-down]="mod.expanded"
+                                       [class.la-angle-up]="!mod.expanded"></i>
+                                </div>
+
+                                <div *ngIf="mod.expanded" class="perm-actions">
+
+                                    <!-- Level 3 — Action (e.g. "View", "Add") -->
+                                    <mat-checkbox *ngFor="let action of mod.actions"
+                                        class="perm-action"
+                                        [(ngModel)]="action.checked"
+                                        (ngModelChange)="onActionCheckChange(section, mod)"
+                                        [name]="action.value"
+                                        color="primary">
+                                        {{ ('Dashboard.Perm_' + action.label) | translate }}
+                                    </mat-checkbox>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </mat-dialog-content>
+
+        <mat-dialog-actions>
+            <button (click)="onFormSubmit()" mat-flat-button color="primary">{{'Dashboard.SUBMIT' | translate}}</button>
+            <button (click)="closeDialog()" mat-stroked-button>{{'Dashboard.CANCEL' | translate}}</button>
+        </mat-dialog-actions>
+    </div>
 </ng-template>

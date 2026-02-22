@@ -4,4 +4,5 @@ namespace BackPanel.Application.DTOsRequests;
 public class RoleDtoRequest
 {
     public string? Title { get; set; }
+    public List<PermissionClaimDto> Permissions { get; set; } = new();
 }

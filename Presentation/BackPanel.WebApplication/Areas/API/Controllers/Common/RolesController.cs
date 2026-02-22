@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
 using BackPanel.Application.DTOs.Wrapper;
@@ -26,7 +27,18 @@ public class RolesController : ControllerBase
         _roleManager = roleManager;
     }
 
-    public string PermissionTitle => "RolesPermissions";
+    public string PermissionTitle => "Administration.Roles";
+
+    /// <summary>
+    /// Returns the full nested permission tree built from <see cref="BackPanel.Application.Constants.PermissionsConstants"/>.
+    /// Add a new constant there and it will appear here automatically.
+    /// </summary>
+    [HttpGet("available-permissions")]
+    public IActionResult GetAvailablePermissions()
+    {
+        var tree = PermissionTreeBuilder.Build();
+        return Ok(new Response<List<PermissionSectionDto>>(data: tree));
+    }
 
     [HttpGet]
     public async Task<IActionResult> GetAsync([FromQuery] ListFilter filter)
@@ -60,6 +72,8 @@ public class RolesController : ControllerBase
             Status = x.Status,
             CreatedAt = x.CreatedAt,
             LastUpdate = x.LastUpdate,
+            // Permissions are fetched individually; for list view keep it lightweight
+            Permissions = new List<PermissionClaimDto>()
         }).ToList();
 
         if (Request.Path.Value == null)
@@ -75,6 +89,12 @@ public class RolesController : ControllerBase
         if (role == null)
             return BadRequest(new Response<RoleDto>(success: false, errors: new List<string> { "Role not found" }));
 
+        var claims = await _roleManager.GetClaimsAsync(role);
+        var permissions = claims
+            .Where(c => c.Type == "Permission")
+            .Select(c => new PermissionClaimDto { ClaimType = c.Type, ClaimValue = c.Value })
+            .ToList();
+
         return Ok(new Response<RoleDto>(data: new RoleDto
         {
             Id = role.Id,
@@ -82,6 +102,7 @@ public class RolesController : ControllerBase
             Status = role.Status,
             CreatedAt = role.CreatedAt,
             LastUpdate = role.LastUpdate,
+            Permissions = permissions,
         }));
     }
 
@@ -103,6 +124,10 @@ public class RolesController : ControllerBase
         if (!result.Succeeded)
             return BadRequest(new Response<RoleDto>(success: false, errors: result.Errors.Select(x => x.Description).ToList()));
 
+        // Save permission claims
+        foreach (var perm in body.Permissions)
+            await _roleManager.AddClaimAsync(role, new Claim("Permission", perm.ClaimValue));
+
         return Ok(new Response<RoleDto>(data: new RoleDto
         {
             Id = role.Id,
@@ -110,6 +135,7 @@ public class RolesController : ControllerBase
             Status = role.Status,
             CreatedAt = role.CreatedAt,
             LastUpdate = role.LastUpdate,
+            Permissions = body.Permissions,
         }));
     }
 
@@ -149,6 +175,14 @@ public class RolesController : ControllerBase
         if (!result.Succeeded)
             return BadRequest(new Response<RoleDto>(success: false, errors: result.Errors.Select(x => x.Description).ToList()));
 
+        // Replace permission claims: remove old, add new
+        var existingClaims = await _roleManager.GetClaimsAsync(role);
+        foreach (var claim in existingClaims.Where(c => c.Type == "Permission"))
+            await _roleManager.RemoveClaimAsync(role, claim);
+
+        foreach (var perm in body.Permissions)
+            await _roleManager.AddClaimAsync(role, new Claim("Permission", perm.ClaimValue));
+
         return Ok(new Response<RoleDto>(data: new RoleDto
         {
             Id = role.Id,
@@ -156,6 +190,7 @@ public class RolesController : ControllerBase
             Status = role.Status,
             CreatedAt = role.CreatedAt,
             LastUpdate = role.LastUpdate,
+            Permissions = body.Permissions,
         }));
     }
 
