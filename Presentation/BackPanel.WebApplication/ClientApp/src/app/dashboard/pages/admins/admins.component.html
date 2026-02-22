@@ -24,7 +24,7 @@ title="Admins">
                 {{data?.title}}
             </ng-container>
             <ng-container *ngSwitchCase="columns.length - 2">
-                <button (click)="onActiveToggleClick(rowData)" [textContent]="data == 1 ? 'active': 'inactive'"
+                <button (click)="onActiveToggleClick(rowData)" [textContent]="data == 1 ? ('Dashboard.Active' | translate) : ('Dashboard.Disabled' | translate) "
                     [class.accent]="data != 1" [class.primary]="data == 1" matRipple class="table-act-button active-btn">
                 </button>
             </ng-container>

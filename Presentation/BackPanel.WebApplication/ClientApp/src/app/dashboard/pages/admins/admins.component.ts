@@ -136,9 +136,11 @@ export class AdminsComponent implements OnInit {
         sortable: false,
         searchable: true,
         searchControlType: SearchControlType.Selection,
+        valueProp: "index",
+        labelProp: "title",
         searchFieldData: [
-          "Active",
-          "Disabled"
+          { title: "Dashboard.Active", index: Status.Active },
+          { title: "Dashboard.Disabled", index: Status.Disabled },
         ]
       },
       {

@@ -10,7 +10,7 @@
 [rows]="data" 
 [cell-template]="cellTemplate"
 [show-create-button]="false" 
-title="Dashboard.Messages">
+title="Messages">
     <ng-template #cellTemplate let-rowData="rowData" let-data="cellData" let-col="colIndex" let-row="rowIndex">
         <ng-container [ngSwitch]="col">
             <ng-container *ngSwitchCase="4">
