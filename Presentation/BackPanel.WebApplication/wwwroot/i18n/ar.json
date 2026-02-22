@@ -35,7 +35,7 @@
     "LastUpdate": "اخر تعديل",
     "Search": "بحث",
     "Actions": "الافعال",
-    "Active": "مفعل",
+    "Active": "فعال",
     "ItemsPerPage": "عدد العناصر في الصفحة",
     "SearchHere": "ابحث هنا ",
     "Create": "انشاء عنصر جديد",
@@ -146,6 +146,11 @@
     "Perm_Add": "إضافة",
     "Perm_Edit": "تعديل",
     "Perm_Delete": "حذف",
-    "Perm_ChangePassword": "تغيير كلمة المرور"
+    "Perm_ChangePassword": "تغيير كلمة المرور",
+    "FullName": "الاسم الكامل",
+    "Content": "المحتوى",
+    "SentAt": "تاريخ الارسال ",
+    "All": "الكل",
+    "Disabled": "معطل"
   }
 }

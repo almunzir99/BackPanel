@@ -147,6 +147,11 @@
     "Perm_Add": "Add",
     "Perm_Edit": "Edit",
     "Perm_Delete": "Delete",
-    "Perm_ChangePassword": "Change Password"
+    "Perm_ChangePassword": "Change Password",
+    "FullName": "Full name",
+    "Content": "Content",
+    "SentAt": "Sent at",
+    "All": "All",
+    "Disabled": "Disabled"
   }
 }

@@ -118,8 +118,8 @@
                                         <mat-select (selectionChange)="searchFieldChange(i,$event)">
                                             <mat-option [value]="null">{{'Dashboard.All' | translate}}</mat-option>
                                             <mat-option *ngFor="let option of col.searchFieldData"
-                                                [value]="option[col.valueProp!]">
-                                                {{ option[col.labelProp!] | translate }}
+                                                [value]="!col.valueProp ? option : col.valueProp == 'index' ? i : option[col.valueProp!]">
+                                                {{ !col.labelProp ? (option | translate) : option[col.labelProp!] | translate }}
                                             </mat-option>
                                         </mat-select>
                                     </ng-container>
