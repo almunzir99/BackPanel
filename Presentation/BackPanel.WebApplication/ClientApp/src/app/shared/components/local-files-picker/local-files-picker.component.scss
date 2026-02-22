@@ -8,14 +8,14 @@
     }
     button {
         max-width: 150px;
-        border-radius: 0px 10px 10px 0px;
+        border-radius: 0px 10px 10px 0px!important;
         padding: 4.5px 15px;
     }
 
 }
 .lfp-container.rtl{
     button{
-        border-radius: 10px 0px 0px 10px;
+        border-radius: 10px 0px 0px 10px!important;
 
     }
 }

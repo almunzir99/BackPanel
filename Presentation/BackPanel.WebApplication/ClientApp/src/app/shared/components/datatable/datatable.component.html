@@ -14,7 +14,7 @@
                 </mat-form-field>
             </div>
             <div class="controls">
-                <ng-container *ngIf="showImport">
+                <ng-container *ngIf="false">
                     <button mat-flat-button color="accent">
                         <label for="importFromInput">
                             <mat-icon>system_update_alt</mat-icon>
@@ -59,107 +59,122 @@
         </div>
     </div>
 
-    <table [style.table-layout]="fixed ? 'fixed' : 'initial'" class="data-table">
-        <thead>
-            <tr>
-                <ng-container *ngFor="let column of columns">
-                    <th (click)="onSortChange(column.prop,column.sortable)" matRipple *ngIf="column.show">
-                        <div class="th-content">
-                            <p>{{'Dashboard.'+column.title | translate}}</p>
-                            <div [style.visibility]="column.sortable && sortProp == column.prop ? 'visible' : 'hidden'">
-                                <mat-icon *ngIf="ascending">arrow_downward</mat-icon>
-                                <mat-icon *ngIf="!ascending">arrow_upward</mat-icon>
+    <div class="horizontal-scrollable-container">
+        <table [style.table-layout]="fixed ? 'fixed' : 'initial'" class="data-table">
+            <thead>
+                <tr>
+                    <ng-container *ngFor="let column of columns">
+                        <th (click)="onSortChange(column.prop,column.sortable)" matRipple *ngIf="column.show">
+                            <div class="th-content">
+                                <p>{{'Dashboard.'+column.title | translate}}</p>
+                                <div
+                                    [style.visibility]="column.sortable && sortProp == column.prop ? 'visible' : 'hidden'">
+                                    <mat-icon *ngIf="ascending">arrow_downward</mat-icon>
+                                    <mat-icon *ngIf="!ascending">arrow_upward</mat-icon>
+                                </div>
                             </div>
-                        </div>
-                        <span class="resizer"></span>
-                    </th>
-                </ng-container>
-            </tr>
-            <tr *ngIf="_searchableColumns.length > 0">
-                <ng-container *ngFor="let col of columns; let i = index">
-                    <th class="search-cell">
-                        <div *ngIf="col.searchable" class="search-row">
-                            <ng-container [ngSwitch]="col.searchControlType">
-                                <ng-container *ngSwitchCase="SearchControlTypes.Number">
-                                    <input placeholder="{{'Dashboard.Search' | translate}}" (input)="searchFieldChange(i,$event.target)"
-                                        type="number">
+                            <span class="resizer"></span>
+                        </th>
+                    </ng-container>
+                </tr>
+                <tr *ngIf="_searchableColumns.length > 0">
+                    <ng-container *ngFor="let col of columns; let i = index">
+                        <th class="search-cell">
+                            <div *ngIf="col.searchable" class="search-row">
+                                <ng-container [ngSwitch]="col.searchControlType">
+                                    <ng-container *ngSwitchCase="SearchControlTypes.Number">
+                                        <input placeholder="{{'Dashboard.Search' | translate}}"
+                                            (input)="searchFieldChange(i,$event.target)" type="number">
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="SearchControlTypes.Email">
+                                        <input placeholder="{{'Dashboard.Search' | translate}}"
+                                            (input)="searchFieldChange(i,$event.target)" type="email">
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="SearchControlTypes.DateTime">
+                                        <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+                                        <input (dateInput)="searchFieldChange(i,$event.target)"
+                                            (input)="searchFieldChange(i,$event.target)" placeholder="MM/DD/YYYY"
+                                            matInput [matDatepicker]="picker">
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="SearchControlTypes.DateRange">
+                                        <div class="date-range-container">
+                                            <mat-date-range-input [rangePicker]="picker">
+                                                <input (dateInput)="searchFieldChange(i,$event.target, false)"
+                                                    matStartDate placeholder="{{ 'Dashboard.DateFrom' | translate }}">
+                                                <input (dateInput)="searchFieldChange(i,$event.target, true)" matEndDate
+                                                    placeholder="{{ 'Dashboard.DateTo' | translate }}">
+                                            </mat-date-range-input>
+                                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-date-range-picker #picker></mat-date-range-picker>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="SearchControlTypes.CheckBox">
+                                        <mat-checkbox (change)="searchFieldChange(i,$event)">
+                                            {{'Dashboard.'+col.title | translate}}
+                                        </mat-checkbox>
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="SearchControlTypes.Selection">
+                                        <mat-select (selectionChange)="searchFieldChange(i,$event)">
+                                            <mat-option [value]="null">{{'Dashboard.All' | translate}}</mat-option>
+                                            <mat-option *ngFor="let option of col.searchFieldData"
+                                                [value]="option[col.valueProp!]">
+                                                {{ option[col.labelProp!] | translate }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </ng-container>
+                                    <ng-container *ngSwitchDefault>
+                                        <input placeholder="{{'Dashboard.Search' | translate}}"
+                                            (input)="searchFieldChange(i,$event.target)" type="text">
+                                    </ng-container>
                                 </ng-container>
-                                <ng-container *ngSwitchCase="SearchControlTypes.Email">
-                                    <input placeholder="{{'Dashboard.Search' | translate}}" (input)="searchFieldChange(i,$event.target)"
-                                        type="email">
-                                </ng-container>
-                                <ng-container *ngSwitchCase="SearchControlTypes.DateTime">
-                                    <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
-                                    <input (dateInput)="searchFieldChange(i,$event.target)" (input)="searchFieldChange(i,$event.target)" placeholder="MM/DD/YYYY"
-                                        matInput [matDatepicker]="picker">
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </ng-container>
-                                <ng-container *ngSwitchCase="SearchControlTypes.CheckBox">
-                                    <mat-checkbox (change)="searchFieldChange(i,$event)">
-                                        {{'Dashboard.'+col.title | translate}}
-                                    </mat-checkbox>
-                                </ng-container>
-                                <ng-container *ngSwitchCase="SearchControlTypes.Selection">
-                                    <mat-select (selectionChange)="searchFieldChange(i,$event)">
-                                        <mat-option [value]="null">All</mat-option>
-                                        <mat-option [value]="item" *ngFor="let item of col.searchFieldData">{{item}}</mat-option>
-                                    </mat-select>
-                                </ng-container>
-                                <ng-container *ngSwitchDefault>
-                                    <input placeholder="{{'Dashboard.Search' | translate}}" (input)="searchFieldChange(i,$event.target)"
-                                        type="text">
-                                </ng-container>
-                            </ng-container>
-                            <div *ngIf="col.searchControlType != SearchControlTypes.CheckBox && col.searchControlType != SearchControlTypes.Selection" mat-icon-button
-                                [matMenuTriggerFor]="operatorsMenu" class="search-button" matRipple>
-                                <i [classList]="_fieldSearchResult[i].operatorIcon"></i>
+                                <div *ngIf="col.searchControlType != SearchControlTypes.CheckBox && col.searchControlType != SearchControlTypes.Selection && col.searchControlType != SearchControlTypes.DateRange"
+                                    mat-icon-button [matMenuTriggerFor]="operatorsMenu" class="search-button" matRipple>
+                                    <i [classList]="_fieldSearchResult[i].operatorIcon"></i>
+                                </div>
                             </div>
-                        </div>
-                        <mat-menu class="operators-menu" #operatorsMenu="matMenu">
-                            <button (click)="onOperatorSelected(i,op)" *ngFor="let op of comparisonOperators"
-                                mat-menu-item>
-                                <i [classList]="op.icon"></i>
-                                <span>{{op.name}}</span>
-                            </button>
-                        </mat-menu>
-
-                    </th>
-                </ng-container>
-            </tr>
-        </thead>
-        <tbody *ngIf="loading">
-            <tr>
-                <td [attr.colspan]="columns.length">
-                    <spinner-placeholder></spinner-placeholder>
-                </td>
-            </tr>
-        </tbody>
-        <tbody *ngIf="!loading && rows.length == 0">
-            <tr>
-                <td [attr.colspan]="columns.length">
-                    <empty-placeholder [showButton]="showCreate && showHeader && showControls "
-                        (buttonClick)="onCreateClick()"></empty-placeholder>
-                </td>
-            </tr>
-        </tbody>
-
-        <tbody id="rowResult" *ngIf="rows.length > 0 && !loading">
-
-            <tr *ngFor="let row of rows; let rowIndex= index">
-                <ng-container *ngFor="let col of columns; let colIndex = index">
-                    <td [class.break-words]="breakWords" [attr.data-label]="col.title" *ngIf="col.show">
-                        <ng-container *ngIf="cellTemplate" [ngTemplateOutlet]="cellTemplate"
-                            [ngTemplateOutletContext]="{colIndex:colIndex,rowIndex:rowIndex,cellData:row[col.prop],rowData:row}">
-
-                        </ng-container>
-                        <ng-container *ngIf="!cellTemplate">
-                            {{row[col.prop]}}
-                        </ng-container>
+                            <mat-menu class="operators-menu" #operatorsMenu="matMenu">
+                                <button (click)="onOperatorSelected(i,op)" *ngFor="let op of comparisonOperators"
+                                    mat-menu-item>
+                                    <i [classList]="op.icon"></i>
+                                    <span>{{op.name}}</span>
+                                </button>
+                            </mat-menu>
+                        </th>
+                    </ng-container>
+                </tr>
+            </thead>
+            <tbody *ngIf="loading">
+                <tr>
+                    <td [attr.colspan]="columns.length">
+                        <spinner-placeholder></spinner-placeholder>
                     </td>
-                </ng-container>
-            </tr>
-        </tbody>
-    </table>
+                </tr>
+            </tbody>
+            <tbody *ngIf="!loading && rows.length == 0">
+                <tr>
+                    <td [attr.colspan]="columns.length">
+                        <empty-placeholder [showButton]="showCreate && showHeader && showControls "
+                            (buttonClick)="onCreateClick()"></empty-placeholder>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody id="rowResult" *ngIf="rows.length > 0 && !loading">
+                <tr *ngFor="let row of rows; let rowIndex= index">
+                    <ng-container *ngFor="let col of columns; let colIndex = index">
+                        <td [class.break-words]="breakWords" [attr.data-label]="col.title" *ngIf="col.show">
+                            <ng-container *ngIf="cellTemplate" [ngTemplateOutlet]="cellTemplate"
+                                [ngTemplateOutletContext]="{colIndex:colIndex,rowIndex:rowIndex,cellData:row[col.prop],rowData:row}">
+                            </ng-container>
+                            <ng-container *ngIf="!cellTemplate">
+                                {{row[col.prop]}}
+                            </ng-container>
+                        </td>
+                    </ng-container>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <div *ngIf="showFooter" class="datatable-footer">
         <div></div>
         <mat-paginator (page)="onPageChange($event)" [length]="total" [pageSize]="PageSize"

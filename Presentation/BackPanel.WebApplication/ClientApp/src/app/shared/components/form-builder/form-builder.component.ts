@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FileModel } from 'src/app/core/models/file.models';
 import { ControlTypes } from './control-type.enum';
 import { FormBuilderGroup } from './form-builder-group.model';
@@ -9,6 +9,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Direction } from '@angular/cdk/bidi';
 import { MatRadioChange } from '@angular/material/radio';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { AlertMessageComponent, AlertMessage, MessageTypes } from '../alert-message/alert-message.component';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'form-builder',
   templateUrl: './form-builder.component.html',
@@ -30,10 +32,11 @@ export class FormBuilderComponent implements OnInit, OnChanges {
   @Output("onChangeWithComponentInfo") onChangeWithComponentInfo = new EventEmitter<any>();
 
   dir: Direction | "auto" = 'rtl'
-  
+
   formGroup: FormGroup = new FormGroup({});
   controlTypes = ControlTypes;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: FormBuilderPropsSpec, @Inject('DIRECTION') public direction: string, private _translateService: TranslateService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: FormBuilderPropsSpec, 
+  @Inject('DIRECTION') public direction: string, private _translateService: TranslateService, private _dialog: MatDialog,private datePipe: DatePipe) {
     if (data) {
       if (data.controlsGroups) this.controlsGroups = data.controlsGroups;
       this.title = data.title;
@@ -72,6 +75,12 @@ export class FormBuilderComponent implements OnInit, OnChanges {
     this.formGroup = new FormGroup({});
     this.controlsGroups.filter(x => !x.hidden).forEach(group => {
       group.controls.forEach(control => {
+        if( control.controlType == ControlTypes.DatePicker && control.value){
+          console.log(control.value);
+          // format date to yyyy-MM-dd
+          control.value = this.datePipe.transform(control.value, 'yyyy-MM-dd');
+          console.log(control.value);
+        }
         if (control.name)
           this.formGroup!.addControl(control.name, new FormControl({ value: control.value, disabled: control.disabled }, control.validators, control.asyncValidators));
 
@@ -156,6 +165,94 @@ export class FormBuilderComponent implements OnInit, OnChanges {
     if (control.onChange)
       control.onChange($event.target.value)
     control.filterData = control.data?.filter(c => c.includes($event.target.value))
+  }
+
+  // Sub Form Builder Methods
+  onAddSubFormItem(control: FormBuilderControl) {
+    if (!control.subFormItems) {
+      control.subFormItems = [];
+    }
+
+    // Open a dialog or inline form to add new item
+    this.openSubFormDialog(control, null, (result) => {
+      control.subFormItems!.push(result);
+      this.updateSubFormValue(control);
+    });
+  }
+
+  onEditSubFormItem(control: FormBuilderControl, index: number) {
+    const itemToEdit = control.subFormItems![index];
+
+    // Open a dialog or inline form to edit existing item
+    this.openSubFormDialog(control, itemToEdit, (result) => {
+      control.subFormItems![index] = result;
+      this.updateSubFormValue(control);
+    });
+  }
+
+  onDeleteSubFormItem(control: FormBuilderControl, index: number) {
+    // Show confirmation dialog before deletion
+    this._dialog.open<AlertMessageComponent, AlertMessage>(AlertMessageComponent, {
+      data: {
+        type: MessageTypes.CONFIRM,
+        message: this._translateService.instant("Dashboard.CONFIRM_DELETE"),
+        title: this._translateService.instant("Dashboard.CONFIRM")
+      }
+    }).afterClosed().subscribe({
+      next: (res) => {
+        if (res == true) {
+          control.subFormItems!.splice(index, 1);
+          this.updateSubFormValue(control);
+        }
+      }
+    })
+  }
+
+  private openSubFormDialog(control: FormBuilderControl, existingItem: any | null, onSave: (result: any) => void) {
+    const dialogGroups = control.subFormGroups ?? [];
+
+    if (existingItem) {
+      dialogGroups.forEach((group: FormBuilderGroup) => {
+        group.controls.forEach((dialogControl: FormBuilderControl) => {
+          if (dialogControl.name && existingItem.hasOwnProperty(dialogControl.name)) {
+            dialogControl.value = existingItem[dialogControl.name];
+          }
+        });
+      });
+    }
+    dialogGroups.forEach((group: FormBuilderGroup) => {
+      group.controls.forEach((dialogControl: FormBuilderControl) => {
+        dialogControl.validators = dialogControl.validators?.filter((v: any) => v != null) || [];
+      });
+    });
+    const dialogRef = this._dialog.open(FormBuilderComponent, {
+      width: '600px',
+      data: {
+        title: existingItem ? (control.editButtonText ?? 'Dashboard.EDIT_ITEM') : (control.addButtonText ?? 'Dashboard.ADD_ITEM'),
+        controlsGroups: dialogGroups,
+        onSubmit: (result: any) => {
+          onSave(result);
+          dialogRef.close();
+        },
+        onCancel: () => {
+          dialogRef.close();
+        }
+      }
+    });
+  }
+
+  private updateSubFormValue(control: FormBuilderControl) {
+    if (control.name) {
+      this.formGroup.controls[control.name].setValue(control.subFormItems);
+      this.formGroup.controls[control.name].markAsDirty();
+
+      if (control.onChange) {
+        control.onChange(control.subFormItems);
+      }
+      if (control.onChangeWithUpdate) {
+        control.onChangeWithUpdate(control.subFormItems, this.formGroup);
+      }
+    }
   }
 }
 

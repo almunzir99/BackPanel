@@ -4,7 +4,7 @@
             <i class="las la-angle-left"></i>
         </div>
         <div class="navs">
-            <span (click)="navigateByLink(-1)" class="home-nav nav"> <i class="las la-home"></i> Home </span>
+            <span (click)="navigateByLink(-1)" class="home-nav nav"> <i class="las la-home"></i> {{'Dashboard.FM_Home' | translate}} </span>
             <span class="sep"></span>
             <ng-container *ngFor="let segment of pathSegmentsStack; let i = index">
                 <span (click)="navigateByLink(i)" class="nav">{{segment}}</span>
@@ -16,20 +16,20 @@
             <button *ngIf="currentMoveContentItem" (click)="contentPaste()" mat-stroked-button color="primary">
                 <mat-icon>content_paste</mat-icon>
                 <span class="button-text">
-                    Paste Here
+                    {{'Dashboard.FM_PasteHere' | translate}}
                 </span>
             </button>
             <button (click)="openCreateDirectoryDialog()" mat-flat-button color="accent">
                 <mat-icon>create_new_folder</mat-icon>
                 <span class="button-text">
-                    Create Folder
+                    {{'Dashboard.FM_CreateFolder' | translate}}
                 </span>
             </button>
             <button mat-flat-button color="primary" type="button">
                 <label for="uploadFilesInput">
                     <mat-icon>cloud_upload</mat-icon>
                     <span class="button-text">
-                        Upload Files
+                        {{'Dashboard.FM_UploadFiles' | translate}}
                     </span>
                 </label>
             </button>
@@ -131,10 +131,10 @@
     </div>
     <div *ngIf="selectionMode" class="selection-act-button">
         <button (click)="onCloseClick()" mat-stroked-button>
-            close
+            {{'Dashboard.FM_Close' | translate}}
         </button>
         <button (click)="onSubmitClick()" mat-flat-button color="primary">
-            Submit
+            {{'Dashboard.FM_Submit' | translate}}
         </button>
 
     </div>

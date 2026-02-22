@@ -29,10 +29,7 @@ title="Admins">
                 </button>
             </ng-container>
             <ng-container *ngSwitchCase="columns.length - 1">
-               <div style="max-width: 120px;" class="table-act-buttons">
-                <button [routerLink]="'activities/'+ rowData.id" style="padding:6px" matRipple class="table-act-button primary">
-                    Activities
-                </button>
+               <div style="max-width: 150px;" class="table-act-buttons">
                 <button (click)="onUpdate(rowData)" matRipple class="table-act-button accent">
                     <i class="las la-edit"></i>
                 </button>

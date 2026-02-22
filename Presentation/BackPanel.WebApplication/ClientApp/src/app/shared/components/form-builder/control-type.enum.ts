@@ -17,5 +17,6 @@ export enum ControlTypes {
   CustomComponent = "custom-component",
   Autocompele = "Autocomplete",
   PhoneNumber = "phone",
-  RadioButton = "radio"
+  RadioButton = "radio",
+  SubFormBuilder = "sub-form-builder"
 }

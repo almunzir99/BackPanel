@@ -16,7 +16,7 @@
                          control.controlType == controlTypes.NumberInput || control.controlType == controlTypes.TextArea" class="control-container">
                             <mat-form-field>
                                 <mat-label>{{ control.title! | translate }}</mat-label>
-                                <input *ngIf="control.controlType != controlTypes.TextArea"
+                                <input *ngIf="control.controlType != controlTypes.TextArea" (input)="onInput($event,control)"
                                     [type]="control.controlType.toString()!"
                                     [attr.placeholder]="(control.title! | translate)" [formControlName]="control.name!"
                                     matInput>
@@ -47,7 +47,7 @@
                              || control.controlType == controlTypes.MultiSelection" class="control-container">
                             <mat-form-field>
                                 <mat-label>{{ control.title! | translate }}</mat-label>
-                                <mat-select [formControlName]="control.name!"
+                                <mat-select (valueChange)="onSelectionValueChanged($event,control)" [formControlName]="control.name!"
                                     [multiple]="control.controlType == controlTypes.MultiSelection">
                                     <mat-option *ngFor="let option of control.data"
                                         [value]="option[control.valueProp!]">
@@ -127,6 +127,45 @@
                                     </mat-option>
                                 </mat-autocomplete>
                             </mat-form-field>
+                        </div>
+
+                        <!-- 9. Sub Form Builder -->
+                        <div [style.width]="control.width" *ngIf="control.controlType == controlTypes.SubFormBuilder"
+                            class="control-container sub-form-builder">
+                            <div class="sub-form-header">
+                                <h3>{{ control.title! | translate }}</h3>
+                                <button type="button" mat-flat-button class="add-button" color="primary"
+                                    (click)="onAddSubFormItem(control)">
+                                    <mat-icon>add</mat-icon>
+                                    {{ control.addButtonText ?? 'Dashboard.ADD_ITEM' | translate }}
+                                </button>
+                            </div>
+                            <div class="sub-form-items-list"
+                                *ngIf="control.subFormItems && control.subFormItems.length > 0">
+                                <div class="sub-form-item" *ngFor="let item of control.subFormItems; let i = index">
+                                    <div class="item-content">
+                                        <span class="item-index">{{ i + 1 }}</span>
+                                        <span class="item-display">
+                                            {{ control.itemDisplayFunction ? control.itemDisplayFunction(item) : (item |
+                                            json) }}
+                                        </span>
+                                    </div>
+                                    <div class="table-act-buttons">
+                                        <button type="button" (click)="onEditSubFormItem(control, i)" matRipple class="table-act-button accent">
+                                            <i class="las la-edit"></i>
+                                        </button>
+                                        <button type="button" (click)="onDeleteSubFormItem(control, i)" matRipple
+                                            class="table-act-button warn">
+                                            <i class="las la-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sub-form-empty"
+                                *ngIf="!control.subFormItems || control.subFormItems.length === 0">
+                                <mat-icon>inbox</mat-icon>
+                                <p>{{ 'Dashboard.NO_ITEMS' | translate }}</p>
+                            </div>
                         </div>
                     </ng-container>
                 </div>

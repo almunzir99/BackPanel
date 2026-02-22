@@ -7,5 +7,6 @@ export enum ComparisonOperator {
     GreaterThanOrEqual,
     Contains,
     StartsWith,
-    EndsWith
+    EndsWith,
+    Between
 }

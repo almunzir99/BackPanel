@@ -61,14 +61,14 @@ export class MessagesComponent implements OnInit {
         sortable: true
       },
       {
-        title: "full Name",
+        title: "FullName",
         prop: "fullName",
         show: true,
         sortable: true,
         importable:true
       },
       {
-        title: "email",
+        title: "Email",
         prop: "email",
         show: true,
         sortable: true,
@@ -76,7 +76,7 @@ export class MessagesComponent implements OnInit {
 
       },
       {
-        title: "phone",
+        title: "Phone",
         prop: "phone",
         show: true,
         sortable: true,
@@ -92,7 +92,7 @@ export class MessagesComponent implements OnInit {
 
       },
       {
-        title: "Sent At",
+        title: "SentAt",
         prop: "createdAt",
         show: true,
         sortable: true,

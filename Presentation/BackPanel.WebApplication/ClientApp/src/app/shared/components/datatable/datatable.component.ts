@@ -7,8 +7,9 @@ import { fieldMatcherSpec, FieldsMatcherComponent } from '../fields-matcher/fiel
 import { comparisonOperators } from '../../constants/comparison-operator.list';
 import { ComparisonOperator } from 'src/app/core/enums/comparison-operator.enum';
 import { SearchControlType } from 'src/app/core/enums/search-control-type.enum';
-import { MatDatepickerInput } from '@angular/material/datepicker';
+import { MatDatepickerInput, MatEndDate, MatStartDate } from '@angular/material/datepicker';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'data-table',
   templateUrl: './datatable.component.html',
@@ -56,7 +57,7 @@ export class DatatableComponent implements OnInit, OnChanges {
   SearchControlTypes = SearchControlType;
   _searchDebounce: any;
   searchContent = '';
-  constructor(_generalService: GeneralService, private _dialog: MatDialog) {
+  constructor(_generalService: GeneralService, private _dialog: MatDialog, private datePipe: DatePipe) {
     _generalService.$theme.subscribe(value => this.theme = value);
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -74,7 +75,7 @@ export class DatatableComponent implements OnInit, OnChanges {
         propName: c.prop,
         propValue: null,
         operatorIcon: "las la-search",
-        operator: ComparisonOperator.Equal
+        operator: c.searchControlType === SearchControlType.DateRange ? ComparisonOperator.Between : ComparisonOperator.Equal
       };
       return item;
     })
@@ -141,15 +142,25 @@ export class DatatableComponent implements OnInit, OnChanges {
     this.FieldSearchResultEventEmitter.emit(result);
 
   }
-  searchFieldChange(colIndex: number, target: any) {
+  searchFieldChange(colIndex: number, target: any, isEndDate: boolean = false) {
     if (target instanceof MatCheckboxChange) {
       this._fieldSearchResult[colIndex].propValue = target.checked.toString();
 
     }
-    else if (target instanceof MatDatepickerInput) {
-      var value = target.value as Date;
-      console.log(value)
-      this._fieldSearchResult[colIndex].propValue = value.toISOString();
+    else if (target instanceof MatStartDate || target instanceof MatEndDate) {
+      const date = (target.value as Date) || null;
+      const formatted = date ? this.datePipe.transform(date, 'yyyy-MM-dd') ?? '' : '';
+      const existing = this._fieldSearchResult[colIndex].propValue ?? '';
+      let [start = '', end = ''] = existing.split('|');
+
+      if (isEndDate) {
+        end = formatted || end;
+      } else {
+        start = formatted || start;
+        if (!end) end = start;
+      }
+
+      this._fieldSearchResult[colIndex].propValue = `${start}|${end}`;
     }
     else
       this._fieldSearchResult[colIndex].propValue = target.value?.toString();

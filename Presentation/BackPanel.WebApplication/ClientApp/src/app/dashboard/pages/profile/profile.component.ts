@@ -43,12 +43,10 @@ export class ProfileComponent implements OnInit {
   initPasswordChangeForm(){
     this.passwordFormGroups = [
       {
-
-        title: "Password Change",
+        title: "Dashboard.Profile_PasswordChange",
         controls: [
-
           {
-            title: "Old Password",
+            title: "Dashboard.Profile_OldPassword",
             name: "oldPassword",
             icon: "key",
             controlType: ControlTypes.PasswordInput,
@@ -59,7 +57,7 @@ export class ProfileComponent implements OnInit {
             ]
           },
           {
-            title: "New Password",
+            title: "Dashboard.Profile_NewPassword",
             name: "newPassword",
             icon: "key",
             controlType: ControlTypes.PasswordInput,
@@ -70,7 +68,7 @@ export class ProfileComponent implements OnInit {
             ]
           },
           {
-            title: "New Password Confirmation",
+            title: "Dashboard.Profile_NewPasswordConfirmation",
             name: "newPassword",
             icon: "key",
             controlType: ControlTypes.PasswordInput,
@@ -80,7 +78,6 @@ export class ProfileComponent implements OnInit {
               Validators.minLength(8),
             ]
           },
-          
         ]
       }
     ];
@@ -88,8 +85,7 @@ export class ProfileComponent implements OnInit {
   initFormGroups() {
     this.formGroups = [
       {
-
-        title: "Basic User Information",
+        title: "Dashboard.Profile_BasicInfo",
         controls: [
           {
             title: "id",
@@ -99,7 +95,7 @@ export class ProfileComponent implements OnInit {
             value: this.user ? this.user.id : undefined
           },
           {
-            title: "Name",
+            title: "Dashboard.Profile_Name",
             name: "userName",
             icon: "user tie icon",
             controlType: ControlTypes.TextInput,
@@ -112,7 +108,7 @@ export class ProfileComponent implements OnInit {
             ]
           },
           {
-            title: "phone",
+            title: "Dashboard.Profile_Phone",
             name: "phoneNumber",
             icon: "phone icon",
             controlType: ControlTypes.NumberInput,
@@ -122,12 +118,10 @@ export class ProfileComponent implements OnInit {
               Validators.required,
               Validators.minLength(10),
               Validators.maxLength(12),
-
             ]
-
           },
           {
-            title: "email",
+            title: "Dashboard.Profile_Email",
             name: "email",
             icon: "mail icon",
             controlType: ControlTypes.TextInput,
@@ -135,21 +129,15 @@ export class ProfileComponent implements OnInit {
             value: this.user ? this.user.email : undefined,
             validators: [
               Validators.required
-
             ]
-
           },
-
           {
-            title: "image",
+            title: "Dashboard.Profile_Image",
             name: "image",
             controlType: ControlTypes.LocalFilePicker,
             width: "100%",
             value: this.user ? this.user.image : undefined,
-
           },
-
-
         ]
       }
     ];
@@ -169,8 +157,8 @@ export class ProfileComponent implements OnInit {
       this._dialog.open<AlertMessageComponent, AlertMessage>(AlertMessageComponent, {
         data: {
           type: MessageTypes.SUCCESS,
-          message: "Profile Updated Successfully",
-          title: "Success"
+          message: "Dashboard.Profile_Success",
+          title: "Dashboard.Profile_SuccessTitle"
         }
       })
 
@@ -186,8 +174,8 @@ export class ProfileComponent implements OnInit {
       this._dialog.open<AlertMessageComponent, AlertMessage>(AlertMessageComponent, {
         data: {
           type: MessageTypes.SUCCESS,
-          message: "Password Changed Successfully",
-          title: "Success"
+          message: "Dashboard.Profile_PasswordSuccess",
+          title: "Dashboard.Profile_SuccessTitle"
         }
       })
 

@@ -86,8 +86,8 @@ export class TranslationEditorComponent implements OnInit {
     this._dialog.open<AlertMessageComponent, AlertMessage>(AlertMessageComponent, {
       data: {
         type: MessageTypes.CONFIRM,
-        message: "general.DeleteConfirmation",
-        title: "general.confirm"
+        message: "Dashboard.TE_ConfirmDelete",
+        title: "Dashboard.TE_Confirm"
       }
     }).afterClosed().subscribe({
       next: (res) => {
@@ -106,8 +106,8 @@ export class TranslationEditorComponent implements OnInit {
     this._dialog.open<AlertMessageComponent, AlertMessage>(AlertMessageComponent, {
       data: {
         type: MessageTypes.CONFIRM,
-        message: "general.DeleteConfirmation",
-        title: "general.confirm"
+        message: "Dashboard.TE_ConfirmDelete",
+        title: "Dashboard.TE_Confirm"
       }
     }).afterClosed().subscribe({
       next: (res) => {
@@ -123,10 +123,10 @@ export class TranslationEditorComponent implements OnInit {
   OpenParentDialog(title: string | undefined = undefined) {
     var formControlsGroup: FormBuilderGroup[] = [
       {
-        title: "Create New parent",
+        title: "Dashboard.TE_CreateNewParent",
         controls: [
           {
-            title: "Parent Name",
+            title: "Dashboard.TE_ParentName",
             name: "title",
             value: title,
             controlType: ControlTypes.TextInput,
@@ -154,10 +154,10 @@ export class TranslationEditorComponent implements OnInit {
   OpenLanguageDialog() {
     var formControlsGroup: FormBuilderGroup[] = [
       {
-        title: "Create New Language",
+        title: "Dashboard.TE_CreateNewLanguage",
         controls: [
           {
-            title: "Language",
+            title: "Dashboard.TE_Language",
             name: "code",
             data : langs,
             labelProp:'name',

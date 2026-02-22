@@ -3,7 +3,7 @@
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="tab-icon">account_box</mat-icon>
-                General
+                {{'Dashboard.Profile_General' | translate}}
             </ng-template>
             <div class="general-profile">
                 <div class="profile-image-container">
@@ -20,8 +20,7 @@
         
                     </div>
                     <div class="sub-text">
-                        Allowed *.jpeg, *.jpg, *.png, *.gif
-                        <br> max size of 3.1 MB
+                        {{'Dashboard.FM_AllowedTypes' | translate}}
                     </div>
         
                 </div>
@@ -35,7 +34,7 @@
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="tab-icon ">vpn_key</mat-icon>
-                Change Password
+                {{'Dashboard.Profile_ChangePassword' | translate}}
             </ng-template>
             <div class="change-password-container ">
                 <form-builder  [show-cancel-button]="false" (formSubmit)="onPasswordSubmit($event)" [control-groups]="passwordFormGroups"></form-builder>

@@ -74,20 +74,20 @@ export class HomeComponent implements OnInit {
         title: "Admins",
         count: this.stats?.admins!,
         icon: "las la-user-tie",
-        color: "#4a4cfb"
+        color: "#496097"
       },
       {
         title: "Roles",
         count: this.stats?.roles!,
         icon: "las la-user-cog",
-        color: "#ff9e20"
+        color: "#E1CB5F"
       }
       ,
       {
         title: "Messages",
         count: this.stats?.messages!,
         icon: "las la-envelope",
-        color: "#4a4cfb"
+        color: "#496097"
       }
     ];
   }

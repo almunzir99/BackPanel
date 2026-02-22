@@ -1,8 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
-/* Provide sufficient contrast against white background */
-@import "themes";
+@use "@angular/material" as mat;
+@use "_theme-colors" as my-theme; // location of generated file
 @import "variables";
-@import "themes-helper";
+
+html {
+  @include mat.theme(
+    (
+      color: (
+        primary: my-theme.$primary-palette,
+        tertiary: my-theme.$tertiary-palette,
+      ),
+      typography: Poppin,
+      density: 0,
+    )
+  );
+  @include mat.form-field-overrides(
+    (
+      outlined-outline-color: #eeeaea
+        // Change this to your desired color,,,,,,,,,,,,,,,,,,
+    )
+  );
+  @include mat.form-field-density(-2);
+}
 
 @font-face {
   font-family: "Poppin";
@@ -45,6 +63,34 @@
   unicode-range: U+0000-007F;
 }
 
+@font-face {
+  font-family: "IBMPlexSansArabic";
+  src: url("assets/fonts/IBMPlexSansArabic-Regular.ttf");
+}
+
+@font-face {
+  font-family: "IBMPlexSansArabic";
+  src: url("assets/fonts/IBMPlexSansArabic-Bold.ttf");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "IBMPlexSansArabic";
+  src: url("assets/fonts/IBMPlexSansArabic-Medium.ttf");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "IBMPlexSansArabic";
+  src: url("assets/fonts/IBMPlexSansArabic-SemiBold.ttf");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "IBMPlexSansArabic";
+  src: url("assets/fonts/IBMPlexSansArabic-Light.ttf");
+  font-weight: 100;
+}
 body {
   background-color: $background-color;
   padding: 0;
@@ -56,9 +102,14 @@ body {
   outline: none;
   scrollbar-width: thin;
 }
-p {
-  margin: 0px !important;
-  padding: 0px !important;
+.rtl *:not(i, mat-icon) {
+  font-family: "IBMPlexSansArabic";
+  @include mat.dialog-overrides(
+    (
+      subhead-font: "IBMPlexSansArabic",
+      supporting-text-font: "IBMPlexSansArabic",
+    )
+  );
 }
 /**********************************  override material default styles ********************************************/
 
@@ -99,7 +150,6 @@ mat-form-field {
   .mat-mdc-unelevated-button .mdc-button__ripple {
     border-radius: unset !important;
     margin-left: -10px;
-
   }
   .mat-mdc-form-field-appearance-outline .mat-mdc-form-field-infix {
     padding: 0.8em 0em;
@@ -194,7 +244,8 @@ mat-form-field {
   background-color: map-get($map: $primary-color, $key: 500);
   color: white;
   flex: 1;
-  min-width: fit-content;
+  width: fit-content;
+  text-decoration: none;
   cursor: pointer;
 
   i {
@@ -627,4 +678,305 @@ button[color="warn"] {
   color: map-get($map: $primary-color, $key: 500);
   cursor: pointer;
   text-decoration: underline;
+}
+.warehouse-tabs .mat-mdc-tab.mdc-tab {
+  background-color: white;
+}
+
+.warehouse-management-container {
+  padding: 20px;
+  background: var(--background-color);
+  min-height: 100vh;
+}
+
+.warehouse-selector {
+  margin-bottom: 30px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #c9bfbf29;
+
+  .full-width {
+    width: 100%;
+  }
+}
+
+.warehouse-tabs {
+  border-radius: 8px;
+  border: 1px solid #c9bfbf29;
+  overflow: hidden;
+}
+
+.tab-content {
+  padding: 20px;
+}
+
+/* Material Info Styling */
+.material-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.material-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 2px solid var(--border-color);
+}
+
+/* Badge Styling */
+.quantity-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #e3f2fd;
+  color: #1976d2;
+  font-weight: 600;
+  font-size: 0.875rem;
+
+  &.reserved {
+    background: #fff3e0;
+    color: #f57c00;
+  }
+
+  &.available {
+    background: #e8f5e9;
+    color: #388e3c;
+  }
+}
+
+.cost-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.code-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: #e8eaf6;
+  color: #3f51b5;
+  font-family: "Courier New", monospace;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.amount-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #e0f2f1;
+  color: #00796b;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+/* Status Badge Styling */
+.status-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &.status-1 {
+    background: #fff9c4;
+    color: #f57f17;
+  }
+
+  &.status-2 {
+    background: #e1f5fe;
+    color: #0277bd;
+  }
+
+  &.status-3 {
+    background: #c8e6c9;
+    color: #2e7d32;
+  }
+
+  &.status-4 {
+    background: #ffe0b2;
+    color: #e65100;
+  }
+
+  &.status-5 {
+    background: #b2dfdb;
+    color: #00695c;
+  }
+
+  &.status-6 {
+    background: #ffcdd2;
+    color: #c62828;
+  }
+}
+
+/* Warehouse Badge Styling */
+.warehouse-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+
+  &.from {
+    background: #fce4ec;
+    color: #c2185b;
+  }
+
+  &.to {
+    background: #e8eaf6;
+    color: #3f51b5;
+  }
+
+  i {
+    font-size: 1.1rem;
+  }
+}
+
+/* Table Action Buttons */
+.table-act-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  max-width: 150px;
+}
+
+.table-act-button {
+  min-width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  width: fit-content;
+  margin-bottom: 10px;
+
+  &.accent {
+    background: #e3f2fd;
+    color: #1976d2;
+
+    &:hover {
+      background: #1976d2;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(25, 118, 210, 0.3);
+    }
+  }
+
+  &.warn {
+    background: #ffebee;
+    color: #d32f2f;
+
+    &:hover {
+      background: #d32f2f;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(211, 47, 47, 0.3);
+    }
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .warehouse-management-container {
+    padding: 10px;
+  }
+
+  .warehouse-selector {
+    padding: 15px;
+  }
+
+  .tab-content {
+    padding: 10px;
+  }
+
+  .material-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .table-act-buttons {
+    flex-direction: column;
+  }
+}
+
+:host-context(.dark-theme) {
+  .warehouse-selector,
+  .warehouse-tabs {
+    background: #1e1e1e;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .quantity-badge {
+    background: #1a237e;
+    color: #90caf9;
+
+    &.reserved {
+      background: #e65100;
+      color: #ffcc80;
+    }
+
+    &.available {
+      background: #1b5e20;
+      color: #a5d6a7;
+    }
+  }
+
+  .cost-badge {
+    background: #4a148c;
+    color: #ce93d8;
+  }
+
+  .code-badge {
+    background: #1a237e;
+    color: #9fa8da;
+  }
+
+  .amount-badge {
+    background: #004d40;
+    color: #80cbc4;
+  }
+}
+
+/* Loading State */
+dimmer-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
+
+.mat-mdc-card {
+  background: $secondary-background-color !important;
+  box-shadow: none !important;
+  border-radius: 10px !important;
+  border: 1px solid #e7e5e5a1 !important;
+}
+
+.rtl .dropdown {
+  transform: rotate(180deg);
+}
+
+@media screen and (max-width: 1378px) {
+  html {
+    transform: scale(0.9);
+    transform-origin: top left;
+    width: 111.11%;
+    height: 111.11%;
+    overflow: hidden;
+  }
 }

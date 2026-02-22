@@ -125,10 +125,10 @@ export class FilesManagerComponent implements OnInit {
   openCreateDirectoryDialog() {
     var formControlsGroup: FormBuilderGroup[] = [
       {
-        title: "Create New Directory",
+        title: "Dashboard.FM_CreateNewDirectory",
         controls: [
           {
-            title: "Directory Name",
+            title: "Dashboard.FM_DirectoryName",
             name: "name",
             controlType: ControlTypes.TextInput,
             icon: 'folder_open'
@@ -154,10 +154,10 @@ export class FilesManagerComponent implements OnInit {
   openRenameDirectoryDialog(dirName: string) {
     var formControlsGroup: FormBuilderGroup[] = [
       {
-        title: "Rename Directory",
+        title: "Dashboard.FM_RenameDirectory",
         controls: [
           {
-            title: "Directory Name",
+            title: "Dashboard.FM_DirectoryName",
             name: "name",
             controlType: ControlTypes.TextInput,
             icon: 'folder_open',
@@ -186,8 +186,8 @@ export class FilesManagerComponent implements OnInit {
     this.matDialog.open<AlertMessageComponent, AlertMessage>(AlertMessageComponent, {
       data: {
         type: MessageTypes.CONFIRM,
-        message: "Are Sure you want to Delete this Item ?",
-        title: "Confirm"
+        message: "Dashboard.FM_ConfirmDelete",
+        title: "Dashboard.FM_Confirm"
       }
     }).afterClosed().subscribe({
       next: (res) => {

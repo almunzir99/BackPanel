@@ -35,7 +35,14 @@ export class FormBuilderControl {
 
 
         displayWith?: ((value: any) => string)|null;
-        extensions?: string
+        extensions?: string;
+        // required for sub-form-builder
+        subFormGroups?: FormBuilderGroup[];
+        subFormItems?: any[];
+        addButtonText?: string;
+        editButtonText?: string;
+        deleteButtonText?: string;
+        itemDisplayFunction?: (item: any) => string;
 
 
 } 
