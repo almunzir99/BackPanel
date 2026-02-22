@@ -1,25 +1,14 @@
-/** Leaf — one permission action (e.g. "View"). `value` is the full dot-notation string stored in the DB. */
-export interface PermissionAction {
-  value: string;   // "Administration.Admins.View"
-  label: string;   // "View"
-  checked?: boolean;
-}
-
-/** Mid-level — a module within a section (e.g. "Admins"). */
-export interface PermissionModule {
-  key: string;     // "Admins"
+/**
+ * A single node in the permission tree — works at any depth.
+ * - Branch nodes: have `children`, no `value`.
+ * - Leaf nodes:   have `value` (the claim string to persist), no `children`.
+ */
+export interface PermNode {
+  key: string;
   label: string;
-  actions: PermissionAction[];
-  expanded?: boolean;
-  allChecked?: boolean;
-  someChecked?: boolean;
-}
-
-/** Top-level — a section (e.g. "Administration"). */
-export interface PermissionSection {
-  key: string;     // "Administration"
-  label: string;
-  modules: PermissionModule[];
+  value?: string;        // leaf only — full dot string, e.g. "Administration.CompanyInfo.Policies.Edit"
+  checked?: boolean;     // leaf only
+  children?: PermNode[]; // branch only
   expanded?: boolean;
   allChecked?: boolean;
   someChecked?: boolean;

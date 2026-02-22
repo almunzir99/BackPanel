@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Role } from '../models/role.model';
-import { PermissionSection } from '../models/permission-group.model';
 import { ApiResponse } from '../models/wrappers/api-response.model';
 import { PagedResponse } from '../models/wrappers/paged-response.model';
 
@@ -55,8 +54,10 @@ export class RolesService {
     return this.http.post(`${this.moduleBaseUrl}all`, items);
   }
 
-  getAvailablePermissions(): Observable<ApiResponse<PermissionSection[]>> {
-    return this.http.get(`${this.moduleBaseUrl}available-permissions`) as Observable<ApiResponse<PermissionSection[]>>;
+  /** Returns the raw permission constant strings (e.g. "Administration.Admins.View").
+   *  The caller is responsible for building the nested tree by splitting on '.'. */
+  getAvailablePermissions(): Observable<ApiResponse<string[]>> {
+    return this.http.get(`${this.moduleBaseUrl}available-permissions`) as Observable<ApiResponse<string[]>>;
   }
   
 }

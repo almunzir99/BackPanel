@@ -53,15 +53,12 @@ export class MenuComponent implements OnInit {
     });
   }
   checkIfMenuItemPermittedToDisplay(allowedRoles?: string[]): boolean {
-    if (this.currentUser?.isManager)
-      return true;
-    if (!allowedRoles || allowedRoles.length == 0)
-      return true;
-    if (this.currentRole?.title) {
-      const currentRoleTitle = this.currentRole.title.toLowerCase().trim();
-      return allowedRoles.some(x => x.toLowerCase().trim() == currentRoleTitle);
-    }
-    return false;
+    if (this.currentUser?.isManager) return true;
+    if (!allowedRoles || allowedRoles.length === 0) return true;
+    if (!this.currentRole) return false;
+    // allowedRoles now holds permission claim values (e.g. "Administration.Admins.View")
+    const claimValues = new Set(this.currentRole.permissions?.map(p => p.claimValue) ?? []);
+    return allowedRoles.some(required => claimValues.has(required));
   }
   ngOnInit(): void {
   }

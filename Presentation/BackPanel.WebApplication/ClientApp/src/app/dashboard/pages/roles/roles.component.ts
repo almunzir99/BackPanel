@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { Direction } from '@angular/cdk/bidi';
 import { TranslateService } from '@ngx-translate/core';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';
-import { PermissionSection, PermissionModule } from 'src/app/core/models/permission-group.model';
+import { PermNode } from 'src/app/core/models/permission-group.model';
 import { PermissionClaim } from 'src/app/core/models/permission-claim.model';
 import { Role } from 'src/app/core/models/role.model';
 import { GeneralService } from 'src/app/core/services/general.service';
@@ -35,8 +35,8 @@ export class RolesComponent implements OnInit {
   @ViewChild("roleForm") roleForm?: TemplateRef<any>;
   role: any;
 
-  // ── Permissions tree state (3-level: Section > Module > Action) ───────────
-  permissionSections: PermissionSection[] = [];
+  // ── Permissions tree (unlimited depth) ──────────────────────────────────
+  permTree: PermNode[] = [];
   permissionsLoading = false;
 
   // ── Layout direction (RTL / LTR) ──────────────────────────────────────────
@@ -88,95 +88,90 @@ export class RolesComponent implements OnInit {
     ];
   }
 
-  /********************************* 3-Level Permissions Tree ******************************************** */
+  /********************************* Permissions Tree (unlimited depth) ******************************* */
 
-  async loadPermissionSections(existingClaims: PermissionClaim[] = []) {
+  async loadPermTree(existingClaims: PermissionClaim[] = []) {
     this.permissionsLoading = true;
     try {
       const result = await firstValueFrom(this._service.getAvailablePermissions());
-      const existingValues = new Set(existingClaims.map(c => c.claimValue));
-
-      this.permissionSections = (result.data ?? []).map(section => ({
-        ...section,
-        expanded: true,
-        modules: section.modules.map(mod => ({
-          ...mod,
-          expanded: true,
-          actions: mod.actions.map(action => ({
-            ...action,
-            checked: existingValues.has(action.value)
-          }))
-        }))
-      }));
-
-      this.permissionSections.forEach(s => this.recalcSection(s));
+      const existing = new Set(existingClaims.map(c => c.claimValue));
+      this.permTree = this.buildTree(result.data ?? [], existing);
     } catch (_) {
-      this.permissionSections = [];
+      this.permTree = [];
     } finally {
       this.permissionsLoading = false;
     }
   }
 
-  // ── Section-level toggle ──────────────────────────────────────────────────
-
-  toggleSectionExpanded(section: PermissionSection) {
-    section.expanded = !section.expanded;
-  }
-
-  onSectionCheckChange(section: PermissionSection, checked: boolean) {
-    section.modules.forEach(mod => {
-      mod.actions.forEach(a => a.checked = checked);
-      this.recalcModule(mod);
-    });
-    this.recalcSection(section);
-  }
-
-  // ── Module-level toggle ───────────────────────────────────────────────────
-
-  toggleModuleExpanded(mod: PermissionModule) {
-    mod.expanded = !mod.expanded;
-  }
-
-  onModuleCheckChange(section: PermissionSection, mod: PermissionModule, checked: boolean) {
-    mod.actions.forEach(a => a.checked = checked);
-    this.recalcModule(mod);
-    this.recalcSection(section);
-  }
-
-  // ── Action-level toggle ───────────────────────────────────────────────────
-
-  onActionCheckChange(section: PermissionSection, mod: PermissionModule) {
-    this.recalcModule(mod);
-    this.recalcSection(section);
-  }
-
-  // ── State recalculation ───────────────────────────────────────────────────
-
-  private recalcModule(mod: PermissionModule) {
-    const checked = mod.actions.filter(a => a.checked).length;
-    mod.allChecked  = checked === mod.actions.length;
-    mod.someChecked = checked > 0 && checked < mod.actions.length;
-  }
-
-  private recalcSection(section: PermissionSection) {
-    const totalActions  = section.modules.reduce((n, m) => n + m.actions.length, 0);
-    const checkedActions = section.modules.reduce((n, m) => n + m.actions.filter(a => a.checked).length, 0);
-    section.allChecked  = checkedActions === totalActions && totalActions > 0;
-    section.someChecked = checkedActions > 0 && checkedActions < totalActions;
-  }
-
-  // ── Collect checked permissions ───────────────────────────────────────────
-
-  private collectPermissions(): PermissionClaim[] {
-    const claims: PermissionClaim[] = [];
-    for (const section of this.permissionSections) {
-      for (const mod of section.modules) {
-        for (const action of mod.actions) {
-          if (action.checked) {
-            claims.push({ claimType: 'Permission', claimValue: action.value });
+  private buildTree(values: string[], existing: Set<string>): PermNode[] {
+    const roots: PermNode[] = [];
+    for (const value of values) {
+      const parts = value.split('.');
+      let level = roots;
+      for (let i = 0; i < parts.length; i++) {
+        const key = parts[i];
+        const isLeaf = i === parts.length - 1;
+        if (isLeaf) {
+          level.push({ key, label: key, value, checked: existing.has(value) });
+        } else {
+          let branch = level.find(n => n.key === key && !!n.children);
+          if (!branch) {
+            branch = { key, label: key, children: [], expanded: true };
+            level.push(branch);
           }
+          level = branch.children!;
         }
       }
+    }
+    this.permTree = roots;
+    this.recalcTree();
+    return roots;
+  }
+
+  // ── Called from HTML when a leaf checkbox changes ─────────────────────────
+  onLeafChange() { this.recalcTree(); }
+
+  // ── Called from HTML when a branch checkbox toggles all its subtree ───────
+  setBranchChecked(node: PermNode, checked: boolean) {
+    this.setAllLeaves(node, checked);
+    this.recalcTree();
+  }
+
+  // ── Recursively set every leaf under node ─────────────────────────────────
+  private setAllLeaves(node: PermNode, checked: boolean) {
+    if (!node.children) { node.checked = checked; return; }
+    node.children.forEach(c => this.setAllLeaves(c, checked));
+  }
+
+  // ── Recalc allChecked / someChecked for every branch, bottom-up ───────────
+  private recalcTree() {
+    this.permTree.forEach(n => this.recalcNode(n));
+  }
+
+  private recalcNode(node: PermNode): { total: number; checked: number } {
+    if (!node.children) return { total: 1, checked: node.checked ? 1 : 0 };
+    let total = 0, checked = 0;
+    for (const child of node.children) {
+      const r = this.recalcNode(child);
+      total += r.total; checked += r.checked;
+    }
+    node.allChecked  = total > 0 && checked === total;
+    node.someChecked = checked > 0 && checked < total;
+    return { total, checked };
+  }
+
+  // ── Walk every leaf and collect checked ones ──────────────────────────────
+  private collectPermissions(): PermissionClaim[] {
+    return this.gatherClaims(this.permTree);
+  }
+
+  private gatherClaims(nodes: PermNode[]): PermissionClaim[] {
+    const claims: PermissionClaim[] = [];
+    for (const node of nodes) {
+      if (!node.children && node.checked && node.value)
+        claims.push({ claimType: 'Permission', claimValue: node.value });
+      else if (node.children)
+        claims.push(...this.gatherClaims(node.children));
     }
     return claims;
   }
@@ -233,7 +228,7 @@ export class RolesComponent implements OnInit {
     } else {
       this.initRole();
     }
-    await this.loadPermissionSections(this.role.permissions ?? []);
+    await this.loadPermTree(this.role.permissions ?? []);
     this._dialog.open(this.roleForm!, { width: '560px', maxHeight: '90vh', direction: this.dir });
   }
 

@@ -15,15 +15,13 @@ export const MenuList: MenuGroup[] = [
                 title: "Admins",
                 icon: "las la-user-tie",
                 route: "/dashboard/admins",
-                allowedRoles: ["Admins", "Administrator", "SuperAdmin"]
+                allowedRoles: ["Administration.Admins.View"]
             },
             {
                 title: "Roles",
                 icon: "las la-users-cog",
                 route: "/dashboard/roles",
-                allowedRoles: ["Roles", "Administrator", "SuperAdmin"]
-
-
+                allowedRoles: ["Administration.Roles.View"]
             }
         ]
     },
@@ -35,9 +33,7 @@ export const MenuList: MenuGroup[] = [
                 title: "Messages",
                 icon: "las la-envelope",
                 route: "/dashboard/messages",
-                allowedRoles: ["Messages", "Administrator", "SuperAdmin"]
-
-
+                allowedRoles: ["Administration.Messages.View"]
             },
         ]
     },
@@ -76,7 +72,7 @@ export const MenuList: MenuGroup[] = [
                 title: "Company-Information",
                 icon: "las la-business-time",
                 route: "/dashboard/company-info",
-                allowedRoles: ["CompanyInfo", "Administrator", "SuperAdmin"]
+                allowedRoles: ["Administration.CompanyInfo.View"]
             }
         ]
     }

@@ -29,21 +29,19 @@ export class PermissionGuard  {
 
   }
   checkIfRouteAccessPermitted(route: string): boolean {
-    var result = false;
-    const currentRoleTitle = this.currentRole?.title?.toLowerCase().trim();
+    // Build a set of the current user's permission claim values once
+    const claimValues = new Set(this.currentRole?.permissions?.map(p => p.claimValue) ?? []);
+    let result = false;
     this.menuList.forEach(group => {
       group.children!.forEach(item => {
-        if (item.route == route) {
-          if (!item.allowedRoles || item.allowedRoles.length == 0) {
-            result = true;
+        if (item.route === route) {
+          if (!item.allowedRoles || item.allowedRoles.length === 0) {
+            result = true; // open to all authenticated users
             return;
           }
-          if (currentRoleTitle) {
-            result = item.allowedRoles.some(x => x.toLowerCase().trim() == currentRoleTitle);
-            return;
-          }
+          // allowedRoles holds permission values (e.g. "Administration.Admins.View")
+          result = item.allowedRoles.some(required => claimValues.has(required));
         }
-         
       });
     });
     return result;

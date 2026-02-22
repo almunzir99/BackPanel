@@ -29,4 +29,6 @@ public static class PermissionsConstants
     // ── Administration > CompanyInfo ────────────────────────────────────────
     public static readonly string ViewCompanyInfo = "Administration.CompanyInfo.View";
     public static readonly string EditCompanyInfo = "Administration.CompanyInfo.Edit";
+    public static readonly string AjustCompanyPolicies = "Administration.CompanyInfo.Policies.Edit";
+
 }

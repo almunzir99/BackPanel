@@ -1,4 +1,6 @@
+using System.Reflection;
 using System.Security.Claims;
+using BackPanel.Application.Constants;
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Filters;
 using BackPanel.Application.DTOs.Wrapper;
@@ -30,14 +32,20 @@ public class RolesController : ControllerBase
     public string PermissionTitle => "Administration.Roles";
 
     /// <summary>
-    /// Returns the full nested permission tree built from <see cref="BackPanel.Application.Constants.PermissionsConstants"/>.
-    /// Add a new constant there and it will appear here automatically.
+    /// Returns the raw permission constant values from <see cref="PermissionsConstants"/> as a flat string list.
+    /// The frontend builds its own nested tree by splitting each value on '.'.
+    /// Add a new constant to <see cref="PermissionsConstants"/> and it appears here automatically.
     /// </summary>
     [HttpGet("available-permissions")]
     public IActionResult GetAvailablePermissions()
     {
-        var tree = PermissionTreeBuilder.Build();
-        return Ok(new Response<List<PermissionSectionDto>>(data: tree));
+        var values = typeof(PermissionsConstants)
+            .GetFields(BindingFlags.Public | BindingFlags.Static)
+            .Where(f => f.FieldType == typeof(string))
+            .Select(f => (string)f.GetValue(null)!)
+            .OrderBy(v => v)
+            .ToList();
+        return Ok(new Response<List<string>>(data: values));
     }
 
     [HttpGet]

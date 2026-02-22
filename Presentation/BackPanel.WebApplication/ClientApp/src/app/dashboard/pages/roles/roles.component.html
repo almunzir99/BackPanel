@@ -30,7 +30,7 @@
                 <input [(ngModel)]="role.title" type="text" matInput placeholder="e.g. ContentManager" name="title">
             </mat-form-field>
 
-            <!-- ── Permissions Tree (3-level: Section > Module > Action) ───── -->
+            <!-- ── Permissions Tree (unlimited depth via recursive ng-template) ───── -->
             <div class="permissions-section">
                 <div class="permissions-header">{{'Dashboard.Permissions' | translate}}</div>
 
@@ -38,63 +38,52 @@
                     {{'Dashboard.Loading' | translate}}
                 </div>
 
-                <div *ngIf="!permissionsLoading" class="permission-tree">
+                <ng-container *ngIf="!permissionsLoading">
 
-                    <!-- Level 1 — Section (e.g. "Administration") -->
-                    <div *ngFor="let section of permissionSections" class="perm-section">
+                    <!-- Self-referencing recursive template — works at any depth -->
+                    <ng-template #nodeTemplate let-nodes="nodes" let-depth="depth">
+                        <ng-container *ngFor="let node of nodes">
 
-                        <div class="perm-row perm-section-header" (click)="toggleSectionExpanded(section)">
-                            <mat-checkbox
-                                [checked]="section.allChecked"
-                                [indeterminate]="section.someChecked"
-                                (change)="onSectionCheckChange(section, $event.checked)"
-                                (click)="$event.stopPropagation()"
-                                color="primary">
-                                <span class="perm-label section-label">{{ ('Dashboard.Perm_' + section.label) | translate }}</span>
-                            </mat-checkbox>
-                            <i class="las perm-chevron"
-                               [class.la-angle-down]="section.expanded"
-                               [class.la-angle-up]="!section.expanded"></i>
-                        </div>
+                            <!-- Leaf node: just a checkbox -->
+                            <div *ngIf="!node.children" class="perm-leaf-wrapper">
+                                <mat-checkbox
+                                    [(ngModel)]="node.checked"
+                                    (ngModelChange)="onLeafChange()"
+                                    [name]="node.value"
+                                    color="primary">
+                                    {{ ('Dashboard.Perm_' + node.label) | translate }}
+                                </mat-checkbox>
+                            </div>
 
-                        <div *ngIf="section.expanded" class="perm-modules">
-
-                            <!-- Level 2 — Module (e.g. "Admins") -->
-                            <div *ngFor="let mod of section.modules" class="perm-module">
-
-                                <div class="perm-row perm-module-header" (click)="toggleModuleExpanded(mod)">
+                            <!-- Branch node: collapsible header + recursive children -->
+                            <div *ngIf="node.children" class="perm-branch-wrapper">
+                                <div class="perm-row" [class]="'perm-depth-' + depth" (click)="node.expanded = !node.expanded">
                                     <mat-checkbox
-                                        [checked]="mod.allChecked"
-                                        [indeterminate]="mod.someChecked"
-                                        (change)="onModuleCheckChange(section, mod, $event.checked)"
+                                        [checked]="node.allChecked"
+                                        [indeterminate]="node.someChecked"
+                                        (change)="setBranchChecked(node, $event.checked)"
                                         (click)="$event.stopPropagation()"
                                         color="primary">
-                                        <span class="perm-label module-label">{{ ('Dashboard.Perm_' + mod.label) | translate }}</span>
+                                        <span class="perm-label">{{ ('Dashboard.Perm_' + node.label) | translate }}</span>
                                     </mat-checkbox>
                                     <i class="las perm-chevron"
-                                       [class.la-angle-down]="mod.expanded"
-                                       [class.la-angle-up]="!mod.expanded"></i>
+                                       [class.la-angle-down]="node.expanded"
+                                       [class.la-angle-up]="!node.expanded"></i>
                                 </div>
-
-                                <div *ngIf="mod.expanded" class="perm-actions">
-
-                                    <!-- Level 3 — Action (e.g. "View", "Add") -->
-                                    <mat-checkbox *ngFor="let action of mod.actions"
-                                        class="perm-action"
-                                        [(ngModel)]="action.checked"
-                                        (ngModelChange)="onActionCheckChange(section, mod)"
-                                        [name]="action.value"
-                                        color="primary">
-                                        {{ ('Dashboard.Perm_' + action.label) | translate }}
-                                    </mat-checkbox>
-
+                                <div *ngIf="node.expanded" class="perm-children">
+                                    <ng-container *ngTemplateOutlet="nodeTemplate; context: { nodes: node.children, depth: depth + 1 }"></ng-container>
                                 </div>
                             </div>
 
-                        </div>
+                        </ng-container>
+                    </ng-template>
+
+                    <!-- Kick off the tree at depth 0 -->
+                    <div class="permission-tree">
+                        <ng-container *ngTemplateOutlet="nodeTemplate; context: { nodes: permTree, depth: 0 }"></ng-container>
                     </div>
 
-                </div>
+                </ng-container>
             </div>
         </mat-dialog-content>
 
@@ -104,3 +93,4 @@
         </mat-dialog-actions>
     </div>
 </ng-template>
+
