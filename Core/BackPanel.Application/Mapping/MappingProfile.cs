@@ -15,8 +15,8 @@ public class MappingProfile : Profile
         CreateMap<ActivityDto, Activity>().ReverseMap();
         CreateMap<NotificationDto, Notification>().ReverseMap();
         CreateMap<ImageDtoRequest, Image>().ReverseMap();
-        CreateMap<CompanyInfoDtoRequest, CompanyInfo>().ReverseMap();
+        CreateMap<BusinessDtoRequest, Business>().ReverseMap();
         CreateMap<ImageDto, Image>().ReverseMap();
-        CreateMap<CompanyInfoDto, CompanyInfo>().ReverseMap();
+        CreateMap<BusinessDto, Business>().ReverseMap();
     }
 }

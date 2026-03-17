@@ -70,7 +70,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
     public DbSet<Message> Messages => Set<Message>();
     public new DbSet<Role> Roles => Set<Role>();
     public DbSet<Notification> Notifications => Set<Notification>();
-    public DbSet<CompanyInfo> CompanyInfos => Set<CompanyInfo>();
+    public DbSet<Business> Businesses => Set<Business>();
     public DbSet<AppUser> AppUsers => Set<AppUser>();
     public DbSet<AppRole> AppRoles => Set<AppRole>();
 }

@@ -1,6 +1,6 @@
 import { BaseModel } from "./base.model";
 import { Image } from "./image.model";
-export interface CompanyInfo extends BaseModel {
+export interface Business extends BaseModel {
     companyName: string | null;
     address: string | null;
     logoId: number;

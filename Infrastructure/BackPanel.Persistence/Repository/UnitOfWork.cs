@@ -12,14 +12,14 @@ public class UnitOfWork : IUnitOfWork
     public IRepositoryBase<Message> MessagesRepository { get; }
     public IRepositoryBase<Role> RolesRepository { get; }
     public IRepositoryBase<Notification> NotificationsRepository { get; }
-    public IRepositoryBase<CompanyInfo> CompanyInfosRepository { get; }
+    public IRepositoryBase<Business> BusinessesRepository { get; }
 
     public UnitOfWork(AppDbContext dbContext, MapperHelper mapperHelper)
     {
         MessagesRepository = new RepositoryBase<Message>(dbContext);
         RolesRepository = new RepositoryBase<Role>(dbContext);
         NotificationsRepository = new RepositoryBase<Notification>(dbContext);
-        CompanyInfosRepository = new RepositoryBase<CompanyInfo>(dbContext);
+        BusinessesRepository = new RepositoryBase<Business>(dbContext);
         this._dbContext = dbContext;
     }
     public async Task<int> SaveChangesAsync()

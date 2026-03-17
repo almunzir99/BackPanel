@@ -9,7 +9,7 @@ namespace BackPanel.Application.Interfaces
 {
     public interface IUnitOfWork
     {
-        IRepositoryBase<CompanyInfo> CompanyInfosRepository { get; }
+        IRepositoryBase<Business> BusinessesRepository { get; }
         IRepositoryBase<Message> MessagesRepository { get; }
         IRepositoryBase<Notification> NotificationsRepository { get; }
         IRepositoryBase<Role> RolesRepository { get; }

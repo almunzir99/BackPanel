@@ -37,8 +37,8 @@ const routes: Routes = [
       loadChildren: () => import('./pages/profile/profile.module').then(c => c.ProfileModule)
     },
     {
-      path: 'company-info',
-      loadChildren: () => import('./pages/company-info/company-info.module').then(c => c.CompanyInfoModule)
+      path: 'business',
+      loadChildren: () => import('./pages/business/business.module').then(c => c.BusinessModule)
     },
     {
       path: 'settings',

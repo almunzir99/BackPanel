@@ -2,28 +2,28 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
-import { CompanyInfo } from 'src/app/core/models/company-info.model';
+import { Business } from 'src/app/core/models/business.model';
 import { RequestStatus } from 'src/app/core/models/request-status.enum';
-import { CompanyInfoService } from 'src/app/core/services/company-info.service';
+import { BusinessService } from 'src/app/core/services/business.service';
 import { GeneralService } from 'src/app/core/services/general.service';
 import { AlertMessage, AlertMessageComponent, MessageTypes } from 'src/app/shared/components/alert-message/alert-message.component';
 import { ControlTypes } from 'src/app/shared/components/form-builder/control-type.enum';
 import { FormBuilderGroup } from 'src/app/shared/components/form-builder/form-builder-group.model';
 
 @Component({
-  selector: 'app-company-info',
-  templateUrl: './company-info.component.html',
+  selector: 'app-business',
+  templateUrl: './business.component.html',
   standalone: false,
-  styleUrls: ['./company-info.component.scss']
+  styleUrls: ['./business.component.scss']
 })
-export class CompanyInfoComponent implements OnInit {
+export class BusinessComponent implements OnInit {
 
-  company: CompanyInfo | null = null;
+  company: Business | null = null;
   theme: 'light' | 'dark' = 'light';
   dimRequest = RequestStatus.Initial;
   formGroups: FormBuilderGroup[] = [];
   constructor(
-    private _service: CompanyInfoService,
+    private _service: BusinessService,
     @Inject("BASE_API_URL") public baseUrl: string,
     private _dialog: MatDialog,
     _generalService: GeneralService
@@ -137,7 +137,7 @@ export class CompanyInfoComponent implements OnInit {
     info.logo = !body['logo'] || !body['logo'][0] ? info.logo : { path: body['logo'][0]['path'] };
     this.update(info);
   }
-  async update(info: CompanyInfo) {
+  async update(info: Business) {
     this.dimRequest = RequestStatus.Loading;
 
     try {

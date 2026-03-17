@@ -71,8 +71,8 @@ export const MenuList: MenuGroup[] = [
             {
                 title: "Company-Information",
                 icon: "las la-business-time",
-                route: "/dashboard/company-info",
-                allowedRoles: ["Administration.CompanyInfo.View"]
+                route: "/dashboard/business",
+                allowedRoles: []
             }
         ]
     }

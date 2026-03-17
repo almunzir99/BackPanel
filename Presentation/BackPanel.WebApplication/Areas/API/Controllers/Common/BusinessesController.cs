@@ -1,7 +1,7 @@
 using BackPanel.Application.DTOs;
 using BackPanel.Application.DTOs.Wrapper;
 using BackPanel.Application.DTOsRequests;
-using BackPanel.Application.Features.CompanyInfo.Queries;
+using BackPanel.Application.Features.Business.Queries;
 using BackPanel.Application.Resolvers.UriResolver;
 using BackPanel.Domain.Entities;
 using MediatR;
@@ -10,20 +10,20 @@ using Microsoft.AspNetCore.Mvc;
 namespace BackPanel.WebApplication.Areas.API.Controllers.Common;
 
 [ApiController]
-[Route("api/company-info")]
-public class CompanyInfosController : ApiController<CompanyInfo, CompanyInfoDto, CompanyInfoDtoRequest>
+[Route("api/business")]
+public class BusinessesController : ApiController<Business, BusinessDto, BusinessDtoRequest>
 {
-    public CompanyInfosController(IUriResolver uriService, IMediator mediator) : base(uriService, mediator)
+    public BusinessesController(IUriResolver uriService, IMediator mediator) : base(uriService, mediator)
     {
     }
 
     [HttpGet("single")]
-    public async Task<IActionResult> GetCompanyInfoAsync()
+    public async Task<IActionResult> GetBusinessAsync()
     {
         try
         {
-            var result = await Mediator.Send(new GetCompanyInfoQuery());
-            var response = new Response<CompanyInfoDto>(data: result);
+            var result = await Mediator.Send(new GetBusinessQuery());
+            var response = new Response<BusinessDto>(data: result);
             return Ok(response);
         }
         catch (Exception e)
@@ -32,5 +32,5 @@ public class CompanyInfosController : ApiController<CompanyInfo, CompanyInfoDto,
             return BadRequest(response);
         }
     }
-    public override string PermissionTitle => "CompanyInfosPermissions";
+    public override string PermissionTitle => "BusinessesPermissions";
 }

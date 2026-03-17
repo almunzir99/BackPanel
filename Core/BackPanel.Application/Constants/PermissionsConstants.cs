@@ -26,9 +26,9 @@ public static class PermissionsConstants
     public static readonly string ViewMessages   = "Administration.Messages.View";
     public static readonly string DeleteMessages = "Administration.Messages.Delete";
 
-    // ── Administration > CompanyInfo ────────────────────────────────────────
-    public static readonly string ViewCompanyInfo = "Administration.CompanyInfo.View";
-    public static readonly string EditCompanyInfo = "Administration.CompanyInfo.Edit";
-    public static readonly string AjustCompanyPolicies = "Administration.CompanyInfo.Policies.Edit";
+    // ── Administration > Business ────────────────────────────────────────
+    public static readonly string ViewBusiness = "Administration.Business.View";
+    public static readonly string EditBusiness = "Administration.Business.Edit";
+    public static readonly string AjustBusinessPolicies = "Administration.Business.Policies.Edit";
 
 }

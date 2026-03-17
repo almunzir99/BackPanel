@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BackPanel.Domain.Entities;
 
-public class CompanyInfo : EntityBase
+public class Business : EntityBase
 {
     [Required]
     public string? CompanyName { get; set; }

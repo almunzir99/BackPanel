@@ -5,8 +5,8 @@ import { AccountService } from 'src/app/core/services/account.service';
 import { GeneralService } from 'src/app/core/services/general.service';
 import { MenuGroup } from './menu.group';
 import { MenuList } from './menu.list';
-import { CompanyInfo } from 'src/app/core/models/company-info.model';
-import { CompanyInfoService } from 'src/app/core/services/company-info.service';
+import { Business } from 'src/app/core/models/business.model';
+import { BusinessService } from 'src/app/core/services/business.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -22,16 +22,16 @@ export class MenuComponent implements OnInit {
   currentRole: Role | null = null;
   theme: 'light' | 'dark' = 'light';
   dir:'rtl' | 'ltr' = 'ltr';
-  company:CompanyInfo | null;
+  company:Business | null;
   constructor(_authService: AccountService,
     _generalService: GeneralService,
-    _companyInfoService:CompanyInfoService,
+    _businessService:BusinessService,
     @Inject("BASE_API_URL") public baseUrl: string,
      _translateService:TranslateService) {
     _authService.$currentUser.subscribe(res => {
       this.currentUser = res;
     })
-    this.company = _companyInfoService.$companyIfo;
+    this.company = _businessService.$companyIfo;
     this.dir = _translateService.currentLang  == 'ar'? 'rtl' : 'ltr';
     _translateService.onLangChange.subscribe({
       next: (value:any) => {

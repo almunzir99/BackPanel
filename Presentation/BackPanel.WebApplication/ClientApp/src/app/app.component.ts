@@ -6,7 +6,7 @@ import { RequestStatus } from './core/models/request-status.enum';
 import { AccountService } from './core/services/account.service';
 import { GeneralService } from './core/services/general.service';
 import { RolesService } from './core/services/roles.service';
-import { CompanyInfoService } from './core/services/company-info.service';
+import { BusinessService } from './core/services/business.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConstants } from './shared/constants/app_constants';
 import { NotificationsService } from './core/services/notifications.service';
@@ -23,7 +23,7 @@ export class AppComponent {
     private _roleService: RolesService,
     private router: Router,
     private _generalService: GeneralService,
-    private _companyInfoService: CompanyInfoService,
+    private _businessService: BusinessService,
     @Inject('DIRECTION') public dir: string,
     private _translateService: TranslateService,
     private _notificationsService: NotificationsService,
@@ -61,7 +61,7 @@ export class AppComponent {
     try {
       this.requestStatus = RequestStatus.Loading;
       var result = await firstValueFrom(this._authService.getCurrentUser());
-      var companyInfo = await firstValueFrom(this._companyInfoService.single());
+      var business = await firstValueFrom(this._businessService.single());
       this._authService.setCurrentUser(result.data);
       if (result.data.isManager)
         this._authService.$role.next(null);
@@ -69,8 +69,8 @@ export class AppComponent {
         var role = await firstValueFrom(this._roleService.single(result.data.roleId));
         this._authService.$role.next(role.data);
       }
-      // set company info
-      this._companyInfoService.setCompanyInfo(companyInfo.data);
+      // set business
+      this._businessService.setBusiness(business.data);
       var notifications = await firstValueFrom(this._notificationsService.getNotifications());
       this._notificationsService.$notifications.next(notifications.data);
       this.requestStatus = RequestStatus.Success;

@@ -52,7 +52,7 @@ public static class DataExportHelper<T>
 
     public static async Task<byte[]> ExportToPdfAsync(IList<T> data, string baseUrl, Dictionary<string, string>? summary = null)
     {
-        var companyInfo = StaticData.CompanyInfo;
+        var companyInfo = StaticData.Business;
         var htmlTable = GenerateHtmlTable(data);
         var stylePath = Path.Combine(baseUrl, "Assets", "Styles", "styles.css");
         var logo = Path.Combine(baseUrl,"Assets","logo.svg");
